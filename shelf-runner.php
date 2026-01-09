@@ -1,14 +1,13 @@
 <?php
 /*
-Plugin Name: Campos Quest
-Description: Adds the Campos Quest game as a shortcode nd page template.
+Plugin Name: Wilson's Way
+Description: Adds a shelf-runner-style game as an embed or template.
 Version:     1.4.1
 Author:      Tomas Mulder
 Author URI:  https://www.thinkaquamarine.com
 License:     GPL2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Text Domain: campos-quest
-Domain Path: /languages
+Text Domain: shelf-runner
 */
 
 /**

@@ -3,25 +3,17 @@
 $difficulty_crash = (int) get_option( 'campos_quest_settings_size' );
 $difficulty_crash = $difficulty_crash ? ( $difficulty_crash / 100 ) : 1;
 $difficulty_speed = (int) get_option( 'campos_quest_settings_speed' );
-$manifest_url = esc_url( plugins_url( '/campos-quest/dist/manifest.json' ) );
+$manifest_url = CAMPOS_QUEST_PLUGIN_URI . 'dist/manifest.json';
 
 // Get manifest values
-$manifest_response = wp_remote_get( $manifest_url );
+$manifest_response = wp_remote_get( esc_url_raw( $manifest_url ) );
 $manifest = ! is_wp_error( $manifest_response ) ? json_decode( wp_remote_retrieve_body( $manifest_response ), true ) : array();
 ?>
 
 <div class="cq">
     <div class="cq-stage">
-        <style>
-            /* Prevent SVG loading flash with fade-in animation */
-            .cq-stage {
-                opacity: 1;
-                transition: opacity 0.3s 0.15s;
-                @starting-style {
-                    opacity: 0;
-                }
-            }
-        </style>
+        <!-- Prevent SVG loading flash with fade-in animation -->
+        <style>.cq-stage { opacity: 1; transition: opacity 0.3s 0.15s; @starting-style { opacity: 0; } }</style>
         <?php
         require_once( CAMPOS_QUEST_PLUGIN_INC . 'partials/intro.php' );
         require_once( CAMPOS_QUEST_PLUGIN_INC . 'partials/board.php' );
