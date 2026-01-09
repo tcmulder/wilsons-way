@@ -73,7 +73,7 @@ function shelf_runner_settings_init(  ) {
      * Overall section heading
      */
     add_settings_section(
-        'cq_section',
+        'sr_section',
         __( 'Welcome to the Shelf Runner game settings', 'shelf-runner' ),
         function() {
             printf(
@@ -111,7 +111,7 @@ function shelf_runner_settings_init(  ) {
             printf( '<fieldset>%s%s%s</fieldset>', $client_html, $host_html, $disclaimer_html );
         },
         'shelf_runner_settings',
-        'cq_section'
+        'sr_section'
     );
 
     /**
@@ -141,7 +141,7 @@ function shelf_runner_settings_init(  ) {
                 );
             },
             'shelf_runner_settings',
-            'cq_section'
+            'sr_section'
         );
 
         /**
@@ -161,7 +161,7 @@ function shelf_runner_settings_init(  ) {
                 );
             },
             'shelf_runner_settings',
-            'cq_section'
+            'sr_section'
         );
 
     /**
@@ -209,7 +209,7 @@ function shelf_runner_settings_init(  ) {
                     shelf_runner_accordion( $field );
                 },
                 'shelf_runner_settings',
-                'cq_section'
+                'sr_section'
             );
         }
 
@@ -235,7 +235,7 @@ function shelf_runner_settings_init(  ) {
                 shelf_runner_accordion( $field );
             },
             'shelf_runner_settings',
-            'cq_section'
+            'sr_section'
         );
 
         /**
@@ -260,7 +260,7 @@ function shelf_runner_settings_init(  ) {
                 shelf_runner_accordion( $field );
             },
             'shelf_runner_settings',
-            'cq_section'
+            'sr_section'
         );
 
         /**
@@ -285,7 +285,7 @@ function shelf_runner_settings_init(  ) {
                 shelf_runner_accordion( $field );
             },
             'shelf_runner_settings',
-            'cq_section'
+            'sr_section'
         );
 
         /**
@@ -366,7 +366,7 @@ function shelf_runner_settings_init(  ) {
                 echo $html;
             },
             'shelf_runner_settings',
-            'cq_section'
+            'sr_section'
         );
 
         /**
@@ -385,7 +385,7 @@ function shelf_runner_settings_init(  ) {
                 );
             },
             'shelf_runner_settings',
-            'cq_section'
+            'sr_section'
         );
 
         /**
@@ -404,7 +404,7 @@ function shelf_runner_settings_init(  ) {
                 );
             },
             'shelf_runner_settings',
-            'cq_section'
+            'sr_section'
         );
 
         /**
@@ -423,7 +423,7 @@ function shelf_runner_settings_init(  ) {
                 );
             },
             'shelf_runner_settings',
-            'cq_section'
+            'sr_section'
         );
 
         /**
@@ -444,7 +444,7 @@ function shelf_runner_settings_init(  ) {
                 echo $html;
             },
             'shelf_runner_settings',
-            'cq_section'
+            'sr_section'
         );
 
     }
@@ -497,7 +497,7 @@ function shelf_runner_settings_init(  ) {
             echo $html;
         },
         'shelf_runner_settings',
-        'cq_section'
+        'sr_section'
     );
 
 }

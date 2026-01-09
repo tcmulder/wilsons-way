@@ -11,7 +11,7 @@
  * @param string $controls Controls to display if any (HTML)
  * @return string HTML for the message box
  */
-function cq_message( $name, $message, $controls = '' ) {
+function sr_message( $name, $message, $controls = '' ) {
     if ( $controls ) {
         $controls = sprintf(
             '<div class="sr-message-controls">%s</div>',
@@ -39,7 +39,7 @@ function cq_message( $name, $message, $controls = '' ) {
  * @param string $message Message to parse in HTML
  * @return string Parsed HTML
  */
-function cq_wp_kses( $message ) {
+function sr_wp_kses( $message ) {
     return wp_kses(
         $message,
         array(
