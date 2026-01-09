@@ -6,7 +6,7 @@
  * contains the SVG game board itself.
  */
 
-.cq-stage {
+.sr-stage {
 	container-type: size;
 	overflow: hidden;
 	position: relative;
@@ -16,7 +16,7 @@
 	margin: 0 auto;
 }
 
-.cq-board {
+.sr-board {
 	position: absolute;
 	inset: 0;
 	overflow: hidden;

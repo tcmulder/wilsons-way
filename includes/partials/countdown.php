@@ -4,4 +4,4 @@
  */
 ?>
 
-<div class="cq-countdown"></div>
+<div class="sr-countdown"></div>

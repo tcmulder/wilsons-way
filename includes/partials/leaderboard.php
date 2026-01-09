@@ -1,9 +1,9 @@
-<div class="cq-leaderboard-wrap" data-message="leaderboard">
-    <div class="cq-leaderboard-frame">
+<div class="sr-leaderboard-wrap" data-message="leaderboard">
+    <div class="sr-leaderboard-frame">
 
-        <h2><?php _e( 'Campos Quest', 'campos-quest' ); ?></h2>
+        <h2><?php _e( 'Shelf Runner', 'shelf-runner' ); ?></h2>
 
-        <div class="cq-leaderboard">
+        <div class="sr-leaderboard">
 			<ol>
 				<?php
 				for ($i = 0; $i < 10; $i++ ) {
@@ -18,7 +18,7 @@
 						$ordinal .= 'th';
 					}
 					printf(
-						'<li class="cq-leaderboard-score"><span>%s</span><span></span><span></span></li>',
+						'<li class="sr-leaderboard-score"><span>%s</span><span></span><span></span></li>',
 						$ordinal
 					);
 				}
@@ -26,8 +26,8 @@
 			</ol>
 		</div>
 
-        <button class="cq-button-yellow" data-message-resolve>
-            <?php esc_html_e( 'Continue', 'campos-quest' ); ?>
+        <button class="sr-button-yellow" data-message-resolve>
+            <?php esc_html_e( 'Continue', 'shelf-runner' ); ?>
         </button>
 
     </div>

@@ -2,7 +2,7 @@
  * Styles for the character selection screen.
  */
 
-.cq-roster {
+.sr-roster {
 	position: relative;
 	z-index: 10;
 	width: 100%;
@@ -17,27 +17,27 @@
 	}
 }
 
-.cq-roster-grid {
+.sr-roster-grid {
 	display: flex;
 	gap: 1cqmax 2cqmax;
 	width: 100%;
 }
 
-.cq-roster-character {
+.sr-roster-character {
 	cursor: pointer;
 	position: relative;
 	background-color: transparent;
-	border: 3px solid var(--cq-c-white);
-	background-color: color-mix(in srgb, transparent, var(--cq-c-white) 10%);
-	color: var(--cq-c-white);
+	border: 3px solid var(--sr-c-white);
+	background-color: color-mix(in srgb, transparent, var(--sr-c-white) 10%);
+	color: var(--sr-c-white);
 	flex: 1;
 	aspect-ratio: 1.5;
 
 	&.is-active {
-		background-color: var(--cq-c-yellow);
+		background-color: var(--sr-c-yellow);
 
-		.cq-roster-name {
-			color: var(--cq-c-yellow);
+		.sr-roster-name {
+			color: var(--sr-c-yellow);
 		}
 	}
 
@@ -51,11 +51,11 @@
 
 	svg {
 		width: auto;
-		height: calc(var(--cq-h-hero) * 2);
+		height: calc(var(--sr-h-hero) * 2);
 	}
 }
 
-.cq-roster-name {
+.sr-roster-name {
 	position: absolute;
 	inset: 110% 0 auto 0;
 	text-align: center;

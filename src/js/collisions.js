@@ -54,7 +54,7 @@ const checkCollisions = (els) => {
  */
 const checkCollisionMilestone = (el) => {
 	const { delayMilestone } = state;
-	if (el.classList.contains('cq-milestone-target')) {
+	if (el.classList.contains('sr-milestone-target')) {
 		const parent = el.parentElement;
 		parent.classList.add('has-collided');
 		doPause(true);
@@ -134,5 +134,5 @@ export const doGravity = () => {
 	const h = Math.ceil(
 		((stageRect.bottom - nearestRect.top) / stageRect.height) * 100,
 	);
-	elCharacter.style.setProperty('--cq-h-shelf', `${h}cqh`);
+	elCharacter.style.setProperty('--sr-h-shelf', `${h}cqh`);
 };

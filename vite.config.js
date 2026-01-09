@@ -30,7 +30,7 @@ export default defineConfig(({ command }) => {
 			}),
 		);
 	} else {
-		config.base = '/wp-content/plugins/campos-quest/dist/';
+		config.base = '/wp-content/plugins/shelf-runner/dist/';
 	}
 
 	return config;

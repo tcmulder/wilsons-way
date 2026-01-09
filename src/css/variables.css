@@ -1,31 +1,31 @@
-/* 
+/*
  * CSS custom properties.
- * 
+ *
  * Also set via JS:
- * --cq-difficulty-crash: 1; difficulty crash size factor
- * --cq-hangtime: 300ms; jump duration
- * --cq-h-jump: 10cqw; jump distance up
+ * --sr-difficulty-crash: 1; difficulty crash size factor
+ * --sr-hangtime: 300ms; jump duration
+ * --sr-h-jump: 10cqw; jump distance up
  */
 :root {
 	/* character settings */
-	--cq-h-hero: 6cqw; /* height of the hero character */
+	--sr-h-hero: 6cqw; /* height of the hero character */
 
 	/* shelves */
-	--cq-h-ground: 6cqw;
+	--sr-h-ground: 6cqw;
 
 	/* font */
-	--cq-ff: "VT323", monospace;
+	--sr-ff: "VT323", monospace;
 
 	/* colors */
-	--cq-c-creme: #feecb3;
-	--cq-c-yellow: #feb100;
-	--cq-c-navy: #202844;
-	--cq-c-blue: #123881;
-	--cq-c-dark-bue: #0e2d67;
-	--cq-c-green: #5bcf68;
-	--cq-c-red: #c44116;
-	--cq-c-white: #fff;
-	--cq-c-black: #181818;
-	--cq-c-dark-grey: #505050;
-	--cq-c-light-grey: #DBDBDB;
+	--sr-c-creme: #feecb3;
+	--sr-c-yellow: #feb100;
+	--sr-c-navy: #202844;
+	--sr-c-blue: #123881;
+	--sr-c-dark-bue: #0e2d67;
+	--sr-c-green: #5bcf68;
+	--sr-c-red: #c44116;
+	--sr-c-white: #fff;
+	--sr-c-black: #181818;
+	--sr-c-dark-grey: #505050;
+	--sr-c-light-grey: #DBDBDB;
 }

@@ -2,27 +2,27 @@
  * Styles for milestone markers with their progress bar timers.
  */
 
-.cq-milestone-message {
+.sr-milestone-message {
 	display: none;
 
-	.cq-milestone.has-collided & {
+	.sr-milestone.has-collided & {
 		display: block;
 	}
 }
 
-.cq-milestone-progress {
+.sr-milestone-progress {
 	opacity: 0;
-	.cq-milestone.has-collided & {
+	.sr-milestone.has-collided & {
 		opacity: 1;
 	}
 }
 
-.cq-milestone-progress-bar {
+.sr-milestone-progress-bar {
 	opacity: 0;
 	clip-path: inset(0 100% 0 0);
-	.cq-milestone.has-collided & {
+	.sr-milestone.has-collided & {
 		opacity: 1;
 		clip-path: inset(0 0% 0 0);
-		transition: clip-path var(--cq-milestone-delay) linear;
+		transition: clip-path var(--sr-milestone-delay) linear;
 	}
 }

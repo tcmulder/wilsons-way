@@ -14,15 +14,15 @@
 function cq_message( $name, $message, $controls = '' ) {
     if ( $controls ) {
         $controls = sprintf(
-            '<div class="cq-message-controls">%s</div>',
+            '<div class="sr-message-controls">%s</div>',
             $controls
         );
     }
     return sprintf(
-        '<div class="cq-message" data-message="%s" data-message-has-type>
-            <div class="cq-message-quote">
-                <div class="cq-message-scroller">
-                    <div class="cq-message-type">%s</div>
+        '<div class="sr-message" data-message="%s" data-message-has-type>
+            <div class="sr-message-quote">
+                <div class="sr-message-scroller">
+                    <div class="sr-message-type">%s</div>
                     %s
                 </div>
             </div>

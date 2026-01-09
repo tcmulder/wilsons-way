@@ -2,7 +2,7 @@
  * Styles for the game's message overlay.
  */
 
-.cq-message {
+.sr-message {
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -23,32 +23,32 @@
 		display: block;
 	}
 }
-.cq-message-quote {
+.sr-message-quote {
 	display: flex;
 	flex-direction: column;
 	width: 50%;
 	max-height: 82%;
-	border: 3px solid var(--cq-c-navy);
-	background-color: var(--cq-c-creme);
+	border: 3px solid var(--sr-c-navy);
+	background-color: var(--sr-c-creme);
 }
-.cq-message-scroller {
+.sr-message-scroller {
 	overflow-y: auto;
 	max-height: 100%;
 	padding: 3cqmax;
 	mask-image: linear-gradient(to bottom, transparent 1cqmax, tan 2cqmax, tan calc(100% - 2cqmax), transparent calc(100% - 1cqmax));
 }
-.cq-message-type {
+.sr-message-type {
 	font-size: clamp(14px, 3cqmax, 28px);
 }
-.cq-message-controls {
+.sr-message-controls {
 	display: flex;
 	justify-content: center;
 }
 
 /* Winner/Loser message styles */
-.cq-message[data-message="winner"],
-.cq-message[data-message="loser"] {
-	.cq-message-scroller {
+.sr-message[data-message="winner"],
+.sr-message[data-message="loser"] {
+	.sr-message-scroller {
 		text-align: center;
 		&::before {
 			content: "";

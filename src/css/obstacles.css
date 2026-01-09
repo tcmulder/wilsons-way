@@ -2,7 +2,7 @@
  * Styles for obstacle elements and their collision states.
  */
 
-.cq-obstacles {
+.sr-obstacles {
 	[data-score^="-"] {
 		&[data-disabled] {
 			opacity: 0.2;

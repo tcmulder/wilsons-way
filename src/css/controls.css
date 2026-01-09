@@ -1,11 +1,11 @@
-.cq-button {
+.sr-button {
 	position: relative;
 	min-width: 4cqmax;
 	height: 4cqmax;
 	padding-inline: 1cqmax;
-	border: 0.2cqmax solid var(--cq-c-yellow);
-	background-color: var(--cq-c-navy);
-	color: var(--cq-c-creme);
+	border: 0.2cqmax solid var(--sr-c-yellow);
+	background-color: var(--sr-c-navy);
+	color: var(--sr-c-creme);
 	font-size: 2cqmax;
 
 	svg {
@@ -30,37 +30,37 @@
 		}
 	}
 }
-.cq-button-yellow {
+.sr-button-yellow {
 	padding: 0.8cqmax 1cqmax;
 	border: 3px solid currentColor;
-	background-color: var(--cq-c-yellow);
-	color: var(--cq-c-black);
+	background-color: var(--sr-c-yellow);
+	color: var(--sr-c-black);
 	font-size: 2.8cqmax;
 	text-transform: uppercase;
 	border-radius: 0;
 
 	&:disabled {
 		cursor: not-allowed;
-		background-color: var(--cq-c-light-grey);
+		background-color: var(--sr-c-light-grey);
 	}
 		
 }
-.cq-button-hollow {
+.sr-button-hollow {
 	padding: 0.8cqmax 1cqmax;
-	border: 3px solid var(--cq-c-white);
-	background-color: color-mix(in srgb, transparent, var(--cq-c-white) 10%);
-	color: var(--cq-c-white);
+	border: 3px solid var(--sr-c-white);
+	background-color: color-mix(in srgb, transparent, var(--sr-c-white) 10%);
+	color: var(--sr-c-white);
 	font-size: 2.8cqmax;
 	text-transform: uppercase;
 	border-radius: 0;
 
 	&:disabled {
 		cursor: not-allowed;
-		background-color: var(--cq-c-light-grey);
+		background-color: var(--sr-c-light-grey);
 	}
 		
 }
-.cq-toggle {
+.sr-toggle {
 	position: relative;
 	font-size: 3.5cqmax;
 	text-transform: uppercase;
@@ -96,13 +96,13 @@
 	}
 
 	i {
-		--cq-c-toggle: var(--cq-c-yellow);
-		--cq-px-toggle: 0.4cqmax;
+		--sr-c-toggle: var(--sr-c-yellow);
+		--sr-px-toggle: 0.4cqmax;
 		position: absolute;
 		inset: auto 5cqmax 0.5cqmax;
 		height: 2.2cqmax;
 		background-image: url("../img/toggle-bg.svg"),
-			linear-gradient(var(--cq-c-toggle), var(--cq-c-toggle));
+			linear-gradient(var(--sr-c-toggle), var(--sr-c-toggle));
 		background-size: 7cqmax, 85% 70%;
 		background-repeat: no-repeat;
 		background-position: center 90%, center;
@@ -110,7 +110,7 @@
 		&::before {
 			content: "";
 			position: absolute;
-			left: var(--cq-px-toggle);
+			left: var(--sr-px-toggle);
 			height: 100%;
 			aspect-ratio: 1;
 			background-image: url("../img/toggle.svg");
@@ -123,13 +123,13 @@
 	/* Checked/unchecked styling */
 	input:checked + span::before,
 	input:not(:checked) + span::after {
-		color: var(--cq-c-yellow);
+		color: var(--sr-c-yellow);
 	}
 	input:not(:checked) ~ i {
-		--cq-c-toggle: var(--cq-c-black);
+		--sr-c-toggle: var(--sr-c-black);
 	}
 	input:not(:checked) ~ i::before {
 		left: auto;
-		right: var(--cq-px-toggle);
+		right: var(--sr-px-toggle);
 	}
 }

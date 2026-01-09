@@ -4,18 +4,18 @@
  */
 ?>
 
-<div class="cq-game-outro" data-message="outro" data-message-has-autoscroll>
-    <div class="cq-game-outro-frame cq-auto-scroller">
+<div class="sr-game-outro" data-message="outro" data-message-has-autoscroll>
+    <div class="sr-game-outro-frame sr-auto-scroller">
         
-        <h1 class="cq-logo"><?php _e( 'Campos Quest', 'campos-quest' ); ?></h1>
+        <h1 class="sr-logo"><?php _e( 'Shelf Runner', 'shelf-runner' ); ?></h1>
 
-        <div class="cq-game-outro-content">
+        <div class="sr-game-outro-content">
             <?php echo cq_wp_kses( apply_filters( 'the_content', get_option( 'campos_quest_settings_outro' ) ) ); ?>
         </div>
 
-        <div class="cq-game-outro-footer">
-            <p><?php _e( 'Our People Are Our Power', 'campos-quest' ); ?></p>
-            <button class="cq-button-yellow cq-restart"><?php _e( 'Play Again', 'campos-quest' ); ?></button>
+        <div class="sr-game-outro-footer">
+            <p><?php _e( 'Our People Are Our Power', 'shelf-runner' ); ?></p>
+            <button class="sr-button-yellow sr-restart"><?php _e( 'Play Again', 'shelf-runner' ); ?></button>
         </div>
 
     </div>

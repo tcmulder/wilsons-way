@@ -1,7 +1,7 @@
 /**
  * Debugger styling
  */
-.cq-debug-form-wrap {
+.sr-debug-form-wrap {
 	position: fixed;
 	bottom: 0;
 	left: 0;
@@ -27,7 +27,7 @@
 		}
 	}
 }
-.cq-debug-form {
+.sr-debug-form {
 	display: none;
 	inset: 0 auto 0 0;
 	padding: 1%;
@@ -103,7 +103,7 @@
 		width: 100%;
 	}
 
-	.cq-debug-form-wrap:has([name="toggle"]:checked) & {
+	.sr-debug-form-wrap:has([name="toggle"]:checked) & {
 		display: block;
 	}
 }

@@ -1,7 +1,7 @@
 /**
  * Styles for the game's leaderboard.
  */
-.cq-leaderboard-wrap {
+.sr-leaderboard-wrap {
 	position: absolute;
 	z-index: 300;
 	inset: 0;
@@ -18,7 +18,7 @@
 }
 
 
-.cq-leaderboard-frame {
+.sr-leaderboard-frame {
 	position: relative;
 	display: flex;
 	flex-direction: column;
@@ -26,7 +26,7 @@
 	width: 60%;
 	margin: 0 auto;
 	padding-inline: 2cqmax;
-	background-color: var(--cq-c-black);
+	background-color: var(--sr-c-black);
 
 	&::before {
 		content: "";
@@ -69,7 +69,7 @@
 }
 
 
-.cq-leaderboard {
+.sr-leaderboard {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -85,19 +85,19 @@
 		padding: 0;
 	}
 
-	.cq-leaderboard-score {
+	.sr-leaderboard-score {
 		list-style: none;
 		display: grid;
 		grid-template-columns: 1fr 1fr 1fr;
 		gap: 1cqmax;
 		padding: 0.5cqmax 1.5cqmax;
 		font-size: 3cqmax;
-		color: var(--cq-c-white);
+		color: var(--sr-c-white);
 		outline: 2px solid currentColor;
 		outline-offset: -1px;
 
 		&:nth-child(-n+3) {
-			color: var(--cq-c-yellow);
+			color: var(--sr-c-yellow);
 			z-index: 10;
 			position: relative;
 		}

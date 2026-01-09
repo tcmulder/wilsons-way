@@ -6,38 +6,38 @@
 $allow_sfx = '1' === get_option( 'campos_quest_settings_sfx' );
 ?>
 
-<div class="cq-game-intro" data-message="intro">
+<div class="sr-game-intro" data-message="intro">
 
-	<div class="cq-game-intro-message">
+	<div class="sr-game-intro-message">
 
-		<h1 class="cq-logo"><?php _e( 'Campos Quest', 'campos-quest' ); ?></h1>
+		<h1 class="sr-logo"><?php _e( 'Shelf Runner', 'shelf-runner' ); ?></h1>
 
-		<?php require_once( CAMPOS_QUEST_PLUGIN_INC . 'partials/roster.php' ); ?>
+		<?php require_once( SHELF_RUNNER_PLUGIN_INC . 'partials/roster.php' ); ?>
 
-		<div class="cq-game-intro-controls">
+		<div class="sr-game-intro-controls">
 
 			<?php if ( $allow_sfx ) : ?>
 
-				<label class="cq-toggle" aria-label="<?php _e( 'Toggle sound effects on or off', 'campos-quest' ); ?>">
+				<label class="sr-toggle" aria-label="<?php _e( 'Toggle sound effects on or off', 'shelf-runner' ); ?>">
 					<input type="checkbox" name="sfx">
-					<span data-checked="<?php _e( 'On', 'campos-quest' ); ?>" data-unchecked="<?php _e( 'Off', 'campos-quest' ); ?>">
-						<?php _e( 'SFX', 'campos-quest' ); ?>
+					<span data-checked="<?php _e( 'On', 'shelf-runner' ); ?>" data-unchecked="<?php _e( 'Off', 'shelf-runner' ); ?>">
+						<?php _e( 'SFX', 'shelf-runner' ); ?>
 					</span>
 					<i aria-hidden="true"></i>
 				</label>
 
 			<?php endif; ?>
 			
-			<button class="cq-button-yellow" data-message-resolve><?php _e( 'Start Game', 'campos-quest' ); ?></button>
+			<button class="sr-button-yellow" data-message-resolve><?php _e( 'Start Game', 'shelf-runner' ); ?></button>
 			
-			<button class="cq-button-hollow cq-show-scores"><?php _e( 'View Scores', 'campos-quest' ); ?></button>
+			<button class="sr-button-hollow sr-show-scores"><?php _e( 'View Scores', 'shelf-runner' ); ?></button>
 
 			<?php if ( $allow_sfx ) : ?>
 	
-				<label class="cq-toggle" aria-label="<?php _e( 'Toggle music on or off', 'campos-quest' ); ?>">
+				<label class="sr-toggle" aria-label="<?php _e( 'Toggle music on or off', 'shelf-runner' ); ?>">
 					<input type="checkbox" name="music">
-					<span data-checked="<?php _e( 'On', 'campos-quest' ); ?>" data-unchecked="<?php _e( 'Off', 'campos-quest' ); ?>">
-						<?php _e( 'Music', 'campos-quest' ); ?>
+					<span data-checked="<?php _e( 'On', 'shelf-runner' ); ?>" data-unchecked="<?php _e( 'Off', 'shelf-runner' ); ?>">
+						<?php _e( 'Music', 'shelf-runner' ); ?>
 					</span>
 					<i aria-hidden="true"></i>
 				</label>
@@ -48,7 +48,7 @@ $allow_sfx = '1' === get_option( 'campos_quest_settings_sfx' );
 
 	</div>
 
-	<div class="cq-game-intro-clouds">
+	<div class="sr-game-intro-clouds">
 		<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 1450 810">
 			<g>
 				<path fill="#FEFEFE" d="M115.5 319.2h18.7v3.2h9.4v3h6.2v3.2h3v3.2h6.3v3h3.2v3.2h3v3h6.4v-3h3V335h9.5v3.1h3v3H203v3.3h3.1v3h-6.3v3.2H78V341h6.2v-3h6.3v3h21.8v-3h-3v-3.2H96.7v-6.3h6.4v-3.1h3v-3h3.2v-3.3h6.2Z"/>

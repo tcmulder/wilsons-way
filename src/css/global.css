@@ -13,16 +13,16 @@ body {
 	overflow: clip;
 	height: 100%;
 	margin: 0;
-	background: var(--cq-c-black);
+	background: var(--sr-c-black);
 }
 
 :is(h1, h2, h3, h4, h5, h6, strong) {
 	font-weight: 400;
 }
 
-.cq {
+.sr {
 	* {
-		font-family: var(--cq-ff);
+		font-family: var(--sr-ff);
 	}
 	a {
 		color: inherit;
@@ -51,9 +51,9 @@ body {
 			align-items: center;
 			justify-content: center;
 			padding: 2cqmax;
-			background-color: var(--cq-c-navy);
-			color: var(--cq-c-creme);
-			font-family: var(--cq-ff);
+			background-color: var(--sr-c-navy);
+			color: var(--sr-c-creme);
+			font-family: var(--sr-ff);
 			font-size: 5cqmax;
 			text-align: center;
 			z-index: 999;

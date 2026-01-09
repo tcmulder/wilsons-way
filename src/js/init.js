@@ -28,7 +28,7 @@ export const init = async (el) => {
 	/**
 	 * Get game values stored in WordPress's database
 	 */
-	state.wp = window.cq;
+	state.wp = window.sr;
 
 	/**
 	 * Establish speeds, heights, durations, etc.
@@ -134,22 +134,22 @@ export const init = async (el) => {
 	// The primary wrapper (which also provides scaling)
 	state.elStage = el;
 	// The container that will hose the board's SVG
-	state.elBoard = state.elStage.querySelector('.cq-board');
+	state.elBoard = state.elStage.querySelector('.sr-board');
 
 	/**
 	 * Cache character-related elements
 	 */
 	// The container that will house the character's SVG
-	state.elCharacter = state.elStage.querySelector('.cq-character');
+	state.elCharacter = state.elStage.querySelector('.sr-character');
 	// Within elCharacter the container that will house the animated score numbers
-	state.elCharacterScore = state.elStage.querySelector('.cq-character-score');
+	state.elCharacterScore = state.elStage.querySelector('.sr-character-score');
 	// Within elCharacter the area that collides with things (can be scaled smaller/bigger than the character)
 	state.elCharacterCrashArea = state.elStage.querySelector(
-		'.cq-character-crash',
+		'.sr-character-crash',
 	);
 	// The character picker options
 	state.elRosterCharacters = state.elStage.querySelectorAll(
-		'.cq-roster-character',
+		'.sr-roster-character',
 	);
 	// The message containers
 	state.elMessages = state.elStage.querySelectorAll('[data-message]');
@@ -158,27 +158,27 @@ export const init = async (el) => {
 	 * Cache interface elements
 	 */
 	// Multiple control elements that restart the game at level 1 (keeping the same character)
-	state.elControlRestarts = state.elStage.querySelectorAll('.cq-restart');
+	state.elControlRestarts = state.elStage.querySelectorAll('.sr-restart');
 	// The toggle control for sound effects
 	state.elControlToggleSFX = state.elStage.querySelector('[name=sfx]');
 	// The toggle control for music
 	state.elControlToggleMusic = state.elStage.querySelector('[name=music]');
 	// The leaderboard display button for the intro screen
-	state.elControlLeaderboard = state.elStage.querySelector('.cq-show-scores');
+	state.elControlLeaderboard = state.elStage.querySelector('.sr-show-scores');
 
 	// The container of the current user's score
-	state.elScore = state.elStage.querySelector('.cq-score');
+	state.elScore = state.elStage.querySelector('.sr-score');
 	// The countdown container as a level starts on autoplay
-	state.elCountdown = state.elStage.querySelector('.cq-countdown');
+	state.elCountdown = state.elStage.querySelector('.sr-countdown');
 	// The leaderboard container
 	state.elLeaderboardScores = state.elStage.querySelectorAll(
-		'.cq-leaderboard-score',
+		'.sr-leaderboard-score',
 	);
 
 	// Multiple game progress bar containers
-	state.elProgressLevels = state.elStage.querySelectorAll('.cq-progress-level');
+	state.elProgressLevels = state.elStage.querySelectorAll('.sr-progress-level');
 	// Multiple game progress bars
-	state.elProgressBars = state.elStage.querySelectorAll('.cq-progress-bar');
+	state.elProgressBars = state.elStage.querySelectorAll('.sr-progress-bar');
 
 	// Layers with non-obstacle items (things we don't collide with)
 	state.elStageProps = [];
@@ -191,16 +191,16 @@ export const init = async (el) => {
 
 	// Pass some game settings to CSS
 	state.elStage.style.setProperty(
-		'--cq-milestone-delay',
+		'--sr-milestone-delay',
 		`${state.delayMilestone}ms`,
 	);
-	state.elStage.style.setProperty('--cq-h-jump', `${state.jumpHeight}cqw`);
+	state.elStage.style.setProperty('--sr-h-jump', `${state.jumpHeight}cqw`);
 	state.elStage.style.setProperty(
-		'--cq-hangtime',
+		'--sr-hangtime',
 		`${state.defaultHangtime}ms`,
 	);
 	state.elStage.style.setProperty(
-		'--cq-difficulty-crash',
+		'--sr-difficulty-crash',
 		`${state.difficultyCrash}`,
 	);
 
@@ -239,13 +239,13 @@ export const setup = async () => {
 	 */
 	// Elevated shelves we can jump on/off plus the ground floor
 	state.elShelves = state.elStage
-		.querySelector('.cq-shelves')
+		.querySelector('.sr-shelves')
 		.querySelectorAll(':scope > *');
 	// All obstacles (good bad or neutral)
 	state.elObstacles = [];
 	// Add all obstacles that score on impact (good or bad)
 	state.elStage
-		.querySelectorAll('.cq-obstacles[data-score]')
+		.querySelectorAll('.sr-obstacles[data-score]')
 		?.forEach((elObstacle) => {
 			elObstacle.querySelectorAll(':scope > *').forEach((elChild) => {
 				if (!elChild.hasAttribute('data-score')) {
@@ -256,7 +256,7 @@ export const setup = async () => {
 		});
 	// Add all milestone obstacles we can impact
 	state.elStage
-		.querySelectorAll('.cq-milestone-target')
+		.querySelectorAll('.sr-milestone-target')
 		?.forEach((elMilestone) => {
 			state.elObstacles.push(elMilestone);
 		});
@@ -306,5 +306,5 @@ export const setup = async () => {
 	// Establish the game board movement animations
 	createAni();
 	// Pass the jump hangtime value we've set to CSS for jump animations
-	state.elStage.style.setProperty('--cq-hangtime', `${state.hangtime}ms`);
+	state.elStage.style.setProperty('--sr-hangtime', `${state.hangtime}ms`);
 };

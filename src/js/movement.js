@@ -57,10 +57,10 @@ export const doPause = (shouldPause = true) => {
 		// Freeze the character in place (in case we're in a jump)
 		const computedStyle = window.getComputedStyle(state.elCharacter);
 		const matrix = new DOMMatrix(computedStyle.transform);
-		state.elCharacter.style.setProperty('--cq-freeze', `${matrix.m42}px`);
+		state.elCharacter.style.setProperty('--sr-freeze', `${matrix.m42}px`);
 	} else {
 		// Stop pausing
-		state.elCharacter.style.setProperty('--cq-freeze', '');
+		state.elCharacter.style.setProperty('--sr-freeze', '');
 		setCharacterState({ pause: 'none' });
 		doRun();
 	}
@@ -107,10 +107,10 @@ export const doJump = () => {
 			const h =
 				((stageRect.bottom - shelfRect.bottom) / stageRect.height) * 100 -
 				(charRect.height / stageRect.height) * 100;
-			elCharacter.style.setProperty('--cq-h-shelf-above', `${h}cqh`);
+			elCharacter.style.setProperty('--sr-h-shelf-above', `${h}cqh`);
 		} else {
 			// If there's no shelf above us we can jump all the way up
-			elCharacter.style.setProperty('--cq-h-shelf-above', '99cqh');
+			elCharacter.style.setProperty('--sr-h-shelf-above', '99cqh');
 		}
 		// Start upward journey
 		doJumpUp();

@@ -1,4 +1,4 @@
-=== Campos Game ===
+=== Shelf Runner ===
 
 Contributors: thinkaquamarine
 Tags: game
@@ -8,11 +8,11 @@ Stable tag: 1.4.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Adds the Campos Quest game as a shortcode and page template.
+Adds the Shelf Runner game as a shortcode and page template.
 
 == Description ==
 
-This plugin adds the Campos Quest game to your website. It can either be set up as a host, meaning game scoring data will be saved to your website, or as a client, meaning game scoring data will be saved on another website that is hosting the game.
+This plugin adds the Shelf Runner game to your website. It can either be set up as a host, meaning game scoring data will be saved to your website, or as a client, meaning game scoring data will be saved on another website that is hosting the game.
 
 == Installation ==
 

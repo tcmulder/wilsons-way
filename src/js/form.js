@@ -7,16 +7,16 @@ import { state } from './state';
  */
 const createForm = () => {
 	const form = document.createElement('form');
-	form.className = 'cq-form';
+	form.className = 'sr-form';
 	form.autocomplete = 'off';
 
 	const label = document.createElement('label');
-	label.htmlFor = 'cq-username';
+	label.htmlFor = 'sr-username';
 	label.textContent = 'Enter Your Name';
 
 	const input = document.createElement('input');
 	input.type = 'text';
-	input.id = 'cq-username';
+	input.id = 'sr-username';
 	input.name = 'username';
 	input.required = true;
 	input.maxLength = 6;
@@ -24,7 +24,7 @@ const createForm = () => {
 	const submit = document.createElement('button');
 	submit.type = 'submit';
 	submit.textContent = 'See Results';
-	submit.classList.add('cq-button-yellow');
+	submit.classList.add('sr-button-yellow');
 	submit.disabled = true;
 
 	form.appendChild(label);
@@ -44,7 +44,7 @@ const submitForm = async () => {
 		user,
 		wp: { api, nonce },
 	} = state;
-	return fetch(`${api}campos-quest/v1/winner/`, {
+	return fetch(`${api}shelf-runner/v1/winner/`, {
 		method: 'POST',
 		headers: {
 			'X-WP-Nonce': nonce,
@@ -118,7 +118,7 @@ export const doScoreForm = async () => {
 	const elMessageWinner = [...state.elMessages].find(
 		(msg) => msg.dataset.message === 'winner',
 	);
-	elMessageWinner.querySelector('.cq-message-scroller').append(form);
+	elMessageWinner.querySelector('.sr-message-scroller').append(form);
 	// Bind controls to the form and return the promise
 	return addFormControls(form);
 };

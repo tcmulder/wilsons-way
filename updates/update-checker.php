@@ -14,9 +14,9 @@
 defined( 'ABSPATH' ) || exit;
 
 
-if( ! class_exists( 'CamposQuestUpdateChecker' ) ) {
+if( ! class_exists( 'ShelfRunnerUpdateChecker' ) ) {
 
-	class CamposQuestUpdateChecker{
+	class ShelfRunnerUpdateChecker{
 
 		public $plugin_slug;
 		public $version;
@@ -25,11 +25,11 @@ if( ! class_exists( 'CamposQuestUpdateChecker' ) ) {
 
 		public function __construct() {
 
-			$this->plugin_slug = CAMPOS_QUEST_BASENAME;
-			$this->version = CAMPOS_QUEST_VERSION;
-			$this->cache_key = 'campos_quest_custom_upd';
+			$this->plugin_slug = SHELF_RUNNER_BASENAME;
+			$this->version = SHELF_RUNNER_VERSION;
+			$this->cache_key = 'shelf_runner_custom_upd';
 			$this->cache_allowed = true;
-			$this->updater_json = 'https://raw.githubusercontent.com/tcmulder/campos-quest/refs/heads/master/updates/info.json';
+			$this->updater_json = 'https://raw.githubusercontent.com/tcmulder/shelf-runner/refs/heads/master/updates/info.json';
 
 			add_filter( 'plugins_api', array( $this, 'info' ), 20, 3 );
 			add_filter( 'site_transient_update_plugins', array( $this, 'update' ) );
@@ -167,6 +167,6 @@ if( ! class_exists( 'CamposQuestUpdateChecker' ) ) {
 
 	}
 
-	new CamposQuestUpdateChecker();
+	new ShelfRunnerUpdateChecker();
 
 }

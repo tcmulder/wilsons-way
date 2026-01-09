@@ -21,7 +21,7 @@ if ( 'client' === $mode ) {
         }
         printf( '<iframe src="%s" style="%s"></iframe>', esc_url( $iframe_url ), $style );
     } else {
-        printf( '<p>%s</p>', __( 'Error: please enter an iframe URL in the plugin settings.', 'campos-quest' ) );
+        printf( '<p>%s</p>', __( 'Error: please enter an iframe URL in the plugin settings.', 'shelf-runner' ) );
     }
     return;    
 }
@@ -30,15 +30,15 @@ if ( 'client' === $mode ) {
 $path_css = '';
 $path_js = '';
 $path_svg = '';
-$url = CAMPOS_QUEST_PLUGIN_URI . 'dist/manifest.json';
+$url = SHELF_RUNNER_PLUGIN_URI . 'dist/manifest.json';
 $response = wp_remote_get( $url );
 if ( ! is_wp_error( $response ) && 200 === wp_remote_retrieve_response_code( $response ) ) {
     $manifest = json_decode( wp_remote_retrieve_body( $response ), true );
     if ( isset( $manifest['src/js/index.js']['css'][0] ) ) {
-        $path_css = CAMPOS_QUEST_PLUGIN_URI . 'dist/' . $manifest['src/js/index.js']['css'][0];
+        $path_css = SHELF_RUNNER_PLUGIN_URI . 'dist/' . $manifest['src/js/index.js']['css'][0];
     }
     if ( isset( $manifest['src/js/index.js']['file'] ) ) {
-        $path_js = CAMPOS_QUEST_PLUGIN_URI . 'dist/' . $manifest['src/js/index.js']['file'];
+        $path_js = SHELF_RUNNER_PLUGIN_URI . 'dist/' . $manifest['src/js/index.js']['file'];
     }
 }
 ?><!DOCTYPE html>
@@ -49,13 +49,13 @@ if ( ! is_wp_error( $response ) && 200 === wp_remote_retrieve_response_code( $re
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="apple-mobile-web-app-title" content="<?php _e( 'Campos Quest', 'campos-quest' ); ?>">
-    <link rel="apple-touch-icon" href="<?php echo CAMPOS_QUEST_PLUGIN_URI . 'dist/icon.png'; ?>">
-    <title><?php _e( 'Campos Quest', 'campos-quest' ); ?></title>
+    <meta name="apple-mobile-web-app-title" content="<?php _e( 'Shelf Runner', 'shelf-runner' ); ?>">
+    <link rel="apple-touch-icon" href="<?php echo SHELF_RUNNER_PLUGIN_URI . 'dist/icon.png'; ?>">
+    <title><?php _e( 'Shelf Runner', 'shelf-runner' ); ?></title>
     <link rel="stylesheet" href="<?php echo $path_css; ?>">
 </head>
 <body>
-    <?php require_once( CAMPOS_QUEST_PLUGIN_INC . 'game.php' ); ?>
+    <?php require_once( SHELF_RUNNER_PLUGIN_INC . 'game.php' ); ?>
     <script src="<?php echo $path_js; ?>"></script>
 </body>
 </html>

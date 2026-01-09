@@ -4,4 +4,4 @@
  */
 ?>
 
-<div class="cq-board"></div>
+<div class="sr-board"></div>

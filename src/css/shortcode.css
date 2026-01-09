@@ -1,12 +1,12 @@
 /**
  * Styles for the WordPress shortcode.
  */
-body.cq-lightbox-open {
+body.sr-lightbox-open {
 	overflow: hidden !important; /* prevent scroll */
 }
 
 /* NOTE: we use an ID to increase specificity such that it should override most theme styling */
-#campos-quest {
+#shelf-runner {
 	overflow: hidden;
 	position: relative;
 	width: 100%;
@@ -15,11 +15,11 @@ body.cq-lightbox-open {
 	max-height: 200px;
 	background-color: #000;
 
-	&:has(.cq-portal-button button:hover, .cq-portal-button button:focus) {
+	&:has(.sr-portal-button button:hover, .sr-portal-button button:focus) {
 		&::before {
 			opacity: 0.32;
 		}
-		.cq-portal-button {
+		.sr-portal-button {
 			transform: scale(1.025);
 		}
 			
@@ -29,7 +29,7 @@ body.cq-lightbox-open {
 		max-height: 3000px;
 		transition: max-height 2s ease-out;
 		&::before,
-		.cq-portal-overlay {
+		.sr-portal-overlay {
 			display: none;
 		}
 	}
@@ -48,7 +48,7 @@ body.cq-lightbox-open {
 		opacity: 0.2;
 		transition: opacity 0.3s;
 		will-change: transform;
-		animation: cq-marquee 180s linear infinite;
+		animation: sr-marquee 180s linear infinite;
 
 		@media (prefers-reduced-motion: reduce) {
 			animation: none;
@@ -62,7 +62,7 @@ body.cq-lightbox-open {
 		border: 0;
 	}
 
-	.cq-portal-overlay {
+	.sr-portal-overlay {
 		cursor: pointer;
 		position: absolute;
 		inset: 0;
@@ -75,7 +75,7 @@ body.cq-lightbox-open {
 		flex-wrap: wrap;
 	}
 
-	.cq-portal-label {
+	.sr-portal-label {
 		aspect-ratio: 567 / 53;
 		width: 567px;
 		max-width: 100%;
@@ -87,7 +87,7 @@ body.cq-lightbox-open {
 		background-position: left bottom;
 	}
 	
-	.cq-portal-button {
+	.sr-portal-button {
 		cursor: pointer;
 		background-color: transparent;
 		border: 0;
@@ -110,7 +110,7 @@ body.cq-lightbox-open {
 		}
 	}
 	
-	.cq-portal-lightbox {
+	.sr-portal-lightbox {
 		flex-direction: column !important;
 		min-width: 100vw !important;
 		min-height: 100vh !important;
@@ -145,19 +145,19 @@ body.cq-lightbox-open {
 		}
 	}
 	
-	.cq-portal-lightbox-close {
+	.sr-portal-lightbox-close {
 		width: 100%;
 		padding: 5px;
 		background-color: black;
 	}
 	
-	:where(.cq-portal-lightbox-close button) {
+	:where(.sr-portal-lightbox-close button) {
 		background: white;
 		color: black;
 	}
 }
 
-@keyframes cq-marquee {
+@keyframes sr-marquee {
 	0% {
 		transform: translateX(0);
 	}

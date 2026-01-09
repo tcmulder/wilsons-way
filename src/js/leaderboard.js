@@ -27,7 +27,7 @@ export const getLeaderboard = async () => {
 	const {
 		wp: { api },
 	} = state;
-	return fetch(`${api}campos-quest/v1/leaderboard/`, {
+	return fetch(`${api}shelf-runner/v1/leaderboard/`, {
 		method: 'GET',
 		credentials: 'same-origin',
 	})

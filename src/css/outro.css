@@ -2,13 +2,13 @@
  * Styles for the game's ending screen.
  */
 
-.cq-game-outro {
+.sr-game-outro {
 	position: absolute;
 	inset: 0;
 	z-index: 10;
-	background-color: var(--cq-c-blue);
+	background-color: var(--sr-c-blue);
 
-	.cq-logo {
+	.sr-logo {
 		width: 35cqmax;
 		margin-block: 15cqmax 20cqmax;
 	}
@@ -33,18 +33,18 @@
 	}
 }
 
-.cq-game-outro-frame {
+.sr-game-outro-frame {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: flex-start;
 }
 
-.cq-game-outro-content {
+.sr-game-outro-content {
 	padding-inline: 22cqmax;
 	text-align: center;
 	font-size: 2.5cqmax;
-	color: var(--cq-c-white);
+	color: var(--sr-c-white);
 
 	/* Eyebrow */
 	p:has(> em:only-child) {
@@ -61,12 +61,12 @@
 	strong:only-child {
 		font-size: 5.5cqmax;
 		font-weight: 400;
-		color: var(--cq-c-yellow);
+		color: var(--sr-c-yellow);
 	}
 
 }
 
-.cq-game-outro-footer {
+.sr-game-outro-footer {
 	position: relative;
 	z-index: 1;
 	display: flex;
@@ -87,18 +87,18 @@
 		margin-bottom: 3cqmax;
 		font-size: 5cqmax;
 		text-transform: uppercase;
-		color: var(--cq-c-white);
+		color: var(--sr-c-white);
 	}
 }
 
 /* Note this is only used for this message but could be used in others */
-.cq-auto-scroller {
+.sr-auto-scroller {
 	max-height: 100%;
 	overflow-y: auto;
 	overscroll-behavior-y: none;
 }
 
 /* Color the entire background the same color as our intro message */
-body:has(.cq-game-outro.is-active) {
-	background-color: var(--cq-c-dark-bue);
+body:has(.sr-game-outro.is-active) {
+	background-color: var(--sr-c-dark-bue);
 }

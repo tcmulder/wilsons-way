@@ -2,15 +2,15 @@
  * Styles for the playable characters.
  */
 
-.cq-character {
-	--cq-h-shelf: var(--cq-h-ground);
-	--cq-y: calc(-1 * var(--cq-h-shelf));
-	--cq-y-shift: 1cqw;
+.sr-character {
+	--sr-h-shelf: var(--sr-h-ground);
+	--sr-y: calc(-1 * var(--sr-h-shelf));
+	--sr-y-shift: 1cqw;
 	position: absolute;
 	left: 33cqw;
 	bottom: 0;
-	transform: translateY(var(--cq-freeze, var(--cq-y)));
-	transition: transform var(--cq-hangtime) ease-in;
+	transform: translateY(var(--sr-freeze, var(--sr-y)));
+	transition: transform var(--sr-hangtime) ease-in;
 	will-change: transform;
 
 	&:focus {
@@ -46,12 +46,12 @@
 	}
 
 	&[data-jump="up"] {
-		--cq-h-jump-with-shelf: min(
-			calc(var(--cq-h-shelf) + var(--cq-h-jump)),
-			calc(var(--cq-h-shelf-above, 99cqh))
+		--sr-h-jump-with-shelf: min(
+			calc(var(--sr-h-shelf) + var(--sr-h-jump)),
+			calc(var(--sr-h-shelf-above, 99cqh))
 		);
-		transform: translateY(calc(-1 * var(--cq-h-jump-with-shelf)));
-		transition: transform var(--cq-hangtime) ease-out;
+		transform: translateY(calc(-1 * var(--sr-h-jump-with-shelf)));
+		transition: transform var(--sr-hangtime) ease-out;
 	}
 
 	&[data-pause][data-pause="paused"] {
@@ -65,16 +65,16 @@
 
 	svg {
 		width: auto;
-		height: var(--cq-h-hero);
-		transform: translateY(var(--cq-y-shift));
+		height: var(--sr-h-hero);
+		transform: translateY(var(--sr-y-shift));
 		[data-move="backward"] & {
 			transform: scaleX(-1);
 		}
 	}
 }
 
-.cq-character-score {
-	-webkit-text-stroke: 0.1cqmax var(--cq-c-navy);
+.sr-character-score {
+	-webkit-text-stroke: 0.1cqmax var(--sr-c-navy);
 	position: absolute;
 	inset: auto 0 125%;
 	display: flex;
@@ -85,20 +85,20 @@
 		inset: 0;
 		line-height: 0;
 		font-size: 4cqmax;
-		color: var(--cq-c-green);
+		color: var(--sr-c-green);
 		animation: score-pop 1s ease-out forwards;
 		&.is-negative {
-			color: var(--cq-c-red);
+			color: var(--sr-c-red);
 		}
 	}
 }
 
-.cq-character-crash {
+.sr-character-crash {
 	position: absolute;
 	inset: 0;
 	border-radius: 50%;
-	transform: scale(var(--cq-difficulty-crash, 1))
-		translateY(var(--cq-y-shift));
+	transform: scale(var(--sr-difficulty-crash, 1))
+		translateY(var(--sr-y-shift));
 }
 
 @keyframes score-pop {

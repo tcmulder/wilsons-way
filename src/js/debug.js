@@ -82,9 +82,9 @@ const enableDebugOptions = () => {
 	}
 	if (getParam('crash')) {
 		state.difficultyCrash = parseFloat(getParam('crash')) / 100;
-		state.elCharacter.querySelector('.cq-character-crash').style.outline =
+		state.elCharacter.querySelector('.sr-character-crash').style.outline =
 			'3px dashed red';
-		state.elCharacter.querySelector('.cq-character-crash').style.outlineOffset =
+		state.elCharacter.querySelector('.sr-character-crash').style.outlineOffset =
 			'-1px';
 	}
 	if (getParam('milestone')) {
@@ -106,7 +106,7 @@ const showDebugOptions = () => {
 	 * Create a wrapper
 	 */
 	const wrap = document.createElement('div');
-	wrap.className = 'cq-debug-form-wrap';
+	wrap.className = 'sr-debug-form-wrap';
 
 	/**
 	 * Add an activation toggle
@@ -124,7 +124,7 @@ const showDebugOptions = () => {
 	 * Create the form itself
 	 */
 	const form = document.createElement('form');
-	form.className = 'cq-debug-form';
+	form.className = 'sr-debug-form';
 	wrap.prepend(form);
 
 	/**

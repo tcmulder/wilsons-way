@@ -78,7 +78,7 @@ export const loadSvgLevel = async (elSVG) => {
 			'svg',
 		);
 		newSVG.setAttribute('viewBox', elSVG.getAttribute('viewBox'));
-		newSVG.setAttribute('class', 'cq-parallax-layer');
+		newSVG.setAttribute('class', 'sr-parallax-layer');
 		newSVG.dataset.parallax = elParallax.dataset.parallax;
 		// Clone the parallax element and append to the new SVG
 		const clonedElement = elParallax.cloneNode(true);

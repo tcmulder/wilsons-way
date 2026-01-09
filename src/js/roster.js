@@ -12,7 +12,7 @@ export const setRoster = () => {
 		const jerseyNumber = parseInt(elRosterButton.dataset.character);
 		const svg = await loadCharacter(
 			jerseyNumber,
-			elRosterButton.querySelector('.cq-roster-svg'),
+			elRosterButton.querySelector('.sr-roster-svg'),
 		);
 		convertClassToData(svg);
 		const nameElement = svg.querySelector('[data-name]');

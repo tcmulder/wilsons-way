@@ -2,7 +2,7 @@
  * Styles for the username/score submission form.
  */
 
-.cq-form {
+.sr-form {
 	margin: auto;
 	padding: 1cqmax;
 	max-width: 20cqmax;
@@ -25,7 +25,7 @@
 		background-size: contain;
 		text-align: center;
 		font-size: 5cqmax;
-		font-family: var(--cq-ff);
+		font-family: var(--sr-ff);
 		border-radius: 0;
 		box-shadow: none;
 		text-transform: uppercase;

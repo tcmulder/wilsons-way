@@ -3,13 +3,13 @@ import '../css/shortcode.css';
 /**
  * Show the game in the iframe on click of the shortcode's button
  */
-document.querySelectorAll('.cq-portal')?.forEach((wrap) => {
+document.querySelectorAll('.sr-portal')?.forEach((wrap) => {
 	wrap.addEventListener('click', function (e) {
 		if (e.target.tagName !== 'BUTTON') {
 			return;
 		}
 		wrap.classList.add('is-active');
-		const iframe = wrap.querySelector('.cq-portal-iframe');
+		const iframe = wrap.querySelector('.sr-portal-iframe');
 		iframe.src = iframe.dataset.src;
 	});
 });
@@ -17,17 +17,17 @@ document.querySelectorAll('.cq-portal')?.forEach((wrap) => {
 /**
  * Show the game in a lightbox on click of any triggering link
  *
- * Simply link to #campos-quest to open this lightbox. Note that if there
+ * Simply link to #shelf-runner to open this lightbox. Note that if there
  * are multiple light boxes, this will always imply show the first one.
  */
-const cqLightbox = document.querySelector('.cq-portal-lightbox');
-if (cqLightbox) {
-	const links = document.querySelectorAll('a[href="#campos-quest"]');
-	const iframe = cqLightbox.querySelector('.cq-portal-iframe');
+const srLightbox = document.querySelector('.sr-portal-lightbox');
+if (srLightbox) {
+	const links = document.querySelectorAll('a[href="#shelf-runner"]');
+	const iframe = srLightbox.querySelector('.sr-portal-iframe');
 	links.forEach((link) => {
 		link.addEventListener('click', function (event) {
 			event.preventDefault();
-			cqLightbox.showModal();
+			srLightbox.showModal();
 			iframe.src = iframe.dataset.src;
 
 			// Add load event listener with fallback timeout
@@ -39,12 +39,12 @@ if (cqLightbox) {
 				clearTimeout(loadTimeout);
 				iframe.classList.add('is-loaded');
 			});
-			document.body.classList.add('cq-lightbox-open');
+			document.body.classList.add('sr-lightbox-open');
 		});
 	});
 	// Re-enable scrolling when dialog closes
-	cqLightbox.addEventListener('close', function () {
+	srLightbox.addEventListener('close', function () {
 		iframe.src = '';
-		document.body.classList.remove('cq-lightbox-open');
+		document.body.classList.remove('sr-lightbox-open');
 	});
 }

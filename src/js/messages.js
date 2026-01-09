@@ -12,14 +12,14 @@ import { isWinner } from './utilities';
 const doType = (elMessage) => {
 	const { delayTyping } = state;
 	// Get the message to type
-	const elMessageType = elMessage.querySelector('.cq-message-type');
+	const elMessageType = elMessage.querySelector('.sr-message-type');
 
 	// Bail if we've nothing to type in
 	if (!elMessageType) {
 		return;
 	}
 	// Get the scroll container (so we can scroll down for long messages)
-	const elMessageScroller = elMessage.querySelector('.cq-message-scroller');
+	const elMessageScroller = elMessage.querySelector('.sr-message-scroller');
 
 	// Get ready to type
 	elMessageType.classList.add('is-typing');
@@ -98,7 +98,7 @@ const doType = (elMessage) => {
  * @param {number}      durationScroll The duration of the scroll animation in milliseconds
  */
 const doScroll = (elMessage, durationScroll = 10000) => {
-	const elScroller = elMessage.querySelector('.cq-auto-scroller');
+	const elScroller = elMessage.querySelector('.sr-auto-scroller');
 	if (elScroller && !elScroller.classList.contains('is-scrolling')) {
 		elScroller.classList.add('is-scrolling');
 
@@ -174,7 +174,7 @@ const doScroll = (elMessage, durationScroll = 10000) => {
 									elScroller.scrollTop + elScroller.clientHeight >=
 									elScroller.scrollHeight - 10
 								) {
-									elMessage.querySelector('.cq-restart')?.click();
+									elMessage.querySelector('.sr-restart')?.click();
 								}
 							}, state.delayInactive);
 						}

@@ -2,7 +2,7 @@
  * Styles for the game's introductory screen.
  */
 
-.cq-game-intro {
+.sr-game-intro {
 	position: absolute;
 	z-index: 200;
 	inset: 0;
@@ -11,21 +11,21 @@
 	align-items: center;
 	justify-content: center;
 	padding: 5cqmax;
-	background-color: var(--cq-c-blue);
+	background-color: var(--sr-c-blue);
 	background-image: url("../img/intro-bg.svg");
 	background-size: 100%;
-	color: var(--cq-c-white);
+	color: var(--sr-c-white);
 
 	&:not(.is-active) {
 		display: none;
 	}
 
-	.cq-logo {
+	.sr-logo {
 		height: 12cqmax; 
 	}
 }
 
-.cq-game-intro-controls {
+.sr-game-intro-controls {
 	cursor: pointer;
 	display: flex;
 	align-items: flex-end;
@@ -33,7 +33,7 @@
 	gap: 3cqmax;
 }
 
-.cq-game-intro-clouds {
+.sr-game-intro-clouds {
 	--cloud-speed: 12s;
 	position: absolute;
 	z-index: 0;
@@ -75,6 +75,6 @@
 }
 
 /* Color the entire background the same color as our intro message */
-body:has(.cq-game-intro.is-active) {
-	background-color: var(--cq-c-dark-bue);
+body:has(.sr-game-intro.is-active) {
+	background-color: var(--sr-c-dark-bue);
 }

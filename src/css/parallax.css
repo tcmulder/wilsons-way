@@ -1,7 +1,7 @@
 /**
  * Parallax layers
  */
-.cq-parallax-container {
+.sr-parallax-container {
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -11,7 +11,7 @@
 	pointer-events: none; /* Allow clicks to pass through to elements below */
 }
 
-.cq-parallax-layer {
+.sr-parallax-layer {
 	position: absolute;
 	top: 0;
 	left: 0;
