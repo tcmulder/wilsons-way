@@ -1,8 +1,8 @@
 <?php
 // Get crash difficulty percentage from settings
-$difficulty_crash = (int) get_option( 'campos_quest_settings_size' );
+$difficulty_crash = (int) get_option( 'shelf_runner_settings_size' );
 $difficulty_crash = $difficulty_crash ? ( $difficulty_crash / 100 ) : 1;
-$difficulty_speed = (int) get_option( 'campos_quest_settings_speed' );
+$difficulty_speed = (int) get_option( 'shelf_runner_settings_speed' );
 $manifest_url = SHELF_RUNNER_PLUGIN_URI . 'dist/manifest.json';
 
 // Get manifest values
@@ -36,9 +36,9 @@ $manifest = ! is_wp_error( $manifest_response ) ? json_decode( wp_remote_retriev
             'settings'      => array(
                 'difficultyCrash' => $difficulty_crash,
                 'difficultySpeed' => $difficulty_speed,
-                'sfx'             => get_option( 'campos_quest_settings_sfx' ) === "1",
-                'debug'           => get_option( 'campos_quest_settings_debug' ) === "1",
-                'delayMilestone'  => ( (int) get_option( 'campos_quest_settings_milestone_duration' ) ) * 1000,
+                'sfx'             => get_option( 'shelf_runner_settings_sfx' ) === "1",
+                'debug'           => get_option( 'shelf_runner_settings_debug' ) === "1",
+                'delayMilestone'  => ( (int) get_option( 'shelf_runner_settings_milestone_duration' ) ) * 1000,
             ),
             'url'               => esc_url( str_replace('http:', 'https:', plugins_url( '/shelf-runner/dist/' ) ) ), // otherwise vite+safari forces http
             'api'               => esc_url_raw( rest_url() ),
@@ -49,7 +49,7 @@ $manifest = ! is_wp_error( $manifest_response ) ? json_decode( wp_remote_retriev
                     'user' => esc_html( $score['user'] ),
                     'score' => (int) $score['score']
                 ];
-            }, get_option( 'campos_quest_settings_leaderboard' ) ?: [] ),
+            }, get_option( 'shelf_runner_settings_leaderboard' ) ?: [] ),
         ) )
     );
 ?>

@@ -3,7 +3,7 @@
  * First screen of the game.
  */
 
-$allow_sfx = '1' === get_option( 'campos_quest_settings_sfx' );
+$allow_sfx = '1' === get_option( 'shelf_runner_settings_sfx' );
 ?>
 
 <div class="sr-game-intro" data-message="intro">

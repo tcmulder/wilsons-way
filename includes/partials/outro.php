@@ -10,7 +10,7 @@
         <h1 class="sr-logo"><?php _e( 'Shelf Runner', 'shelf-runner' ); ?></h1>
 
         <div class="sr-game-outro-content">
-            <?php echo cq_wp_kses( apply_filters( 'the_content', get_option( 'campos_quest_settings_outro' ) ) ); ?>
+            <?php echo cq_wp_kses( apply_filters( 'the_content', get_option( 'shelf_runner_settings_outro' ) ) ); ?>
         </div>
 
         <div class="sr-game-outro-footer">

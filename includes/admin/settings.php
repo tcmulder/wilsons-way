@@ -8,7 +8,7 @@
  */
 add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'shelf_runner_action_links' );
 function shelf_runner_action_links( $links ) {
-    $links[] = '<a href="'. get_admin_url(  ) .'admin.php?page=campos_quest">'.__( 'Settings', 'shelf-runner' ).'</a>';
+    $links[] = '<a href="'. get_admin_url(  ) .'admin.php?page=shelf_runner">'.__( 'Settings', 'shelf-runner' ).'</a>';
     return $links;
 }
 
@@ -21,7 +21,7 @@ function shelf_runner_add_admin_menu(  ) {
         __( 'Shelf Runner', 'shelf-runner' ),
         __( 'Shelf Runner', 'shelf-runner' ),
         'manage_options',
-        'campos_quest',
+        'shelf_runner',
         'shelf_runner_options_page',
         'dashicons-games',
         50
@@ -34,8 +34,8 @@ function shelf_runner_add_admin_menu(  ) {
 function shelf_runner_options_page(  ) {
     echo '<form action="options.php" method="post">';
         printf( '<h1>%s</h1>', __( 'Shelf Runner', 'shelf-runner' ));
-        settings_fields( 'campos_quest_settings' );
-        do_settings_sections( 'campos_quest_settings' );
+        settings_fields( 'shelf_runner_settings' );
+        do_settings_sections( 'shelf_runner_settings' );
         submit_button();
     echo '</form>';
 }
@@ -43,7 +43,7 @@ function shelf_runner_options_page(  ) {
 /**
  * Facilitate accordions
  */
-function campos_quest_accordion( $content, $summary = '' ) {
+function shelf_runner_accordion( $content, $summary = '' ) {
     $summary = $summary ? $summary : __( 'Edit Messaging', 'shelf-runner' );
     echo sprintf( '<details><summary>%s</summary>%s</details>', $summary, $content);
 }
@@ -66,7 +66,7 @@ function shelf_runner_settings_init(  ) {
     );
 
     // Mode
-    $mode = get_option( 'campos_quest_settings_game_mode', 'client' );
+    $mode = get_option( 'shelf_runner_settings_game_mode', 'client' );
     
 
     /**
@@ -84,33 +84,33 @@ function shelf_runner_settings_init(  ) {
                 __( 'Add the following shortcode to play the game in a lightbox, creating a hyperlink to #shelf-runner to open the lightbox', 'shelf-runner' )
             );
         },
-        'campos_quest_settings'
+        'shelf_runner_settings'
     );
 
     /**
      * Game Mode
      */
-    add_option( 'campos_quest_settings_game_mode', 'client' );
-    register_setting( 'campos_quest_settings', 'campos_quest_settings_game_mode' );
+    add_option( 'shelf_runner_settings_game_mode', 'client' );
+    register_setting( 'shelf_runner_settings', 'shelf_runner_settings_game_mode' );
     add_settings_field(
-        'campos_quest_settings_game_mode',
+        'shelf_runner_settings_game_mode',
         __( 'Game Mode:', 'shelf-runner' ),
         function() {
-            $game_mode = get_option( 'campos_quest_settings_game_mode', 'client' );
+            $game_mode = get_option( 'shelf_runner_settings_game_mode', 'client' );
             $client_html = sprintf(
-                '<p><label><input type="radio" name="campos_quest_settings_game_mode" value="client" %s /> %s</label></p>',
+                '<p><label><input type="radio" name="shelf_runner_settings_game_mode" value="client" %s /> %s</label></p>',
                 checked( $game_mode, 'client', false ),
                 __( 'Connect to a game hosted on a different server.', 'shelf-runner' )
             );
             $host_html = sprintf(
-                '<p><label><input type="radio" name="campos_quest_settings_game_mode" value="host" %s /> %s</label></p>',
+                '<p><label><input type="radio" name="shelf_runner_settings_game_mode" value="host" %s /> %s</label></p>',
                 checked( $game_mode, 'host', false ),
                 __( 'Host the game on this server.', 'shelf-runner' )
             );
             $disclaimer_html = sprintf( '<p><em>%s</em></p>', __( 'Note: you must save changes after making a new selection above for the relevant settings to appear.' , 'shelf-runner' ) );
             printf( '<fieldset>%s%s%s</fieldset>', $client_html, $host_html, $disclaimer_html );
         },
-        'campos_quest_settings',
+        'shelf_runner_settings',
         'cq_section'
     );
 
@@ -122,45 +122,45 @@ function shelf_runner_settings_init(  ) {
         /**
          * Iframe URL
          */
-        add_option( 'campos_quest_settings_iframe_url', '' );
+        add_option( 'shelf_runner_settings_iframe_url', '' );
         register_setting( 
-            'campos_quest_settings', 
-            'campos_quest_settings_iframe_url',
+            'shelf_runner_settings', 
+            'shelf_runner_settings_iframe_url',
             array(
                 'sanitize_callback' => 'esc_url_raw'
             )
         );
         add_settings_field(
-            'campos_quest_settings_iframe_url',
+            'shelf_runner_settings_iframe_url',
             __( 'Iframe URL:', 'shelf-runner' ),
             function() {
                 printf(
-                    '<input name="campos_quest_settings_iframe_url" type="url" value="%s" class="regular-text" placeholder="https://" /><p><em>%s</em></p>',
-                    esc_url( get_option( 'campos_quest_settings_iframe_url', '' ) ),
+                    '<input name="shelf_runner_settings_iframe_url" type="url" value="%s" class="regular-text" placeholder="https://" /><p><em>%s</em></p>',
+                    esc_url( get_option( 'shelf_runner_settings_iframe_url', '' ) ),
                     __( 'Enter the game\'s URL.', 'shelf-runner' )
                 );
             },
-            'campos_quest_settings',
+            'shelf_runner_settings',
             'cq_section'
         );
 
         /**
          * Exit Game button text
          */
-        add_option( 'campos_quest_settings_exit_game_text', __( '← Exit Game', 'shelf-runner' ) );
-        register_setting( 'campos_quest_settings', 'campos_quest_settings_exit_game_text' );
+        add_option( 'shelf_runner_settings_exit_game_text', __( '← Exit Game', 'shelf-runner' ) );
+        register_setting( 'shelf_runner_settings', 'shelf_runner_settings_exit_game_text' );
         add_settings_field(
-            'campos_quest_settings_exit_game_text',
+            'shelf_runner_settings_exit_game_text',
             __( 'Exit Game Link:', 'shelf-runner' ),
             function() {
                 printf(
-                    '<input name="campos_quest_settings_exit_game_text" type="text" value="%s" class="regular-text" placeholder="%s" /><p><em>%s</em></p>',
-                    esc_attr( get_option( 'campos_quest_settings_exit_game_text', __( '← Exit Game', 'shelf-runner' ) ) ),
+                    '<input name="shelf_runner_settings_exit_game_text" type="text" value="%s" class="regular-text" placeholder="%s" /><p><em>%s</em></p>',
+                    esc_attr( get_option( 'shelf_runner_settings_exit_game_text', __( '← Exit Game', 'shelf-runner' ) ) ),
                     __( 'Button hidden (add text to reveal it)', 'shelf-runner' ),
                     __( 'Note: to hide the button, leave this field blank.', 'shelf-runner' )
                 );
             },
-            'campos_quest_settings',
+            'shelf_runner_settings',
             'cq_section'
         );
 
@@ -174,41 +174,41 @@ function shelf_runner_settings_init(  ) {
          * Level messages
          */
         for ( $i = 1; $i <= SHELF_RUNNER_LEVELS; $i++ ) {
-            add_option( "campos_quest_settings_level_{$i}_intro", __( "Level {$i} Intro", 'shelf-runner' ) );
-            register_setting( 'campos_quest_settings', "campos_quest_settings_level_{$i}_intro" );
+            add_option( "shelf_runner_settings_level_{$i}_intro", __( "Level {$i} Intro", 'shelf-runner' ) );
+            register_setting( 'shelf_runner_settings', "shelf_runner_settings_level_{$i}_intro" );
             if ( $i < SHELF_RUNNER_LEVELS ) {
-                add_option( "campos_quest_settings_level_{$i}_outro", __( "Level {$i} Outro", 'shelf-runner' ) );
-                register_setting( 'campos_quest_settings', "campos_quest_settings_level_{$i}_outro" );
+                add_option( "shelf_runner_settings_level_{$i}_outro", __( "Level {$i} Outro", 'shelf-runner' ) );
+                register_setting( 'shelf_runner_settings', "shelf_runner_settings_level_{$i}_outro" );
             }
             add_settings_field(
-                "campos_quest_settings_level_{$i}_intro",
+                "shelf_runner_settings_level_{$i}_intro",
                 __( "Level {$i} Messages:", 'shelf-runner' ),
                 function() use ( $i, $wysiwyg_settings ) {
                     ob_start();
                     printf( '<h2>%s</h2>', __( "Level {$i} Intro Message:", 'shelf-runner' ) );
                     wp_editor(
-                        get_option("campos_quest_settings_level_{$i}_intro"),
-                        "campos_quest_level_{$i}_intro",
+                        get_option("shelf_runner_settings_level_{$i}_intro"),
+                        "shelf_runner_level_{$i}_intro",
                         array(
                             ...$wysiwyg_settings,
-                            'textarea_name' => "campos_quest_settings_level_{$i}_intro",
+                            'textarea_name' => "shelf_runner_settings_level_{$i}_intro",
                         )
                     );
                     if ( $i < SHELF_RUNNER_LEVELS ) {
                         printf( '<h2>%s</h2>', __( "Level {$i} Outro Message:", 'shelf-runner' ) );
                         wp_editor(
-                            get_option("campos_quest_settings_level_{$i}_outro"),
-                            "campos_quest_level_{$i}_outro",
+                            get_option("shelf_runner_settings_level_{$i}_outro"),
+                            "shelf_runner_level_{$i}_outro",
                             array(
                                 ...$wysiwyg_settings,
-                                'textarea_name' => "campos_quest_settings_level_{$i}_outro",
+                                'textarea_name' => "shelf_runner_settings_level_{$i}_outro",
                             )
                         );
                     }
                     $field = ob_get_clean();
-                    campos_quest_accordion( $field );
+                    shelf_runner_accordion( $field );
                 },
-                'campos_quest_settings',
+                'shelf_runner_settings',
                 'cq_section'
             );
         }
@@ -216,75 +216,75 @@ function shelf_runner_settings_init(  ) {
         /**
          * Loser message
          */
-        add_option( 'campos_quest_settings_loser', __( "You're not a loser, you tried... you're a failure", 'shelf-runner' ));
-        register_setting( 'campos_quest_settings', "campos_quest_settings_loser" );
+        add_option( 'shelf_runner_settings_loser', __( "You're not a loser, you tried... you're a failure", 'shelf-runner' ));
+        register_setting( 'shelf_runner_settings', "shelf_runner_settings_loser" );
         add_settings_field(
-            'campos_quest_settings_loser',
+            'shelf_runner_settings_loser',
             __( 'Loser message:', 'shelf-runner' ),
             function() use ( $wysiwyg_settings ) {
                 ob_start();
                 wp_editor(
-                    get_option( 'campos_quest_settings_loser' ),
-                    'campos_quest_settings_loser',
+                    get_option( 'shelf_runner_settings_loser' ),
+                    'shelf_runner_settings_loser',
                     array(
                         ...$wysiwyg_settings,
-                        'textarea_name' => 'campos_quest_settings_loser',
+                        'textarea_name' => 'shelf_runner_settings_loser',
                     )
                 );
                 $field = ob_get_clean();
-                campos_quest_accordion( $field );
+                shelf_runner_accordion( $field );
             },
-            'campos_quest_settings',
+            'shelf_runner_settings',
             'cq_section'
         );
 
         /**
          * Winner message
          */
-        add_option( 'campos_quest_settings_winner', __( 'New high score!', 'shelf-runner' ));
-        register_setting( 'campos_quest_settings', "campos_quest_settings_winner" );
+        add_option( 'shelf_runner_settings_winner', __( 'New high score!', 'shelf-runner' ));
+        register_setting( 'shelf_runner_settings', "shelf_runner_settings_winner" );
         add_settings_field(
-            'campos_quest_settings_winner',
+            'shelf_runner_settings_winner',
             __( 'Winner message:', 'shelf-runner' ),
             function() use ( $wysiwyg_settings ) {
                 ob_start();
                 wp_editor(
-                    get_option( 'campos_quest_settings_winner' ),
-                    'campos_quest_settings_winner',
+                    get_option( 'shelf_runner_settings_winner' ),
+                    'shelf_runner_settings_winner',
                     array(
                         ...$wysiwyg_settings,
-                        'textarea_name' => 'campos_quest_settings_winner',
+                        'textarea_name' => 'shelf_runner_settings_winner',
                     )
                 );
                 $field = ob_get_clean();
-                campos_quest_accordion( $field );
+                shelf_runner_accordion( $field );
             },
-            'campos_quest_settings',
+            'shelf_runner_settings',
             'cq_section'
         );
 
         /**
          * End-game outro message (scrolling text)
          */
-        add_option( 'campos_quest_settings_outro', __( 'The end.', 'shelf-runner' ));
-        register_setting( 'campos_quest_settings', 'campos_quest_settings_outro' );
+        add_option( 'shelf_runner_settings_outro', __( 'The end.', 'shelf-runner' ));
+        register_setting( 'shelf_runner_settings', 'shelf_runner_settings_outro' );
         add_settings_field(
-            'campos_quest_settings_outro',
+            'shelf_runner_settings_outro',
             __( 'Final message:', 'shelf-runner' ),
             function() use ( $wysiwyg_settings ) {
                 ob_start();
                 wp_editor(
-                    get_option( 'campos_quest_settings_outro' ),
-                    'campos_quest_settings_outro',
+                    get_option( 'shelf_runner_settings_outro' ),
+                    'shelf_runner_settings_outro',
                     array(
                         ...$wysiwyg_settings,
-                        'textarea_name' => 'campos_quest_settings_outro',
+                        'textarea_name' => 'shelf_runner_settings_outro',
                     )
                 );
                 $field = ob_get_clean();
-                campos_quest_accordion( $field );
+                shelf_runner_accordion( $field );
             },
-            'campos_quest_settings',
+            'shelf_runner_settings',
             'cq_section'
         );
 
@@ -294,10 +294,10 @@ function shelf_runner_settings_init(  ) {
          * Allows you to override the 10 most recent users/scores (in case someone
          * cheats or enters something untoward as their username, for instance).
          */
-        add_option( 'campos_quest_settings_leaderboard', array());
+        add_option( 'shelf_runner_settings_leaderboard', array());
         register_setting( 
-            'campos_quest_settings', 
-            'campos_quest_settings_leaderboard',
+            'shelf_runner_settings', 
+            'shelf_runner_settings_leaderboard',
             array(
                 'sanitize_callback' => function( $leaderboard ) {
                     // filter out empty entries
@@ -319,7 +319,7 @@ function shelf_runner_settings_init(  ) {
             )
         );
         add_settings_field(
-            'campos_quest_settings_leaderboard',
+            'shelf_runner_settings_leaderboard',
             __( 'Leaderboard:', 'shelf-runner' ),
             function() {
                 $html = sprintf(
@@ -329,16 +329,16 @@ function shelf_runner_settings_init(  ) {
                     __( 'Maximum of 6 characters, use underscores instead of spaces.', 'shelf-runner' )
                 );
                 $top_player_max = 10;
-                $leaderboard = get_option( 'campos_quest_settings_leaderboard', array() );
+                $leaderboard = get_option( 'shelf_runner_settings_leaderboard', array() );
                 for ( $i = 0; $i < $top_player_max; $i++ ) {
                     $user = isset( $leaderboard[ $i ]['user'] ) ? $leaderboard[ $i ]['user'] : '';
                     $score = isset( $leaderboard[$i][ 'score'] ) ? $leaderboard[ $i ]['score'] : 0;
                     $html .= sprintf(
                         '<div style="margin-block:5px;">
-                            <label for="campos_quest_settings_leaderboard[%d]_user" style="display:inline-block;width:80px;">#%d %s:</label>
+                            <label for="shelf_runner_settings_leaderboard[%d]_user" style="display:inline-block;width:80px;">#%d %s:</label>
                             <input type="text" 
-                                id="campos_quest_settings_leaderboard[%d]_user"
-                                name="campos_quest_settings_leaderboard[%d][user]" 
+                                id="shelf_runner_settings_leaderboard[%d]_user"
+                                name="shelf_runner_settings_leaderboard[%d][user]" 
                                 value="%s" 
                                 placeholder="username"
                                 pattern="[^\s]{1,6}"
@@ -346,7 +346,7 @@ function shelf_runner_settings_init(  ) {
                                 style="width: 7em; margin-right: 0.5em;"
                             />
                             <input type="number" 
-                                name="campos_quest_settings_leaderboard[%d][score]" 
+                                name="shelf_runner_settings_leaderboard[%d][score]" 
                                 value="%d" 
                                 min="0" 
                                 step="1"
@@ -365,85 +365,85 @@ function shelf_runner_settings_init(  ) {
                 }
                 echo $html;
             },
-            'campos_quest_settings',
+            'shelf_runner_settings',
             'cq_section'
         );
 
         /**
          * Collision difficulty
          */
-        add_option( 'campos_quest_settings_size', 100);
-        register_setting( 'campos_quest_settings', 'campos_quest_settings_size' );
+        add_option( 'shelf_runner_settings_size', 100);
+        register_setting( 'shelf_runner_settings', 'shelf_runner_settings_size' );
         add_settings_field(
-            'campos_quest_settings_size',
+            'shelf_runner_settings_size',
             __( 'Collision difficulty:', 'shelf-runner' ),
             function(  ) {
                 printf(
-                    '<input name="campos_quest_settings_size" value="%s" type="number" step="1" min="1" max="200" required /><p><em>%s</em></p>',
-                    get_option( 'campos_quest_settings_size' ),
+                    '<input name="shelf_runner_settings_size" value="%s" type="number" step="1" min="1" max="200" required /><p><em>%s</em></p>',
+                    get_option( 'shelf_runner_settings_size' ),
                     __( '100% is average. Lower values will make the game easier. (Note that the game was originally calibrated for 60% for jump clearances, etc.)', 'shelf-runner' )
                 );
             },
-            'campos_quest_settings',
+            'shelf_runner_settings',
             'cq_section'
         );
 
         /**
          * Speed difficulty
          */
-        add_option( 'campos_quest_settings_speed', 100);
-        register_setting( 'campos_quest_settings', 'campos_quest_settings_speed' );
+        add_option( 'shelf_runner_settings_speed', 100);
+        register_setting( 'shelf_runner_settings', 'shelf_runner_settings_speed' );
         add_settings_field(
-            'campos_quest_settings_speed',
+            'shelf_runner_settings_speed',
             __( 'Speed difficulty:', 'shelf-runner' ),
             function(  ) {
                 printf(
-                    '<input name="campos_quest_settings_speed" value="%s" type="number" step="1" min="1" max="200" required /><p><em>%s</em></p>',
-                    get_option( 'campos_quest_settings_speed' ),
+                    '<input name="shelf_runner_settings_speed" value="%s" type="number" step="1" min="1" max="200" required /><p><em>%s</em></p>',
+                    get_option( 'shelf_runner_settings_speed' ),
                     __( '100% is average. Lower values will make the game easier. (Note that the game was originally calibrated for 90% for jump trajectories, etc.)', 'shelf-runner' )
                 );
             },
-            'campos_quest_settings',
+            'shelf_runner_settings',
             'cq_section'
         );
 
         /**
          * Milestone duration
          */
-        add_option( 'campos_quest_settings_milestone_duration', 3 );
-        register_setting( 'campos_quest_settings', 'campos_quest_settings_milestone_duration' );
+        add_option( 'shelf_runner_settings_milestone_duration', 3 );
+        register_setting( 'shelf_runner_settings', 'shelf_runner_settings_milestone_duration' );
         add_settings_field(
-            'campos_quest_settings_milestone_duration',
+            'shelf_runner_settings_milestone_duration',
             __( 'Milestone duration:', 'shelf-runner' ),
             function(  ) {
                 printf(
-                    '<input name="campos_quest_settings_milestone_duration" value="%s" type="number" step="1" min="1" max="200" required /><p><em>%s</em></p>',
-                    get_option( 'campos_quest_settings_milestone_duration' ),
+                    '<input name="shelf_runner_settings_milestone_duration" value="%s" type="number" step="1" min="1" max="200" required /><p><em>%s</em></p>',
+                    get_option( 'shelf_runner_settings_milestone_duration' ),
                     __( 'In seconds', 'shelf-runner' )
                 );
             },
-            'campos_quest_settings',
+            'shelf_runner_settings',
             'cq_section'
         );
 
         /**
          * Enable/disable sound effects
          */
-        add_option( 'campos_quest_settings_sfx', true );
-        register_setting( 'campos_quest_settings', 'campos_quest_settings_sfx' );
+        add_option( 'shelf_runner_settings_sfx', true );
+        register_setting( 'shelf_runner_settings', 'shelf_runner_settings_sfx' );
         add_settings_field(
-            'campos_quest_settings_sfx',
+            'shelf_runner_settings_sfx',
             __( 'Sounds:', 'shelf-runner' ),
             function() {
-                $sfx_enabled = get_option( 'campos_quest_settings_sfx', true );
+                $sfx_enabled = get_option( 'shelf_runner_settings_sfx', true );
                 $html = sprintf(
-                    '<input type="checkbox" id="campos_quest_settings_sfx" name="campos_quest_settings_sfx" value="1" %s />',
+                    '<input type="checkbox" id="shelf_runner_settings_sfx" name="shelf_runner_settings_sfx" value="1" %s />',
                     checked( $sfx_enabled, true, false )
                 );
-                $html .= sprintf( '<label for="campos_quest_settings_sfx">%s</label>', __( 'Allow Music and Sound Effects', 'shelf-runner' ) );
+                $html .= sprintf( '<label for="shelf_runner_settings_sfx">%s</label>', __( 'Allow Music and Sound Effects', 'shelf-runner' ) );
                 echo $html;
             },
-            'campos_quest_settings',
+            'shelf_runner_settings',
             'cq_section'
         );
 
@@ -452,18 +452,18 @@ function shelf_runner_settings_init(  ) {
     /**
      * Enable/disable debug mode
      */
-    add_option( 'campos_quest_settings_debug', false );
-    register_setting( 'campos_quest_settings', 'campos_quest_settings_debug' );
+    add_option( 'shelf_runner_settings_debug', false );
+    register_setting( 'shelf_runner_settings', 'shelf_runner_settings_debug' );
     add_settings_field(
-        'campos_quest_settings_debug',
+        'shelf_runner_settings_debug',
         __( 'Debug Mode:', 'shelf-runner' ),
         function() {
-            $debug_enabled = get_option( 'campos_quest_settings_debug', false );
+            $debug_enabled = get_option( 'shelf_runner_settings_debug', false );
             $html = sprintf(
-                '<input type="checkbox" id="campos_quest_settings_debug" name="campos_quest_settings_debug" value="1" %s />',
+                '<input type="checkbox" id="shelf_runner_settings_debug" name="shelf_runner_settings_debug" value="1" %s />',
                 checked( $debug_enabled, true, false )
             );
-            $html .= sprintf( '<label for="campos_quest_settings_debug">%s</label>', __( 'Enable debug mode', 'shelf-runner' ) );
+            $html .= sprintf( '<label for="shelf_runner_settings_debug">%s</label>', __( 'Enable debug mode', 'shelf-runner' ) );
             
             if ( $debug_enabled ) {
 
@@ -496,7 +496,7 @@ function shelf_runner_settings_init(  ) {
             
             echo $html;
         },
-        'campos_quest_settings',
+        'shelf_runner_settings',
         'cq_section'
     );
 

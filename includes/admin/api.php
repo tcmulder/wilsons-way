@@ -21,7 +21,7 @@ add_action( 'rest_api_init', function () {
             );
 
             if (!$is_debug) {
-                $leaderboard = get_option( 'campos_quest_settings_leaderboard', array() );
+                $leaderboard = get_option( 'shelf_runner_settings_leaderboard', array() );
                 $leaderboard = ! empty( $leaderboard ) ? $leaderboard : array();
                 $leaderboard[] = array(
                     'user' => $user,
@@ -31,7 +31,7 @@ add_action( 'rest_api_init', function () {
                     return $b['score'] - $a['score'];
                 });
                 $leaderboard = array_slice( $leaderboard, 0, SHELF_RUNNER_LEADERBOARD_COUNT );
-                update_option( 'campos_quest_settings_leaderboard', $leaderboard );
+                update_option( 'shelf_runner_settings_leaderboard', $leaderboard );
             } else {
                 $data['debug'] = $is_debug;
             }
@@ -64,7 +64,7 @@ add_action( 'rest_api_init', function () {
     register_rest_route( 'shelf-runner/v1', '/leaderboard/', array(
         'methods' => 'GET',
         'callback' => function ( $request ) {
-            $leaderboard = get_option( 'campos_quest_settings_leaderboard', array() );
+            $leaderboard = get_option( 'shelf_runner_settings_leaderboard', array() );
             $leaderboard = array_map( function ( $item ) {
                 return array(
                     'user' => esc_html( $item['user'] ),

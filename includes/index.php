@@ -8,14 +8,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Determine client/host mode
-$mode = get_option( 'campos_quest_settings_game_mode', 'client' );
+$mode = get_option( 'shelf_runner_settings_game_mode', 'client' );
 
 // Simply show iframe if in client mode
 if ( 'client' === $mode ) {
-    $iframe_url = get_option( 'campos_quest_settings_iframe_url', '' );
+    $iframe_url = get_option( 'shelf_runner_settings_iframe_url', '' );
     if ( $iframe_url ) {
         $style = 'border:0;position:absolute;inset:0;width:100%;height:100%;';
-        $debug_enabled = get_option( 'campos_quest_settings_debug', false );
+        $debug_enabled = get_option( 'shelf_runner_settings_debug', false );
         if ( $debug_enabled ) {
             $iframe_url = add_query_arg( 'debug', '1', $iframe_url );
         }
