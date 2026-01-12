@@ -1,0 +1,21 @@
+/**
+ * Parallax layers
+ */
+.sr-parallax-container {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 1; /* Position between the board and other elements */
+	pointer-events: none; /* Allow clicks to pass through to elements below */
+}
+
+.sr-parallax-layer {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	will-change: transform; /* Optimize for animation performance */
+}

@@ -1,0 +1,104 @@
+/**
+ * Styles for the game's ending screen.
+ */
+
+.sr-game-outro {
+	position: absolute;
+	inset: 0;
+	z-index: 10;
+	background-color: var(--sr-c-blue);
+
+	.sr-logo {
+		width: 35cqmax;
+		margin-block: 15cqmax 20cqmax;
+	}
+
+	&:not(.is-active) {
+		display: none;
+	}
+
+	&::after {
+		pointer-events: none;
+		content: "";
+		position: absolute;
+		inset: 0;
+		background-image: url("../img/clouds.svg");
+		background-size: cover;
+		transition: transform 20s ease-out;
+		transform: none;
+
+		@starting-style {
+			transform: translateY(10%);
+		}
+	}
+}
+
+.sr-game-outro-frame {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: flex-start;
+}
+
+.sr-game-outro-content {
+	padding-inline: 22cqmax;
+	text-align: center;
+	font-size: 2.5cqmax;
+	color: var(--sr-c-white);
+
+	/* Eyebrow */
+	p:has(> em:only-child) {
+		margin-block: 3cqmax 0;	
+	}
+
+	em:only-child {
+		font-size: 3.5cqmax;
+		font-style: normal;
+		text-transform: uppercase;
+	}
+
+	/* "Heading 2" */
+	strong:only-child {
+		font-size: 5.5cqmax;
+		font-weight: 400;
+		color: var(--sr-c-yellow);
+	}
+
+}
+
+.sr-game-outro-footer {
+	position: relative;
+	z-index: 1;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: flex-end;
+	width: 100%;
+	aspect-ratio: 1440 / 810;
+	padding-bottom: 8cqmax;
+	background-image: url("../img/fin.svg");
+	background-size: contain;
+	background-position: center bottom;
+	background-repeat: no-repeat;
+	/* Fudge down to avoid sub-pixel line */
+	transform: translateY(0.2cqmax);
+	
+	p {
+		margin-bottom: 3cqmax;
+		font-size: 5cqmax;
+		text-transform: uppercase;
+		color: var(--sr-c-white);
+	}
+}
+
+/* Note this is only used for this message but could be used in others */
+.sr-auto-scroller {
+	max-height: 100%;
+	overflow-y: auto;
+	overscroll-behavior-y: none;
+}
+
+/* Color the entire background the same color as our intro message */
+body:has(.sr-game-outro.is-active) {
+	background-color: var(--sr-c-dark-bue);
+}

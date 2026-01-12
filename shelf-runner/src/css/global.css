@@ -1,0 +1,63 @@
+/**
+ * Global styles and resets.
+ */
+
+@import "../fonts/google-fonts/web/fonts.css";
+
+:where(*, *::before, *::after) {
+	box-sizing: border-box;
+}
+
+body {
+	touch-action: manipulation;
+	overflow: clip;
+	height: 100%;
+	margin: 0;
+	background: var(--sr-c-black);
+}
+
+:is(h1, h2, h3, h4, h5, h6, strong) {
+	font-weight: 400;
+}
+
+.sr {
+	* {
+		font-family: var(--sr-ff);
+	}
+	a {
+		color: inherit;
+	}
+	a,
+	input,
+	label,
+	button {
+		-webkit-tap-highlight-color: transparent;
+	}
+	p {
+		margin-top: 0;
+	}
+	li:empty,
+	li:has(> span:empty:only-child) {
+		list-style-type: none;
+	}
+
+	@media (max-width: 480px) and (orientation: portrait) {
+		&::before {
+			content: "Please rotate your\A device for the best experience";
+			white-space: pre;
+			position: fixed;
+			inset: 0;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			padding: 2cqmax;
+			background-color: var(--sr-c-navy);
+			color: var(--sr-c-creme);
+			font-family: var(--sr-ff);
+			font-size: 5cqmax;
+			text-align: center;
+			z-index: 999;
+			writing-mode: vertical-rl;
+		}
+	}
+}

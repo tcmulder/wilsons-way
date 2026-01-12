@@ -1,0 +1,114 @@
+/**
+ * Styles for the game's leaderboard.
+ */
+.sr-leaderboard-wrap {
+	position: absolute;
+	z-index: 300;
+	inset: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding-bottom: 3cqmax;
+	background-image: url("../img/leaderboard.svg");
+	background-size: cover;
+
+	&:not(.is-active) {
+		display: none;
+	}
+}
+
+
+.sr-leaderboard-frame {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;	
+	width: 60%;
+	margin: 0 auto;
+	padding-inline: 2cqmax;
+	background-color: var(--sr-c-black);
+
+	&::before {
+		content: "";
+		position: absolute;
+		inset: auto 50% 99%;
+		aspect-ratio: 83 / 137;
+		width: 5cqmax;
+		background-image: url("../img/horse.svg");
+	}
+
+	h2 {
+		display: flex;
+		align-items: center;
+		margin: 0;
+		padding: 1cqmax 4cqmax;
+		background-image: url("../img/logo.svg");
+		background-size: 60% auto;
+		background-repeat: no-repeat;
+		background-position: center;
+		font-size: 8cqmax;
+		white-space: nowrap;
+		color: transparent;
+
+		&::before,
+		&::after {
+			content: "";
+			display: block;
+			transform: translateY(5%);
+			width: 6cqmax;
+			height: 6cqmax;
+			background-image: url("../img/cup.svg");
+			background-size: contain;
+			background-repeat: no-repeat;
+		}
+	}
+
+	button {
+		margin-block: 1cqmax -2cqmax;
+	}
+}
+
+
+.sr-leaderboard {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 100%;
+
+	ol {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		grid-template-rows: repeat(5, auto);
+		grid-auto-flow: column;
+		width: 100%;
+		margin: 0;
+		padding: 0;
+	}
+
+	.sr-leaderboard-score {
+		list-style: none;
+		display: grid;
+		grid-template-columns: 1fr 1fr 1fr;
+		gap: 1cqmax;
+		padding: 0.5cqmax 1.5cqmax;
+		font-size: 3cqmax;
+		color: var(--sr-c-white);
+		outline: 2px solid currentColor;
+		outline-offset: -1px;
+
+		&:nth-child(-n+3) {
+			color: var(--sr-c-yellow);
+			z-index: 10;
+			position: relative;
+		}
+	}
+
+	span {
+		white-space: nowrap;
+		text-transform: uppercase;
+
+		&:last-child {
+			text-align: right;
+		}
+	}
+}

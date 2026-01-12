@@ -1,0 +1,116 @@
+/**
+ * Styles for the playable characters.
+ */
+
+.sr-character {
+	--sr-h-shelf: var(--sr-h-ground);
+	--sr-y: calc(-1 * var(--sr-h-shelf));
+	--sr-y-shift: 1cqw;
+	position: absolute;
+	left: 33cqw;
+	bottom: 0;
+	transform: translateY(var(--sr-freeze, var(--sr-y)));
+	transition: transform var(--sr-hangtime) ease-in;
+	will-change: transform;
+
+	&:focus {
+		outline: 0;
+	}
+
+	&[data-move="none"][data-jump="none"] {
+		transition-duration: 0s;
+	}
+
+	[data-state] {
+		opacity: 0;
+	}
+
+	&[data-move="none"][data-jump="none"] [data-state="move-none"] {
+		opacity: 1;
+	}
+
+	&[data-move="forward"][data-jump="none"] [data-state="move-forward"] {
+		opacity: 1;
+	}
+
+	&[data-move="backward"][data-jump="none"] [data-state="move-forward"] {
+		opacity: 1;
+	}
+
+	&[data-jump="up"] [data-state="jump-up"] {
+		opacity: 1;
+	}
+
+	&[data-jump="down"] [data-state="jump-down"] {
+		opacity: 1;
+	}
+
+	&[data-jump="up"] {
+		--sr-h-jump-with-shelf: min(
+			calc(var(--sr-h-shelf) + var(--sr-h-jump)),
+			calc(var(--sr-h-shelf-above, 99cqh))
+		);
+		transform: translateY(calc(-1 * var(--sr-h-jump-with-shelf)));
+		transition: transform var(--sr-hangtime) ease-out;
+	}
+
+	&[data-pause][data-pause="paused"] {
+		[data-state] {
+			opacity: 0;
+		}
+		[data-state="jump-down"] {
+			opacity: 1;
+		}
+	}
+
+	svg {
+		width: auto;
+		height: var(--sr-h-hero);
+		transform: translateY(var(--sr-y-shift));
+		[data-move="backward"] & {
+			transform: scaleX(-1);
+		}
+	}
+}
+
+.sr-character-score {
+	-webkit-text-stroke: 0.1cqmax var(--sr-c-navy);
+	position: absolute;
+	inset: auto 0 125%;
+	display: flex;
+	justify-content: center;
+
+	span {
+		position: absolute;
+		inset: 0;
+		line-height: 0;
+		font-size: 4cqmax;
+		color: var(--sr-c-green);
+		animation: score-pop 1s ease-out forwards;
+		&.is-negative {
+			color: var(--sr-c-red);
+		}
+	}
+}
+
+.sr-character-crash {
+	position: absolute;
+	inset: 0;
+	border-radius: 50%;
+	transform: scale(var(--sr-difficulty-crash, 1))
+		translateY(var(--sr-y-shift));
+}
+
+@keyframes score-pop {
+	0% {
+		opacity: 0;
+		transform: translateY(1cqmax) scale(0.5);
+	}
+	55% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0;
+		transform: translateY(-2cqmax) scale(1.05);
+	}
+}

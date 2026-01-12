@@ -1,19 +1,40 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import usePHP, { EPHPError } from 'vite-plugin-php';
 
-// https://vite.dev/config/
-export default defineConfig({
-  plugins: [react()],
-  build: {
-    outDir: 'dist',
-    assetsDir: 'assets',
-    // Ensure all assets are properly referenced
-    rollupOptions: {
+export default defineConfig(({ command }) => {
+	const config = {
+		plugins: [react()],
+		build: {
+			manifest: 'manifest.json',
+      outDir: 'dist',
+      assetsDir: 'assets',
+      input: {
+        main: './src/js/index.js',
+        shortcode: './src/js/shortcode.js',
+        svg: './src/svg/svg.js',
+      },
       output: {
+        entryFileNames: '[name][hash].js',
+        dir: './dist',
+        // Ensure all assets are properly referenced
         manualChunks: undefined,
       },
-    },
-  },
-  // Base path for static assets (use './' for relative paths)
-  base: './',
-})
+		},
+	};
+
+	if (command === 'serve') {
+		config.plugins.push(
+			usePHP({
+				dev: {
+					entry: ['index.php'],
+					errorLevels: [EPHPError.ERROR | EPHPError.WARNING],
+				},
+			}),
+		);
+	} else {
+		config.base = '/wp-content/plugins/shelf-runner/dist/';
+	}
+
+	return config;
+});

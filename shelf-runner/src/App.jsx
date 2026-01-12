@@ -1,6 +1,6 @@
 import { Routes, Route, Link } from 'react-router-dom';
-import IntroPage from './routes/IntroPage.jsx';
-import GameplayPage from './routes/GameplayPage';
+import IntroPage from './routes/IntroPage';
+import BoardPage from './routes/BoardPage';
 
 export default function App() {
   return (
@@ -11,7 +11,7 @@ export default function App() {
 
       <Routes>
         <Route path="/" element={<IntroPage />} />
-        <Route path="/gameplay" element={<GameplayPage />} />
+        <Route path="/gameplay" element={<BoardPage />} />
       </Routes>
     </>
   );

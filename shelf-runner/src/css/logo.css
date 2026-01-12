@@ -1,0 +1,16 @@
+/**
+ * Game logo.
+ */
+
+.sr-logo {
+	display: block;
+	max-width: 50%;
+	margin: 0 auto;
+	background-image: url("../img/logo-stack.svg");
+	background-size: contain;
+	background-position: center bottom;
+	background-repeat: no-repeat;
+	font-size: 10cqmax;
+	text-align: center;
+	color: transparent;
+}

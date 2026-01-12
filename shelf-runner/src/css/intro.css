@@ -1,0 +1,80 @@
+/**
+ * Styles for the game's introductory screen.
+ */
+
+.sr-game-intro {
+	position: absolute;
+	z-index: 200;
+	inset: 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 5cqmax;
+	background-color: var(--sr-c-blue);
+	background-image: url("../img/intro-bg.svg");
+	background-size: 100%;
+	color: var(--sr-c-white);
+
+	&:not(.is-active) {
+		display: none;
+	}
+
+	.sr-logo {
+		height: 12cqmax; 
+	}
+}
+
+.sr-game-intro-controls {
+	cursor: pointer;
+	display: flex;
+	align-items: flex-end;
+	justify-content: center;
+	gap: 3cqmax;
+}
+
+.sr-game-intro-clouds {
+	--cloud-speed: 12s;
+	position: absolute;
+	z-index: 0;
+	pointer-events: none;
+	inset: 0;
+
+	g {
+		will-change: transform;
+		animation-timing-function: ease-in-out;
+		&:nth-child(1) {
+			animation: cloud-drift calc(var(--cloud-speed) * 1.5) infinite;
+			animation-delay: 0s;
+		}
+		&:nth-child(2) {
+			animation: cloud-drift calc(var(--cloud-speed) * 1.2) infinite;
+			animation-delay: -0.7s;
+		}
+		&:nth-child(3) {
+			animation: cloud-drift calc(var(--cloud-speed) * 1.8) infinite;
+			animation-delay: -1.3s;
+		}
+		&:nth-child(4) {
+			animation: cloud-drift calc(var(--cloud-speed) * 1.3) infinite;
+			animation-delay: -2s;
+		}
+	}
+}
+
+@keyframes cloud-drift {
+	from {
+		transform: translateX(0);
+	}
+	50% {
+		transform: translateX(2cqmax);
+	}
+	to {
+		transform: translateX(0);
+	}
+}
+
+/* Color the entire background the same color as our intro message */
+body:has(.sr-game-intro.is-active) {
+	background-color: var(--sr-c-dark-bue);
+}

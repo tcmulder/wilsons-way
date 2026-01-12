@@ -10,6 +10,8 @@ $manifest_response = wp_remote_get( esc_url_raw( $manifest_url ) );
 $manifest = ! is_wp_error( $manifest_response ) ? json_decode( wp_remote_retrieve_body( $manifest_response ), true ) : array();
 ?>
 
+<iframe src="<?php echo esc_url( SHELF_RUNNER_PLUGIN_URI . 'shelf-runner/dist/index.html' ); ?>" style="border:0;width:100%;aspect-ratio:16/9;"></iframe>
+
 <div class="sr">
     <div class="sr-stage">
         <!-- Prevent SVG loading flash with fade-in animation -->
@@ -40,7 +42,7 @@ $manifest = ! is_wp_error( $manifest_response ) ? json_decode( wp_remote_retriev
                 'debug'           => get_option( 'shelf_runner_settings_debug' ) === "1",
                 'delayMilestone'  => ( (int) get_option( 'shelf_runner_settings_milestone_duration' ) ) * 1000,
             ),
-            'url'               => esc_url( str_replace('http:', 'https:', plugins_url( '/shelf-runner/dist/' ) ) ), // otherwise vite+safari forces http
+            'url'               => esc_url( str_replace('http:', 'https:', SHELF_RUNNER_PLUGIN_URI . 'dist/' ) ), // otherwise vite+safari forces http
             'api'               => esc_url_raw( rest_url() ),
             'nonce'             => wp_create_nonce( 'wp_rest' ),
             'manifest'          => $manifest,

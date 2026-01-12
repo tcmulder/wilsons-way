@@ -1,0 +1,135 @@
+.sr-button {
+	position: relative;
+	min-width: 4cqmax;
+	height: 4cqmax;
+	padding-inline: 1cqmax;
+	border: 0.2cqmax solid var(--sr-c-yellow);
+	background-color: var(--sr-c-navy);
+	color: var(--sr-c-creme);
+	font-size: 2cqmax;
+
+	svg {
+		position: absolute;
+		inset: 0;
+		width: 65%;
+		height: 65%;
+		margin: auto;
+		object-fit: contain;
+
+		& + svg {
+			display: none;
+		}
+	}
+
+	&.is-active {
+		svg:not(:only-child) {
+			display: none;
+			& + svg {
+				display: block;
+			}
+		}
+	}
+}
+.sr-button-yellow {
+	padding: 0.8cqmax 1cqmax;
+	border: 3px solid currentColor;
+	background-color: var(--sr-c-yellow);
+	color: var(--sr-c-black);
+	font-size: 2.8cqmax;
+	text-transform: uppercase;
+	border-radius: 0;
+
+	&:disabled {
+		cursor: not-allowed;
+		background-color: var(--sr-c-light-grey);
+	}
+		
+}
+.sr-button-hollow {
+	padding: 0.8cqmax 1cqmax;
+	border: 3px solid var(--sr-c-white);
+	background-color: color-mix(in srgb, transparent, var(--sr-c-white) 10%);
+	color: var(--sr-c-white);
+	font-size: 2.8cqmax;
+	text-transform: uppercase;
+	border-radius: 0;
+
+	&:disabled {
+		cursor: not-allowed;
+		background-color: var(--sr-c-light-grey);
+	}
+		
+}
+.sr-toggle {
+	position: relative;
+	font-size: 3.5cqmax;
+	text-transform: uppercase;
+
+	input {
+		appearance: none;
+		position: absolute;
+		opacity: 0;
+		display: none;
+	}
+
+	span {
+		display: grid;
+		grid-template-columns: 1fr 7cqmax 1fr;
+		align-items: flex-start;
+		gap: 1cqmax;
+		height: 6.5cqmax;
+
+		text-align: center;
+
+		&::before,
+		&::after {
+			align-self: flex-end;
+		}
+
+		&::before {
+			content: attr(data-checked);
+			text-align: right;
+		}
+		&::after {
+			content: attr(data-unchecked);
+		}
+	}
+
+	i {
+		--sr-c-toggle: var(--sr-c-yellow);
+		--sr-px-toggle: 0.4cqmax;
+		position: absolute;
+		inset: auto 5cqmax 0.5cqmax;
+		height: 2.2cqmax;
+		background-image: url("../img/toggle-bg.svg"),
+			linear-gradient(var(--sr-c-toggle), var(--sr-c-toggle));
+		background-size: 7cqmax, 85% 70%;
+		background-repeat: no-repeat;
+		background-position: center 90%, center;
+
+		&::before {
+			content: "";
+			position: absolute;
+			left: var(--sr-px-toggle);
+			height: 100%;
+			aspect-ratio: 1;
+			background-image: url("../img/toggle.svg");
+			background-size: 75% auto;
+			background-position: center;
+			background-repeat: no-repeat;
+		}
+	}
+
+	/* Checked/unchecked styling */
+	input:checked + span::before,
+	input:not(:checked) + span::after {
+		color: var(--sr-c-yellow);
+	}
+	input:not(:checked) ~ i {
+		--sr-c-toggle: var(--sr-c-black);
+	}
+	input:not(:checked) ~ i::before {
+		left: auto;
+		right: var(--sr-px-toggle);
+	}
+}
