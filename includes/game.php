@@ -10,7 +10,7 @@ $manifest_response = wp_remote_get( esc_url_raw( $manifest_url ) );
 $manifest = ! is_wp_error( $manifest_response ) ? json_decode( wp_remote_retrieve_body( $manifest_response ), true ) : array();
 ?>
 
-<iframe src="<?php echo esc_url( SHELF_RUNNER_PLUGIN_URI . 'shelf-runner/dist/index.html' ); ?>" style="border:0;width:100%;aspect-ratio:16/9;"></iframe>
+<iframe src="<?php echo esc_url( SHELF_RUNNER_PLUGIN_URI . 'shelf-runner/' ); ?>" style="border:0;width:100%;aspect-ratio:16/9;"></iframe>
 
 <div class="sr">
     <div class="sr-stage">

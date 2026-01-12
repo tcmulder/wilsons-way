@@ -7,19 +7,21 @@ export default defineConfig(({ command }) => {
 		plugins: [react()],
 		build: {
 			manifest: 'manifest.json',
-      outDir: 'dist',
-      assetsDir: 'assets',
-      input: {
-        main: './src/js/index.js',
-        shortcode: './src/js/shortcode.js',
-        svg: './src/svg/svg.js',
-      },
-      output: {
-        entryFileNames: '[name][hash].js',
-        dir: './dist',
-        // Ensure all assets are properly referenced
-        manualChunks: undefined,
-      },
+			outDir: 'dist',
+			assetsDir: 'assets',
+			rollupOptions: {
+				input: {
+					main: './src/main.jsx',
+					legacy: './src/js/index.js',
+					shortcode: './src/js/shortcode.js',
+					// svg: './src/svg/svg.js',
+				},
+				output: {
+					entryFileNames: '[name][hash].js',
+					// Ensure all assets are properly referenced
+					manualChunks: undefined,
+				},
+			},
 		},
 	};
 

@@ -22,7 +22,7 @@
       $difficulty_crash = (int) get_option( 'shelf_runner_settings_size' );
       $difficulty_crash = $difficulty_crash ? ( $difficulty_crash / 100 ) : 1;
       $difficulty_speed = (int) get_option( 'shelf_runner_settings_speed' );
-      $manifest_url = SHELF_RUNNER_PLUGIN_URI . 'dist/manifest.json';
+      $manifest_url = SHELF_RUNNER_PLUGIN_URI . 'shelf-runner/dist/manifest.json';
 
       // Get manifest values
       $manifest_response = wp_remote_get( esc_url_raw( $manifest_url ) );
@@ -35,6 +35,7 @@
             <style>.sr-stage { opacity: 1; transition: opacity 0.3s 0.15s; @starting-style { opacity: 0; } }</style>
             <div id="root"></div>
             <script type="module" src="/src/main.jsx"></script>
+            <script type="module" src="<?php echo SHELF_RUNNER_PLUGIN_URI . 'shelf-runner/dist/' . $manifest['src/main.jsx']['file']; ?>"></script>
         </div>
     </div>
 
