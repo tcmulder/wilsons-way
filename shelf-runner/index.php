@@ -29,15 +29,11 @@
       $manifest = ! is_wp_error( $manifest_response ) ? json_decode( wp_remote_retrieve_body( $manifest_response ), true ) : array();
     ?>
 
-    <div class="sr">
-        <div class="sr-stage">
-            <!-- Prevent SVG loading flash with fade-in animation -->
-            <style>.sr-stage { opacity: 1; transition: opacity 0.3s 0.15s; @starting-style { opacity: 0; } }</style>
-            <div id="root"></div>
-            <script type="module" src="/src/main.jsx"></script>
-            <script type="module" src="<?php echo SHELF_RUNNER_PLUGIN_URI . 'shelf-runner/dist/' . $manifest['src/main.jsx']['file']; ?>"></script>
-        </div>
-    </div>
+    <!-- Prevent SVG loading flash with fade-in animation -->
+    <style>.sr-stage{opacity:1;transition:opacity0.3s 0.15s;@starting-style{opacity:0;}}</style>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+    <script type="module" src="<?php echo SHELF_RUNNER_PLUGIN_URI . 'shelf-runner/dist/' . $manifest['src/main.jsx']['file']; ?>"></script>
 
     <?php
         // Provide JS access to various database values

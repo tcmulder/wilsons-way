@@ -4,19 +4,7 @@
 
 @import "./variables.css";
 @import "./global.css";
-@import "./interface.css";
 @import "./board.css";
 @import "./character.css";
 @import "./obstacles.css";
-@import "./milestones.css";
-@import "./messages.css";
-@import "./progress.css";
-@import "./roster.css";
-@import "./form.css";
-@import "./intro.css";
-@import "./outro.css";
-@import "./leaderboard.css";
-@import "./logo.css";
-@import "./controls.css";
-@import "./debug.css";
 @import "./parallax.css";
