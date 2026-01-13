@@ -25,7 +25,6 @@ const GameplayPage = () => {
 		const svgWidth = parseInt(svgElements[0].getAttribute('viewBox').split(' ')[2]) / 2;
 		const mod = (difficultySpeed / 100) / 100;
 		const gameplayDuration = mod * svgWidth;
-		console.log('🤞', mod, gameplayDuration, difficultySpeed);
 		
 		// Create a separate timeline for each SVG
 		const timelines = [];
