@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const SvgImage = ({ path }) => {
+const SvgImage = ({ path, onSvgLoad }) => {
 	const [svgAttributes, setSvgAttributes] = useState({});
 	const [svgInnerHTML, setSvgInnerHTML] = useState('');
 
@@ -18,27 +18,41 @@ const SvgImage = ({ path }) => {
 				const svgElement = svgDoc.querySelector('svg');
 				
 				if (svgElement) {
-					// Extract all attributes from the SVG element
-					const attributes = {};
-					Array.from(svgElement.attributes).forEach(attr => {
-						attributes[attr.name] = attr.value;
-					});
-					
-					// Get the inner HTML content
-					const innerHTML = svgElement.innerHTML;
-					
-					setSvgAttributes(attributes);
-					setSvgInnerHTML(innerHTML);
+					// If callback provided, call it with the parsed SVG element
+					if (onSvgLoad) {
+						// Import the SVG element into the current document
+						const importedSvg = document.importNode(svgElement, true);
+						onSvgLoad(importedSvg);
+					} else {
+						// Otherwise, extract attributes and innerHTML for rendering
+						const attributes = {};
+						Array.from(svgElement.attributes).forEach(attr => {
+							attributes[attr.name] = attr.value;
+						});
+						
+						// Get the inner HTML content
+						const innerHTML = svgElement.innerHTML;
+						
+						setSvgAttributes(attributes);
+						setSvgInnerHTML(innerHTML);
+					}
 				}
 			} catch (error) {
 				console.error(`Failed to load ${path} SVG:`, error);
-				setSvgAttributes({});
-				setSvgInnerHTML('');
+				if (!onSvgLoad) {
+					setSvgAttributes({});
+					setSvgInnerHTML('');
+				}
 			}
 		};
 
 		loadSvg();
-	}, [path]);
+	}, [path, onSvgLoad]);
+
+	// If onSvgLoad is provided, don't render (the callback handles it)
+	if (onSvgLoad) {
+		return null;
+	}
 
 	return (
 		<svg {...svgAttributes} dangerouslySetInnerHTML={{ __html: svgInnerHTML }} />
