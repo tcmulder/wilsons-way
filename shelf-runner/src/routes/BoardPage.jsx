@@ -1,17 +1,56 @@
-import { useRef } from 'react';
+import { useRef, useCallback } from 'react';
 import { useGameContext } from '../context/useGameContext';
 import { loadSvgLevel } from '../util/level';
 import SvgImage from '../components/SvgImage';
+import { gsap } from 'gsap';
+
 
 const GameplayPage = () => {
-	const { level } = useGameContext();
+	const { level, setTimelines, gameplayDuration } = useGameContext();
 	const boardRef = useRef(null);
 
-	const handleSvgLoad = async (svgElement) => {
+	const createAnimation = useCallback(() => {
+		if (!boardRef.current) return;
+		
+		// Kill all existing timelines
+		setTimelines(prevTimelines => {
+			prevTimelines.forEach(timeline => timeline.kill());
+			return [];
+		});
+		
+		// Find all direct descendant SVGs
+		const svgElements = boardRef.current.querySelectorAll(':scope > svg');
+		
+		// Create a separate timeline for each SVG
+		const timelines = [];
+		svgElements.forEach((svg) => {
+			const speed = -1 * (parseInt(svg.dataset.parallax) || 100);
+			const svgTimeline = gsap.timeline();
+			svgTimeline
+			.fromTo(
+				svg,
+				{ x: 0, xPercent: 0 },
+				{
+					xPercent: speed,
+					x: '100cqw',
+					ease: 'none',
+					duration: gameplayDuration,
+				},
+				0,
+			);
+			timelines.push(svgTimeline);
+		});
+		
+		// Store all timelines in context
+		setTimelines(timelines);
+	}, [setTimelines, gameplayDuration]);
+
+	const handleSvgLoad = useCallback(async (svgElement) => {
 		if (boardRef.current && svgElement) {
 			await loadSvgLevel(boardRef.current, svgElement);
+			createAnimation();
 		}
-	};
+	}, [createAnimation]);
 
 	return (
 		<div className="sr-board" ref={boardRef}>

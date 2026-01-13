@@ -11,6 +11,7 @@ export default function App() {
         <Link to="/">Home</Link>
         |
         <Link to="/gameplay">About</Link>
+        <button onClick={() => setLevel(level - 1)}>Previous Level</button>
         <button onClick={() => setLevel(level + 1)}>Next Level</button>
       </nav>
       <div className="sr">

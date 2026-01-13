@@ -33,7 +33,7 @@
     <style>.sr-stage{opacity:1;transition:opacity0.3s 0.15s;@starting-style{opacity:0;}}</style>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
-    <script type="module" src="<?php echo SHELF_RUNNER_PLUGIN_URI . 'shelf-runner/dist/' . $manifest['src/main.jsx']['file']; ?>"></script>
+    <!-- <script type="module" src="<?php echo SHELF_RUNNER_PLUGIN_URI . 'shelf-runner/dist/' . $manifest['src/main.jsx']['file']; ?>"></script> -->
 
     <?php
         // Provide JS access to various database values
