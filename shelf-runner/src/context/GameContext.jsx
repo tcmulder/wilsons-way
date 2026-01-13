@@ -1,24 +1,29 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { GameContext } from './gameContext';
 
 export function GameContextProvider({ children }) {
-  const [user, setUser] = useState(null);
-  const [theme, setTheme] = useState('light');
   const [level, setLevel] = useState(1);
   const [timelines, setTimelines] = useState([]);
-  const [gameplayDuration, setGameplayDuration] = useState(30);
+  const [settings, setSettings] = useState({});
+
+  useEffect(() => {
+    fetch(`${window.sr.api}shelf-runner/v1/settings`)
+      .then(response => response.json())
+      .then(d => {
+        setSettings(d.data);
+      })
+      .catch(error => {
+        console.error('Failed to fetch settings:', error);
+      });
+  }, []);
 
   const value = {
-    user,
-    setUser,
-    theme,
-    setTheme,
     level,
     setLevel,
     timelines,
     setTimelines,
-    gameplayDuration,
-    setGameplayDuration,
+    settings,
+    setSettings,
   };
 
   return <GameContext.Provider value={value}>{children}</GameContext.Provider>;

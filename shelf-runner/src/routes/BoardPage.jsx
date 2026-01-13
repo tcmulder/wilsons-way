@@ -6,7 +6,7 @@ import { gsap } from 'gsap';
 
 
 const GameplayPage = () => {
-	const { level, setTimelines, gameplayDuration } = useGameContext();
+	const { level, setTimelines, settings: { difficultySpeed } } = useGameContext();
 	const boardRef = useRef(null);
 
 	const createAnimation = useCallback(() => {
@@ -20,6 +20,12 @@ const GameplayPage = () => {
 		
 		// Find all direct descendant SVGs
 		const svgElements = boardRef.current.querySelectorAll(':scope > svg');
+
+		// Determine animation duration
+		const svgWidth = parseInt(svgElements[0].getAttribute('viewBox').split(' ')[2]) / 2;
+		const mod = (difficultySpeed / 100) / 100;
+		const gameplayDuration = mod * svgWidth;
+		console.log('🤞', mod, gameplayDuration, difficultySpeed);
 		
 		// Create a separate timeline for each SVG
 		const timelines = [];
@@ -43,7 +49,7 @@ const GameplayPage = () => {
 		
 		// Store all timelines in context
 		setTimelines(timelines);
-	}, [setTimelines, gameplayDuration]);
+	}, [setTimelines, difficultySpeed]);
 
 	const handleSvgLoad = useCallback(async (svgElement) => {
 		if (boardRef.current && svgElement) {

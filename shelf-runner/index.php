@@ -40,23 +40,23 @@
         printf(
             '<script type="text/javascript">/* <![CDATA[ */var sr = %s;/* ]]> */</script>',
             json_encode( array(
-                'settings'      => array(
-                    'difficultyCrash' => $difficulty_crash,
-                    'difficultySpeed' => $difficulty_speed,
-                    'sfx'             => get_option( 'shelf_runner_settings_sfx' ) === "1",
-                    'debug'           => get_option( 'shelf_runner_settings_debug' ) === "1",
-                    'delayMilestone'  => ( (int) get_option( 'shelf_runner_settings_milestone_duration' ) ) * 1000,
-                ),
+                // 'settings'      => array(
+                //     'difficultyCrash' => $difficulty_crash,
+                //     'difficultySpeed' => $difficulty_speed,
+                //     'sfx'             => get_option( 'shelf_runner_settings_sfx' ) === "1",
+                //     'debug'           => get_option( 'shelf_runner_settings_debug' ) === "1",
+                //     'delayMilestone'  => ( (int) get_option( 'shelf_runner_settings_milestone_duration' ) ) * 1000,
+                // ),
                 'url'               => esc_url( str_replace('http:', 'https:', SHELF_RUNNER_PLUGIN_DIST_URI ) ), // otherwise vite+safari forces http
                 'api'               => esc_url_raw( rest_url() ),
                 'nonce'             => wp_create_nonce( 'wp_rest' ),
-                'manifest'          => $manifest,
-                'scores' => array_map( function( $score ) {
-                    return [
-                        'user' => esc_html( $score['user'] ),
-                        'score' => (int) $score['score']
-                    ];
-                }, get_option( 'shelf_runner_settings_leaderboard' ) ?: [] ),
+                // 'manifest'          => $manifest,
+                // 'scores' => array_map( function( $score ) {
+                //     return [
+                //         'user' => esc_html( $score['user'] ),
+                //         'score' => (int) $score['score']
+                //     ];
+                // }, get_option( 'shelf_runner_settings_leaderboard' ) ?: [] ),
             ) )
         );
     ?>

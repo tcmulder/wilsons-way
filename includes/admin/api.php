@@ -76,3 +76,36 @@ add_action( 'rest_api_init', function () {
         'permission_callback' => '__return_true',
     ) );
 } );
+
+/**
+ * Create a rest endpoint for retrieving game settings
+ */
+add_action( 'rest_api_init', function () {
+    register_rest_route( 'shelf-runner/v1', '/settings/', array(
+        'methods' => 'GET',
+        'callback' => function ( $request ) {
+            // Get crash difficulty percentage from settings
+            $difficulty_crash = (int) get_option( 'shelf_runner_settings_size' );
+            $difficulty_crash = $difficulty_crash ? ( $difficulty_crash / 100 ) : 1;
+            $difficulty_speed = (int) get_option( 'shelf_runner_settings_speed' );
+            
+            // Build response data
+            $data = array(
+                'difficultyCrash' => $difficulty_crash,
+                'difficultySpeed' => $difficulty_speed,
+                'sfx'             => get_option( 'shelf_runner_settings_sfx' ) === "1",
+                'debug'           => get_option( 'shelf_runner_settings_debug' ) === "1",
+                'delayMilestone'  => ( (int) get_option( 'shelf_runner_settings_milestone_duration' ) ) * 1000,
+                'scores'          => array_map( function( $score ) {
+                    return array(
+                        'user' => esc_html( $score['user'] ),
+                        'score' => (int) $score['score']
+                    );
+                }, get_option( 'shelf_runner_settings_leaderboard' ) ?: array() ),
+            );
+            
+            return new WP_REST_Response( array( 'data' => $data, 'status' => 200 ) );
+        },
+        'permission_callback' => '__return_true',
+    ) );
+} );
