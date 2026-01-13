@@ -1,7 +1,7 @@
 import { useRef, useCallback } from 'react';
 import { useGameContext } from '../context/useGameContext';
 import { loadSvgLevel } from '../util/level';
-import SvgImage from '../components/SvgImage';
+import SVG from '../components/SVG';
 import { gsap } from 'gsap';
 
 
@@ -59,7 +59,7 @@ const GameplayPage = () => {
 
 	return (
 		<div className="sr-board" ref={boardRef}>
-			<SvgImage 
+			<SVG 
 				path={`../svg/level-${level}.svg?url`} 
 				onSvgLoad={handleSvgLoad}
 			/>

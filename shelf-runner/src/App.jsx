@@ -1,6 +1,6 @@
 import { Routes, Route, Link } from 'react-router-dom';
 import IntroPage from './routes/IntroPage';
-import BoardPage from './routes/BoardPage';
+import LevelPage from './routes/LevelPage';
 import { useGameContext } from './context/useGameContext';
 
 export default function App() {
@@ -18,7 +18,7 @@ export default function App() {
         <div className="sr-stage">
           <Routes>
             <Route path="/" element={<IntroPage />} />
-            <Route path="/gameplay" element={<BoardPage />} />
+            <Route path="/gameplay" element={<LevelPage />} />
           </Routes>
         </div> 
       </div>

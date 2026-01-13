@@ -87,7 +87,7 @@ add_action( 'rest_api_init', function () {
             // Get crash difficulty percentage from settings
             $difficulty_crash = (int) get_option( 'shelf_runner_settings_size' );
             $difficulty_crash = $difficulty_crash ? ( $difficulty_crash / 100 ) : 1;
-            $difficulty_speed = (int) get_option( 'shelf_runner_settings_speed' );
+            $difficulty_speed = 100 - (int) get_option( 'shelf_runner_settings_speed' );
             
             // Build response data
             $data = array(
