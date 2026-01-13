@@ -3,6 +3,7 @@ import { GameContext } from './gameContext';
 
 export function GameContextProvider({ children }) {
   const [level, setLevel] = useState(1);
+  const [character, setCharacter] = useState(1);
   const [timelines, setTimelines] = useState([]);
   const [settings, setSettings] = useState({});
 
@@ -18,12 +19,10 @@ export function GameContextProvider({ children }) {
   }, []);
 
   const value = {
-    level,
-    setLevel,
-    timelines,
-    setTimelines,
-    settings,
-    setSettings,
+    level, setLevel,
+    character, setCharacter,
+    timelines, setTimelines,
+    settings, setSettings,
   };
 
   return <GameContext.Provider value={value}>{children}</GameContext.Provider>;

@@ -4,7 +4,7 @@ import LevelPage from './routes/LevelPage';
 import { useGameContext } from './context/useGameContext';
 
 export default function App() {
-  const { level, setLevel } = useGameContext();
+  const { level, setLevel, character, setCharacter } = useGameContext();
   return (
     <>
       <nav>
@@ -13,6 +13,8 @@ export default function App() {
         <Link to="/gameplay">About</Link>
         <button onClick={() => setLevel(level - 1)}>Previous Level</button>
         <button onClick={() => setLevel(level + 1)}>Next Level</button>
+        <button onClick={() => setCharacter(character - 1)}>Previous Character</button>
+        <button onClick={() => setCharacter(character + 1)}>Next Character</button>
       </nav>
       <div className="sr">
         <div className="sr-stage">
