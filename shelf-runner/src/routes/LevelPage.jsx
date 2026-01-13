@@ -1,8 +1,12 @@
 import { useRef, useCallback } from 'react';
 import { useGameContext } from '../context/useGameContext';
 import { loadSvgLevel } from '../util/level';
-import SVG from '../components/SVG';
 import { gsap } from 'gsap';
+import SVG from '../components/SVG';
+import Character from '../components/Character';
+
+import '../css/board.css';
+import '../css/parallax.css';
 
 
 const GameplayPage = () => {
@@ -58,12 +62,15 @@ const GameplayPage = () => {
 	}, [createAnimation]);
 
 	return (
-		<div className="sr-board" ref={boardRef}>
-			<SVG 
-				path={`../svg/level-${level}.svg?url`} 
-				onSvgLoad={handleSvgLoad}
-			/>
-		</div>
+		<>
+			<div className="sr-board" ref={boardRef}>
+				<SVG 
+					path={`../svg/level-${level}.svg?url`} 
+					onSvgLoad={handleSvgLoad}
+				/>
+			</div>
+			<Character />
+		</>
 	);
 };
 
