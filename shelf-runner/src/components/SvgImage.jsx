@@ -1,29 +1,47 @@
 import { useState, useEffect } from 'react';
-import { useGameContext } from '../context/useGameContext';
 
-const SvgImage = () => {
-	const { level } = useGameContext();
-	const [svgContent, setSvgContent] = useState('');
+const SvgImage = ({ path }) => {
+	const [svgAttributes, setSvgAttributes] = useState({});
+	const [svgInnerHTML, setSvgInnerHTML] = useState('');
 
 	useEffect(() => {
 		const loadSvg = async () => {
 			try {
 				// Use dynamic import to get the SVG URL, then fetch its content
-				const svgModule = await import(`../svg/level-${level}.svg?url`);
+				const svgModule = await import(path);
 				const response = await fetch(svgModule.default);
 				const svgText = await response.text();
-				setSvgContent(svgText);
+				
+				// Parse the SVG string to extract attributes and inner content
+				const parser = new DOMParser();
+				const svgDoc = parser.parseFromString(svgText, 'image/svg+xml');
+				const svgElement = svgDoc.querySelector('svg');
+				
+				if (svgElement) {
+					// Extract all attributes from the SVG element
+					const attributes = {};
+					Array.from(svgElement.attributes).forEach(attr => {
+						attributes[attr.name] = attr.value;
+					});
+					
+					// Get the inner HTML content
+					const innerHTML = svgElement.innerHTML;
+					
+					setSvgAttributes(attributes);
+					setSvgInnerHTML(innerHTML);
+				}
 			} catch (error) {
-				console.error(`Failed to load level ${level} SVG:`, error);
-				setSvgContent('');
+				console.error(`Failed to load ${path} SVG:`, error);
+				setSvgAttributes({});
+				setSvgInnerHTML('');
 			}
 		};
 
 		loadSvg();
-	}, [level]);
+	}, [path]);
 
 	return (
-		<div style={{ display: 'contents' }} dangerouslySetInnerHTML={{ __html: svgContent }} />
+		<svg {...svgAttributes} dangerouslySetInnerHTML={{ __html: svgInnerHTML }} />
 	);
 };
 
