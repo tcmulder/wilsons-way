@@ -30,15 +30,15 @@ if ( 'client' === $mode ) {
 $path_css = '';
 $path_js = '';
 $path_svg = '';
-$url = SHELF_RUNNER_PLUGIN_URI . 'dist/manifest.json';
+$url = SHELF_RUNNER_PLUGIN_DIST_URI . 'manifest.json';
 $response = wp_remote_get( $url );
 if ( ! is_wp_error( $response ) && 200 === wp_remote_retrieve_response_code( $response ) ) {
     $manifest = json_decode( wp_remote_retrieve_body( $response ), true );
     if ( isset( $manifest['src/js/index.js']['css'][0] ) ) {
-        $path_css = SHELF_RUNNER_PLUGIN_URI . 'dist/' . $manifest['src/js/index.js']['css'][0];
+        $path_css = SHELF_RUNNER_PLUGIN_DIST_URI . $manifest['src/js/index.js']['css'][0];
     }
     if ( isset( $manifest['src/js/index.js']['file'] ) ) {
-        $path_js = SHELF_RUNNER_PLUGIN_URI . 'dist/' . $manifest['src/js/index.js']['file'];
+        $path_js = SHELF_RUNNER_PLUGIN_DIST_URI . $manifest['src/js/index.js']['file'];
     }
 }
 ?><!DOCTYPE html>
@@ -50,7 +50,7 @@ if ( ! is_wp_error( $response ) && 200 === wp_remote_retrieve_response_code( $re
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-title" content="<?php _e( 'Shelf Runner', 'shelf-runner' ); ?>">
-    <link rel="apple-touch-icon" href="<?php echo SHELF_RUNNER_PLUGIN_URI . 'dist/icon.png'; ?>">
+    <link rel="apple-touch-icon" href="<?php echo SHELF_RUNNER_PLUGIN_DIST_URI . 'icon.png'; ?>">
     <title><?php _e( 'Shelf Runner', 'shelf-runner' ); ?></title>
     <link rel="stylesheet" href="<?php echo $path_css; ?>">
 </head>

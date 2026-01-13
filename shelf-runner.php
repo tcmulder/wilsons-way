@@ -25,6 +25,7 @@ define( 'SHELF_RUNNER_BASENAME', plugin_basename( __FILE__ ) );
 define( 'SHELF_RUNNER_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'SHELF_RUNNER_PLUGIN_INC', SHELF_RUNNER_PLUGIN_DIR . 'includes/' );
 define( 'SHELF_RUNNER_PLUGIN_URI', plugin_dir_url( __FILE__ ) );
+define( 'SHELF_RUNNER_PLUGIN_DIST_URI', plugin_dir_url( __FILE__ ) . 'shelf-runner/dist/' );
 define( 'SHELF_RUNNER_LEVELS', 4 );
 define( 'SHELF_RUNNER_LEADERBOARD_COUNT', 10 );
 
