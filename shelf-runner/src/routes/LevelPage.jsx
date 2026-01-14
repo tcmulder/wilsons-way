@@ -1,6 +1,6 @@
 import { useRef, useCallback } from 'react';
 import { useGameContext } from '../context/useGameContext';
-import { loadSvgLevel } from '../util/level';
+import { loadLevel } from '../util/loadLevel';
 import { gsap } from 'gsap';
 import SVG from '../components/SVG';
 import Character from '../components/Character';
@@ -56,7 +56,7 @@ const GameplayPage = () => {
 
 	const handleSvgLoad = useCallback(async (svgElement) => {
 		if (boardRef.current && svgElement) {
-			await loadSvgLevel(boardRef.current, svgElement);
+			await loadLevel(boardRef.current, svgElement);
 			createAnimation();
 		}
 	}, [createAnimation]);

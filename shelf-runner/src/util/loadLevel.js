@@ -1,14 +1,11 @@
-import { convertClassToData } from './convertClassToData';
-
 /**
  * Load an SVG level file
  *
  * @param {string} elSVG SVG element
  * @return {Promise<SVGElement>} Promise that resolves to the loaded SVG element
  */
-export const loadSvgLevel = async (elBoard, elSVG) => {
+export const loadLevel = async (elBoard, elSVG) => {
 	elBoard.replaceChildren(elSVG);
-	convertClassToData(elSVG);
 
 	// Move any parallax layers to their own SVG graphics for better animation performance
 	const elParallaxes = Array.from(

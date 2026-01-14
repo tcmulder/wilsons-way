@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { convertClassToData } from '../util/convertClassToData';
 
 const SvgImage = ({ path, onSvgLoad }) => {
 	const [svgAttributes, setSvgAttributes] = useState({});
@@ -22,8 +23,12 @@ const SvgImage = ({ path, onSvgLoad }) => {
 					if (onSvgLoad) {
 						// Import the SVG element into the current document
 						const importedSvg = document.importNode(svgElement, true);
+						// Convert classes to data attributes on the cloned element that will be used
+						convertClassToData(importedSvg);
 						onSvgLoad(importedSvg);
 					} else {
+						// Convert classes to data attributes before extracting attributes
+						convertClassToData(svgElement);
 						// Otherwise, extract attributes and innerHTML for rendering
 						const attributes = {};
 						Array.from(svgElement.attributes).forEach(attr => {
