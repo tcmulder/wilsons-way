@@ -31,7 +31,7 @@
     ?>
 
     <!-- Prevent SVG loading flash with fade-in animation -->
-    <style>#root{opacity:1;transition:opacity0.3s 0.15s;@starting-style{opacity:0;}}</style>
+    <style>#root{opacity:1;transition:opacity 0.3s 0.15s;@starting-style{opacity:0;}}</style>
     <div id="root">[game loading...]</div>
     
     <?php if ( $is_vite ) : ?>
@@ -46,9 +46,9 @@
         printf(
             '<script type="text/javascript">/* <![CDATA[ */var sr = %s;/* ]]> */</script>',
             json_encode( array(
-                'url'               => esc_url( str_replace('http:', 'https:', SHELF_RUNNER_PLUGIN_URI ) ), // otherwise vite+safari forces http
-                'api'               => esc_url_raw( rest_url() ),
-                'nonce'             => wp_create_nonce( 'wp_rest' ),
+                'url'   => esc_url( str_replace('http:', 'https:', SHELF_RUNNER_PLUGIN_URI ) ), // otherwise vite+safari forces http
+                'api'   => esc_url_raw( rest_url() ),
+                'nonce' => wp_create_nonce( 'wp_rest' ),
             ) )
         );
     ?>
