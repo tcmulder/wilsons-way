@@ -14,10 +14,10 @@
  */
  :root {
 	/* character settings */
-	--sr-h-hero: 6cqw; /* height of the hero character */
+	--sr-h-hero: 7cqw; /* height of the hero character */
 
 	/* shelves */
-	--sr-h-ground: 6cqw;
+	--sr-h-ground: 7cqw;
 
 	/* font */
 	--sr-ff: "VT323", monospace;
