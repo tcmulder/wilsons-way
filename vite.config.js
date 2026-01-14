@@ -1,20 +1,22 @@
-import { defineConfig } from 'vite';
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
 import usePHP, { EPHPError } from 'vite-plugin-php';
 
 export default defineConfig(({ command }) => {
 	const config = {
-		plugins: [],
+		plugins: [react()],
 		build: {
 			manifest: 'manifest.json',
+			outDir: 'dist',
+			assetsDir: 'assets',
 			rollupOptions: {
 				input: {
-					main: './src/js/index.js',
-					shortcode: './src/js/shortcode.js',
-					svg: './src/svg/svg.js',
+					main: './src/main.jsx',
+					shortcode: './src/util/shortcode.js',
 				},
 				output: {
 					entryFileNames: '[name][hash].js',
-					dir: './dist',
+					manualChunks: undefined, // Ensure all assets are properly referenced
 				},
 			},
 		},

@@ -65,7 +65,7 @@ const GameplayPage = () => {
 		<>
 			<div className="sr-board" ref={boardRef}>
 				<SVG 
-					path={`../svg/level-${level}.svg?url`} 
+					path={`${window.sr.url}public/svg/level-${level}.svg`} 
 					onSvgLoad={handleSvgLoad}
 				/>
 			</div>

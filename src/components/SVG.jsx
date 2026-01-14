@@ -8,9 +8,18 @@ const SvgImage = ({ path, onSvgLoad }) => {
 	useEffect(() => {
 		const loadSvg = async () => {
 			try {
-				// Use dynamic import to get the SVG URL, then fetch its content
-				const svgModule = await import(path);
-				const response = await fetch(svgModule.default);
+				let svgUrl;
+				// Check if path is a direct URL (starts with http:// or https://)
+				// If so, fetch directly; otherwise use Vite's import for build-processed assets
+				if (path.startsWith('http://') || path.startsWith('https://')) {
+					// Direct URL - fetch it directly
+					svgUrl = path;
+				} else {
+					// Vite-processed asset - use dynamic import
+					const svgModule = await import(path);
+					svgUrl = svgModule.default;
+				}
+				const response = await fetch(svgUrl);
 				const svgText = await response.text();
 				
 				// Parse the SVG string to extract attributes and inner content

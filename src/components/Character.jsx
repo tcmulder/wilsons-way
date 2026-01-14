@@ -7,7 +7,7 @@ import '../css/character.css';
 const Character = () => {
 	const { character } = useGameContext();
 	const characterSvgRef = useRef(null);
-	const characterSVG = `../svg/character-${character}.svg?url`;
+	const characterSVG = `${window.sr.url}public/svg/character-${character}.svg`;
 
 	const handleSvgLoad = useCallback(async (svgElement) => {
 		if (characterSvgRef.current && svgElement) {

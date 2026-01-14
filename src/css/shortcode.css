@@ -7,51 +7,54 @@ body.sr-lightbox-open {
 
 /* NOTE: we use an ID to increase specificity such that it should override most theme styling */
 #shelf-runner {
-	overflow: hidden;
-	position: relative;
-	width: 100%;
-	max-width: none;
-	aspect-ratio: 16 / 9;
-	max-height: 200px;
-	background-color: #000;
 
-	&:has(.sr-portal-button button:hover, .sr-portal-button button:focus) {
+	&.sr-portal {
+		overflow: hidden;
+		position: relative;
+		width: 100%;
+		max-width: none;
+		aspect-ratio: 16 / 9;
+		max-height: 200px;
+		background-color: #000;
+	
+		&:has(.sr-portal-button button:hover, .sr-portal-button button:focus) {
+			&::before {
+				opacity: 0.32;
+			}
+			.sr-portal-button {
+				transform: scale(1.025);
+			}
+				
+		}
+	
+		&.is-active {
+			max-height: 3000px;
+			transition: max-height 2s ease-out;
+			&::before,
+			.sr-portal-overlay {
+				display: none;
+			}
+		}
+	
 		&::before {
-			opacity: 0.32;
-		}
-		.sr-portal-button {
-			transform: scale(1.025);
-		}
-			
-	}
-
-	&.is-active {
-		max-height: 3000px;
-		transition: max-height 2s ease-out;
-		&::before,
-		.sr-portal-overlay {
-			display: none;
-		}
-	}
-
-	&::before {
-		content: "";
-		position: absolute;
-		z-index: 0;
-		top: 0;
-		left: 0;
-		height: 200px;
-		width: calc(1800px * 4);
-		background-image: url("../img/shortcode-bg.svg");
-		background-size: 33.3333% 100%;
-		background-position: left center;
-		opacity: 0.2;
-		transition: opacity 0.3s;
-		will-change: transform;
-		animation: sr-marquee 180s linear infinite;
-
-		@media (prefers-reduced-motion: reduce) {
-			animation: none;
+			content: "";
+			position: absolute;
+			z-index: 0;
+			top: 0;
+			left: 0;
+			height: 200px;
+			width: calc(1800px * 4);
+			background-image: url("../img/shortcode-bg.svg");
+			background-size: 33.3333% 100%;
+			background-position: left center;
+			opacity: 0.2;
+			transition: opacity 0.3s;
+			will-change: transform;
+			animation: sr-marquee 180s linear infinite;
+	
+			@media (prefers-reduced-motion: reduce) {
+				animation: none;
+			}
 		}
 	}
 
@@ -127,9 +130,10 @@ body.sr-lightbox-open {
 	
 		iframe {
 			flex: 1 !important;
-			width: 100vw !important;
-			height: 100% !important;
-			max-width: none !important;
+			width: calc(100dvh * (16 / 9)) !important;
+			max-width: 100% !important;
+			aspect-ratio: 16 / 9 !important;
+			margin: 0 auto !important;
 			border: 0;
 			background-color: black;
 			opacity: 0;
