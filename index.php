@@ -25,16 +25,13 @@
       $manifest_url = SHELF_RUNNER_PLUGIN_DIST_URI . 'manifest.json';
       $manifest_response = wp_remote_get( esc_url_raw( $manifest_url ) );
       $manifest = ! is_wp_error( $manifest_response ) ? json_decode( wp_remote_retrieve_body( $manifest_response ), true ) : array();
-
-      // Determine if we're using the vite dev server
-      $is_vite = isset($_SERVER['HTTP_REFERER']) && str_contains($_SERVER['HTTP_REFERER'], '5173');
     ?>
 
     <!-- Prevent SVG loading flash with fade-in animation -->
     <style>#root{opacity:1;transition:opacity 0.3s 0.15s;@starting-style{opacity:0;}}</style>
     <div id="root">[game loading...]</div>
     
-    <?php if ( $is_vite ) : ?>
+    <?php if ( 'development' === SHELF_RUNNER_ENV ) : ?>
       <script type="module" src="/src/main.jsx"></script>
     <?php else : ?>
       <script type="module" src="<?php echo SHELF_RUNNER_PLUGIN_DIST_URI . ( $manifest['src/main.jsx']['file'] ?? '<!-- undefined -->' ); ?>"></script>

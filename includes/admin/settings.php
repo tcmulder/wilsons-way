@@ -4,6 +4,16 @@
  */
 
 /**
+ * Allow CORS for development environments
+ */
+add_action( 'init', 'shelf_runner_dev_mode' );
+function shelf_runner_dev_mode() {
+    if ( 'development' === SHELF_RUNNER_ENV ) {
+        header( 'Access-Control-Allow-Origin: *' );
+    }
+}
+
+/**
  * Create a "settings" link on the plugins page
  */
 add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'shelf_runner_action_links' );

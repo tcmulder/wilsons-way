@@ -1,0 +1,9 @@
+.sr-debug {
+	position: absolute;
+	inset: auto auto 0 0;
+	z-index: 10;
+	background-color: rgba(0, 0, 0, 0.5);
+	font-size: 4.1em;
+	float: left;
+	line-height: 0;
+}
