@@ -1,10 +1,15 @@
+import { gsap } from 'gsap';
+
 /**
  * Load an SVG level file
  *
- * @param {string} elSVG SVG element
+ * @param {HTMLElement} elBoard The board DOM element
+ * @param {SVGElement} elSVG SVG element
+ * @param {Function} setTimelines Function to set timelines in context
+ * @param {number} difficultySpeed The difficulty speed setting
  * @return {Promise<SVGElement>} Promise that resolves to the loaded SVG element
  */
-export const loadLevel = async (elBoard, elSVG) => {
+export const loadLevel = async (elBoard, elSVG, setTimelines, difficultySpeed) => {
 	elBoard.replaceChildren(elSVG);
 
 	// Move any parallax layers to their own SVG graphics for better animation performance
@@ -32,6 +37,100 @@ export const loadLevel = async (elBoard, elSVG) => {
 		// Remove the original parallax element from the main SVG
 		elParallax.remove();
 	});
+	
+	// Create animation after level is loaded
+	createAnimation(elBoard, setTimelines, difficultySpeed);
+	
 	// Return the SVG element after all operations are complete
 	return elSVG;
+};
+
+/**
+ * Create animation timelines for level gameplay
+ *
+ * @param {HTMLElement} boardElement The board DOM element
+ * @param {Function} setTimelines Function to set timelines in context
+ * @param {number} difficultySpeed The difficulty speed setting
+ */
+export const createAnimation = (boardElement, setTimelines, difficultySpeed) => {
+	if (!boardElement) return;
+	
+	// Kill all existing timelines
+	setTimelines(prevTimelines => {
+		prevTimelines.forEach(timeline => timeline.kill());
+		return [];
+	});
+	
+	// Find all direct descendant SVGs
+	const svgElements = boardElement.querySelectorAll(':scope > svg');
+
+	// Determine animation duration
+	const svgWidth = parseInt(svgElements[0].getAttribute('viewBox').split(' ')[2]) / 2;
+	const mod = (difficultySpeed / 100) / 100;
+	const gameplayDuration = mod * svgWidth;
+	
+	// Create a separate timeline for each SVG
+	const timelines = [];
+	svgElements.forEach((svg) => {
+		const speed = -1 * (parseInt(svg.dataset.parallax) || 100);
+		const svgTimeline = gsap.timeline();
+		svgTimeline
+		.fromTo(
+			svg,
+			{ x: 0, xPercent: 0 },
+			{
+				xPercent: speed,
+				x: '100cqw',
+				ease: 'none',
+				duration: gameplayDuration,
+			},
+			0,
+		);
+		timelines.push(svgTimeline);
+	});
+	
+	// Store all timelines in context
+	setTimelines(timelines);
+};
+
+/**
+ * Enable drag-and-drop functionality for loading SVG level files
+ *
+ * @param {HTMLElement} elBoard The board DOM element
+ * @param {Function} setTimelines Function to set timelines in context
+ * @param {number} difficultySpeed The difficulty speed setting
+ * @return {Function} Cleanup function to remove event listeners
+ */
+export const allowDrop = (elBoard, setTimelines, difficultySpeed) => {
+	if (!elBoard) return () => {};
+
+	const handleDrop = async (e) => {
+		e.preventDefault();
+		const file = e.dataTransfer?.files[0];
+		if (file?.type === 'image/svg+xml') {
+			const reader = new FileReader();
+			reader.onload = async (e2) => {
+				const parser = new DOMParser();
+				const elSVG = parser.parseFromString(
+					e2.target.result,
+					'image/svg+xml',
+				).documentElement;
+				await loadLevel(elBoard, elSVG, setTimelines, difficultySpeed);
+			};
+			reader.readAsText(file);
+		}
+	};
+
+	const handleDragOver = (e) => {
+		e.preventDefault();
+	};
+
+	elBoard.addEventListener('drop', handleDrop);
+	elBoard.addEventListener('dragover', handleDragOver);
+
+	// Return cleanup function
+	return () => {
+		elBoard.removeEventListener('drop', handleDrop);
+		elBoard.removeEventListener('dragover', handleDragOver);
+	};
 };
