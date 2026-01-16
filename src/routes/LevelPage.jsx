@@ -10,7 +10,7 @@ import '../css/parallax.css';
 
 
 const GameplayPage = () => {
-	const { level, setTimelines, settings: { difficultySpeed } } = useGameContext();
+	const { debug, level, setTimelines, settings: { difficultySpeed } } = useGameContext();
 	const boardRef = useRef(null);
 
 	const handleSvgLoad = useCallback(async (svgElement) => {
@@ -21,7 +21,7 @@ const GameplayPage = () => {
 
 	useEffect(() => {
 		if (boardRef.current) {
-			return allowDrop(boardRef.current, setTimelines, difficultySpeed);
+			return allowDrop(boardRef.current, debug, setTimelines, difficultySpeed);
 		}
 	}, [setTimelines, difficultySpeed]);
 

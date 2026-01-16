@@ -101,11 +101,12 @@ export const createAnimation = (boardElement, setTimelines, difficultySpeed) => 
  * @param {number} difficultySpeed The difficulty speed setting
  * @return {Function} Cleanup function to remove event listeners
  */
-export const allowDrop = (elBoard, setTimelines, difficultySpeed) => {
-	if (!elBoard) return () => {};
+export const allowDrop = (elBoard, debug, setTimelines, difficultySpeed) => {
+	if (!elBoard || !debug) return () => {};
 
 	const handleDrop = async (e) => {
 		e.preventDefault();
+		elBoard.classList.remove('is-dragging');
 		const file = e.dataTransfer?.files[0];
 		if (file?.type === 'image/svg+xml') {
 			const reader = new FileReader();
@@ -123,6 +124,7 @@ export const allowDrop = (elBoard, setTimelines, difficultySpeed) => {
 
 	const handleDragOver = (e) => {
 		e.preventDefault();
+		elBoard.classList.add('is-dragging');
 	};
 
 	elBoard.addEventListener('drop', handleDrop);
