@@ -4,15 +4,12 @@ import { useGameContext } from '../context/useGameContext';
 import '../css/debug.css';
 
 export const Debug = () => {
-	// Check if debug=1 is in the query string
-	const searchParams = new URLSearchParams(window.location.search);
-	const isDebugMode = searchParams.get('debug') === '1';
-	const { level, setLevel, character, setCharacter } = useGameContext();
-	
-	// Only render if debug=1 is in the query string
-	if (!isDebugMode) {
+	const { debug, level, setLevel, character, setCharacter } = useGameContext();
+
+	if (!debug) {
 		return null;
 	}
+
 	
 	return (
 		<div className="sr-debug">

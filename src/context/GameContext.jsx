@@ -1,13 +1,16 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { GameContext } from './gameContext';
 
 export function GameContextProvider({ children }) {
+  const hasLoggedRef = useRef(false);
+  const [debug, setDebug] = useState(null);
   const [level, setLevel] = useState(1);
   const [character, setCharacter] = useState(1);
   const [timelines, setTimelines] = useState([]);
   const [settings, setSettings] = useState({});
 
   useEffect(() => {
+    // Fetch settings from WordPress
     fetch(`${window.sr.api}shelf-runner/v1/settings`)
       .then(response => response.json())
       .then(d => {
@@ -16,9 +19,18 @@ export function GameContextProvider({ children }) {
       .catch(error => {
         console.error('Failed to fetch settings:', error);
       });
+      // Set debug mode if debug=1 is in the query string
+      if (window.location.search.includes('debug=1')) {
+        if (!hasLoggedRef.current) {
+          console.error('🐜 Debug mode is enabled: your scores will not be saved');
+          hasLoggedRef.current = true;
+        }
+        setDebug(true);
+      }
   }, []);
 
   const value = {
+    debug,
     level, setLevel,
     character, setCharacter,
     timelines, setTimelines,
