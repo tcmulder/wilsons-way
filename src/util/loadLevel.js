@@ -1,17 +1,12 @@
-
-import { addInteractivity } from './addInteractivity';
-import { addLevelAni } from './ani';
-
 /**
  * Load an SVG level file
  *
- * @param {HTMLElement} elBoard The board DOM element
- * @param {SVGElement} elSVG SVG element
- * @param {Function} setTimelines Function to set timelines in context
- * @param {number} difficultySpeed The difficulty speed setting
+ * @param {Object} props The properties object
+ * @param {HTMLElement} props.elBoard The board DOM element
+ * @param {SVGElement} props.elSVG SVG element
  * @return {Promise<SVGElement>} Promise that resolves to the loaded SVG element
  */
-export const loadLevel = async (elBoard, elSVG, setTimelines, difficultySpeed) => {
+export const loadLevel = async ({elBoard, elSVG}) => {
 	elBoard.replaceChildren(elSVG);
 
 	// Move any parallax layers to their own SVG graphics for better animation performance
@@ -39,12 +34,6 @@ export const loadLevel = async (elBoard, elSVG, setTimelines, difficultySpeed) =
 		// Remove the original parallax element from the main SVG
 		elParallax.remove();
 	});
-
-	// Setup level interactivity
-	addInteractivity(elBoard);
-	
-	// Create animation after level is loaded
-	addLevelAni(elBoard, setTimelines, difficultySpeed);
 	
 	// Return the SVG element after all operations are complete
 	return elSVG;
@@ -53,12 +42,16 @@ export const loadLevel = async (elBoard, elSVG, setTimelines, difficultySpeed) =
 /**
  * Enable drag-and-drop functionality for loading SVG level files
  *
- * @param {HTMLElement} elBoard The board DOM element
- * @param {Function} setTimelines Function to set timelines in context
- * @param {number} difficultySpeed The difficulty speed setting
+ * @param {Object} props The properties object
+ * @param {HTMLElement} props.elBoard The board DOM element
+ * @param {boolean} props.debug Debug mode
+ * @param {Function} props.setTimelines Function to set timelines in context
+ * @param {number} props.difficultySpeed The difficulty speed setting
+ * @param {Object} props.levelState The level state object
+ * @param {Function} props.setLevelState Function to set level state
  * @return {Function} Cleanup function to remove event listeners
  */
-export const allowDrop = (elBoard, debug, setTimelines, difficultySpeed) => {
+export const allowDrop = ({elBoard, debug, setTimelines, difficultySpeed, levelState, setLevelState}) => {
 	if (!elBoard || !debug) return () => {};
 
 	const handleDrop = async (e) => {
@@ -73,7 +66,7 @@ export const allowDrop = (elBoard, debug, setTimelines, difficultySpeed) => {
 					e2.target.result,
 					'image/svg+xml',
 				).documentElement;
-				await loadLevel(elBoard, elSVG, setTimelines, difficultySpeed);
+				await loadLevel({elBoard, elSVG, setTimelines, difficultySpeed, levelState, setLevelState});
 			};
 			reader.readAsText(file);
 		}

@@ -3,12 +3,13 @@ import { gsap } from 'gsap';
 /**
  * Create animation timelines for level gameplay
  *
- * @param {HTMLElement} boardElement The board DOM element
- * @param {Function} setTimelines Function to set timelines in context
- * @param {number} difficultySpeed The difficulty speed setting
+ * @param {Object} props The properties object
+ * @param {HTMLElement} props.elBoard The board DOM element
+ * @param {Function} props.setTimelines Function to set timelines in context
+ * @param {number} props.difficultySpeed The difficulty speed setting
  */
-export const addLevelAni = (boardElement, setTimelines, difficultySpeed) => {
-	if (!boardElement) return;
+export const aniLevel = ({elBoard, setTimelines, difficultySpeed}) => {
+	if (!elBoard) return;
 	
 	// Kill all existing timelines
 	setTimelines(prevTimelines => {
@@ -17,7 +18,7 @@ export const addLevelAni = (boardElement, setTimelines, difficultySpeed) => {
 	});
 	
 	// Find all direct descendant SVGs
-	const svgElements = boardElement.querySelectorAll(':scope > svg');
+	const svgElements = elBoard.querySelectorAll(':scope > svg');
 
 	// Determine animation duration
 	const svgWidth = parseInt(svgElements[0].getAttribute('viewBox').split(' ')[2]) / 2;
