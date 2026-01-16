@@ -391,7 +391,7 @@ function shelf_runner_settings_init(  ) {
                 printf(
                     '<input name="shelf_runner_settings_size" value="%s" type="number" step="1" min="1" max="200" required /><p><em>%s</em></p>',
                     get_option( 'shelf_runner_settings_size' ),
-                    __( '100% is average. Lower values will make the game easier. (Note that the game was originally calibrated for 60% for jump clearances, etc.)', 'shelf-runner' )
+                    __( '50% is average. Lower values will make the game easier. (Note that the game was originally calibrated for 50% for jump clearances, etc.)', 'shelf-runner' )
                 );
             },
             'shelf_runner_settings',
