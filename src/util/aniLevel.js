@@ -48,3 +48,19 @@ export const aniLevel = ({elBoard, setTimelines, difficultySpeed}) => {
 	// Store all timelines in context
 	setTimelines(timelines);
 };
+
+/**
+ * Pause playback
+ */
+export const doPause = ({timelines}) => {
+	if (!timelines.length) return;
+	timelines.forEach(timeline => timeline.pause());
+}
+
+/**
+ * Play playback
+ */
+export const doPlay = ({timelines}) => {
+	if (!timelines.length) return;
+	timelines.forEach(timeline => timeline.play());
+}

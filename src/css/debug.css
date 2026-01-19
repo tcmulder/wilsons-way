@@ -1,15 +1,17 @@
 .sr-debug {
-	overflow: hidden;
+	display: flex;
+	gap: 0.2em;
 	position: absolute;
 	inset: auto auto 0 0;
 	z-index: 10;
 	padding: 10px;
 	float: left;
-	line-height: 0.6;
+	line-height: 1;
 	background-color: rgba(2555, 255, 255, 0.5);
 	
 	a {
 		background: lime;
 		border-radius: 0.2rem;
+		text-decoration: none;
 	}
 }

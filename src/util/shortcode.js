@@ -26,7 +26,6 @@ import '../css/shortcode.css';
 	if (lightboxElement) {
 		const triggerLinks = document.querySelectorAll('a[href="#shelf-runner"]');
 		const lightboxIframe = lightboxElement.querySelector('.sr-portal-iframe');
-		console.log(triggerLinks, lightboxIframe);
 		triggerLinks.forEach((link) => {
 			link.addEventListener('click', function (event) {
 				event.preventDefault();
