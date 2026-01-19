@@ -8,10 +8,13 @@ import { gsap } from 'gsap';
  * their child elements. The elements should have a data attribute of "sprite" set
  * to the interval (in milliseconds) of the animation.
  *
- * @param {HTMLElement[]} els The elements to animate
+ * @param {HTMLElement} elParent Parent that may contain sprites
  */
-export const createAniSprite = async (els) => {
-	els?.forEach((el) => {
+export const createAniSprite = (elParent) => {
+	// Create a single master timeline to control all sprite animations
+	const masterTimeline = gsap.timeline({ repeat: -1, paused: true });
+	
+	elParent?.querySelectorAll('[data-sprite]')?.forEach((el) => {
 		if (el.classList.contains('is-animating')) {
 			return;
 		}
@@ -23,26 +26,34 @@ export const createAniSprite = async (els) => {
 		// Hide all children initially
 		gsap.set(children, { visibility: 'hidden' });
 		
-		// Create a timeline that cycles through children infinitely
-		const timeline = gsap.timeline({ repeat: -1 });
+		// Create a sub-timeline for this sprite that cycles through children infinitely
+		const spriteTimeline = gsap.timeline({ repeat: -1 });
 		
 		children.forEach((child, index) => {
 			// Hide previous child (or all if first frame)
 			if (index === 0) {
-				timeline.set(children, { visibility: 'hidden' }, 0);
+				spriteTimeline.set(children, { visibility: 'hidden' }, 0);
 			} else {
-				timeline.set(children[index - 1], { visibility: 'hidden' }, index * duration);
+				spriteTimeline.set(children[index - 1], { visibility: 'hidden' }, index * duration);
 			}
 			// Show current child
-			timeline.set(child, { visibility: 'visible' }, index * duration);
+			spriteTimeline.set(child, { visibility: 'visible' }, index * duration);
 		});
 		
 		// Complete the loop: hide last child and show first child
 		const lastIndex = children.length - 1;
-		timeline.set(children[lastIndex], { visibility: 'hidden' }, lastIndex * duration + duration);
-		timeline.set(children[0], { visibility: 'visible' }, lastIndex * duration + duration);
+		spriteTimeline.set(children[lastIndex], { visibility: 'hidden' }, lastIndex * duration + duration);
+		spriteTimeline.set(children[0], { visibility: 'visible' }, lastIndex * duration + duration);
 		
-		// Store timeline on element for potential cleanup
-		el.gsapTimeline = timeline;
+		// Add this sprite's timeline to the master timeline at time 0 (runs in parallel)
+		masterTimeline.add(spriteTimeline, 0);
+		
+		// Show the first child immediately so it's visible when paused
+		if (children.length > 0) {
+			gsap.set(children[0], { visibility: 'visible' });
+		}
 	});
+	
+	// Return the single master timeline
+	return masterTimeline;
 };

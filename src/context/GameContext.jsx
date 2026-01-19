@@ -4,8 +4,9 @@ import { GameContext } from './gameContext';
 export function GameContextProvider({ children }) {
   const hasLoggedRef = useRef(false);
   const [debug, setDebug] = useState(null);
-  const [level, setLevel] = useState(1);
-  const [character, setCharacter] = useState(1);
+  const [status, setStatus] = useState({move: 'forward', jump: 'none', pause: 'pause'});
+  const [level, setLevel] = useState(0);
+  const [character, setCharacter] = useState({id: 1, el: null, timeline: null});
   const [timelines, setTimelines] = useState([]);
   const [settings, setSettings] = useState({});
 
@@ -31,6 +32,7 @@ export function GameContextProvider({ children }) {
 
   const value = {
     debug,
+    status, setStatus,
     level, setLevel,
     character, setCharacter,
     timelines, setTimelines,

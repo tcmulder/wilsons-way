@@ -29,7 +29,7 @@ export const aniLevel = ({elBoard, setTimelines, difficultySpeed}) => {
 	const timelines = [];
 	svgElements.forEach((svg) => {
 		const speed = -1 * (parseInt(svg.dataset.parallax) || 100);
-		const svgTimeline = gsap.timeline();
+		const svgTimeline = gsap.timeline({ paused: true });
 		svgTimeline
 		.fromTo(
 			svg,
@@ -48,19 +48,3 @@ export const aniLevel = ({elBoard, setTimelines, difficultySpeed}) => {
 	// Store all timelines in context
 	setTimelines(timelines);
 };
-
-/**
- * Pause playback
- */
-export const doPause = ({timelines}) => {
-	if (!timelines.length) return;
-	timelines.forEach(timeline => timeline.pause());
-}
-
-/**
- * Play playback
- */
-export const doPlay = ({timelines}) => {
-	if (!timelines.length) return;
-	timelines.forEach(timeline => timeline.play());
-}

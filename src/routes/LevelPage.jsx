@@ -23,7 +23,6 @@ const GameplayPage = () => {
 		elObstacles: [],
 		elObstaclesNegative: [],
 		collided: new Set(),
-		status: { move: 'forward', jump: 'none', pause: 'none' },
 		isEnded: false,
 	});
 
