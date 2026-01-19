@@ -10,9 +10,9 @@ import { gsap } from 'gsap';
  *
  * @param {HTMLElement} elParent Parent that may contain sprites
  */
-export const createAniSprite = (elParent) => {
+export const createAniSprite = ({elParent, status}) => {
 	// Create a single master timeline to control all sprite animations
-	const masterTimeline = gsap.timeline({ repeat: -1, paused: true });
+	const masterTimeline = gsap.timeline({ repeat: -1, paused: status.pause === 'pause' });
 	
 	elParent?.querySelectorAll('[data-sprite]')?.forEach((el) => {
 		if (el.classList.contains('is-animating')) {
@@ -49,7 +49,7 @@ export const createAniSprite = (elParent) => {
 		masterTimeline.add(spriteTimeline, 0);
 		
 		// Show the first child immediately so it's visible when paused
-		if (children.length > 0) {
+		if (status.pause === 'pause' && children.length > 0) {
 			gsap.set(children[0], { visibility: 'visible' });
 		}
 	});

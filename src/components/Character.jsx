@@ -5,17 +5,17 @@ import { createAniSprite } from '../util/aniSprite';
 import '../css/character.css';
 
 const Character = () => {
-	const { character, setCharacter } = useGameContext();
+	const { status, character, setCharacter } = useGameContext();
 	const characterSvgRef = useRef(null);
 	const characterSVG = `${window.sr.url}public/svg/character-${character.id}.svg`;
 
 	const handleSvgLoad = useCallback((svgElement) => {
 		if (characterSvgRef.current && svgElement) {
 			characterSvgRef.current.replaceChildren(svgElement);
-			const timeline = createAniSprite(characterSvgRef.current);
+			const timeline = createAniSprite({elParent: characterSvgRef.current, status});
 			setCharacter(prev => ({...prev, timeline}));
 		}
-	}, [setCharacter]);
+	}, [setCharacter, character.id]);
 
 	return (
 		<div className="sr-character" tabIndex="0" data-move="forward" data-jump="none" data-pause="none">
