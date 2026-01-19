@@ -43,7 +43,10 @@ const checkOverlap = (el1, el2) => {
  * @param {HTMLElement} elCharacterCrashArea The character crash area element
  * @param {Set<HTMLElement>} collided The set of collided elements
  */
+var foo = 0;
+var bar = -1;
 const checkCollisions = ({els, elCharacterCrashArea, collided, setLevelState}) => {
+	if (foo !== bar) { bar = els.length; console.log('🤞', els); }foo = els.length
 	els.forEach((el) => {
 		if (
 			!collided.has(el) &&

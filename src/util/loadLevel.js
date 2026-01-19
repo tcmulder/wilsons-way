@@ -1,3 +1,7 @@
+import { addInteractivity } from './addInteractivity';
+import { aniLevel } from './aniLevel';
+import { convertClassToData } from './convertClassToData';
+
 /**
  * Load an SVG level file
  *
@@ -66,7 +70,23 @@ export const allowDrop = ({elBoard, debug, setTimelines, difficultySpeed, levelS
 					e2.target.result,
 					'image/svg+xml',
 				).documentElement;
-				await loadLevel({elBoard, elSVG, setTimelines, difficultySpeed, levelState, setLevelState});
+				convertClassToData(elSVG);
+				await loadLevel({
+					elBoard,
+					elSVG,
+				});
+				// Create animation after level is loaded
+				aniLevel({
+					elBoard,
+					setTimelines,
+					difficultySpeed,
+				});
+				// Setup level interactivity
+				addInteractivity({
+					elBoard,
+					levelState,
+					setLevelState,
+				});
 			};
 			reader.readAsText(file);
 		}

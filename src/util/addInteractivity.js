@@ -53,6 +53,9 @@ export const addInteractivity = ({elBoard, levelState, setLevelState}) => {
 		elShelves: Array.from(elShelves),
 		elObstacles: elObstacles,
 		elObstaclesNegative: elObstaclesNegative,
+		collided: new Set(),
+		status: { move: 'forward', jump: 'none', pause: 'none' },
+		isEnded: false,
 	};
 
 	// Update state

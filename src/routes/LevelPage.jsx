@@ -33,10 +33,6 @@ const GameplayPage = () => {
 			await loadLevel({
 				elBoard: boardRef.current,
 				elSVG: svgElement,
-				setTimelines,
-				difficultySpeed,
-				levelState,
-				setLevelState,
 			});
 			// Create animation after level is loaded
 			aniLevel({
