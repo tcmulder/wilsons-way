@@ -52,7 +52,7 @@ export const Debug = () => {
 	const props = useGameContext();
 	const navigate = useNavigate();
 	const path = useLocation().pathname;
-	const [isMenuOpen, setIsMenuOpen] = useState(true);
+	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	if (!props.debug) {
 		return null;
 	}
