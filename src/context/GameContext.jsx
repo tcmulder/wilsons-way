@@ -8,6 +8,7 @@ export function GameContextProvider({ children }) {
   const [level, setLevel] = useState(1);
   const [character, setCharacter] = useState({id: 1, el: null, timeline: null});
   const [timelines, setTimelines] = useState([]);
+  const [jump, setJump] = useState({ height: 2, hangtime: 1 });
   const [settings, setSettings] = useState({});
 
   useEffect(() => {
@@ -37,6 +38,7 @@ export function GameContextProvider({ children }) {
     character, setCharacter,
     timelines, setTimelines,
     settings, setSettings,
+    jump, setJump,
   };
 
   return <GameContext.Provider value={value}>{children}</GameContext.Provider>;
