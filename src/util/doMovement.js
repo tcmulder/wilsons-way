@@ -84,6 +84,8 @@ export function useCharacterMovement({ debug, characterRef, status, setStatus, j
 
   useEffect(() => {
     const handleKeyDown = (e) => {
+		// Ignore auto-repeat so logic only runs once per key press
+		if (e.repeat) return;
 		if (e.key === 'ArrowUp' || e.key === ' ') {
 			e.preventDefault();
 			doJump({ characterRef, status, setStatus, jump });
