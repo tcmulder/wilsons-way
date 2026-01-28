@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useGameContext } from '../context/useGameContext';
 import { doPause, doPlay } from '../util/doMovement';
@@ -51,18 +52,23 @@ export const Debug = () => {
 	const props = useGameContext();
 	const navigate = useNavigate();
 	const path = useLocation().pathname;
-
+	const [isMenuOpen, setIsMenuOpen] = useState(true);
 	if (!props.debug) {
 		return null;
 	}
 	
 	return (
 		<div className="sr-debug">
-			<DebugNavigation {...props} navigate={navigate} path={path} />
-			<DebugRestart />
-			<DebugPlayPause {...props} path={path} navigate={navigate} />
-			<DebugLevel {...props} path={path} />
-			<DebugCharacter {...props} path={path} />
+			<button onClick={(e) => { e.preventDefault(); setIsMenuOpen(!isMenuOpen); }}>Debug</button>
+			{isMenuOpen && (
+				<ul className="sr-debug__menu">
+					<li><DebugNavigation {...props} navigate={navigate} path={path} /></li>
+					<li><DebugRestart /></li>
+					<li><DebugPlayPause {...props} path={path} navigate={navigate} /></li>
+					<li><DebugLevel {...props} path={path} /></li>
+					<li><DebugCharacter {...props} path={path} /></li>
+				</ul>
+			)}
 		</div>
 	);
 };
