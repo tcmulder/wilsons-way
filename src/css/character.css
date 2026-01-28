@@ -8,7 +8,7 @@
 	--sr-y-shift: 1cqw;
 	position: absolute;
 	left: 33cqw;
-	bottom: 7cqmax;
+	bottom: 0;
 	transform: translateY(var(--sr-freeze, var(--sr-y)));
 	transition: transform var(--sr-hangtime) ease-in;
 	will-change: transform;
