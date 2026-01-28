@@ -5,7 +5,7 @@ export function GameContextProvider({ children }) {
   const hasLoggedRef = useRef(false);
   const [debug, setDebug] = useState(null);
   const [status, setStatus] = useState({move: 'forward', jump: 'none', pause: 'pause'});
-  const [level, setLevel] = useState(0);
+  const [level, setLevel] = useState(1);
   const [character, setCharacter] = useState({id: 1, el: null, timeline: null});
   const [timelines, setTimelines] = useState([]);
   const [settings, setSettings] = useState({});
