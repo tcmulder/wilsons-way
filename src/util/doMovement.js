@@ -29,23 +29,18 @@ export const doJump = ({characterRef, status, setStatus, jump}) => {
 
 	const el = characterRef.current;
 
-	// Mark character as jumping
-	setStatus(prev => ({ ...prev, jump: 'up' }));
-
-	const tl = gsap.timeline({
-		onComplete: () => {
-			// Reset jump status when landing
-			setStatus(prev => ({ ...prev, jump: 'none' }));
-		},
-	});
+	const tl = gsap.timeline();
 
 	tl.to(el, {
-		y: `-${6}em`,
-		duration: 0.5,
+		onStart: () => setStatus(prev => ({ ...prev, jump: 'up' })),
+		y: `-${jump.height}em`,
+		duration: jump.hangtime,
 		ease: "power1.out",
 	}).to(el, {
+		onStart: () => setStatus(prev => ({ ...prev, jump: 'down' })),
+		onComplete: () => setStatus(prev => ({ ...prev, jump: 'none' })),
 		y: 0,
-		duration: 0.5,
+		duration: jump.hangtime,
 		ease: "power1.in",
 	});
 }

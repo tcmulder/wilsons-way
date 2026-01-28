@@ -22,7 +22,7 @@ const Character = () => {
 	useCharacterMovement({ status, setStatus, characterRef, jump });
 
 	return (
-		<div ref={characterRef} className="sr-character" tabIndex="0" data-move="forward" data-jump="none" data-pause="none">
+		<div ref={characterRef} className="sr-character" tabIndex="0" data-move={status.move} data-jump={status.jump} data-pause={status.pause}>
 			<div className="sr-character-svg" ref={characterSvgRef}>
 				<SVG path={characterSVG} onSvgLoad={handleSvgLoad} />
 			</div>
