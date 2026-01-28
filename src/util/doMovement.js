@@ -70,5 +70,5 @@ export function useCharacterMovement({ characterRef, status, setStatus, jump }) 
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [status, setStatus, characterRef]);
+  }, [status, setStatus, characterRef, jump]);
 }
