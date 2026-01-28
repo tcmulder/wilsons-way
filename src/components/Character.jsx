@@ -6,7 +6,7 @@ import { useCharacterMovement } from '../util/doMovement';
 import '../css/character.css';
 
 const Character = () => {
-	const { status, character, setCharacter, setStatus, jump } = useGameContext();
+	const { debug, status, character, setCharacter, setStatus, jump, timelines } = useGameContext();
 	const characterRef = useRef(null);
 	const characterSvgRef = useRef(null);
 	const characterSVG = `${window.sr.url}public/svg/character-${character.id}.svg`;
@@ -19,7 +19,7 @@ const Character = () => {
 		}
 	}, [setCharacter, character.id, status]);
 
-	useCharacterMovement({ status, setStatus, characterRef, jump });
+	useCharacterMovement({ debug, status, setStatus, characterRef, jump, timelines });
 
 	return (
 		<div ref={characterRef} className="sr-character" tabIndex="0" data-move={status.move} data-jump={status.jump} data-pause={status.pause}>

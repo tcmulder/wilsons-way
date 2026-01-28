@@ -22,7 +22,7 @@ const DebugNavigation = ({navigate}) => {
 
 const DebugPlayPause = ({ character, timelines, status, setStatus, path, navigate, setLevel }) => {
 	if (path === '/gameplay' && status.pause === 'pause') {
-		return <button onClick={(e) => { e.preventDefault(); doPlay({timelines: [...timelines, character.timeline], setStatus}); }}>▶︎</button>
+		return <button onClick={(e) => { e.preventDefault(); doPlay({timelines: [...timelines, character.timeline], setStatus, direction: 'forward'}); }}>▶︎</button>
 	} else if (path === '/gameplay' && status.pause === 'none') {
 		return <button onClick={(e) => { e.preventDefault(); doPause({timelines: [...timelines, character.timeline], setStatus}); }}>⏸︎</button>
 	} else {
