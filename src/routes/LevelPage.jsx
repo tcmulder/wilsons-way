@@ -1,4 +1,4 @@
-import { useRef, useCallback, useEffect, useState } from 'react';
+import { useRef, useCallback, useEffect } from 'react';
 import { useDebugContext, useSettingsContext, useLevelContext, useSetTimelinesContext, useElsContext } from '../context/useContexts';
 import { loadLevel } from '../util/loadLevel';
 import { allowDrop } from '../util/loadLevel';
@@ -14,22 +14,11 @@ import '../css/parallax.css';
 const GameplayPage = () => {
 	const { debug } = useDebugContext();
 	const { settings } = useSettingsContext();
-	const { level } = useLevelContext();
+	const { level, setCurrentLevelId } = useLevelContext();
 	const { setTimelines } = useSetTimelinesContext();
 	const { els } = useElsContext();
 	const difficultySpeed = settings.difficultySpeed;
 	const boardRef = useRef(null);
-
-	const [levelState, setLevelState] = useState({
-		elBoard: boardRef.current,
-		elCharacter: null,
-		elCharacterCrashArea: null,
-		elShelves: [],
-		elObstacles: [],
-		elObstaclesNegative: [],
-		collided: new Set(),
-		isEnded: false,
-	});
 
 	const handleSvgLoad = useCallback(async (svgElement) => {
 		if (els.elBoard && svgElement) {
@@ -44,8 +33,9 @@ const GameplayPage = () => {
 				setTimelines,
 				difficultySpeed,
 			});
+			setCurrentLevelId(Date.now());
 		}
-	}, [els.elBoard, setTimelines, difficultySpeed]);
+	}, [els.elBoard, setTimelines, difficultySpeed, setCurrentLevelId]);
 
 	useEffect(() => {
 		if (els.elBoard) {
@@ -54,13 +44,12 @@ const GameplayPage = () => {
 				debug,
 				setTimelines,
 				difficultySpeed,
-				levelState,
-				setLevelState,
+				onLevelLoaded: () => setCurrentLevelId(Date.now()),
 			});
 		}
-	}, [els.elBoard, debug, setTimelines, difficultySpeed, levelState, setLevelState]);
+	}, [els.elBoard, debug, setTimelines, difficultySpeed, setCurrentLevelId]);
 
-	console.log('DEBUG: rerendered');
+	console.log('DEBUG: rerendered', els);
 	
 	return (
 		<>

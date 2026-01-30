@@ -5,7 +5,6 @@ import { Interface } from './components/Interface';
 import { Debug } from './components/Debug';
 
 export default function App() {
-  console.log('🏃‍➡️', 'rerender');
   return (
     <>
       <div className="sr">

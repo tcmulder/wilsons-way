@@ -1,16 +1,60 @@
 import { useEffect } from 'react';
-import { useElsContext } from '../context/useContexts';
+import { useElsContext, useLevelContext } from '../context/useContexts';
 
 const CollisionTracker = ({ boardRef }) => {
 	const { setEls } = useElsContext();
-
-	console.log('DEBUG: rendered');
+	const { currentLevelId } = useLevelContext();
 
 	useEffect(() => {
-		if (boardRef?.current) {
-			setEls(prev => ({ ...prev, elBoard: boardRef.current }));
-		}
-	}, [boardRef, setEls]);
+		if (!boardRef?.current) return;
+		const elBoard = boardRef.current;
+		/**
+		 * Get elements from the new level SVG
+		 */
+		// Elevated shelves we can jump on/off plus the ground floor
+		const elShelves = elBoard
+			.querySelector('.sr-shelves')
+			?.querySelectorAll(':scope > *') || [];
+
+		// All obstacles (good bad or neutral)
+		const elObstacles = [];
+		// Add all obstacles that score on impact (good or bad)
+		elBoard
+			.querySelectorAll('.sr-obstacles[data-score]')
+			?.forEach((elObstacle) => {
+				elObstacle.querySelectorAll(':scope > *').forEach((elChild) => {
+					if (!elChild.hasAttribute('data-score')) {
+						elChild.dataset.score = elObstacle.dataset.score;
+					}
+					elObstacles.push(elChild);
+				});
+			});
+		// Add all milestone obstacles we can impact
+		elBoard
+			.querySelectorAll('.sr-milestone-target')
+			?.forEach((elMilestone) => {
+				elObstacles.push(elMilestone);
+			});
+		// Create filtered list of all negative obstacles (those with a negative score)
+		const elObstaclesNegative = [...elObstacles].filter(
+			(obstacle) =>
+				obstacle.dataset.score && obstacle.dataset.score.startsWith('-'),
+		);
+		// Track unchanging elements from level to level
+		const fixedEls = {
+			elBoard,
+			elCharacter: elBoard?.nextElementSibling,
+			elCharacterCrashArea: elBoard?.nextElementSibling?.querySelector('.sr-character-crash'),
+		};
+		// Track elements that change from level to level
+		const dynamicEls = {
+			elShelves: Array.from(elShelves),
+			elObstacles,
+			elObstaclesNegative,
+		};
+		// Update context with both
+		setEls(prev => ({ ...prev, ...fixedEls, ...dynamicEls }));
+	}, [boardRef, setEls, currentLevelId]);
 
 	return null;
 };
