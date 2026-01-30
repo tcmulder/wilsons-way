@@ -1,5 +1,12 @@
 import { useRef, useCallback } from 'react';
-import { useDebugContext, useSettingsContext, useStatusContext, useCharacterContext, useTimelinesContext } from '../context/useContexts';
+import {
+	useDebugContext,
+	useSettingsContext,
+	useStatusContext,
+	useCharacterContext,
+	useTimelinesContext,
+	useElevationContext,
+} from '../context/useContexts';
 import SVG from './SVG';
 import { createAniSprite } from '../util/aniSprite';
 import { useCharacterMovement } from '../util/doMovement';
@@ -11,6 +18,7 @@ const Character = () => {
 	const { status, setStatus } = useStatusContext();
 	const { character, setCharacter } = useCharacterContext();
 	const { timelines } = useTimelinesContext();
+	const { elevation } = useElevationContext();
 	const characterRef = useRef(null);
 	const characterSvgRef = useRef(null);
 	const characterSVG = `${window.sr.url}public/svg/character-${character.id}.svg`;
@@ -23,7 +31,7 @@ const Character = () => {
 		}
 	}, [setCharacter, character.id, status]);
 
-	useCharacterMovement({ debug, status, setStatus, characterRef, jump, timelines });
+	useCharacterMovement({ debug, status, setStatus, characterRef, jump, timelines, elevation });
 
 	return (
 		<div ref={characterRef} className="sr-character" tabIndex="0" data-move={status.move} data-jump={status.jump} data-pause={status.pause}>

@@ -5,7 +5,7 @@ const IntroPage = () => {
 		<div>
 			<h1>Welcome to the Game</h1>
 			<p>This is an introductory page, and content is TBD.</p>
-			<button onClick={() => navigate('/gameplay')}>Start Game</button>
+			<button style={{fontSize: '7em'}} onClick={() => navigate('/gameplay')}>Start Game</button>
 			<div className="foobar">[FULL WIDTH]</div>
 		</div>
 	);

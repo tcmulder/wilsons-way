@@ -5,6 +5,7 @@ import { LevelContextProvider } from './LevelContext';
 import { CharacterContextProvider } from './CharacterContext';
 import { TimelinesContextProvider } from './TimelinesContext';
 import { ElsContextProvider } from './ElsContext';
+import { ElevationContextProvider } from './ElevationContext';
 
 export function AppProviders({ children }) {
   return (
@@ -15,7 +16,9 @@ export function AppProviders({ children }) {
             <CharacterContextProvider>
               <TimelinesContextProvider>
                 <ElsContextProvider>
-                  {children}
+                  <ElevationContextProvider>
+                    {children}
+                  </ElevationContextProvider>
                 </ElsContextProvider>
               </TimelinesContextProvider>
             </CharacterContextProvider>

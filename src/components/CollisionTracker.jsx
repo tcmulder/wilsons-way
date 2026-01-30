@@ -1,10 +1,11 @@
 import { useEffect } from 'react';
-import { useElsContext, useLevelContext } from '../context/useContexts';
+import { useElsContext, useLevelContext, useElevationContext } from '../context/useContexts';
 import { trackCollisions } from '../util/handleCollisions';
 
 const CollisionTracker = ({ boardRef }) => {
 	const { setEls } = useElsContext();
 	const { currentLevelId } = useLevelContext();
+	const { setElevation } = useElevationContext();
 
 	useEffect(() => {
 		if (!boardRef?.current) return;
@@ -53,8 +54,11 @@ const CollisionTracker = ({ boardRef }) => {
 			elObstaclesNegative,
 		};
 		setEls(prev => ({ ...prev, ...newState }));
-		trackCollisions(newState);
-	}, [boardRef, setEls, currentLevelId]);
+		const stopTracking = trackCollisions(newState, setElevation);
+		return () => {
+			stopTracking();
+		};
+	}, [boardRef, setEls, currentLevelId, setElevation]);
 
 	return null;
 };

@@ -31,7 +31,7 @@ export const doPlay = ({timelines, setStatus, direction = 'forward'}) => {
 /**
  * Jump
  */
-const doJump = ({characterRef, status, setStatus, jump}) => {
+const doJump = ({characterRef, status, setStatus, jump, elevation}) => {
 	// Prevent double-jumps while already mid-air
 	if (status?.jump !== 'none') return;
 	if (!characterRef?.current) return;
@@ -42,13 +42,16 @@ const doJump = ({characterRef, status, setStatus, jump}) => {
 
 	tl.to(el, {
 		onStart: () => setStatus(prev => ({ ...prev, jump: 'up' })),
-		y: `-${jump.height}em`,
+		onUpdate: () => {
+			console.log(elevation)
+		},
+		y: `-${jump.height + elevation.below}em`,
 		duration: jump.hangtime,
 		ease: "power1.out",
 	}).to(el, {
 		onStart: () => setStatus(prev => ({ ...prev, jump: 'down' })),
 		onComplete: () => setStatus(prev => ({ ...prev, jump: 'none' })),
-		y: 0,
+		y: `-${elevation.below}em`,
 		duration: jump.hangtime,
 		ease: "power1.in",
 	});
@@ -73,8 +76,9 @@ const doRun = ({direction, timelines, setStatus}) => {
  * @param {Object} props.status The status object
  * @param {Function} props.setStatus Function to set the status
  * @param {Object} props.jump The jump object (height in em units and hangtime in seconds)
+ * @param {Integer} props.elevation The elevation of the character
  */
-export function useCharacterMovement({ debug, characterRef, status, setStatus, jump, timelines }) {
+export function useCharacterMovement({ debug, characterRef, status, setStatus, jump, timelines, elevation }) {
   // Auto-play timelines when debug autoplay is not explicitly disabled (autoplay !== '0')
   useEffect(() => {
 	if (debug?.autoplay !== '0') {
@@ -88,7 +92,7 @@ export function useCharacterMovement({ debug, characterRef, status, setStatus, j
 		if (e.repeat) return;
 		if (e.key === 'ArrowUp' || e.key === ' ') {
 			e.preventDefault();
-			doJump({ characterRef, status, setStatus, jump });
+			doJump({ characterRef, status, setStatus, jump, elevation });
 		}
 
 		if (debug?.autoplay === '0') {

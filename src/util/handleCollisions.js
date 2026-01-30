@@ -17,6 +17,49 @@ const checkOverlap = (el1, el2) => {
 };
 
 /**
+ * Get the nearest elements above and below an element in a single pass.
+ *
+ * @param {HTMLElement}   el  Element to look from (e.g. character)
+ * @param {HTMLElement[]} els Elements to check (e.g. shelves)
+ * @return {{ above: HTMLElement|null, below: HTMLElement|null }}
+ */
+export const getNearestShelves = (el, els, fudge = 0.5) => {
+	const charRect = el.getBoundingClientRect();
+	let above = null;
+	let below = null;
+
+	for (const shelf of els) {
+		const shelfRect = shelf.getBoundingClientRect();
+
+		// Bail if the shelf doesn't align left to right
+		if (!(shelfRect.left < charRect.right + fudge && shelfRect.right > charRect.left)) {
+			continue;
+		}
+
+		// Get the shelf above the character
+		if (shelfRect.bottom <= charRect.top) {
+			if (!above || shelfRect.bottom > above.getBoundingClientRect().bottom) {
+				above = shelf;
+			}
+		}
+
+		// Get shelf below the ccharacter
+		if (shelfRect.top >= charRect.bottom) {
+			if (!below || shelfRect.top < below.getBoundingClientRect().top) {
+				below = shelf;
+			}
+		}
+	}
+
+	// Default to the last shelf (the sidewalk)
+	if (below === null && els.length > 0) {
+		below = els.at(-1);
+	}
+
+	return { above, below };
+};
+
+/**
  * Check for collisions
  *
  * @param {HTMLElement[]} els Elements to check
@@ -116,99 +159,111 @@ const checkHitTheEnd = () => {
 //  * Allow falling off the edge of a shelf to the next one down
 //  */
 // export const doGravity = () => {
-// 	const { elStage, elCharacter, elShelves, status, jumpTween, hangtime } =
-// 		state;
-// 	const nearest = getNearest(elCharacter, elShelves, 'below');
-// 	const stageRect = elStage.getBoundingClientRect();
-// 	const nearestRect = nearest.getBoundingClientRect();
-// 	const charRect = elCharacter.getBoundingClientRect();
+	// const { elStage, elCharacter, elShelves, status, jumpTween, hangtime } =
+	// 	state;
+	// const { below: nearest } = getNearestShelves(elCharacter, elShelves);
+	// const stageRect = elStage.getBoundingClientRect();
+	// const nearestRect = nearest.getBoundingClientRect();
+	// const charRect = elCharacter.getBoundingClientRect();
 
-// 	// Calculate what the shelf height should be
-// 	const h = Math.ceil(
-// 		((stageRect.bottom - nearestRect.top) / stageRect.height) * 100,
-// 	);
+	// // Calculate what the shelf height should be
+	// const h = Math.ceil(
+	// 	((stageRect.bottom - nearestRect.top) / stageRect.height) * 100,
+	// );
 
-// 	// Calculate where the character currently is (in cqh units)
-// 	const currentY = Math.ceil(
-// 		((stageRect.bottom - charRect.bottom) / stageRect.height) * 100,
-// 	);
+	// // Calculate where the character currently is (in cqh units)
+	// const currentY = Math.ceil(
+	// 	((stageRect.bottom - charRect.bottom) / stageRect.height) * 100,
+	// );
 
-// 	// Only update if character is not already on this shelf
-// 	// Allow a small tolerance for floating point precision
-// 	const tolerance = 1;
-// 	if (Math.abs(currentY - h) < tolerance) {
-// 		return;
-// 	}
+	// // Only update if character is not already on this shelf
+	// // Allow a small tolerance for floating point precision
+	// const tolerance = 1;
+	// if (Math.abs(currentY - h) < tolerance) {
+	// 	return;
+	// }
 
-// 	elCharacter.style.setProperty('--cq-h-shelf', `${h}cqh`);
+	// elCharacter.style.setProperty('--cq-h-shelf', `${h}cqh`);
 
-// 	// Update GSAP position when not jumping (so character follows shelf)
-// 	if (status.jump === 'none' && !jumpTween) {
-// 		const shelfPx = (h / 100) * stageRect.height;
+	// // Update GSAP position when not jumping (so character follows shelf)
+	// if (status.jump === 'none' && !jumpTween) {
+	// 	const shelfPx = (h / 100) * stageRect.height;
 
-// 		// If falling (character is above shelf), animate down
-// 		if (currentY > h) {
-// 			// Kill any existing gravity tween
-// 			if (state.gravityTween) {
-// 				state.gravityTween.kill();
-// 			}
-// 			// Calculate fall distance and duration (faster for shorter falls)
-// 			const fallDistance = Math.abs(currentY - h);
-// 			const fallDuration =
-// 				Math.min((fallDistance / 100) * hangtime, hangtime) / 1000;
+	// 	// If falling (character is above shelf), animate down
+	// 	if (currentY > h) {
+	// 		// Kill any existing gravity tween
+	// 		if (state.gravityTween) {
+	// 			state.gravityTween.kill();
+	// 		}
+	// 		// Calculate fall distance and duration (faster for shorter falls)
+	// 		const fallDistance = Math.abs(currentY - h);
+	// 		const fallDuration =
+	// 			Math.min((fallDistance / 100) * hangtime, hangtime) / 1000;
 
-// 			state.gravityTween = gsap.to(elCharacter, {
-// 				y: -shelfPx,
-// 				duration: fallDuration,
-// 				ease: 'power1.in',
-// 				onComplete: () => {
-// 					state.gravityTween = null;
-// 				},
-// 			});
-// 		} else {
-// 			// If character is below shelf (shouldn't happen), snap up
-// 			gsap.set(elCharacter, { y: -shelfPx });
-// 		}
-// 	}
+	// 		state.gravityTween = gsap.to(elCharacter, {
+	// 			y: -shelfPx,
+	// 			duration: fallDuration,
+	// 			ease: 'power1.in',
+	// 			onComplete: () => {
+	// 				state.gravityTween = null;
+	// 			},
+	// 		});
+	// 	} else {
+	// 		// If character is below shelf (shouldn't happen), snap up
+	// 		gsap.set(elCharacter, { y: -shelfPx });
+	// 	}
+	// }
 // };
+
+/**
+ * Check elevation
+ * @param {Object} els The elements to check
+ * @return {Object} The elevation
+ */
+const checkElevation = (els) => {
+	const { elCharacter, elShelves } = els;
+	const elv = { above: 0, below: 0 };
+	const elsNearest = getNearestShelves(elCharacter, elShelves);
+	console.log('🤞', elsNearest)
+	return elv;
+}
+
 
 /**
  * Track collisions
  * @param {Object} els The elements to check for collisions
+ * @param {Function} setElevation Function to set the elevation
+ * @returns {Function} Cleanup function to stop the loop
  */
-export const trackCollisions = (els) => {
+export const trackCollisions = (els, setElevation) => {
+	let cancelled = false;
 
 	// Use closure to capture state and setter for recursive calls
 	const checkTrackCollisions = () => {
-		
-		// Only check collisions when actually moving or jumping
+		if (cancelled) return;
+
 		const shouldCheck = true;
 
 		if (shouldCheck) {
 			// As we move check to see if we hit anything (mostly x axis)
 			checkCollisions(els);
-				// checkHitTheEnd();
-			// // If we're not jumping up then let gravity take us down
-			// if (status.jump !== 'up') {
-			// 	doGravity();
-			// }
+			setElevation(checkElevation(els));
 		}
 
-		// Update closure with latest state before next frame (without causing re-render)
-		// if (!isEnded && setLevelState) {
-		// 	setLevelState((latestState) => {
-		// 		currentState = latestState; // Update closure variable
-		// 		return latestState; // Return unchanged to avoid re-render
-		// 	});
-		// }
-		
-		// Do this as fast and efficiently as possible
-		const isEnded = false;
-		if (!isEnded) {
+		if (!cancelled) {
 			requestAnimationFrame(checkTrackCollisions);
 		}
 	};
 
-	// Start the collision tracking loop
-	checkTrackCollisions();
+	// if we've not already started the rAF loop
+	if (els.elObstacles.length && els.elObstacles.at(-1).dataset.started !== 'true') {
+		// Start the loop
+		els.elObstacles.at(-1).dataset.started = 'true';
+		checkTrackCollisions();
+	}
+
+	// Clean up the loop
+	return () => {
+		cancelled = true;
+	};
 };
