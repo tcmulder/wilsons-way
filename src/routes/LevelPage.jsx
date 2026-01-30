@@ -1,11 +1,10 @@
 import { useRef, useCallback, useEffect, useState } from 'react';
-import { useDebugContext, useSettingsContext, useLevelContext, useSetTimelinesContext } from '../context/useContexts';
+import { useDebugContext, useSettingsContext, useLevelContext, useSetTimelinesContext, useElsContext } from '../context/useContexts';
 import { loadLevel } from '../util/loadLevel';
 import { allowDrop } from '../util/loadLevel';
 import SVG from '../components/SVG';
 import Character from '../components/Character';
 import CollisionTracker from '../components/CollisionTracker';
-import { addInteractivity } from '../util/addInteractivity';
 import { aniLevel } from '../util/aniLevel';
 
 import '../css/board.css';
@@ -17,6 +16,7 @@ const GameplayPage = () => {
 	const { settings } = useSettingsContext();
 	const { level } = useLevelContext();
 	const { setTimelines } = useSetTimelinesContext();
+	const { els } = useElsContext();
 	const difficultySpeed = settings.difficultySpeed;
 	const boardRef = useRef(null);
 
@@ -32,31 +32,25 @@ const GameplayPage = () => {
 	});
 
 	const handleSvgLoad = useCallback(async (svgElement) => {
-		if (boardRef.current && svgElement) {
+		if (els.elBoard && svgElement) {
 			// Setup level SVG
 			await loadLevel({
-				elBoard: boardRef.current,
+				elBoard: els.elBoard,
 				elSVG: svgElement,
 			});
 			// Create animation after level is loaded
 			aniLevel({
-				elBoard: boardRef.current,
+				elBoard: els.elBoard,
 				setTimelines,
 				difficultySpeed,
 			});
-			// // Setup level interactivity
-			// addInteractivity({
-			// 	elBoard: boardRef.current,
-			// 	levelState,
-			// 	setLevelState,
-			// });
 		}
-	}, [setTimelines, difficultySpeed]);
+	}, [els.elBoard, setTimelines, difficultySpeed]);
 
 	useEffect(() => {
-		if (boardRef.current) {
+		if (els.elBoard) {
 			return allowDrop({
-				elBoard: boardRef.current,
+				elBoard: els.elBoard,
 				debug,
 				setTimelines,
 				difficultySpeed,
@@ -64,8 +58,10 @@ const GameplayPage = () => {
 				setLevelState,
 			});
 		}
-	}, [debug, setTimelines, difficultySpeed]);
+	}, [els.elBoard, debug, setTimelines, difficultySpeed, levelState, setLevelState]);
 
+	console.log('DEBUG: rerendered');
+	
 	return (
 		<>
 			<CollisionTracker boardRef={boardRef} />

@@ -1,12 +1,16 @@
 import { useEffect } from 'react';
-import { useDebugContext } from '../context/useContexts';
+import { useElsContext } from '../context/useContexts';
 
 const CollisionTracker = ({ boardRef }) => {
-	const { debug } = useDebugContext();
+	const { setEls } = useElsContext();
 
-	console.log('CollisionTracker: boardRef', boardRef?.current);
-	// useEffect(() => {
-	// }, [boardRef]);
+	console.log('DEBUG: rendered');
+
+	useEffect(() => {
+		if (boardRef?.current) {
+			setEls(prev => ({ ...prev, elBoard: boardRef.current }));
+		}
+	}, [boardRef, setEls]);
 
 	return null;
 };

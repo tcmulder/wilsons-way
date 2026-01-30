@@ -4,6 +4,7 @@ import { StatusContextProvider } from './StatusContext';
 import { LevelContextProvider } from './LevelContext';
 import { CharacterContextProvider } from './CharacterContext';
 import { TimelinesContextProvider } from './TimelinesContext';
+import { ElsContextProvider } from './ElsContext';
 
 export function AppProviders({ children }) {
   return (
@@ -13,7 +14,9 @@ export function AppProviders({ children }) {
           <LevelContextProvider>
             <CharacterContextProvider>
               <TimelinesContextProvider>
-                {children}
+                <ElsContextProvider>
+                  {children}
+                </ElsContextProvider>
               </TimelinesContextProvider>
             </CharacterContextProvider>
           </LevelContextProvider>

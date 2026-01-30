@@ -1,4 +1,3 @@
-import { addInteractivity } from './addInteractivity';
 import { aniLevel } from './aniLevel';
 import { convertClassToData } from './convertClassToData';
 
@@ -55,7 +54,7 @@ export const loadLevel = async ({elBoard, elSVG}) => {
  * @param {Function} props.setLevelState Function to set level state
  * @return {Function} Cleanup function to remove event listeners
  */
-export const allowDrop = ({elBoard, debug, setTimelines, difficultySpeed, levelState, setLevelState}) => {
+export const allowDrop = ({elBoard, debug, setTimelines, difficultySpeed}) => {
 	if (!elBoard || !debug) return () => {};
 
 	const handleDrop = async (e) => {
@@ -80,12 +79,6 @@ export const allowDrop = ({elBoard, debug, setTimelines, difficultySpeed, levelS
 					elBoard,
 					setTimelines,
 					difficultySpeed,
-				});
-				// Setup level interactivity
-				addInteractivity({
-					elBoard,
-					levelState,
-					setLevelState,
 				});
 			};
 			reader.readAsText(file);
