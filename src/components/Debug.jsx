@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useGameContext } from '../context/useGameContext';
+import { useDebugContext, useStatusContext, useLevelContext, useCharacterContext, useTimelinesContext } from '../context/useContexts';
 import { doPause, doPlay } from '../util/doMovement';
 
 import '../css/debug.css';
@@ -49,11 +49,16 @@ const DebugCharacter = ({ character, setCharacter, path }) => {
 };
 
 export const Debug = () => {
-	const props = useGameContext();
+	const { debug } = useDebugContext();
+	const { status, setStatus } = useStatusContext();
+	const { level, setLevel } = useLevelContext();
+	const { character, setCharacter } = useCharacterContext();
+	const { timelines } = useTimelinesContext();
+	const props = { debug, status, setStatus, level, setLevel, character, setCharacter, timelines };
 	const navigate = useNavigate();
 	const path = useLocation().pathname;
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
-	if (!props.debug) {
+	if (!debug) {
 		return null;
 	}
 	

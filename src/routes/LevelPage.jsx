@@ -1,9 +1,10 @@
 import { useRef, useCallback, useEffect, useState } from 'react';
-import { useGameContext } from '../context/useGameContext';
+import { useDebugContext, useSettingsContext, useLevelContext, useSetTimelinesContext } from '../context/useContexts';
 import { loadLevel } from '../util/loadLevel';
 import { allowDrop } from '../util/loadLevel';
 import SVG from '../components/SVG';
 import Character from '../components/Character';
+import CollisionTracker from '../components/CollisionTracker';
 import { addInteractivity } from '../util/addInteractivity';
 import { aniLevel } from '../util/aniLevel';
 
@@ -12,7 +13,11 @@ import '../css/parallax.css';
 
 
 const GameplayPage = () => {
-	const { debug, level, setTimelines, settings: { difficultySpeed } } = useGameContext();
+	const { debug } = useDebugContext();
+	const { settings } = useSettingsContext();
+	const { level } = useLevelContext();
+	const { setTimelines } = useSetTimelinesContext();
+	const difficultySpeed = settings.difficultySpeed;
 	const boardRef = useRef(null);
 
 	const [levelState, setLevelState] = useState({
@@ -39,12 +44,12 @@ const GameplayPage = () => {
 				setTimelines,
 				difficultySpeed,
 			});
-			// Setup level interactivity
-			addInteractivity({
-				elBoard: boardRef.current,
-				levelState,
-				setLevelState,
-			});
+			// // Setup level interactivity
+			// addInteractivity({
+			// 	elBoard: boardRef.current,
+			// 	levelState,
+			// 	setLevelState,
+			// });
 		}
 	}, [setTimelines, difficultySpeed]);
 
@@ -63,6 +68,7 @@ const GameplayPage = () => {
 
 	return (
 		<>
+			<CollisionTracker boardRef={boardRef} />
 			<div className="sr-board" ref={boardRef}>
 				<SVG 
 					path={`${window.sr.url}public/svg/level-${level}.svg`} 

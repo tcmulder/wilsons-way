@@ -3,14 +3,14 @@ import { createRoot } from 'react-dom/client'
 import { MemoryRouter } from 'react-router-dom'
 import './css/global.css'
 import App from './App.jsx'
-import { GameContextProvider } from './context/GameContext.jsx'
+import { AppProviders } from './context/AppProviders'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <GameContextProvider>
+    <AppProviders>
       <MemoryRouter>
         <App />
       </MemoryRouter>
-    </GameContextProvider>
+    </AppProviders>
   </StrictMode>,
 )

@@ -1,12 +1,16 @@
 import { useRef, useCallback } from 'react';
-import { useGameContext } from '../context/useGameContext';
+import { useDebugContext, useSettingsContext, useStatusContext, useCharacterContext, useTimelinesContext } from '../context/useContexts';
 import SVG from './SVG';
 import { createAniSprite } from '../util/aniSprite';
 import { useCharacterMovement } from '../util/doMovement';
 import '../css/character.css';
 
 const Character = () => {
-	const { debug, status, character, setCharacter, setStatus, jump, timelines } = useGameContext();
+	const { debug } = useDebugContext();
+	const { jump } = useSettingsContext();
+	const { status, setStatus } = useStatusContext();
+	const { character, setCharacter } = useCharacterContext();
+	const { timelines } = useTimelinesContext();
 	const characterRef = useRef(null);
 	const characterSvgRef = useRef(null);
 	const characterSVG = `${window.sr.url}public/svg/character-${character.id}.svg`;
