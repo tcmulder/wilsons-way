@@ -41,22 +41,19 @@ const CollisionTracker = ({ boardRef }) => {
 			(obstacle) =>
 				obstacle.dataset.score && obstacle.dataset.score.startsWith('-'),
 		);
-		// Track unchanging elements from level to level
-		const fixedEls = {
+		// Update context with both
+		const newState = {
+			// fixed els (don't change per level)
 			elBoard,
 			elCharacter: elBoard?.nextElementSibling,
 			elCharacterCrashArea: elBoard?.nextElementSibling?.querySelector('.sr-character-crash'),
-		};
-		// Track elements that change from level to level
-		const dynamicEls = {
+			// dynamic els (change per level)
 			elShelves: Array.from(elShelves),
 			elObstacles,
 			elObstaclesNegative,
 		};
-		// Update context with both
-		const both = { ...fixedEls, ...dynamicEls };
-		setEls(prev => ({ ...prev, ...both }));
-		trackCollisions(both);
+		setEls(prev => ({ ...prev, ...newState }));
+		trackCollisions(newState);
 	}, [boardRef, setEls, currentLevelId]);
 
 	return null;
