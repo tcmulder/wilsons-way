@@ -1,23 +1,3 @@
-// /**
-//  * Apply scoring if an obstacle provides scoring data
-//  *
-//  * @param {HTMLElement} el The element to score (if it has scoring data)
-//  */
-// const checkCollisionScore = (el) => {
-// 	const score = parseInt(el.dataset.score);
-// 	const posOrNeg = score > 0 ? 'positive' : 'negative';
-// 	if (score) {
-// 		setScoreState(score, true);
-// 		showCharacterMessage(
-// 			`${posOrNeg === 'positive' ? '+' : ''}${score}`,
-// 			`is-${posOrNeg}`,
-// 		);
-// 		if (state.sounds.makeSFX && state.sounds.makeSound) {
-// 			toggleSFX(posOrNeg);
-// 		}
-// 	}
-// };
-
 /**
  * Check to see if two elements overlap
  *
@@ -41,21 +21,14 @@ const checkOverlap = (el1, el2) => {
  *
  * @param {HTMLElement[]} els Elements to check
  * @param {HTMLElement} elCharacterCrashArea The character crash area element
- * @param {Set<HTMLElement>} collided The set of collided elements
  */
-const checkCollisions = ({els, elCharacterCrashArea, collided, setLevelState}) => {
-	els.forEach((el) => {
+const checkCollisions = ({elCharacterCrashArea, elObstacles}) => {
+	elObstacles.forEach((el) => {
 		if (
-			!collided.has(el) &&
+			!el.classList.contains('sr-obstacle') &&
 			!el.hasAttribute('data-disabled') &&
 			checkOverlap(elCharacterCrashArea, el)
 		) {
-			setLevelState((latestState) => {
-				return {
-					...latestState,
-					collided: new Set(latestState.collided).add(el),
-				};
-			});
 			el.classList.add('is-collided');
 			// checkCollisionScore(el);
 			// checkCollisionMilestone(el);
@@ -63,6 +36,26 @@ const checkCollisions = ({els, elCharacterCrashArea, collided, setLevelState}) =
 		}
 	});
 };
+
+// /**
+//  * Apply scoring if an obstacle provides scoring data
+//  *
+//  * @param {HTMLElement} el The element to score (if it has scoring data)
+//  */
+// const checkCollisionScore = (el) => {
+// 	const score = parseInt(el.dataset.score);
+// 	const posOrNeg = score > 0 ? 'positive' : 'negative';
+// 	if (score) {
+// 		setScoreState(score, true);
+// 		showCharacterMessage(
+// 			`${posOrNeg === 'positive' ? '+' : ''}${score}`,
+// 			`is-${posOrNeg}`,
+// 		);
+// 		if (state.sounds.makeSFX && state.sounds.makeSound) {
+// 			toggleSFX(posOrNeg);
+// 		}
+// 	}
+// };
 
 // /**
 //  * Check collision milestones
@@ -181,43 +174,36 @@ const checkHitTheEnd = () => {
 
 /**
  * Track collisions
- * @param {Object} levelState The current level state
- * @param {Function} setLevelState Function to update level state
+ * @param {Object} els The elements to check for collisions
  */
-export const trackCollisions = (levelState, setLevelState) => {
-	// Store latest state in closure (will be updated via setLevelState)
-	let currentState = levelState;
+export const trackCollisions = (els) => {
 
 	// Use closure to capture state and setter for recursive calls
 	const checkTrackCollisions = () => {
-		const { elObstacles, elCharacterCrashArea, collided, status, isEnded } = currentState;
-
-		if (isEnded || !status) return;
-
-		// // Only check collisions when actually moving or jumping
-		const shouldCheck = status.move !== 'none' || status.jump !== 'none';
+		
+		// Only check collisions when actually moving or jumping
+		const shouldCheck = true;
 
 		if (shouldCheck) {
 			// As we move check to see if we hit anything (mostly x axis)
-			if (status.move !== 'none') {
-				checkCollisions({els: elObstacles, elCharacterCrashArea, collided, setLevelState});
+			checkCollisions(els);
 				// checkHitTheEnd();
-			}
 			// // If we're not jumping up then let gravity take us down
 			// if (status.jump !== 'up') {
 			// 	doGravity();
 			// }
 		}
 
-		// Do this as fast and efficiently as possible
 		// Update closure with latest state before next frame (without causing re-render)
-		if (!isEnded && setLevelState) {
-			setLevelState((latestState) => {
-				currentState = latestState; // Update closure variable
-				return latestState; // Return unchanged to avoid re-render
-			});
-		}
-
+		// if (!isEnded && setLevelState) {
+		// 	setLevelState((latestState) => {
+		// 		currentState = latestState; // Update closure variable
+		// 		return latestState; // Return unchanged to avoid re-render
+		// 	});
+		// }
+		
+		// Do this as fast and efficiently as possible
+		const isEnded = false;
 		if (!isEnded) {
 			requestAnimationFrame(checkTrackCollisions);
 		}

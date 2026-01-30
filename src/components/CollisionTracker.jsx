@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useElsContext, useLevelContext } from '../context/useContexts';
+import { trackCollisions } from '../util/handleCollisions';
 
 const CollisionTracker = ({ boardRef }) => {
 	const { setEls } = useElsContext();
@@ -53,7 +54,9 @@ const CollisionTracker = ({ boardRef }) => {
 			elObstaclesNegative,
 		};
 		// Update context with both
-		setEls(prev => ({ ...prev, ...fixedEls, ...dynamicEls }));
+		const both = { ...fixedEls, ...dynamicEls };
+		setEls(prev => ({ ...prev, ...both }));
+		trackCollisions(both);
 	}, [boardRef, setEls, currentLevelId]);
 
 	return null;
