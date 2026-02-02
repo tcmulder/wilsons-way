@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useDebugContext, useStatusContext, useLevelContext, useCharacterContext, useTimelinesContext } from '../context/useContexts';
 import { doPause, doPlay } from '../util/doMovement';
@@ -58,6 +58,13 @@ export const Debug = () => {
 	const navigate = useNavigate();
 	const path = useLocation().pathname;
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
+	
+	useEffect(() => {
+		if (debug?.level) {
+			setLevel(parseInt(debug.level));
+		}
+	}, [debug.level, setLevel]);
+	
 	if (!debug) {
 		return null;
 	}
