@@ -42,18 +42,21 @@ const doJump = ({characterRef, setCharacterStatus, characterStatus, jump, elevat
 
 	tl.to(el, {
 		onStart: () => setCharacterStatus(prev => ({ ...prev, jump: 'up' })),
-		onUpdate: () => {
-			console.log('🦘', elevationRef.current);
-		},
 		y: `-${jump.height + elevationRef.current.below}em`,
 		duration: jump.hangtime,
 		ease: "power1.out",
-	}).to(el, {
-		onStart: () => setCharacterStatus(prev => ({ ...prev, jump: 'down' })),
-		onComplete: () => setCharacterStatus(prev => ({ ...prev, jump: 'none' })),
-		y: `-${elevationRef.current.below}em`,
-		duration: jump.hangtime,
-		ease: "power1.in",
+	}).add(() => {
+		// Add the "down" tween here so we read elevationRef.current.below when
+		// the down phase starts, not when the timeline was built (so landing
+		// uses updated elevation after moving during the jump).
+		const landingY = `-${elevationRef.current.below}em`;
+		tl.to(el, {
+			onStart: () => setCharacterStatus(prev => ({ ...prev, jump: 'down' })),
+			onComplete: () => setCharacterStatus(prev => ({ ...prev, jump: 'none' })),
+			y: landingY,
+			duration: jump.hangtime,
+			ease: "power1.in",
+		});
 	});
 }
 
