@@ -29,6 +29,16 @@ export const doPlay = ({timelines, setCharacterStatus, direction = 'forward'}) =
 }
 
 /**
+ * Fall off the edge of a shelf to the next one down
+ * @param {Object} props The properties object
+ * @param {Object} props.elCharacter The character DOM element
+ * @param {Object} props.elevationRef The elevation ref object
+ */
+export const doGravity = ({elCharacter, elevationRef}) => {
+	console.log('🤞')
+}
+
+/**
  * Jump
  */
 const doJump = ({characterRef, setCharacterStatus, characterStatus, jump, elevationRef}) => {

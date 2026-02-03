@@ -1,3 +1,5 @@
+import { doGravity } from './doMovement';
+
 /**
  * Check to see if two elements overlap
  *
@@ -261,6 +263,7 @@ export const trackCollisions = ({elsRef, elevationRef}) => {
 			// As we move check to see if we hit anything (mostly x axis)
 			checkCollisions(els);
 			checkElevation(els, elevationRef);
+			doGravity({ elCharacter: els.elCharacter, elevationRef });
 		}
 
 		if (!cancelled) {
