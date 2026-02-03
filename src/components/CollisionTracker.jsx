@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
-import { useElsContext, useLevelContext } from '../context/useContexts';
+import { useGameplayContext, useLevelContext } from '../context/useContexts';
 import { trackCollisions } from '../util/handleCollisions';
 
 const CollisionTracker = ({ boardRef }) => {
-	const { setEls } = useElsContext();
+	const { setEls } = useGameplayContext();
 	const { currentLevelId } = useLevelContext();
 
 	useEffect(() => {

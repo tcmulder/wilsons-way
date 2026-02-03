@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useDebugContext, useStatusContext, useLevelContext, useCharacterContext, useTimelinesContext } from '../context/useContexts';
+import { useDebugContext, useGameplayContext, useLevelContext } from '../context/useContexts';
 import { doPause, doPlay } from '../util/doMovement';
 
 import '../css/debug.css';
@@ -50,10 +50,8 @@ const DebugCharacter = ({ character, setCharacter, path }) => {
 
 export const Debug = () => {
 	const { debug } = useDebugContext();
-	const { status, setStatus } = useStatusContext();
+	const { status, setStatus, character, setCharacter, timelines } = useGameplayContext();
 	const { level, setLevel } = useLevelContext();
-	const { character, setCharacter } = useCharacterContext();
-	const { timelines } = useTimelinesContext();
 	const props = { debug, status, setStatus, level, setLevel, character, setCharacter, timelines };
 	const navigate = useNavigate();
 	const path = useLocation().pathname;

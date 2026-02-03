@@ -1,5 +1,5 @@
 import { useRef, useCallback, useEffect } from 'react';
-import { useDebugContext, useSettingsContext, useLevelContext, useSetTimelinesContext, useElsContext } from '../context/useContexts';
+import { useDebugContext, useSettingsContext, useLevelContext, useGameplayContext } from '../context/useContexts';
 import { loadLevel } from '../util/loadLevel';
 import { allowDrop } from '../util/loadLevel';
 import SVG from '../components/SVG';
@@ -15,8 +15,8 @@ const GameplayPage = () => {
 	const { debug } = useDebugContext();
 	const { settings } = useSettingsContext();
 	const { level, setCurrentLevelId } = useLevelContext();
-	const { setTimelines } = useSetTimelinesContext();
-	const { els } = useElsContext();
+	const { setTimelinesStable, els } = useGameplayContext();
+	const { setTimelines } = setTimelinesStable;
 	const difficultySpeed = settings.difficultySpeed;
 	const boardRef = useRef(null);
 
