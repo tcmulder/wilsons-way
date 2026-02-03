@@ -216,26 +216,11 @@ const checkHitTheEnd = () => {
 // };
 
 /**
- * Check elevation
- * @param {Object} els The elements to check
- * @return {Object} The elevation
- */
-const checkElevation = (els) => {
-	const { elCharacter, elShelves } = els;
-	const elv = { above: 0, below: 0 };
-	const elsNearest = getNearestShelves(elCharacter, elShelves);
-	console.log('🤞', elsNearest)
-	return elv;
-}
-
-
-/**
  * Track collisions
  * @param {Object} els The elements to check for collisions
- * @param {Function} setElevation Function to set the elevation
  * @returns {Function} Cleanup function to stop the loop
  */
-export const trackCollisions = (els, setElevation) => {
+export const trackCollisions = (els) => {
 	let cancelled = false;
 
 	// Use closure to capture state and setter for recursive calls
@@ -247,7 +232,6 @@ export const trackCollisions = (els, setElevation) => {
 		if (shouldCheck) {
 			// As we move check to see if we hit anything (mostly x axis)
 			checkCollisions(els);
-			setElevation(checkElevation(els));
 		}
 
 		if (!cancelled) {

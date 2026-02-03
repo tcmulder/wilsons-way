@@ -63,7 +63,7 @@ export const Debug = () => {
 		if (debug?.level) {
 			setLevel(parseInt(debug.level));
 		}
-	}, [debug.level, setLevel]);
+	}, [debug?.level, setLevel]);
 	
 	if (!debug) {
 		return null;

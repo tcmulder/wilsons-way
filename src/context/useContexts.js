@@ -8,7 +8,6 @@ export const CharacterContext = createContext();
 export const TimelinesContext = createContext();
 export const SetTimelinesContext = createContext();
 export const ElsContext = createContext();
-export const ElevationContext = createContext();
 
 export function useDebugContext() {
   return useContext(DebugContext);
@@ -36,10 +35,6 @@ export function useTimelinesContext() {
 
 export function useElsContext() {
   return useContext(ElsContext);
-}
-
-export function useElevationContext() {
-  return useContext(ElevationContext);
 }
 
 /** Use when you only need setTimelines. Stable value = no re-renders when timelines array updates. */
