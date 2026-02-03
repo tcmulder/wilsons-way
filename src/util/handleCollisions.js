@@ -25,7 +25,7 @@ const checkOverlap = (el1, el2) => {
  * @param {HTMLElement[]} els Elements to check (e.g. shelves)
  * @return {{ elAbove: HTMLElement|null, elBelow: HTMLElement|null }}
  */
-export const getNearestShelves = (el, els, fudge = 0.5) => {
+export const getNearestShelves = (el, els, fudge = 2) => {
 	const charRect = el.getBoundingClientRect();
 	let elAbove = null;
 	let elBelow = null;

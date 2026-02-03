@@ -16,7 +16,7 @@ const GameplayPage = () => {
 	const { settings } = useSettingsContext();
 	const { level, setCurrentLevelId } = useLevelContext();
 	const { timelinesRef, elsRef } = useGameplayContext();
-	const difficultySpeed = settings.difficultySpeed;
+	const difficultySpeed = settings.difficultySpeed * 0.75;
 	const gameplayRef = useRef(null);
 
 	const handleSvgLoad = useCallback(async (svgElement) => {
