@@ -47,8 +47,6 @@ const GameplayPage = () => {
 			});
 		}
 	}, [elsRef, debug, timelinesRef, difficultySpeed, setCurrentLevelId]);
-
-	console.log('DEBUG: rerendered', elsRef.current);
 	
 	return (
 		<>
