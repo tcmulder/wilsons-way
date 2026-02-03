@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useDebugContext, useGameplayContext, useLevelContext } from '../context/useContexts';
+import { useDebugContext, useGameplayContext, useLevelContext, useCharacterContext } from '../context/useContexts';
 import { doPause, doPlay } from '../util/doMovement';
 
 import '../css/debug.css';
@@ -20,11 +20,11 @@ const DebugNavigation = ({navigate}) => {
 	);
 }
 
-const DebugPlayPause = ({ character, timelines, status, setStatus, path, navigate, setLevel }) => {
-	if (path === '/gameplay' && status.pause === 'pause') {
-		return <button onClick={(e) => { e.preventDefault(); doPlay({timelines: [...timelines, character.timeline], setStatus, direction: 'forward'}); }}>▶︎</button>
-	} else if (path === '/gameplay' && status.pause === 'none') {
-		return <button onClick={(e) => { e.preventDefault(); doPause({timelines: [...timelines, character.timeline], setStatus}); }}>⏸︎</button>
+const DebugPlayPause = ({ timelinesRef, characterStatus, setCharacterStatus, path, navigate, setLevel }) => {
+	if (path === '/gameplay' && characterStatus.pause === 'pause') {
+		return <button onClick={(e) => { e.preventDefault(); doPlay({timelines: timelinesRef.current, setCharacterStatus, direction: 'forward'}); }}>▶︎</button>
+	} else if (path === '/gameplay' && characterStatus.pause === 'none') {
+		return <button onClick={(e) => { e.preventDefault(); doPause({timelines: timelinesRef.current, setCharacterStatus}); }}>⏸︎</button>
 	} else {
 		return <button onClick={(e) => { e.preventDefault(); navigate('/gameplay'); setLevel(1); }}>⏯︎</button>
 	}
@@ -39,22 +39,32 @@ const DebugLevel = ({ level, setLevel, path }) => {
 	);
 };
 
-const DebugCharacter = ({ character, setCharacter, path }) => {
+const DebugCharacter = ({ characterId, setCharacterId, path }) => {
 	if (path !== '/gameplay') return null;
 	return (
 		<span>
-			<button onClick={(e) => { e.preventDefault(); setCharacter({...character, id: character.id - 1}); }}>←</button>char{character.id}<button onClick={(e) => { e.preventDefault(); setCharacter({...character, id: character.id + 1}); }}>→</button>
+			<button onClick={(e) => { e.preventDefault(); setCharacterId(characterId - 1); }}>←</button>char{characterId}<button onClick={(e) => { e.preventDefault(); setCharacterId(characterId + 1); }}>→</button>
 		</span>
 	);
 };
 
 export const Debug = () => {
 	const { debug } = useDebugContext();
-	const { status, setStatus, character, setCharacter, timelines } = useGameplayContext();
+	const { characterId, setCharacterId, characterStatus, setCharacterStatus } = useCharacterContext();
+	const { timelinesRef } = useGameplayContext();
 	const { level, setLevel } = useLevelContext();
-	const props = { debug, status, setStatus, level, setLevel, character, setCharacter, timelines };
 	const navigate = useNavigate();
 	const path = useLocation().pathname;
+	const props = {
+		debug,
+		characterStatus,
+		setCharacterStatus,
+		timelinesRef,
+		level,
+		setLevel,
+		characterId,
+		setCharacterId
+	};
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	
 	useEffect(() => {

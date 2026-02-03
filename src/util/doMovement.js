@@ -4,16 +4,16 @@ import { gsap } from 'gsap';
 /**
  * Pause playback
  */
-export const doPause = ({timelines, setStatus}) => {
+export const doPause = ({timelines, setCharacterStatus}) => {
 	if (!timelines.length) return;
 	timelines.forEach(timeline => timeline.pause());
-	setStatus(prev => ({...prev, pause: 'pause'}));
+	setCharacterStatus(prev => ({...prev, pause: 'pause'}));
 }
 
 /**
  * Play playback
  */
-export const doPlay = ({timelines, setStatus, direction = 'forward'}) => {
+export const doPlay = ({timelines, setCharacterStatus, direction = 'forward'}) => {
 	if (!timelines?.length) return;
 
 	timelines.forEach(timeline => {
@@ -25,15 +25,15 @@ export const doPlay = ({timelines, setStatus, direction = 'forward'}) => {
 		}
 	});
 
-	setStatus(prev => ({...prev, pause: 'none'}));
+	setCharacterStatus(prev => ({...prev, pause: 'none'}));
 }
 
 /**
  * Jump
  */
-const doJump = ({characterRef, status, setStatus, jump}) => {
+const doJump = ({characterRef, setCharacterStatus, characterStatus, jump}) => {
 	// Prevent double-jumps while already mid-air
-	if (status?.jump !== 'none') return;
+	if (characterStatus?.jump !== 'none') return;
 	if (!characterRef?.current) return;
 
 	const el = characterRef.current;
@@ -41,7 +41,7 @@ const doJump = ({characterRef, status, setStatus, jump}) => {
 	const tl = gsap.timeline();
 
 	tl.to(el, {
-		onStart: () => setStatus(prev => ({ ...prev, jump: 'up' })),
+		onStart: () => setCharacterStatus(prev => ({ ...prev, jump: 'up' })),
 		onUpdate: () => {
 			console.log('🦘')
 		},
@@ -49,8 +49,8 @@ const doJump = ({characterRef, status, setStatus, jump}) => {
 		duration: jump.hangtime,
 		ease: "power1.out",
 	}).to(el, {
-		onStart: () => setStatus(prev => ({ ...prev, jump: 'down' })),
-		onComplete: () => setStatus(prev => ({ ...prev, jump: 'none' })),
+		onStart: () => setCharacterStatus(prev => ({ ...prev, jump: 'down' })),
+		onComplete: () => setCharacterStatus(prev => ({ ...prev, jump: 'none' })),
 		y: `-${5.5}em`,
 		duration: jump.hangtime,
 		ease: "power1.in",
@@ -60,12 +60,12 @@ const doJump = ({characterRef, status, setStatus, jump}) => {
 /**
  * Run
  */
-const doRun = ({direction, timelines, setStatus}) => {
+const doRun = ({direction, timelines, setCharacterStatus}) => {
 	// Update movement direction in status
-	setStatus(prev => ({ ...prev, move: direction }));
+	setCharacterStatus(prev => ({ ...prev, move: direction }));
 
 	// Control GSAP timelines based on direction (forward or backward)
-	doPlay({ timelines, setStatus, direction });
+	doPlay({ timelines, setCharacterStatus, direction });
 }
 
 /**
@@ -73,17 +73,18 @@ const doRun = ({direction, timelines, setStatus}) => {
  * @param {Object} props The properties object
  * @param {Object} props.debug Whether debug mode is enabled
  * @param {Object} props.characterRef The character DOM element
- * @param {Object} props.status The status object
- * @param {Function} props.setStatus Function to set the status
+ * @param {Object} props.characterStatus The character status (move, jump, pause)
+ * @param {Function} props.setCharacterStatus Setter for character status
+ * @param {Object} props.timelinesRef The timelines ref object
  * @param {Object} props.jump The jump object (height in em units and hangtime in seconds)
  */
-export function useCharacterMovement({ debug, characterRef, status, setStatus, jump, timelines }) {
+export function useCharacterMovement({ debug, characterRef, characterStatus, setCharacterStatus, jump, timelinesRef }) {
   // Auto-play timelines when debug autoplay is not explicitly disabled (autoplay !== '0')
   useEffect(() => {
 	if (debug?.autoplay !== '0') {
-	  doPlay({ timelines, setStatus, direction: 'forward' });
+	  doPlay({ timelines: timelinesRef.current, setCharacterStatus, direction: 'forward' });
 	}
-  }, [debug, timelines, setStatus]);
+  }, [debug, timelinesRef, setCharacterStatus]);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -91,28 +92,28 @@ export function useCharacterMovement({ debug, characterRef, status, setStatus, j
 		if (e.repeat) return;
 		if (e.key === 'ArrowUp' || e.key === ' ') {
 			e.preventDefault();
-			doJump({ characterRef, status, setStatus, jump });
+			doJump({ characterRef, setCharacterStatus, characterStatus, jump });
 		}
 
 		if (debug?.autoplay === '0') {
 		  if (e.key === 'ArrowDown') {
 			e.preventDefault();
 			// Toggle play/pause on each ArrowDown press
-			if (status.pause === 'pause') {
+			if (characterStatus.pause === 'pause') {
 			  // Currently paused: play forward
-			  doRun({ direction: 'forward', timelines, setStatus });
+			  doRun({ direction: 'forward', timelines: timelinesRef.current, setCharacterStatus });
 			} else {
 			  // Currently playing: pause
-			  doPause({ timelines, setStatus });
+			  doPause({ timelines: timelinesRef.current, setCharacterStatus });
 			}
 		  }
 		  if (e.key === 'ArrowRight') {
 			e.preventDefault();
-			doRun({ direction: 'forward', timelines, setStatus });
+			doRun({ direction: 'forward', timelines: timelinesRef.current, setCharacterStatus });
 		  }
 		  if (e.key === 'ArrowLeft') {
 			e.preventDefault();
-			doRun({ direction: 'backward', timelines, setStatus });
+			doRun({ direction: 'backward', timelines: timelinesRef.current, setCharacterStatus });
 		  }
 		}
 	};
@@ -121,7 +122,7 @@ export function useCharacterMovement({ debug, characterRef, status, setStatus, j
 	  if (debug?.autoplay === '0') {
 		if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
 		  e.preventDefault();
-		  doPause({ timelines, setStatus });
+		  doPause({ timelines: timelinesRef.current, setCharacterStatus });
 		}
 	  }
 	};
@@ -132,5 +133,5 @@ export function useCharacterMovement({ debug, characterRef, status, setStatus, j
 	  window.removeEventListener('keydown', handleKeyDown);
 	  window.removeEventListener('keyup', handleKeyUp);
 	};
-  }, [debug, status, setStatus, characterRef, jump, timelines]);
+  }, [debug, characterStatus, setCharacterStatus, characterRef, jump, timelinesRef]);
 }

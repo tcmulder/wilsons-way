@@ -3,6 +3,7 @@ import { createContext, useContext } from 'react';
 export const DebugContext = createContext();
 export const SettingsContext = createContext();
 export const LevelContext = createContext();
+export const CharacterContext = createContext();
 export const GameplayContext = createContext();
 
 export function useDebugContext() {
@@ -11,6 +12,10 @@ export function useDebugContext() {
 
 export function useSettingsContext() {
   return useContext(SettingsContext);
+}
+
+export function useCharacterContext() {
+  return useContext(CharacterContext);
 }
 
 export function useLevelContext() {

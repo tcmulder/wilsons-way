@@ -15,41 +15,40 @@ const GameplayPage = () => {
 	const { debug } = useDebugContext();
 	const { settings } = useSettingsContext();
 	const { level, setCurrentLevelId } = useLevelContext();
-	const { setTimelinesStable, els } = useGameplayContext();
-	const { setTimelines } = setTimelinesStable;
+	const { timelinesRef, elsRef } = useGameplayContext();
 	const difficultySpeed = settings.difficultySpeed;
 	const boardRef = useRef(null);
 
 	const handleSvgLoad = useCallback(async (svgElement) => {
-		if (els.elBoard && svgElement) {
+		if (elsRef.current.elBoard && svgElement) {
 			// Setup level SVG
 			await loadLevel({
-				elBoard: els.elBoard,
+				elBoard: elsRef.current.elBoard,
 				elSVG: svgElement,
 			});
 			// Create animation after level is loaded
 			aniLevel({
-				elBoard: els.elBoard,
-				setTimelines,
+				elBoard: elsRef.current.elBoard,
+				setTimelines: (timelines) => { timelinesRef.current = timelines; },
 				difficultySpeed,
 			});
 			setCurrentLevelId(Date.now());
 		}
-	}, [els.elBoard, setTimelines, difficultySpeed, setCurrentLevelId]);
+	}, [elsRef, timelinesRef, difficultySpeed, setCurrentLevelId]);
 
 	useEffect(() => {
-		if (els.elBoard) {
+		if (elsRef.current.elBoard) {
 			return allowDrop({
-				elBoard: els.elBoard,
+				elBoard: elsRef.current.elBoard,
 				debug,
-				setTimelines,
+				setTimelines: (timelines) => { timelinesRef.current = timelines; },
 				difficultySpeed,
 				onLevelLoaded: () => setCurrentLevelId(Date.now()),
 			});
 		}
-	}, [els.elBoard, debug, setTimelines, difficultySpeed, setCurrentLevelId]);
+	}, [elsRef, debug, timelinesRef, difficultySpeed, setCurrentLevelId]);
 
-	console.log('DEBUG: rerendered', els);
+	console.log('DEBUG: rerendered', elsRef.current);
 	
 	return (
 		<>

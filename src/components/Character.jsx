@@ -1,5 +1,5 @@
 import { useRef, useCallback } from 'react';
-import { useDebugContext, useSettingsContext, useGameplayContext } from '../context/useContexts';
+import { useDebugContext, useSettingsContext, useCharacterContext, useGameplayContext } from '../context/useContexts';
 import SVG from './SVG';
 import { createAniSprite } from '../util/aniSprite';
 import { useCharacterMovement } from '../util/doMovement';
@@ -8,23 +8,24 @@ import '../css/character.css';
 const Character = () => {
 	const { debug } = useDebugContext();
 	const { jump } = useSettingsContext();
-	const { status, setStatus, character, setCharacter, timelines } = useGameplayContext();
+	const { characterId, characterStatus, setCharacterStatus } = useCharacterContext();
+	const { timelinesRef } = useGameplayContext();
 	const characterRef = useRef(null);
 	const characterSvgRef = useRef(null);
-	const characterSVG = `${window.sr.url}public/svg/character-${character.id}.svg`;
+	const characterSVG = `${window.sr.url}public/svg/character-${characterId}.svg`;
 
 	const handleSvgLoad = useCallback((svgElement) => {
 		if (characterSvgRef.current && svgElement) {
 			characterSvgRef.current.replaceChildren(svgElement);
-			const timeline = createAniSprite({elParent: characterSvgRef.current, status});
-			setCharacter(prev => ({...prev, timeline}));
+			const timeline = createAniSprite({elParent: characterSvgRef.current, status: characterStatus});
+			timelinesRef.current = [...timelinesRef.current, timeline];
 		}
-	}, [setCharacter, character.id, status]);
+	}, [characterStatus, timelinesRef]);
 
-	useCharacterMovement({ debug, status, setStatus, characterRef, jump, timelines });
+	useCharacterMovement({ debug, characterStatus, setCharacterStatus, characterRef, jump, timelinesRef });
 
 	return (
-		<div ref={characterRef} className="sr-character" tabIndex="0" data-move={status.move} data-jump={status.jump} data-pause={status.pause}>
+		<div ref={characterRef} className="sr-character" tabIndex="0" data-move={characterStatus.move} data-jump={characterStatus.jump} data-pause={characterStatus.pause}>
 			<div className="sr-character-svg" ref={characterSvgRef}>
 				<SVG path={characterSVG} onSvgLoad={handleSvgLoad} />
 			</div>
