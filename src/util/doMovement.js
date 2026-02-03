@@ -31,7 +31,7 @@ export const doPlay = ({timelines, setCharacterStatus, direction = 'forward'}) =
 /**
  * Jump
  */
-const doJump = ({characterRef, setCharacterStatus, characterStatus, jump}) => {
+const doJump = ({characterRef, setCharacterStatus, characterStatus, jump, elevationRef}) => {
 	// Prevent double-jumps while already mid-air
 	if (characterStatus?.jump !== 'none') return;
 	if (!characterRef?.current) return;
@@ -43,15 +43,15 @@ const doJump = ({characterRef, setCharacterStatus, characterStatus, jump}) => {
 	tl.to(el, {
 		onStart: () => setCharacterStatus(prev => ({ ...prev, jump: 'up' })),
 		onUpdate: () => {
-			console.log('🦘')
+			console.log('🦘', elevationRef.current);
 		},
-		y: `-${jump.height}em`,
+		y: `-${jump.height + elevationRef.current.below}em`,
 		duration: jump.hangtime,
 		ease: "power1.out",
 	}).to(el, {
 		onStart: () => setCharacterStatus(prev => ({ ...prev, jump: 'down' })),
 		onComplete: () => setCharacterStatus(prev => ({ ...prev, jump: 'none' })),
-		y: `-${5.5}em`,
+		y: `-${elevationRef.current.below}em`,
 		duration: jump.hangtime,
 		ease: "power1.in",
 	});
@@ -78,7 +78,7 @@ const doRun = ({direction, timelines, setCharacterStatus}) => {
  * @param {Object} props.timelinesRef The timelines ref object
  * @param {Object} props.jump The jump object (height in em units and hangtime in seconds)
  */
-export function useCharacterMovement({ debug, characterRef, characterStatus, setCharacterStatus, jump, timelinesRef }) {
+export function useCharacterMovement({ debug, characterRef, characterStatus, setCharacterStatus, jump, timelinesRef, elevationRef }) {
   // Auto-play timelines when debug autoplay is not explicitly disabled (autoplay !== '0')
   useEffect(() => {
 	if (debug?.autoplay !== '0') {
@@ -92,7 +92,7 @@ export function useCharacterMovement({ debug, characterRef, characterStatus, set
 		if (e.repeat) return;
 		if (e.key === 'ArrowUp' || e.key === ' ') {
 			e.preventDefault();
-			doJump({ characterRef, setCharacterStatus, characterStatus, jump });
+			doJump({ characterRef, setCharacterStatus, characterStatus, jump, elevationRef });
 		}
 
 		if (debug?.autoplay === '0') {

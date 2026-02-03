@@ -3,7 +3,7 @@ import { useGameplayContext, useLevelContext } from '../context/useContexts';
 import { trackCollisions } from '../util/handleCollisions';
 
 const CollisionTracker = ({ boardRef }) => {
-	const { elsRef } = useGameplayContext();
+	const { elsRef, elevationRef } = useGameplayContext();
 	const { currentLevelId } = useLevelContext();
 
 	useEffect(() => {
@@ -53,11 +53,11 @@ const CollisionTracker = ({ boardRef }) => {
 			elObstaclesNegative,
 		};
 		elsRef.current = { ...elsRef.current, ...newState };
-		const stopTracking = trackCollisions(newState);
+		const stopTrack = trackCollisions({elsRef, elevationRef});
 		return () => {
-			stopTracking();
+			stopTrack();
 		};
-	}, [boardRef, elsRef, currentLevelId]);
+	}, [boardRef, elsRef, currentLevelId, elevationRef]);
 
 	return null;
 };

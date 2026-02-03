@@ -21,12 +21,12 @@ const checkOverlap = (el1, el2) => {
  *
  * @param {HTMLElement}   el  Element to look from (e.g. character)
  * @param {HTMLElement[]} els Elements to check (e.g. shelves)
- * @return {{ above: HTMLElement|null, below: HTMLElement|null }}
+ * @return {{ elAbove: HTMLElement|null, elBelow: HTMLElement|null }}
  */
 export const getNearestShelves = (el, els, fudge = 0.5) => {
 	const charRect = el.getBoundingClientRect();
-	let above = null;
-	let below = null;
+	let elAbove = null;
+	let elBelow = null;
 
 	for (const shelf of els) {
 		const shelfRect = shelf.getBoundingClientRect();
@@ -38,25 +38,25 @@ export const getNearestShelves = (el, els, fudge = 0.5) => {
 
 		// Get the shelf above the character
 		if (shelfRect.bottom <= charRect.top) {
-			if (!above || shelfRect.bottom > above.getBoundingClientRect().bottom) {
-				above = shelf;
+			if (!elAbove || shelfRect.bottom > elAbove.getBoundingClientRect().bottom) {
+				elAbove = shelf;
 			}
 		}
 
-		// Get shelf below the ccharacter
+		// Get shelf below the character
 		if (shelfRect.top >= charRect.bottom) {
-			if (!below || shelfRect.top < below.getBoundingClientRect().top) {
-				below = shelf;
+			if (!elBelow || shelfRect.top < elBelow.getBoundingClientRect().top) {
+				elBelow = shelf;
 			}
 		}
 	}
 
 	// Default to the last shelf (the sidewalk)
-	if (below === null && els.length > 0) {
-		below = els.at(-1);
+	if (elBelow === null && els.length > 0) {
+		elBelow = els.at(-1);
 	}
 
-	return { above, below };
+	return { elAbove, elBelow };
 };
 
 /**
@@ -216,12 +216,40 @@ const checkHitTheEnd = () => {
 // };
 
 /**
+ * 
+ * @param {*} els 
+ * @param {*} elevationRef 
+ */
+const pxToEm = (px, basePx = 16) => {
+	return px / basePx;
+}
+
+const checkElevation = (els, elevationRef) => {
+	const { elCharacter, elShelves, elBoard } = els;
+	const { elAbove, elBelow } = getNearestShelves(elCharacter, elShelves);
+	const fontSize = parseFloat(getComputedStyle(elBoard).fontSize);
+	const localElevation = { above: 0, below: 0 }
+	if (elAbove) {
+		localElevation.above = pxToEm(elBoard.getBoundingClientRect().height - elAbove.getBoundingClientRect().bottom, fontSize);
+	} else {
+		localElevation.above = pxToEm(elBoard.getBoundingClientRect().height, fontSize);
+	}
+	if (elBelow) {
+		localElevation.below = pxToEm(elBoard.getBoundingClientRect().height - elBelow.getBoundingClientRect().top, fontSize);
+	}
+	elevationRef.current = { ...elevationRef.current, ...localElevation };
+}
+
+/**
  * Track collisions
- * @param {Object} els The elements to check for collisions
+ * @param {Object} props The properties object
+ * @param {Object} props.elsRef The elements to check for collisions
+ * @param {Object} props.elevationRef The elevation to check for collisions
  * @returns {Function} Cleanup function to stop the loop
  */
-export const trackCollisions = (els) => {
+export const trackCollisions = ({elsRef, elevationRef}) => {
 	let cancelled = false;
+	const els = elsRef.current;
 
 	// Use closure to capture state and setter for recursive calls
 	const checkTrackCollisions = () => {
@@ -232,6 +260,7 @@ export const trackCollisions = (els) => {
 		if (shouldCheck) {
 			// As we move check to see if we hit anything (mostly x axis)
 			checkCollisions(els);
+			checkElevation(els, elevationRef);
 		}
 
 		if (!cancelled) {

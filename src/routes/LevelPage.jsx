@@ -4,7 +4,7 @@ import { loadLevel } from '../util/loadLevel';
 import { allowDrop } from '../util/loadLevel';
 import SVG from '../components/SVG';
 import Character from '../components/Character';
-import CollisionTracker from '../components/CollisionTracker';
+import Gameplay from '../components/Gameplay';
 import { aniLevel } from '../util/aniLevel';
 
 import '../css/board.css';
@@ -50,7 +50,7 @@ const GameplayPage = () => {
 	
 	return (
 		<div className="sr-gameplay" ref={gameplayRef}>
-			<CollisionTracker boardRef={gameplayRef} />
+			<Gameplay boardRef={gameplayRef} />
 			<div className="sr-board">
 				<SVG 
 					path={`${window.sr.url}public/svg/level-${level}.svg`} 
