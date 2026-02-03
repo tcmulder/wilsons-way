@@ -10,14 +10,27 @@ export const trackMovement = (elsRef, elevationRef) => {
 	if (!els) return;
 	checkCollisions(els);
 	checkElevation(els, elevationRef);
-	doGravity(els);
+	doGravity(els, elevationRef);
 }
 
 /**
  * Fall off the edge of a shelf to the next one down
  */
-const doGravity = (els) => {
-	console.log('🤞', 'checkig gravity', els)
+const doGravity = (els, elevationRef) => {
+	const { elCharacter } = els;
+	const { isNew, below } = elevationRef.current;
+	if(isNew) {
+		const tl = gsap.timeline();
+		const landingY = `-${below}em`;
+		tl.to(elCharacter, {
+			// onStart: () => setCharacterStatus(prev => ({ ...prev, jump: 'down' })),
+			// onComplete: () => setCharacterStatus(prev => ({ ...prev, jump: 'none' })),
+			y: landingY,
+			// duration: jump.hangtime,
+			duration: 0.5,
+			ease: "power1.in",
+		});
+	}
 }
 
 /**
@@ -70,9 +83,6 @@ const doJump = ({characterRef, setCharacterStatus, characterStatus, jump, elevat
 		duration: jump.hangtime,
 		ease: "power1.out",
 	}).add(() => {
-		// Add the "down" tween here so we read elevationRef.current.below when
-		// the down phase starts, not when the timeline was built (so landing
-		// uses updated elevation after moving during the jump).
 		const landingY = `-${elevationRef.current.below}em`;
 		tl.to(elCharacter, {
 			onStart: () => setCharacterStatus(prev => ({ ...prev, jump: 'down' })),

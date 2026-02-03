@@ -228,14 +228,28 @@ export const checkElevation = (els, elevationRef) => {
 	const { elCharacter, elShelves, elBoard } = els;
 	const { elAbove, elBelow } = getNearestShelves(elCharacter, elShelves);
 	const fontSize = parseFloat(getComputedStyle(elBoard).fontSize);
-	const localElevation = { above: 0, below: 0 }
+	const localElevation = {
+		above: 0,
+		below: 0,
+		isNew: false,
+	}
+	const fudge = 0.1;
 	if (elAbove) {
 		localElevation.above = pxToEm(elBoard.getBoundingClientRect().height - elAbove.getBoundingClientRect().bottom, fontSize);
 	} else {
 		localElevation.above = pxToEm(elBoard.getBoundingClientRect().height, fontSize);
 	}
 	if (elBelow) {
-		localElevation.below = pxToEm(elBoard.getBoundingClientRect().height - elBelow.getBoundingClientRect().top, fontSize);
+		const newBelow = pxToEm(elBoard.getBoundingClientRect().height - elBelow.getBoundingClientRect().top + fudge, fontSize);
+		if (newBelow !== elevationRef.current.below) {
+			localElevation.isNew = true;
+		}
+		// console.table({
+		// 	newBelow,
+		// 	oldBelow: elevationRef.current.below,
+		// 	isNew: newBelow !== elevationRef.current.below,
+		// })
+		localElevation.below = newBelow;
 	}
 	elevationRef.current = { ...elevationRef.current, ...localElevation };
 }

@@ -3,7 +3,7 @@ import { GameplayContext } from './useContexts';
 
 export function GameplayContextProvider({ children }) {
   const timelinesRef = useRef([]);
-  const elevationRef = useRef({ above: 1, below: 0 });
+  const elevationRef = useRef({ above: 1, below: 0, isNew: true });
   const elsRef = useRef({
     elBoard: null,
     elCharacter: null,
