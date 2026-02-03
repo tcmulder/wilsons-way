@@ -36,13 +36,18 @@ const doJump = ({characterRef, setCharacterStatus, characterStatus, jump, elevat
 	if (characterStatus?.jump !== 'none') return;
 	if (!characterRef?.current) return;
 
-	const el = characterRef.current;
+	const elCharacter = characterRef.current;
 
 	const tl = gsap.timeline();
 
-	tl.to(el, {
+	const fudge = 1.5;
+	const apexHeight = Math.min(
+		jump.height + elevationRef.current.below - fudge,
+		elevationRef.current.above - fudge
+	);
+	tl.to(elCharacter, {
 		onStart: () => setCharacterStatus(prev => ({ ...prev, jump: 'up' })),
-		y: `-${jump.height + elevationRef.current.below}em`,
+		y: `-${apexHeight - fudge}em`,
 		duration: jump.hangtime,
 		ease: "power1.out",
 	}).add(() => {
@@ -50,7 +55,7 @@ const doJump = ({characterRef, setCharacterStatus, characterStatus, jump, elevat
 		// the down phase starts, not when the timeline was built (so landing
 		// uses updated elevation after moving during the jump).
 		const landingY = `-${elevationRef.current.below}em`;
-		tl.to(el, {
+		tl.to(elCharacter, {
 			onStart: () => setCharacterStatus(prev => ({ ...prev, jump: 'down' })),
 			onComplete: () => setCharacterStatus(prev => ({ ...prev, jump: 'none' })),
 			y: landingY,
