@@ -8,7 +8,7 @@ const CollisionTracker = ({ boardRef }) => {
 
 	useEffect(() => {
 		if (!boardRef?.current) return;
-		const elBoard = boardRef.current;
+		const elBoard = boardRef.current.querySelector('.sr-board');
 		/**
 		 * Get elements from the new level SVG
 		 */

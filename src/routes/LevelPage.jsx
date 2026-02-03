@@ -17,7 +17,7 @@ const GameplayPage = () => {
 	const { level, setCurrentLevelId } = useLevelContext();
 	const { timelinesRef, elsRef } = useGameplayContext();
 	const difficultySpeed = settings.difficultySpeed;
-	const boardRef = useRef(null);
+	const gameplayRef = useRef(null);
 
 	const handleSvgLoad = useCallback(async (svgElement) => {
 		if (elsRef.current.elBoard && svgElement) {
@@ -49,16 +49,16 @@ const GameplayPage = () => {
 	}, [elsRef, debug, timelinesRef, difficultySpeed, setCurrentLevelId]);
 	
 	return (
-		<>
-			<CollisionTracker boardRef={boardRef} />
-			<div className="sr-board" ref={boardRef}>
+		<div className="sr-gameplay" ref={gameplayRef}>
+			<CollisionTracker boardRef={gameplayRef} />
+			<div className="sr-board">
 				<SVG 
 					path={`${window.sr.url}public/svg/level-${level}.svg`} 
 					onSvgLoad={handleSvgLoad}
 				/>
 			</div>
 			<Character />
-		</>
+		</div>
 	);
 };
 
