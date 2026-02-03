@@ -1,5 +1,24 @@
 import { useEffect } from 'react';
 import { gsap } from 'gsap';
+import { checkCollisions, checkElevation } from './handleCollisions';
+
+/**
+ * Track movement (fires whenever moving left/right)
+ */
+export const trackMovement = (elsRef, elevationRef) => {
+	const els = elsRef?.current;
+	if (!els) return;
+	checkCollisions(els);
+	checkElevation(els, elevationRef);
+	doGravity(els);
+}
+
+/**
+ * Fall off the edge of a shelf to the next one down
+ */
+const doGravity = (els) => {
+	console.log('🤞', 'checkig gravity', els)
+}
 
 /**
  * Pause playback
@@ -26,16 +45,6 @@ export const doPlay = ({timelines, setCharacterStatus, direction = 'forward'}) =
 	});
 
 	setCharacterStatus(prev => ({...prev, pause: 'none'}));
-}
-
-/**
- * Fall off the edge of a shelf to the next one down
- * @param {Object} props The properties object
- * @param {Object} props.elCharacter The character DOM element
- * @param {Object} props.elevationRef The elevation ref object
- */
-export const doGravity = ({elCharacter, elevationRef}) => {
-	console.log('🤞')
 }
 
 /**

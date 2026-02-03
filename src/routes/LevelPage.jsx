@@ -6,6 +6,7 @@ import SVG from '../components/SVG';
 import Character from '../components/Character';
 import Gameplay from '../components/Gameplay';
 import { aniLevel } from '../util/aniLevel';
+import { trackMovement } from '../util/doMovement';
 
 import '../css/board.css';
 import '../css/parallax.css';
@@ -15,7 +16,7 @@ const GameplayPage = () => {
 	const { debug } = useDebugContext();
 	const { settings } = useSettingsContext();
 	const { level, setCurrentLevelId } = useLevelContext();
-	const { timelinesRef, elsRef } = useGameplayContext();
+	const { timelinesRef, elsRef, elevationRef } = useGameplayContext();
 	const difficultySpeed = settings.difficultySpeed * 0.75;
 	const gameplayRef = useRef(null);
 
@@ -31,10 +32,11 @@ const GameplayPage = () => {
 				elBoard: elsRef.current.elBoard,
 				setTimelines: (timelines) => { timelinesRef.current = timelines; },
 				difficultySpeed,
+				onTimelineUpdate: () => trackMovement(elsRef, elevationRef),
 			});
 			setCurrentLevelId(Date.now());
 		}
-	}, [elsRef, timelinesRef, difficultySpeed, setCurrentLevelId]);
+	}, [elsRef, elevationRef, timelinesRef, difficultySpeed, setCurrentLevelId]);
 
 	useEffect(() => {
 		if (elsRef.current.elBoard) {
@@ -43,10 +45,11 @@ const GameplayPage = () => {
 				debug,
 				setTimelines: (timelines) => { timelinesRef.current = timelines; },
 				difficultySpeed,
+				onTimelineUpdate: () => trackMovement(elsRef, elevationRef),
 				onLevelLoaded: () => setCurrentLevelId(Date.now()),
 			});
 		}
-	}, [elsRef, debug, timelinesRef, difficultySpeed, setCurrentLevelId]);
+	}, [elsRef, elevationRef, debug, timelinesRef, difficultySpeed, setCurrentLevelId]);
 	
 	return (
 		<div className="sr-gameplay" ref={gameplayRef}>

@@ -50,9 +50,11 @@ export const loadLevel = async ({elBoard, elSVG}) => {
  * @param {boolean} props.debug Debug mode
  * @param {Function} props.setTimelines Function to set timelines in context
  * @param {number} props.difficultySpeed The difficulty speed setting
+ * @param {Function} [props.onTimelineUpdate] Callback for first timeline's onUpdate
+ * @param {Function} [props.onLevelLoaded] Callback when level is loaded
  * @return {Function} Cleanup function to remove event listeners
  */
-export const allowDrop = ({elBoard, debug, setTimelines, difficultySpeed, onLevelLoaded}) => {
+export const allowDrop = ({elBoard, debug, setTimelines, difficultySpeed, onTimelineUpdate, onLevelLoaded}) => {
 	if (!elBoard || !debug) return () => {};
 
 	const handleDrop = async (e) => {
@@ -77,6 +79,7 @@ export const allowDrop = ({elBoard, debug, setTimelines, difficultySpeed, onLeve
 					elBoard,
 					setTimelines,
 					difficultySpeed,
+					onTimelineUpdate,
 				});
 				onLevelLoaded?.();
 			};

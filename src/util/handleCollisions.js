@@ -1,5 +1,3 @@
-import { doGravity } from './doMovement';
-
 /**
  * Check to see if two elements overlap
  *
@@ -67,7 +65,7 @@ export const getNearestShelves = (el, els, fudge = 2) => {
  * @param {HTMLElement[]} els Elements to check
  * @param {HTMLElement} elCharacterCrashArea The character crash area element
  */
-const checkCollisions = ({elCharacterCrashArea, elObstacles}) => {
+export const checkCollisions = ({elCharacterCrashArea, elObstacles}) => {
 	elObstacles.forEach((el) => {
 		if (
 			!el.classList.contains('sr-obstacle') &&
@@ -226,7 +224,7 @@ const pxToEm = (px, basePx = 16) => {
 	return px / basePx;
 }
 
-const checkElevation = (els, elevationRef) => {
+export const checkElevation = (els, elevationRef) => {
 	const { elCharacter, elShelves, elBoard } = els;
 	const { elAbove, elBelow } = getNearestShelves(elCharacter, elShelves);
 	const fontSize = parseFloat(getComputedStyle(elBoard).fontSize);
@@ -241,45 +239,3 @@ const checkElevation = (els, elevationRef) => {
 	}
 	elevationRef.current = { ...elevationRef.current, ...localElevation };
 }
-
-/**
- * Track collisions
- * @param {Object} props The properties object
- * @param {Object} props.elsRef The elements to check for collisions
- * @param {Object} props.elevationRef The elevation to check for collisions
- * @returns {Function} Cleanup function to stop the loop
- */
-export const trackCollisions = ({elsRef, elevationRef}) => {
-	let cancelled = false;
-	const els = elsRef.current;
-
-	// Use closure to capture state and setter for recursive calls
-	const checkTrackCollisions = () => {
-		if (cancelled) return;
-
-		const shouldCheck = true;
-
-		if (shouldCheck) {
-			// As we move check to see if we hit anything (mostly x axis)
-			checkCollisions(els);
-			checkElevation(els, elevationRef);
-			doGravity({ elCharacter: els.elCharacter, elevationRef });
-		}
-
-		if (!cancelled) {
-			requestAnimationFrame(checkTrackCollisions);
-		}
-	};
-
-	// if we've not already started the rAF loop
-	if (els.elObstacles.length && els.elObstacles.at(-1).dataset.started !== 'true') {
-		// Start the loop
-		els.elObstacles.at(-1).dataset.started = 'true';
-		checkTrackCollisions();
-	}
-
-	// Clean up the loop
-	return () => {
-		cancelled = true;
-	};
-};
