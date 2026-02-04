@@ -16,7 +16,7 @@ const GameplayPage = () => {
 	const { debug } = useDebugContext();
 	const { settings } = useSettingsContext();
 	const { level, setCurrentLevelId } = useLevelContext();
-	const { timelinesRef, elsRef, elevationRef } = useGameplayContext();
+	const { timelinesRef, elsRef, elevationRef, statusRef } = useGameplayContext();
 	const difficultySpeed = settings.difficultySpeed * 0.75;
 	const gameplayRef = useRef(null);
 
@@ -32,11 +32,11 @@ const GameplayPage = () => {
 				elBoard: elsRef.current.elBoard,
 				setTimelines: (timelines) => { timelinesRef.current = timelines; },
 				difficultySpeed,
-				onTimelineUpdate: () => trackMovement(elsRef, elevationRef),
+				onTimelineUpdate: () => trackMovement({elsRef, elevationRef, statusRef}),
 			});
 			setCurrentLevelId(Date.now());
 		}
-	}, [elsRef, elevationRef, timelinesRef, difficultySpeed, setCurrentLevelId]);
+	}, [elsRef, elevationRef, timelinesRef, difficultySpeed, setCurrentLevelId, statusRef]);
 
 	useEffect(() => {
 		if (elsRef.current.elBoard) {
@@ -45,11 +45,11 @@ const GameplayPage = () => {
 				debug,
 				setTimelines: (timelines) => { timelinesRef.current = timelines; },
 				difficultySpeed,
-				onTimelineUpdate: () => trackMovement(elsRef, elevationRef),
+				onTimelineUpdate: () => trackMovement({elsRef, elevationRef, statusRef}),
 				onLevelLoaded: () => setCurrentLevelId(Date.now()),
 			});
 		}
-	}, [elsRef, elevationRef, debug, timelinesRef, difficultySpeed, setCurrentLevelId]);
+	}, [elsRef, elevationRef, debug, timelinesRef, difficultySpeed, setCurrentLevelId, statusRef]);
 	
 	return (
 		<div className="sr-gameplay" ref={gameplayRef}>
