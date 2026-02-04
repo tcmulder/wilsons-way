@@ -23,7 +23,7 @@ const checkOverlap = (el1, el2) => {
  * @param {HTMLElement[]} els Elements to check (e.g. shelves)
  * @return {{ elAbove: HTMLElement|null, elBelow: HTMLElement|null }}
  */
-export const getNearestShelves = (el, els, fudge = 2) => {
+export const getNearestShelves = (el, els) => {
 	const charRect = el.getBoundingClientRect();
 	let elAbove = null;
 	let elBelow = null;
@@ -32,7 +32,7 @@ export const getNearestShelves = (el, els, fudge = 2) => {
 		const shelfRect = shelf.getBoundingClientRect();
 
 		// Bail if the shelf doesn't align left to right
-		if (!(shelfRect.left < charRect.right + fudge && shelfRect.right > charRect.left)) {
+		if (!(shelfRect.left < charRect.right && shelfRect.right > charRect.left)) {
 			continue;
 		}
 

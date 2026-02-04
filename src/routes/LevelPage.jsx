@@ -16,40 +16,40 @@ const GameplayPage = () => {
 	const { debug } = useDebugContext();
 	const { settings } = useSettingsContext();
 	const { level, setCurrentLevelId } = useLevelContext();
-	const { timelinesRef, elsRef, elevationRef, statusRef } = useGameplayContext();
+	const gameplayContext = useGameplayContext();
 	const difficultySpeed = settings.difficultySpeed * 0.75;
 	const gameplayRef = useRef(null);
 
 	const handleSvgLoad = useCallback(async (svgElement) => {
-		if (elsRef.current.elBoard && svgElement) {
+		if (gameplayContext.elsRef.current.elBoard && svgElement) {
 			// Setup level SVG
 			await loadLevel({
-				elBoard: elsRef.current.elBoard,
+				elBoard: gameplayContext.elsRef.current.elBoard,
 				elSVG: svgElement,
 			});
 			// Create animation after level is loaded
 			aniLevel({
-				elBoard: elsRef.current.elBoard,
-				setTimelines: (timelines) => { timelinesRef.current = timelines; },
+				elBoard: gameplayContext.elsRef.current.elBoard,
+				setTimelines: (timelines) => { gameplayContext.timelinesRef.current = timelines; },
 				difficultySpeed,
-				onTimelineUpdate: () => trackMovement({elsRef, elevationRef, statusRef}),
+				onTimelineUpdate: () => trackMovement(gameplayContext),
 			});
 			setCurrentLevelId(Date.now());
 		}
-	}, [elsRef, elevationRef, timelinesRef, difficultySpeed, setCurrentLevelId, statusRef]);
+	}, [difficultySpeed, setCurrentLevelId, gameplayContext]);
 
 	useEffect(() => {
-		if (elsRef.current.elBoard) {
+		if (gameplayContext.elsRef.current.elBoard) {
 			return allowDrop({
-				elBoard: elsRef.current.elBoard,
+				elBoard: gameplayContext.elsRef.current.elBoard,
 				debug,
-				setTimelines: (timelines) => { timelinesRef.current = timelines; },
+				setTimelines: (timelines) => { gameplayContext.timelinesRef.current = timelines; },
 				difficultySpeed,
-				onTimelineUpdate: () => trackMovement({elsRef, elevationRef, statusRef}),
+				onTimelineUpdate: () => trackMovement(gameplayContext),
 				onLevelLoaded: () => setCurrentLevelId(Date.now()),
 			});
 		}
-	}, [elsRef, elevationRef, debug, timelinesRef, difficultySpeed, setCurrentLevelId, statusRef]);
+	}, [debug, difficultySpeed, setCurrentLevelId, gameplayContext]);
 	
 	return (
 		<div className="sr-gameplay" ref={gameplayRef}>

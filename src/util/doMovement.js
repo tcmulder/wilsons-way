@@ -72,7 +72,7 @@ const doJump = ({characterRef, setCharacterStatus, jump, elevationRef, statusRef
 
 	const tl = gsap.timeline();
 
-	const fudge = 1.5;
+	const fudge = 1.5; // Prevents character's head from hitting shelf above
 	const apexHeight = Math.min(
 		jump.height + elevationRef.current.below - fudge,
 		elevationRef.current.above - fudge
