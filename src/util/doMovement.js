@@ -172,5 +172,5 @@ export function useCharacterMovement({ debug, characterRef, characterStatus, set
 	  window.removeEventListener('keydown', handleKeyDown);
 	  window.removeEventListener('keyup', handleKeyUp);
 	};
-  }, [debug, characterStatus, setCharacterStatus, characterRef, jump, timelinesRef]);
+  }, [debug, characterStatus, setCharacterStatus, characterRef, jump, timelinesRef, elevationRef, statusRef]);
 }
