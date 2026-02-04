@@ -83,14 +83,28 @@ const doJump = ({characterRef, setCharacterStatus, jump, elevationRef, statusRef
 		duration: jump.hangtime,
 		ease: "power1.out",
 	}).add(() => {
-		const landingY = `-${elevationRef.current.below}em`;
-		tl.to(elCharacter, {
-			onStart: () => setCharacterStatus(prev => ({ ...prev, jump: 'down' })),
-			onComplete: () => setCharacterStatus(prev => ({ ...prev, jump: 'none' })),
-			y: landingY,
-			duration: jump.hangtime,
-			ease: "power1.in",
-		});
+		const addLandingTween = (targetBelow, ease = "power1.in") => {
+			const landingY = `-${targetBelow}em`;
+			tl.to(elCharacter, {
+				onStart: () => setCharacterStatus(prev => ({ ...prev, jump: 'down' })),
+				onComplete: () => setCharacterStatus(prev => ({ ...prev, jump: 'none' })),
+				onUpdate: () => {
+					if (targetBelow !== elevationRef.current.below) {
+						const newBelow = elevationRef.current.below;
+						const children = tl.getChildren();
+						const landingTween = children[children.length - 1];
+						if (landingTween) {
+							landingTween.kill();
+							gsap.delayedCall(0, () => addLandingTween(newBelow, 'linear'));
+						}
+					}
+				},
+				y: landingY,
+				duration: jump.hangtime,
+				ease: ease,
+			});
+		};
+		addLandingTween(elevationRef.current.below);
 	});
 }
 
