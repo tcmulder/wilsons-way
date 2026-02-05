@@ -64,19 +64,7 @@ export const doPlay = ({timelines, setCharacterStatus, direction = 'forward'}) =
  * Jump
  */
 const doJump = ({characterRef, setCharacterStatus, jump, elevationRef, statusRef}) => {
-	/*
-	TODO: add jump logic:
-	[x] - Set state to up and jump jump.height plus current shelf
-	[ ] - Set up `const checkHangtime = () => { const current = gsap.getProperty(characterRef.current, 'y'); };`
-	[ ] - Loop on that via `gsap.ticker.add(checkHangtime);`
-	[ ] - Clear loop when needed via `gsap.ticker.remove(checkHangtime);`
-	[ ] - Or simply use onUpdate if that's better.
-	[ ] - In the loop on status up check above: if would go beyond above kill the animation and start down.
-	[ ] - On down go for the floor. Set duration to account for hangtime and shelf all the way to floor.
-	[ ] - On down if would go beyond a shelf kill animation and set to be on the shelf.
-	*/
-
-	// // Prevent double-jumps while already mid-air
+	// Prevent double-jumps while already mid-air
 	if (statusRef?.current?.jump !== 'none') return;
 	if (!characterRef?.current) return;
 
