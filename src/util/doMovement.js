@@ -40,7 +40,6 @@ export const doPause = ({timelines, setCharacterStatus}) => {
 	if (!timelines.length) return;
 	timelines.forEach(timeline => timeline.pause());
 	setCharacterStatus(prev => ({...prev, move: 'none'}));
-	console.log('🤞')
 }
 
 /**
