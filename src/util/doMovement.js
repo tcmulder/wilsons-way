@@ -6,8 +6,8 @@ import { checkCollisions, checkElevation } from './handleCollisions';
  * Track movement (fires whenever moving left/right)
  */
 export const trackMovement = ({elsRef, elevationRef, statusRef}) => {
+	if (!elsRef?.current || (statusRef?.current?.move === 'none' && statusRef?.current?.jump === 'none')) return;
 	const els = elsRef?.current;
-	if (!els) return;
 	checkCollisions(els);
 	checkElevation(els, elevationRef);
 	doGravity({els, elevationRef, statusRef});
