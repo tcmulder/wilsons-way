@@ -17,20 +17,20 @@ export const trackMovement = ({elsRef, elevationRef, statusRef}) => {
  * Fall off the edge of a shelf to the next one down
  */
 const doGravity = ({els, elevationRef, statusRef}) => {
-	const { elCharacter } = els;
-	const { isNew, below } = elevationRef.current;
-	if(isNew && statusRef.current.jump === 'none') {
-		const tl = gsap.timeline();
-		const landingY = `-${below}em`;
-		tl.to(elCharacter, {
-			// onStart: () => setCharacterStatus(prev => ({ ...prev, jump: 'down' })),
-			// onComplete: () => setCharacterStatus(prev => ({ ...prev, jump: 'none' })),
-			y: landingY,
-			// duration: jump.hangtime,
-			duration: 0.5,
-			ease: "power1.in",
-		});
-	}
+	// const { elCharacter } = els;
+	// const { isNew, below } = elevationRef.current;
+	// if(isNew && statusRef.current.jump === 'none') {
+	// 	const tl = gsap.timeline();
+	// 	const landingY = `-${below}em`;
+	// 	tl.to(elCharacter, {
+	// 		// onStart: () => setCharacterStatus(prev => ({ ...prev, jump: 'down' })),
+	// 		// onComplete: () => setCharacterStatus(prev => ({ ...prev, jump: 'none' })),
+	// 		y: landingY,
+	// 		// duration: jump.hangtime,
+	// 		duration: 0.5,
+	// 		ease: "power1.in",
+	// 	});
+	// }
 }
 
 /**
@@ -64,48 +64,63 @@ export const doPlay = ({timelines, setCharacterStatus, direction = 'forward'}) =
  * Jump
  */
 const doJump = ({characterRef, setCharacterStatus, jump, elevationRef, statusRef}) => {
-	// Prevent double-jumps while already mid-air
+	/*
+	TODO: add jump logic:
+	[x] - Set state to up and jump jump.height plus current shelf
+	[ ] - Set up `const checkHangtime = () => { const current = gsap.getProperty(characterRef.current, 'y'); };`
+	[ ] - Loop on that via `gsap.ticker.add(checkHangtime);`
+	[ ] - Clear loop when needed via `gsap.ticker.remove(checkHangtime);`
+	[ ] - Or simply use onUpdate if that's better.
+	[ ] - In the loop on status up check above: if would go beyond above kill the animation and start down.
+	[ ] - On down go for the floor. Set duration to account for hangtime and shelf all the way to floor.
+	[ ] - On down if would go beyond a shelf kill animation and set to be on the shelf.
+	*/
+
+	// // Prevent double-jumps while already mid-air
 	if (statusRef?.current?.jump !== 'none') return;
 	if (!characterRef?.current) return;
 
 	const elCharacter = characterRef.current;
 
-	const tl = gsap.timeline();
-
-	const fudge = 1.5; // Prevents character's head from hitting shelf above
+	const fudge = characterRef?.current?.getBoundingClientRect().height * 0.11; // Prevents character's head from hitting shelf above
 	const apexHeight = Math.min(
-		jump.height + elevationRef.current.below - fudge,
-		elevationRef.current.above - fudge
+		jump.height + elevationRef.current.below,
+		elevationRef.current.above
 	);
-	tl.to(elCharacter, {
-		onStart: () => setCharacterStatus(prev => ({ ...prev, jump: 'up' })),
-		y: `-${apexHeight - fudge}em`,
-		duration: jump.hangtime,
-		ease: "power1.out",
-	}).add(() => {
-		const addLandingTween = (targetBelow, ease = "power1.in") => {
-			const landingY = `-${targetBelow}em`;
-			tl.to(elCharacter, {
-				onStart: () => setCharacterStatus(prev => ({ ...prev, jump: 'down' })),
-				onComplete: () => setCharacterStatus(prev => ({ ...prev, jump: 'none' })),
-				onUpdate: () => {
-					if (targetBelow !== elevationRef.current.below) {
-						const newBelow = elevationRef.current.below;
-						const children = tl.getChildren();
-						const landingTween = children[children.length - 1];
-						if (landingTween) {
-							landingTween.kill();
-							gsap.delayedCall(0, () => addLandingTween(newBelow, 'linear'));
-						}
-					}
-				},
-				y: landingY,
-				duration: jump.hangtime,
-				ease: ease,
-			});
-		};
-		addLandingTween(elevationRef.current.below);
-	});
+	const up = () => {
+		const tlUp = gsap.timeline();
+		tlUp.to(elCharacter, {
+			onStart: () => setCharacterStatus(prev => ({ ...prev, jump: 'up' })),
+			y: apexHeight * -1,
+			duration: jump.hangtime,
+			ease: "power1.out",
+			onUpdate: () => {
+				if(elevationRef.current.head + fudge >= elevationRef.current.above) {
+					tlUp.kill();
+					down();
+				}
+			},
+			onComplete: down,
+		})
+	}
+	const down = () => {
+		const tlDown = gsap.timeline();
+		tlDown.to(elCharacter, {
+			onStart: () => setCharacterStatus(prev => ({ ...prev, jump: 'down' })),
+			onComplete: () => setCharacterStatus(prev => ({ ...prev, jump: 'none' })),
+			onUpdate: () => {
+				if(elevationRef.current.foot - fudge <= elevationRef.current.below) {
+					tlDown.kill();
+					gsap.set(elCharacter, { y: -elevationRef.current.below - fudge });
+					setCharacterStatus(prev => ({ ...prev, jump: 'none' }))
+				}
+			},
+			y: elevationRef.current.floor * -1,
+			duration: jump.hangtime,
+			ease: "power1.in",
+		});
+	}
+	up();
 }
 
 /**

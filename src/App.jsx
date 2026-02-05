@@ -10,12 +10,12 @@ export default function App() {
       <div className="sr">
         <div className="sr-stage">
           <div className="sr-typography">
+            <Debug />
             <Interface />
             <Routes>
               <Route path="/" element={<IntroPage />} />
               <Route path="/gameplay" element={<LevelPage />} />
             </Routes>
-            <Debug />
           </div> 
         </div>
       </div>

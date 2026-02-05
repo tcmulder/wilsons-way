@@ -41,3 +41,18 @@
 	list-style: none;
 	background-color: rgba(2555, 255, 255, 0.5);
 }
+
+.sr-debug ~ .sr-gameplay {
+	.sr-shelves > * {
+		outline: 1px dashed grey;
+	}
+	.sr-character {
+		outline: 1px dashed green;
+	}
+	.sr-character-crash {
+		outline: 1px dashed red;
+	}
+	.sr-obstacles > * {
+		outline: 1px dashed grey;
+	}
+}

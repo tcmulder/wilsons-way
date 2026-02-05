@@ -54,6 +54,17 @@ const CollisionTracker = ({ boardRef }) => {
 		elsRef.current = { ...elsRef.current, ...newState }; 
 	}, [boardRef, elsRef, currentLevelId, elevationRef]);
 
+	useEffect(() => {
+		if (!elsRef?.current?.elBoard || !elsRef?.current?.elCharacter || !elsRef?.current?.elShelves?.at(-1)) return;
+		const elBoardRect = elsRef.current.elBoard.getBoundingClientRect();
+		const elFloorRect = elsRef.current.elShelves.at(-1).getBoundingClientRect();
+		elevationRef.current = {
+			...elevationRef.current,
+			ceiling: elBoardRect.height,
+			floor: elBoardRect.height - elFloorRect.top,
+		}
+	}, [currentLevelId, elsRef, elevationRef]);
+
 	return null;
 };
 

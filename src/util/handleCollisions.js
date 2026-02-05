@@ -215,41 +215,25 @@ const checkHitTheEnd = () => {
 	// }
 // };
 
-/**
- * 
- * @param {*} els 
- * @param {*} elevationRef 
- */
-const pxToEm = (px, basePx = 16) => {
-	return px / basePx;
-}
-
 export const checkElevation = (els, elevationRef) => {
-	const { elCharacter, elShelves, elBoard } = els;
-	const { elAbove, elBelow } = getNearestShelves(elCharacter, elShelves);
-	const fontSize = parseFloat(getComputedStyle(elBoard).fontSize);
+	const { elCharacterCrashArea, elShelves, elBoard } = els;
+	const elBoardRect = elBoard.getBoundingClientRect();
+	const elCharacterRect = elCharacterCrashArea.getBoundingClientRect();
+	const { elAbove, elBelow } = getNearestShelves(elCharacterCrashArea, elShelves);
 	const localElevation = {
 		above: 0,
 		below: 0,
-		isNew: false,
+		charBelow: 0,
 	}
-	const fudge = 0.1;
 	if (elAbove) {
-		localElevation.above = pxToEm(elBoard.getBoundingClientRect().height - elAbove.getBoundingClientRect().bottom, fontSize);
+		localElevation.above = elBoardRect.height - elAbove.getBoundingClientRect().bottom;
 	} else {
-		localElevation.above = pxToEm(elBoard.getBoundingClientRect().height, fontSize);
+		localElevation.above = elBoardRect.height;
 	}
 	if (elBelow) {
-		const newBelow = pxToEm(elBoard.getBoundingClientRect().height - elBelow.getBoundingClientRect().top + fudge, fontSize);
-		if (newBelow !== elevationRef.current.below) {
-			localElevation.isNew = true;
-		}
-		// console.table({
-		// 	newBelow,
-		// 	oldBelow: elevationRef.current.below,
-		// 	isNew: newBelow !== elevationRef.current.below,
-		// })
-		localElevation.below = newBelow;
+		localElevation.below = elBoardRect.height - elBelow.getBoundingClientRect().top;
 	}
+	localElevation.head = elBoardRect.height - elCharacterRect.top;
+	localElevation.foot = elBoardRect.height - elCharacterRect.bottom;
 	elevationRef.current = { ...elevationRef.current, ...localElevation };
 }

@@ -3,7 +3,7 @@ import { SettingsContext } from './useContexts';
 
 export function SettingsContextProvider({ children }) {
   const [settings, setSettings] = useState({});
-  const [jump, setJump] = useState({ height: 15, hangtime: 0.5 });
+  const [jump, setJump] = useState({ height: 225, hangtime: 0.5 });
 
   useEffect(() => {
     fetch(`${window.sr.api}shelf-runner/v1/settings`)

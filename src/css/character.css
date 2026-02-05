@@ -5,7 +5,7 @@
 .sr-character {
 	--sr-h-shelf: var(--sr-h-ground);
 	--sr-y: calc(-1 * var(--sr-h-shelf));
-	--sr-y-shift: 1cqw;
+	--sr-y-shift: 0.5cqw;
 	position: absolute;
 	left: 33cqw;
 	bottom: 0;
