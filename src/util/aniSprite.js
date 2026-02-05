@@ -12,7 +12,7 @@ import { gsap } from 'gsap';
  */
 export const createAniSprite = ({elParent, status}) => {
 	// Create a single master timeline to control all sprite animations
-	const masterTimeline = gsap.timeline({ repeat: -1, paused: status.pause === 'pause' });
+	const masterTimeline = gsap.timeline({ repeat: -1, paused: status.move === 'none' });
 	
 	elParent?.querySelectorAll('[data-sprite]')?.forEach((el) => {
 		if (el.classList.contains('is-animating')) {
@@ -48,8 +48,8 @@ export const createAniSprite = ({elParent, status}) => {
 		// Add this sprite's timeline to the master timeline at time 0 (runs in parallel)
 		masterTimeline.add(spriteTimeline, 0);
 		
-		// Show the first child immediately so it's visible when paused
-		if (status.pause === 'pause' && children.length > 0) {
+		// Show the first child immediately when not moving
+		if (status.move === 'none' && children.length > 0) {
 			gsap.set(children[0], { visibility: 'visible' });
 		}
 	});

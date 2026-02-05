@@ -39,7 +39,8 @@ const doGravity = ({els, elevationRef, statusRef}) => {
 export const doPause = ({timelines, setCharacterStatus}) => {
 	if (!timelines.length) return;
 	timelines.forEach(timeline => timeline.pause());
-	setCharacterStatus(prev => ({...prev, pause: 'pause'}));
+	setCharacterStatus(prev => ({...prev, move: 'none'}));
+	console.log('🤞')
 }
 
 /**
@@ -57,7 +58,7 @@ export const doPlay = ({timelines, setCharacterStatus, direction = 'forward'}) =
 		}
 	});
 
-	setCharacterStatus(prev => ({...prev, pause: 'none'}));
+	setCharacterStatus(prev => ({...prev, move: direction === 'backward' ? 'backward' : 'forward'}));
 }
 
 /**
@@ -127,7 +128,7 @@ const doRun = ({direction, timelines, setCharacterStatus}) => {
  * @param {Object} props The properties object
  * @param {Object} props.debug Whether debug mode is enabled
  * @param {Object} props.characterRef The character DOM element
- * @param {Object} props.characterStatus The character status (move, jump, pause)
+ * @param {Object} props.characterStatus The character status (move, jump)
  * @param {Function} props.setCharacterStatus Setter for character status
  * @param {Object} props.timelinesRef The timelines ref object
  * @param {Object} props.jump The jump object (height in em units and hangtime in seconds)
@@ -155,11 +156,11 @@ export function useCharacterMovement({ debug, characterRef, characterStatus, set
 		  if (e.key === 'ArrowDown') {
 			e.preventDefault();
 			// Toggle play/pause on each ArrowDown press
-			if (characterStatus.pause === 'pause') {
-			  // Currently paused: play forward
+			if (characterStatus.move === 'none') {
+			  // Not moving: play forward
 			  doRun({ direction: 'forward', timelines: timelinesRef.current, setCharacterStatus });
 			} else {
-			  // Currently playing: pause
+			  // Currently moving: pause
 			  doPause({ timelines: timelinesRef.current, setCharacterStatus });
 			}
 		  }

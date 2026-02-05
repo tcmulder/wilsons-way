@@ -25,11 +25,8 @@
 		opacity: 0;
 	}
 
-	&[data-move="none"][data-jump="none"] [data-state="move-none"] {
-		opacity: 1;
-	}
-
-	&[data-move="forward"][data-jump="none"] [data-state="move-forward"] {
+	/* none and forward both show the forward-facing sprite */
+	&:is([data-move="none"], [data-move="forward"])[data-jump="none"] [data-state="move-forward"] {
 		opacity: 1;
 	}
 
@@ -52,15 +49,6 @@
 		);
 		transform: translateY(calc(-1 * var(--sr-h-jump-with-shelf)));
 		transition: transform var(--sr-hangtime) ease-out;
-	}
-
-	&[data-pause][data-pause="paused"] {
-		[data-state] {
-			opacity: 0;
-		}
-		[data-state="jump-down"] {
-			opacity: 1;
-		}
 	}
 
 	svg {

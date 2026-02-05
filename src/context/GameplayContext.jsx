@@ -12,7 +12,7 @@ export function GameplayContextProvider({ children }) {
     foot: 0,
   });
   const statusRef = useRef({
-    move: 'backward',
+    move: 'none',
     jump: 'none'
   });
   const elsRef = useRef({
