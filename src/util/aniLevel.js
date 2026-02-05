@@ -7,9 +7,8 @@ import { gsap } from 'gsap';
  * @param {HTMLElement} props.elBoard The board DOM element
  * @param {Function} props.setTimelines Function to set timelines in context
  * @param {number} props.difficultySpeed The difficulty speed setting
- * @param {Function} [props.onTimelineUpdate] Callback for first timeline's onUpdate
  */
-export const aniLevel = ({elBoard, setTimelines, difficultySpeed, onTimelineUpdate}) => {
+export const aniLevel = ({elBoard, setTimelines, difficultySpeed}) => {
 	if (!elBoard) return;
 	
 	// Kill all existing timelines
@@ -45,10 +44,6 @@ export const aniLevel = ({elBoard, setTimelines, difficultySpeed, onTimelineUpda
 		);
 		timelines.push(svgTimeline);
 	});
-
-	if (onTimelineUpdate) {
-		timelines[0].eventCallback('onUpdate', onTimelineUpdate);
-	}
 
 	// Store all timelines in context
 	setTimelines(timelines);

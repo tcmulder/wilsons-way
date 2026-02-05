@@ -1,4 +1,5 @@
 import { useRef, useCallback, useEffect } from 'react';
+import { gsap } from 'gsap';
 import { useDebugContext, useSettingsContext, useLevelContext, useGameplayContext } from '../context/useContexts';
 import { loadLevel } from '../util/loadLevel';
 import { allowDrop } from '../util/loadLevel';
@@ -17,26 +18,39 @@ const GameplayPage = () => {
 	const { settings } = useSettingsContext();
 	const { level, setCurrentLevelId } = useLevelContext();
 	const gameplayContext = useGameplayContext();
+	const gameplayContextRef = useRef(gameplayContext);
 	const difficultySpeed = settings.difficultySpeed * 0.75;
 	const gameplayRef = useRef(null);
 
+	useEffect(() => {
+		gameplayContextRef.current = gameplayContext;
+	}, [gameplayContext]);
+
+	// Run trackMovement on every GSAP tick (running, jumping, any animation) without duplicates
+	useEffect(() => {
+		const tick = () => trackMovement(gameplayContextRef.current);
+		gsap.ticker.add(tick);
+		return () => gsap.ticker.remove(tick);
+	}, []);
+
 	const handleSvgLoad = useCallback(async (svgElement) => {
-		if (gameplayContext.elsRef.current.elBoard && svgElement) {
+		const ctx = gameplayContextRef.current;
+		const elBoard = ctx.elsRef?.current?.elBoard;
+		if (elBoard && svgElement) {
 			// Setup level SVG
 			await loadLevel({
-				elBoard: gameplayContext.elsRef.current.elBoard,
+				elBoard,
 				elSVG: svgElement,
 			});
 			// Create animation after level is loaded
 			aniLevel({
-				elBoard: gameplayContext.elsRef.current.elBoard,
-				setTimelines: (timelines) => { gameplayContext.timelinesRef.current = timelines; },
+				elBoard,
+				setTimelines: (timelines) => { ctx.timelinesRef.current = timelines; },
 				difficultySpeed,
-				onTimelineUpdate: () => trackMovement(gameplayContext),
 			});
 			setCurrentLevelId(Date.now());
 		}
-	}, [difficultySpeed, setCurrentLevelId, gameplayContext]);
+	}, [difficultySpeed, setCurrentLevelId]);
 
 	useEffect(() => {
 		if (gameplayContext.elsRef.current.elBoard) {
@@ -45,7 +59,6 @@ const GameplayPage = () => {
 				debug,
 				setTimelines: (timelines) => { gameplayContext.timelinesRef.current = timelines; },
 				difficultySpeed,
-				onTimelineUpdate: () => trackMovement(gameplayContext),
 				onLevelLoaded: () => setCurrentLevelId(Date.now()),
 			});
 		}
