@@ -11,7 +11,6 @@ export const trackMovement = ({elsRef, elevationRef, statusRef}) => {
 	checkCollisions(els);
 	checkElevation(els, elevationRef);
 	doGravity({els, elevationRef, statusRef});
-	console.table(elevationRef.current)
 }
 
 /**
