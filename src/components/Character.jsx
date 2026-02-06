@@ -1,5 +1,5 @@
 import { useRef, useCallback, useEffect } from 'react';
-import { useDebugContext, useSettingsContext, useCharacterContext, useGameplayContext } from '../context/useContexts';
+import { useDebugContext, useSettingsContext, useCharacterContext, useGameplayContext, useLevelContext } from '../context/useContexts';
 import SVG from './SVG';
 import { createAniSprite } from '../util/aniSprite';
 import { useCharacterMovement } from '../util/doMovement';
@@ -10,6 +10,7 @@ const Character = () => {
 	const { jump } = useSettingsContext();
 	const { characterId, characterStatus, setCharacterStatus } = useCharacterContext();
 	const { timelinesRef, elevationRef, statusRef, elsRef } = useGameplayContext();
+	const { currentLevelId } = useLevelContext();
 	const characterSvgRef = useRef(null);
 	const characterSVG = `${window.sr.url}public/svg/character-${characterId}.svg`;
 
@@ -25,7 +26,7 @@ const Character = () => {
 		statusRef.current = { ...statusRef.current, ...characterStatus };
 	}, [characterStatus, statusRef]);
 
-	useCharacterMovement({ debug, characterStatus, setCharacterStatus, jump, timelinesRef, elevationRef, statusRef, elsRef });
+	useCharacterMovement({ debug, characterStatus, setCharacterStatus, jump, timelinesRef, elevationRef, statusRef, elsRef, currentLevelId });
 
 	return (
 		<div className="sr-character" tabIndex="0" data-move={characterStatus.move} data-jump={characterStatus.jump}>

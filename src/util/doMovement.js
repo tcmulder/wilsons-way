@@ -133,14 +133,15 @@ const doRun = ({direction, timelines, setCharacterStatus}) => {
  * @param {Object} props.jump The jump object (height in em units and hangtime in seconds)
  * @param {Object} props.elevationRef The elevation ref object
  * @param {Object} props.statusRef The status ref object
+ * @param {*} [props.currentLevelId] Level load id so autoplay runs after level (and timelines) exist
  */
-export function useCharacterMovement({ debug, elsRef, characterStatus, setCharacterStatus, jump, timelinesRef, elevationRef, statusRef }) {
-  // Auto-play timelines when debug autoplay is not explicitly disabled (autoplay !== '0')
+export function useCharacterMovement({ debug, elsRef, characterStatus, setCharacterStatus, jump, timelinesRef, elevationRef, statusRef, currentLevelId }) {
+  // Auto-play when debug autoplay is not '0', and only once timelines exist (level has loaded)
   useEffect(() => {
-	if (debug?.autoplay !== '0') {
+	if (debug?.autoplay !== '0' && timelinesRef.current?.length) {
 	  doPlay({ timelines: timelinesRef.current, setCharacterStatus, direction: 'forward' });
 	}
-  }, [debug, timelinesRef, setCharacterStatus]);
+  }, [debug, timelinesRef, setCharacterStatus, currentLevelId]);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
