@@ -1,12 +1,13 @@
 <?php
 /**
  * Script/style enqueue
+ *
+ * @package Shelf_Runner
  */
 
 /**
- * Enqueue the mini initialization script
+ * Enqueue the mini initialization script and styles for the shortcode.
  */
-add_action( 'wp_enqueue_scripts', 'enqueue_shelf_runner' );
 function enqueue_shelf_runner() {
 	$url      = SHELF_RUNNER_PLUGIN_DIST_URI . 'manifest.json';
 	$response = wp_remote_get( $url );
@@ -22,3 +23,4 @@ function enqueue_shelf_runner() {
 		}
 	}
 }
+add_action( 'wp_enqueue_scripts', 'enqueue_shelf_runner' );

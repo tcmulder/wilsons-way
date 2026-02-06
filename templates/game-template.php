@@ -2,7 +2,10 @@
 /**
  * Template Name: Game
  * Description: Full screen game template
+ *
+ * @package Shelf_Runner
  */
+
 ?>
 <style>
 	body,

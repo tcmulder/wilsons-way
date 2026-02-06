@@ -1,14 +1,17 @@
 <?php
 /**
  * Shortcode output for embedding the game within a WordPress page.
+ *
+ * @package Shelf_Runner
  */
+
 wp_enqueue_style( 'shelf-runner-style' );
 wp_enqueue_script( 'shelf-runner-script' );
 
-$mode       = get_option( 'shelf_runner_settings_game_mode', 'client' );
-$iframe_url = 'client' === $mode ? get_option( 'shelf_runner_settings_iframe_url', '' ) : SHELF_RUNNER_PLUGIN_URI;
+$game_mode  = get_option( 'shelf_runner_settings_game_mode', 'client' );
+$iframe_url = 'client' === $game_mode ? get_option( 'shelf_runner_settings_iframe_url', '' ) : SHELF_RUNNER_PLUGIN_URI;
 if ( ! $iframe_url ) {
-	printf( '<p>%s</p>', __( 'Error: please enter an iframe URL in the plugin settings.', 'shelf-runner' ) );
+	printf( '<p>%s</p>', esc_html( __( 'Error: please enter an iframe URL in the plugin settings.', 'shelf-runner' ) ) );
 	return;
 }
 $debug_enabled = get_option( 'shelf_runner_settings_debug', false );
@@ -35,9 +38,9 @@ if ( $debug_enabled ) {
 		<div class="sr-portal-overlay">
 			<span role="heading" aria-level="2" class="sr-portal-label"><?php esc_html_e( 'Shelf Runner', 'shelf-runner' ); ?></span>
 			<div class="sr-portal-button">
-				<button aria-label="<?php _e( 'Play Shelf Runner', 'shelf-runner' ); ?>" role="button"><?php esc_html_e( 'Play Shelf Runner', 'shelf-runner' ); ?></button>
+				<button aria-label="<?php echo esc_attr( __( 'Play Shelf Runner', 'shelf-runner' ) ); ?>" role="button"><?php esc_html_e( 'Play Shelf Runner', 'shelf-runner' ); ?></button>
 			</div>
 		</div>
-		<iframe class="sr-portal-iframe" data-src="<?php echo esc_url( $iframe_url ); ?>" title="<?php esc_html_e( 'Shelf Runner', 'shelf-runner' ); ?>"></iframe>
+		<iframe class="sr-portal-iframe" data-src="<?php echo esc_url( $iframe_url ); ?>" title="<?php echo esc_attr( __( 'Shelf Runner', 'shelf-runner' ) ); ?>"></iframe>
 	</div>
 <?php endif; ?>

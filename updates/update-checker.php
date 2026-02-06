@@ -1,28 +1,55 @@
 <?php
-/*
+/**
  * Update Checker
  *
  * This script facilitates plugin updates. It is inspired heavily by
  * Misha Rudrastyh's excellent tutorial.
  *
  * @see https://rudrastyh.com/wordpress/self-hosted-plugin-update.html
+ *
+ * @package Shelf_Runner
  */
-
-
-
 
 defined( 'ABSPATH' ) || exit;
 
-
 if ( ! class_exists( 'ShelfRunnerUpdateChecker' ) ) {
 
+	/**
+	 * Self-hosted plugin update checker.
+	 */
 	class ShelfRunnerUpdateChecker {
 
+		/**
+		 * Plugin basename.
+
+		 * @var string
+		 */
 		public $plugin_slug;
+
+		/**
+		 * Plugin version.
+
+		 * @var string
+		 */
 		public $version;
+
+		/**
+		 * Transient cache key.
+
+		 * @var string
+		 */
 		public $cache_key;
+
+		/**
+		 * Whether caching is allowed.
+
+		 * @var bool
+		 */
 		public $cache_allowed;
 
+		/**
+		 * Constructor.
+		 */
 		public function __construct() {
 
 			$this->plugin_slug   = SHELF_RUNNER_BASENAME;
@@ -36,6 +63,11 @@ if ( ! class_exists( 'ShelfRunnerUpdateChecker' ) ) {
 			add_action( 'upgrader_process_complete', array( $this, 'purge' ), 10, 2 );
 		}
 
+		/**
+		 * Request update info from remote.
+		 *
+		 * @return object|false Remote response object or false on failure.
+		 */
 		public function request() {
 
 			$remote = get_transient( $this->cache_key );
@@ -69,11 +101,18 @@ if ( ! class_exists( 'ShelfRunnerUpdateChecker' ) ) {
 			return $remote;
 		}
 
-
-		function info( $res, $action, $args ) {
+		/**
+		 * Filter plugins_api response with our update info.
+		 *
+		 * @param object $res    Result object.
+		 * @param string $action API action.
+		 * @param object $args   Request args.
+		 * @return object Result.
+		 */
+		public function info( $res, $action, $args ) {
 
 			// do nothing if you're not getting plugin information right now
-			if ( $action !== 'plugin_information' ) {
+			if ( 'plugin_information' !== $action ) {
 				return $res;
 			}
 
@@ -119,6 +158,12 @@ if ( ! class_exists( 'ShelfRunnerUpdateChecker' ) ) {
 			return $res;
 		}
 
+		/**
+		 * Filter site_transient_update_plugins with our plugin update data.
+		 *
+		 * @param object $transient Update plugins transient.
+		 * @return object Modified transient.
+		 */
 		public function update( $transient ) {
 
 			if ( empty( $transient->checked ) ) {
@@ -147,6 +192,12 @@ if ( ! class_exists( 'ShelfRunnerUpdateChecker' ) ) {
 			return $transient;
 		}
 
+		/**
+		 * Purge update cache after plugin upgrade.
+		 *
+		 * @param object $upgrader Upgrader instance.
+		 * @param array  $options  Upgrade options.
+		 */
 		public function purge( $upgrader, $options ) {
 
 			if (

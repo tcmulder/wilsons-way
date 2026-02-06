@@ -1,6 +1,8 @@
 <?php
 /**
  * Rest API endpoints.
+ *
+ * @package Shelf_Runner
  */
 
 /**
@@ -15,7 +17,6 @@ add_action(
 			array(
 				'methods'             => 'POST',
 				'callback'            => function ( $request ) {
-
 					$params = json_decode( $request->get_body(), true );
 					$user = strtoupper( sanitize_title( $params['user'] ) );
 					$score = (int) $params['score'];
@@ -51,12 +52,12 @@ add_action(
 				'permission_callback' => '__return_true',
 				'args'                => array(
 					'user'  => array(
-						'validate_callback' => function ( $param, $request, $key ) {
+						'validate_callback' => function ( $param ) {
 							return is_string( $param );
 						},
 					),
 					'score' => array(
-						'validate_callback' => function ( $param, $request, $key ) {
+						'validate_callback' => function ( $param ) {
 							return is_numeric( $param );
 						},
 					),
@@ -77,7 +78,7 @@ add_action(
 			'/leaderboard/',
 			array(
 				'methods'             => 'GET',
-				'callback'            => function ( $request ) {
+				'callback'            => function () {
 					$leaderboard = get_option( 'shelf_runner_settings_leaderboard', array() );
 					$leaderboard = array_map(
 						function ( $item ) {
@@ -112,13 +113,13 @@ add_action(
 			'/settings/',
 			array(
 				'methods'             => 'GET',
-				'callback'            => function ( $request ) {
-					// Get crash difficulty percentage from settings
+				'callback'            => function () {
+					// Get crash difficulty percentage from settings.
 					$difficulty_crash = (int) get_option( 'shelf_runner_settings_size' );
 					$difficulty_crash = $difficulty_crash ? ( $difficulty_crash / 100 ) : 1;
 					$difficulty_speed = 100 - (int) get_option( 'shelf_runner_settings_speed' );
 
-					// Build response data
+					// Build response data.
 					$data = array(
 						'difficultyCrash' => $difficulty_crash,
 						'difficultySpeed' => $difficulty_speed,
@@ -132,7 +133,7 @@ add_action(
 									'score' => (int) $score['score'],
 								);
 							},
-							get_option( 'shelf_runner_settings_leaderboard' ) ?: array()
+							get_option( 'shelf_runner_settings_leaderboard', array() )
 						),
 					);
 
