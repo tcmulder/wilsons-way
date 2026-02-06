@@ -1,6 +1,6 @@
 import { useRef, useCallback, useEffect } from 'react';
 import { gsap } from 'gsap';
-import { useDebugContext, useSettingsContext, useLevelContext, useGameplayContext } from '../context/useContexts';
+import { useDebugContext, useSettingsContext, useLevelContext, useGameplayContext, useCharacterContext } from '../context/useContexts';
 import { loadLevel } from '../util/loadLevel';
 import { allowDrop } from '../util/loadLevel';
 import SVG from '../components/SVG';
@@ -15,8 +15,9 @@ import '../css/parallax.css';
 
 const GameplayPage = () => {
 	const { debug } = useDebugContext();
-	const { settings } = useSettingsContext();
+	const { settings, jump } = useSettingsContext();
 	const { level, setCurrentLevelId } = useLevelContext();
+	const { setCharacterStatus } = useCharacterContext();
 	const gameplayContext = useGameplayContext();
 	const gameplayContextRef = useRef(gameplayContext);
 	const difficultySpeed = settings.difficultySpeed * 0.75;
@@ -28,10 +29,10 @@ const GameplayPage = () => {
 
 	// Run trackMovement on every GSAP tick (running, jumping, any animation) without duplicates
 	useEffect(() => {
-		const tick = () => trackMovement(gameplayContextRef.current);
+		const tick = () => trackMovement({gameplayContextRef, setCharacterStatus, jump});
 		gsap.ticker.add(tick);
 		return () => gsap.ticker.remove(tick);
-	}, []);
+	}, [setCharacterStatus, jump]);
 
 	const handleSvgLoad = useCallback(async (svgElement) => {
 		const ctx = gameplayContextRef.current;

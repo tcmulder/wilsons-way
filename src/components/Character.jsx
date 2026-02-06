@@ -9,8 +9,7 @@ const Character = () => {
 	const { debug } = useDebugContext();
 	const { jump } = useSettingsContext();
 	const { characterId, characterStatus, setCharacterStatus } = useCharacterContext();
-	const { timelinesRef, elevationRef, statusRef } = useGameplayContext();
-	const characterRef = useRef(null);
+	const { timelinesRef, elevationRef, statusRef, elsRef } = useGameplayContext();
 	const characterSvgRef = useRef(null);
 	const characterSVG = `${window.sr.url}public/svg/character-${characterId}.svg`;
 
@@ -26,10 +25,10 @@ const Character = () => {
 		statusRef.current = { ...statusRef.current, ...characterStatus };
 	}, [characterStatus, statusRef]);
 
-	useCharacterMovement({ debug, characterStatus, setCharacterStatus, characterRef, jump, timelinesRef, elevationRef, statusRef });
+	useCharacterMovement({ debug, characterStatus, setCharacterStatus, jump, timelinesRef, elevationRef, statusRef, elsRef });
 
 	return (
-		<div ref={characterRef} className="sr-character" tabIndex="0" data-move={characterStatus.move} data-jump={characterStatus.jump}>
+		<div className="sr-character" tabIndex="0" data-move={characterStatus.move} data-jump={characterStatus.jump}>
 			<div className="sr-character-svg" ref={characterSvgRef}>
 				<SVG path={characterSVG} onSvgLoad={handleSvgLoad} />
 			</div>
