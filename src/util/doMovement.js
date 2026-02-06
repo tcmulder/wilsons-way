@@ -70,7 +70,7 @@ const doJump = ({characterRef, setCharacterStatus, jump, elevationRef, statusRef
 
 	const elCharacter = characterRef.current;
 
-	const fudge = characterRef?.current?.getBoundingClientRect().height * 0.05; // Prevents character's head from hitting shelf above
+	const fudge = 7;
 	const targetHeight = jump.height + elevationRef.current.below;
 	const up = () => {
 		const tlUp = gsap.timeline();
@@ -96,7 +96,7 @@ const doJump = ({characterRef, setCharacterStatus, jump, elevationRef, statusRef
 			onUpdate: () => {
 				if(elevationRef.current.foot - fudge <= elevationRef.current.below) {
 					tlDown.kill();
-					gsap.set(elCharacter, { y: -elevationRef.current.below - fudge });
+					gsap.set(elCharacter, { y: -elevationRef.current.below });
 					setCharacterStatus(prev => ({ ...prev, jump: 'none' }))
 				}
 			},

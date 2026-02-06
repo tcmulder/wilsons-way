@@ -218,10 +218,10 @@ const checkHitTheEnd = () => {
 // };
 
 export const checkElevation = (els, elevationRef) => {
-	const { elCharacterCrashArea, elShelves, elBoard } = els;
+	const { elCharacter, elShelves, elBoard } = els;
 	const elBoardRect = elBoard.getBoundingClientRect();
-	const elCharacterRect = elCharacterCrashArea.getBoundingClientRect();
-	const { elAbove, elBelow } = getNearestShelves(elCharacterCrashArea, elShelves);
+	const elCharacterRect = elCharacter.getBoundingClientRect();
+	const { elAbove, elBelow } = getNearestShelves(elCharacter, elShelves);
 	const localElevation = {
 		above: 0,
 		below: 0,
@@ -237,6 +237,5 @@ export const checkElevation = (els, elevationRef) => {
 	}
 	localElevation.head = Math.round(elBoardRect.height - elCharacterRect.top);
 	localElevation.foot = Math.round(elBoardRect.height - elCharacterRect.bottom);
-	// console.table(localElevation)
 	elevationRef.current = { ...elevationRef.current, ...localElevation };
 }

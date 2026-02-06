@@ -3854,7 +3854,7 @@
 <path id="Vector_3186" d="M11503.4 567.777V570.301H11500.9V572.984H11495.5V570.301H11498.2V567.777H11503.4Z" fill="#832200"></path>
 </g>
 </g>
-<g id="sidewalk">
+<g class="sr-sidewalk" id="sidewalk">
 <rect id="Rectangle 1" y="756" width="22417" height="54" fill="black"></rect>
 <g id="Frame 6">
 <g id="Frame 61">

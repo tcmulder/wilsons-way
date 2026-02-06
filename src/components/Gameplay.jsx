@@ -58,7 +58,7 @@ const CollisionTracker = ({ boardRef }) => {
 	useEffect(() => {
 		if (!elsRef?.current?.elBoard || !elsRef?.current?.elCharacter || !elsRef?.current?.elShelves?.at(-1)) return;
 		const elBoardRect = elsRef.current.elBoard.getBoundingClientRect();
-		const elFloorRect = elsRef.current.elShelves.at(-1).getBoundingClientRect();
+		const elFloorRect = elsRef.current.elShelves.filter(el => el.classList.contains('sr-sidewalk'))[0].getBoundingClientRect();
 		elevationRef.current = {
 			...elevationRef.current,
 			ceiling: Math.round(elBoardRect.height),
