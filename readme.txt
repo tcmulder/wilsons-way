@@ -4,7 +4,7 @@ Contributors: thinkaquamarine
 Tags: game
 Requires at least: 6.5.4
 Tested up to: 6.8.1
-Stable tag: 1.4.1
+Stable tag: 2.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -21,6 +21,10 @@ This plugin adds the Shelf Runner game to your website. It can either be set up 
 
 == Changelog ==
 
+= 2.0.0 =
+
+* Rebuild in React.
+
 = 1.4.1 = 
 
 * Remove old dist files from build.
@@ -36,7 +40,7 @@ This plugin adds the Shelf Runner game to your website. It can either be set up 
 
 = 1.3.6 =
 
-* Update Susann's name spelling.
+* Update character name spelling.
 
 = 1.3.5 =
 
@@ -52,7 +56,7 @@ This plugin adds the Shelf Runner game to your website. It can either be set up 
 
 = 1.3.2 =
 
-* Fix Suzanne character bumping to next row in Safari.
+* Fix character bumping to next row in Safari.
 
 = 1.3.1 =
 

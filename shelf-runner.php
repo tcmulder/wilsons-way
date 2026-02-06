@@ -14,7 +14,7 @@ Text Domain: shelf-runner
  * Exit if accessed directly
  */
 if ( ! defined( 'ABSPATH' ) ) {
-    exit;
+	exit;
 }
 
 /**
@@ -33,9 +33,8 @@ define( 'SHELF_RUNNER_PLUGIN_DIST_URI', plugin_dir_url( __FILE__ ) . 'dist/' );
 /**
  * Include admin functionality
  */
-require_once SHELF_RUNNER_PLUGIN_INC . 'admin/utility.php';
-require_once SHELF_RUNNER_PLUGIN_INC . 'admin/settings.php';
-require_once SHELF_RUNNER_PLUGIN_INC . 'admin/enqueue.php';
-require_once SHELF_RUNNER_PLUGIN_INC . 'admin/api.php';
-require_once SHELF_RUNNER_PLUGIN_INC . 'admin/templates.php';
+require_once SHELF_RUNNER_PLUGIN_INC . 'settings.php';
+require_once SHELF_RUNNER_PLUGIN_INC . 'enqueue.php';
+require_once SHELF_RUNNER_PLUGIN_INC . 'api.php';
+require_once SHELF_RUNNER_PLUGIN_INC . 'templates.php';
 require_once SHELF_RUNNER_PLUGIN_DIR . 'updates/update-checker.php';

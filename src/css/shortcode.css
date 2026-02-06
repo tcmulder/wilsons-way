@@ -44,9 +44,6 @@ body.sr-lightbox-open {
 			left: 0;
 			height: 200px;
 			width: calc(1800px * 4);
-			background-image: url("../img/shortcode-bg.svg");
-			background-size: 33.3333% 100%;
-			background-position: left center;
 			opacity: 0.2;
 			transition: opacity 0.3s;
 			will-change: transform;
@@ -84,32 +81,23 @@ body.sr-lightbox-open {
 		max-width: 100%;
 		color: transparent;
 		font-size: 10px;
-		background-image: url("../img/shortcode-logo.svg");
-		background-size: contain;
-		background-repeat: no-repeat;
-		background-position: left bottom;
 	}
 	
 	.sr-portal-button {
+		position: absolute;
+		inset: 0;
 		cursor: pointer;
 		background-color: transparent;
 		border: 0;
-		width: 300px;
-		height: 87px;
-		max-width: 100%;
-		background-image: url("../img/shortcode-button.svg");
-		background-size: contain;
-		background-repeat: no-repeat;
-		background-position: left top;
 		transition: transform 0.3s;
 
 		/* The button is likely styled: try to override anything unhelpful */
 		button {
 			display: block !important;
 			position: absolute !important;
-			inset: -50vw !important;
+			inset: 0 !important;
 			z-index: 1 !important;
-			opacity: 0 !important;
+			color: white !important;
 		}
 	}
 	
