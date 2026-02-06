@@ -7,8 +7,8 @@ import { Debug } from './components/Debug';
 import { useDebugContext } from './context/useContexts';
 
 export default function App() {
-  const { debug: { router } } = useDebugContext();
-  const Router = router === '1' ? HashRouter : MemoryRouter;
+  const { debug } = useDebugContext();
+  const Router = debug?.router === '1' ? HashRouter : MemoryRouter;
   return (
     <div className="sr">
       <div className="sr-stage">
