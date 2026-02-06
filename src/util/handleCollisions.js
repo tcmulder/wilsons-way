@@ -150,12 +150,12 @@ export const checkCollisions = ({elCharacterCrashArea, elObstacles}) => {
 /**
  * Track level completion
  */
-const checkHitTheEnd = () => {
-	// if (isTimelineEnd()) {
-	// 	endLevel();
-	// }
-	return false;
-};
+// const checkHitTheEnd = () => {
+// 	// if (isTimelineEnd()) {
+// 	// 	endLevel();
+// 	// }
+// 	return false;
+// };
 
 // /**
 //  * Allow falling off the edge of a shelf to the next one down
@@ -226,7 +226,7 @@ export const checkElevation = (els, elevationRef) => {
 		above: 0,
 		below: 0,
 		charBelow: 0,
-	}
+	};
 	if (elAbove) {
 		localElevation.above = Math.round(elBoardRect.height - elAbove.getBoundingClientRect().bottom);
 	} else {
@@ -238,4 +238,4 @@ export const checkElevation = (els, elevationRef) => {
 	localElevation.head = Math.round(elBoardRect.height - elCharacterRect.top);
 	localElevation.foot = Math.round(elBoardRect.height - elCharacterRect.bottom);
 	elevationRef.current = { ...elevationRef.current, ...localElevation };
-}
+};

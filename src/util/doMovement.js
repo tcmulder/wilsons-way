@@ -13,7 +13,7 @@ export const trackMovement = (props) => {
 	checkCollisions(els);
 	checkElevation(els, elevationRef);
 	doGravity({ setCharacterStatus, statusRef, elevationRef, elsRef, jump });
-}
+};
 
 /**
  * Fall off the edge of a shelf to the next one down
@@ -25,7 +25,7 @@ const doGravity = (props) => {
 	if(foot > below) {
 		doJumpDown(props);
 	}
-}
+};
 
 /**
  * Pause playback
@@ -34,7 +34,7 @@ export const doPause = ({timelines, setCharacterStatus}) => {
 	if (!timelines.length) return;
 	setCharacterStatus(prev => ({...prev, move: 'none'}));
 	timelines.forEach(timeline => timeline.pause());
-}
+};
 
 /**
  * Play playback
@@ -50,14 +50,14 @@ export const doPlay = ({timelines, setCharacterStatus, direction = 'forward'}) =
 			timeline.play();
 		}
 	});
-}
+};
 
 /**
  * Jump down
  */
 const doJumpDown = (props) => {
 	const { setCharacterStatus, jump, elevationRef, elsRef } = props;
-	setCharacterStatus(prev => ({ ...prev, jump: 'down' }))
+	setCharacterStatus(prev => ({ ...prev, jump: 'down' }));
 	const elCharacter = elsRef.current.elCharacter;
 	const fudge = 7;
 	const tlDown = gsap.timeline();
@@ -67,21 +67,21 @@ const doJumpDown = (props) => {
 			if(elevationRef.current.foot - fudge <= elevationRef.current.below) {
 				tlDown.kill();
 				gsap.set(elCharacter, { y: -elevationRef.current.below });
-				setCharacterStatus(prev => ({ ...prev, jump: 'none' }))
+				setCharacterStatus(prev => ({ ...prev, jump: 'none' }));
 			}
 		},
 		y: elevationRef.current.floor * -1,
 		duration: jump.hangtime,
 		ease: "power1.in",
 	});
-}
+};
 
 /**
  * Jump up
  */
 const doJumpUp = (props) => {
 	const { setCharacterStatus, jump, elevationRef, elsRef } = props;
-	setCharacterStatus(prev => ({ ...prev, jump: 'up' }))
+	setCharacterStatus(prev => ({ ...prev, jump: 'up' }));
 	const elCharacter = elsRef.current.elCharacter;
 	const targetHeight = jump.height + elevationRef.current.below;
 	const fudge = 7;
@@ -97,8 +97,8 @@ const doJumpUp = (props) => {
 			}
 		},
 		onComplete: () => doJumpDown(props),
-	})
-}
+	});
+};
 
 /**
  * Jump up and down
@@ -109,7 +109,7 @@ const doJump = (props) => {
 	if (!props.elsRef?.current?.elCharacter) return;
 
 	doJumpUp(props);
-}
+};
 
 /**
  * Run
@@ -120,7 +120,7 @@ const doRun = ({direction, timelines, setCharacterStatus}) => {
 
 	// Control GSAP timelines based on direction (forward or backward)
 	doPlay({ timelines, setCharacterStatus, direction });
-}
+};
 
 /**
  * Movements hook

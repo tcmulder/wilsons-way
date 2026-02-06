@@ -1,5 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
-import { MemoryRouter, HashRouter } from 'react-router-dom'
+import { MemoryRouter, HashRouter } from 'react-router-dom';
 import IntroPage from './routes/IntroPage';
 import LevelPage from './routes/LevelPage';
 import { Interface } from './components/Interface';

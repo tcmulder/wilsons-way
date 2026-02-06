@@ -18,15 +18,15 @@ const DebugNavigation = ({navigate}) => {
 			<option value="/gameplay">Gameplay</option>
 		</select>
 	);
-}
+};
 
 const DebugPlayPause = ({ timelinesRef, characterStatus, setCharacterStatus, path, navigate, setLevel }) => {
 	if (path === '/gameplay' && characterStatus.move === 'none') {
-		return <button onClick={(e) => { e.preventDefault(); doPlay({timelines: timelinesRef.current, setCharacterStatus, direction: 'forward'}); }}>▶︎</button>
+		return <button onClick={(e) => { e.preventDefault(); doPlay({timelines: timelinesRef.current, setCharacterStatus, direction: 'forward'}); }}>▶︎</button>;
 	} else if (path === '/gameplay' && characterStatus.move !== 'none') {
-		return <button onClick={(e) => { e.preventDefault(); doPause({timelines: timelinesRef.current, setCharacterStatus}); }}>⏸︎</button>
+		return <button onClick={(e) => { e.preventDefault(); doPause({timelines: timelinesRef.current, setCharacterStatus}); }}>⏸︎</button>;
 	} else {
-		return <button onClick={(e) => { e.preventDefault(); navigate('/gameplay'); setLevel(1); }}>⏯︎</button>
+		return <button onClick={(e) => { e.preventDefault(); navigate('/gameplay'); setLevel(1); }}>⏯︎</button>;
 	}
 };
 

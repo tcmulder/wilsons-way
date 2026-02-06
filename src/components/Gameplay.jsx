@@ -52,7 +52,7 @@ const CollisionTracker = ({ boardRef }) => {
 			elObstacles,
 			elObstaclesNegative,
 		};
-		elsRef.current = { ...elsRef.current, ...newState }; 
+		elsRef.current = { ...elsRef.current, ...newState };
 	}, [boardRef, elsRef, currentLevelId, elevationRef]);
 
 	useEffect(() => {
@@ -63,7 +63,7 @@ const CollisionTracker = ({ boardRef }) => {
 			...elevationRef.current,
 			ceiling: Math.round(elBoardRect.height),
 			floor: Math.round(elBoardRect.height - elFloorRect.top),
-		}
+		};
 		gsap.set(elsRef.current.elCharacter, { y: elevationRef.current.floor * -1 });
 	}, [currentLevelId, elsRef, elevationRef]);
 

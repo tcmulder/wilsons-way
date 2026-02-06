@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
 const IntroPage = () => {
 	const navigate = useNavigate();
 	return (
@@ -9,6 +9,6 @@ const IntroPage = () => {
 			<div className="foobar">[FULL WIDTH]</div>
 		</div>
 	);
-}
+};
 
-export default IntroPage
+export default IntroPage;
