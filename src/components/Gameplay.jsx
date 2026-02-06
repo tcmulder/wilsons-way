@@ -1,3 +1,4 @@
+import { gsap } from 'gsap';
 import { useEffect } from 'react';
 import { useGameplayContext, useLevelContext } from '../context/useContexts';
 
@@ -60,9 +61,10 @@ const CollisionTracker = ({ boardRef }) => {
 		const elFloorRect = elsRef.current.elShelves.at(-1).getBoundingClientRect();
 		elevationRef.current = {
 			...elevationRef.current,
-			ceiling: elBoardRect.height,
-			floor: elBoardRect.height - elFloorRect.top,
+			ceiling: Math.round(elBoardRect.height),
+			floor: Math.round(elBoardRect.height - elFloorRect.top),
 		}
+		gsap.set(elsRef.current.elCharacter, { y: elevationRef.current.floor * -1 });
 	}, [currentLevelId, elsRef, elevationRef]);
 
 	return null;

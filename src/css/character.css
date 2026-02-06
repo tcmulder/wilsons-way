@@ -3,13 +3,10 @@
  */
 
 .sr-character {
-	--sr-h-shelf: var(--sr-h-ground);
-	--sr-y: calc(-1 * var(--sr-h-shelf));
 	--sr-y-shift: 0.5cqw;
 	position: absolute;
 	left: 33cqw;
 	bottom: 0;
-	transform: translateY(var(--sr-freeze, var(--sr-y)));
 	transition: transform var(--sr-hangtime) ease-in;
 	will-change: transform;
 
@@ -40,15 +37,6 @@
 
 	&[data-jump="down"] [data-state="jump-down"] {
 		opacity: 1;
-	}
-
-	&[data-jump="up"] {
-		--sr-h-jump-with-shelf: min(
-			calc(var(--sr-h-shelf) + var(--sr-h-jump)),
-			calc(var(--sr-h-shelf-above, 99cqh))
-		);
-		transform: translateY(calc(-1 * var(--sr-h-jump-with-shelf)));
-		transition: transform var(--sr-hangtime) ease-out;
 	}
 
 	svg {

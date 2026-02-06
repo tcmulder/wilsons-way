@@ -11,6 +11,7 @@ export const trackMovement = ({elsRef, elevationRef, statusRef}) => {
 	checkCollisions(els);
 	checkElevation(els, elevationRef);
 	doGravity({els, elevationRef, statusRef});
+	console.table(elevationRef.current)
 }
 
 /**
@@ -70,16 +71,13 @@ const doJump = ({characterRef, setCharacterStatus, jump, elevationRef, statusRef
 
 	const elCharacter = characterRef.current;
 
-	const fudge = characterRef?.current?.getBoundingClientRect().height * 0.11; // Prevents character's head from hitting shelf above
-	const apexHeight = Math.min(
-		jump.height + elevationRef.current.below,
-		elevationRef.current.above
-	);
+	const fudge = characterRef?.current?.getBoundingClientRect().height * 0.05; // Prevents character's head from hitting shelf above
+	const targetHeight = jump.height + elevationRef.current.below;
 	const up = () => {
 		const tlUp = gsap.timeline();
 		tlUp.to(elCharacter, {
 			onStart: () => setCharacterStatus(prev => ({ ...prev, jump: 'up' })),
-			y: apexHeight * -1,
+			y: targetHeight * -1,
 			duration: jump.hangtime,
 			ease: "power1.out",
 			onUpdate: () => {

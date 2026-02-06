@@ -31,20 +31,22 @@ export const getNearestShelves = (el, els) => {
 	for (const shelf of els) {
 		const shelfRect = shelf.getBoundingClientRect();
 
+		const fudge = 5;
+
 		// Bail if the shelf doesn't align left to right
 		if (!(shelfRect.left < charRect.right && shelfRect.right > charRect.left)) {
 			continue;
 		}
 
 		// Get the shelf above the character
-		if (shelfRect.bottom <= charRect.top) {
+		if (shelfRect.bottom <= charRect.top + fudge) {
 			if (!elAbove || shelfRect.bottom > elAbove.getBoundingClientRect().bottom) {
 				elAbove = shelf;
 			}
 		}
 
 		// Get shelf below the character
-		if (shelfRect.top >= charRect.bottom) {
+		if (shelfRect.top >= charRect.bottom - fudge) {
 			if (!elBelow || shelfRect.top < elBelow.getBoundingClientRect().top) {
 				elBelow = shelf;
 			}
@@ -226,14 +228,15 @@ export const checkElevation = (els, elevationRef) => {
 		charBelow: 0,
 	}
 	if (elAbove) {
-		localElevation.above = elBoardRect.height - elAbove.getBoundingClientRect().bottom;
+		localElevation.above = Math.round(elBoardRect.height - elAbove.getBoundingClientRect().bottom);
 	} else {
-		localElevation.above = elBoardRect.height;
+		localElevation.above = Math.round(elBoardRect.height);
 	}
 	if (elBelow) {
-		localElevation.below = elBoardRect.height - elBelow.getBoundingClientRect().top;
+		localElevation.below = Math.round(elBoardRect.height - elBelow.getBoundingClientRect().top);
 	}
-	localElevation.head = elBoardRect.height - elCharacterRect.top;
-	localElevation.foot = elBoardRect.height - elCharacterRect.bottom;
+	localElevation.head = Math.round(elBoardRect.height - elCharacterRect.top);
+	localElevation.foot = Math.round(elBoardRect.height - elCharacterRect.bottom);
+	// console.table(localElevation)
 	elevationRef.current = { ...elevationRef.current, ...localElevation };
 }
