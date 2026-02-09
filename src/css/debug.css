@@ -50,7 +50,7 @@
 		outline: 1px dashed green;
 	}
 	.sr-character-crash {
-		outline: 1px dashed red;
+		outline: calc(1px / var(--sr-difficulty-crash, 1)) solid red;
 	}
 	.sr-obstacles > * {
 		outline: 1px dashed grey;

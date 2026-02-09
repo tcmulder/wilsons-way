@@ -16,16 +16,17 @@ import '../css/parallax.css';
 const GameplayPage = () => {
 	const { debug } = useDebugContext();
 	const { settings, jump } = useSettingsContext();
+	const { gameplaySpeed, userAdjustedSpeed } = settings;
 	const { level, setCurrentLevelId } = useLevelContext();
 	const { setCharacterStatus } = useCharacterContext();
 	const gameplayContext = useGameplayContext();
 	const gameplayContextRef = useRef(gameplayContext);
-	const difficultySpeed = settings.difficultySpeed * 0.75;
 	const gameplayRef = useRef(null);
 
+	// Set global animations speed
 	useEffect(() => {
-		gameplayContextRef.current = gameplayContext;
-	}, [gameplayContext]);
+		gsap.globalTimeline.timeScale(userAdjustedSpeed / 50);
+	}, [userAdjustedSpeed]);
 
 	// Run trackMovement on every GSAP tick (running, jumping, any animation) without duplicates
 	useEffect(() => {
@@ -34,6 +35,7 @@ const GameplayPage = () => {
 		return () => gsap.ticker.remove(tick);
 	}, [setCharacterStatus, jump]);
 
+	// Load SVG for level and add movement to it
 	const handleSvgLoad = useCallback(async (svgElement) => {
 		const ctx = gameplayContextRef.current;
 		const elBoard = ctx.elsRef?.current?.elBoard;
@@ -47,23 +49,24 @@ const GameplayPage = () => {
 			aniLevel({
 				elBoard,
 				setTimelines: (timelines) => { ctx.timelinesRef.current = timelines; },
-				difficultySpeed,
+				gameplaySpeed,
 			});
 			setCurrentLevelId(Date.now());
 		}
-	}, [difficultySpeed, setCurrentLevelId]);
+	}, [gameplaySpeed, setCurrentLevelId]);
 
+	// Allow drag-and-drop of SVG level files
 	useEffect(() => {
 		if (gameplayContext.elsRef.current.elBoard) {
 			return allowDrop({
 				elBoard: gameplayContext.elsRef.current.elBoard,
 				debug,
 				setTimelines: (timelines) => { gameplayContext.timelinesRef.current = timelines; },
-				difficultySpeed,
+				gameplaySpeed,
 				onLevelLoaded: () => setCurrentLevelId(Date.now()),
 			});
 		}
-	}, [debug, difficultySpeed, setCurrentLevelId, gameplayContext]);
+	}, [debug, gameplaySpeed, setCurrentLevelId, gameplayContext]);
 	
 	return (
 		<div className="sr-gameplay" ref={gameplayRef}>

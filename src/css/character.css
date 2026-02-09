@@ -71,6 +71,7 @@
 
 .sr-character-crash {
 	position: absolute;
+	z-index: 999;
 	inset: 0;
 	border-radius: 50%;
 	transform: scale(var(--sr-difficulty-crash, 1))

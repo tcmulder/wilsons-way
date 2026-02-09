@@ -9,6 +9,7 @@ const Character = () => {
 	const { debug } = useDebugContext();
 	const { characterId, characterStatus, setCharacterStatus } = useCharacterContext();
 	const { timelinesRef, elevationRef, statusRef, elsRef, jumpRef } = useGameplayContext();
+	const { settings: { userAdjustedCrash } } = useSettingsContext();
 	const { currentLevelId } = useLevelContext();
 	const characterSvgRef = useRef(null);
 	const characterSVG = `${window.sr.url}public/svg/character-${characterId}.svg`;
@@ -37,12 +38,16 @@ const Character = () => {
 		currentLevelId,
 	});
 
+	const style = {
+		'--sr-difficulty-crash': userAdjustedCrash || 1,
+	};
+
 	return (
 		<div className="sr-character" tabIndex="0" data-move={characterStatus.move} data-jump={characterStatus.jump}>
 			<div className="sr-character-svg" ref={characterSvgRef}>
 				<SVG path={characterSVG} onSvgLoad={handleSvgLoad} />
 			</div>
-			<div className="sr-character-crash" aria-hidden="true" />
+			<div className="sr-character-crash" aria-hidden="true" style={style} />
 			<div className="sr-character-backpack">
 				<div className="sr-character-score" />
 			</div>

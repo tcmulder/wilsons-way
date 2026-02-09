@@ -116,18 +116,19 @@ add_action(
 				'callback'            => function () {
 					// Get crash difficulty percentage from settings.
 					$difficulty_crash = (int) get_option( 'shelf_runner_settings_size' );
-					$difficulty_crash = $difficulty_crash ? ( $difficulty_crash / 100 ) : 1;
+					$difficulty_crash = $difficulty_crash ? ( $difficulty_crash / 50 ) : 1;
 					$difficulty_speed = 100 - (int) get_option( 'shelf_runner_settings_speed' );
 
 					// Build response data.
 					$data = array(
-						'difficultyCrash' => $difficulty_crash,
-						'difficultySpeed' => $difficulty_speed,
-						'jumpHeight'      => (int) SHELF_RUNNER_JUMP_HEIGHT,
-						'jumpHangtime'    => (int) SHELF_RUNNER_JUMP_HANGTIME,
-						'sfx'             => get_option( 'shelf_runner_settings_sfx' ) === '1',
-						'delayMilestone'  => ( (int) get_option( 'shelf_runner_settings_milestone_duration' ) ) * 1000,
-						'debugAllowed'    => get_option( 'shelf_runner_settings_debug' ) === '1',
+						'gameplaySpeed'     => SHELF_RUNNER_GAMEPLAY_SPEED,
+						'jumpHeight'        => SHELF_RUNNER_JUMP_HEIGHT,
+						'jumpHangtime'      => SHELF_RUNNER_JUMP_HANGTIME,
+						'userAdjustedCrash' => $difficulty_crash,
+						'userAdjustedSpeed' => $difficulty_speed,
+						'sfx'               => get_option( 'shelf_runner_settings_sfx' ) === '1',
+						'delayMilestone'    => ( (int) get_option( 'shelf_runner_settings_milestone_duration' ) ) * 1000,
+						'debugAllowed'      => get_option( 'shelf_runner_settings_debug' ) === '1',
 					);
 
 					return new WP_REST_Response(

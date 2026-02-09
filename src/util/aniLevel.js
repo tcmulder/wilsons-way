@@ -1,4 +1,5 @@
 import { gsap } from 'gsap';
+import { UNSAFE_getTurboStreamSingleFetchDataStrategy } from 'react-router-dom';
 
 /**
  * Create animation timelines for level gameplay
@@ -6,9 +7,9 @@ import { gsap } from 'gsap';
  * @param {Object} props The properties object
  * @param {HTMLElement} props.elBoard The board DOM element
  * @param {Function} props.setTimelines Function to set timelines in context
- * @param {number} props.difficultySpeed The difficulty speed setting
+ * @param {number} props.gameplaySpeed The game speed setting
  */
-export const aniLevel = ({elBoard, setTimelines, difficultySpeed}) => {
+export const aniLevel = ({elBoard, setTimelines, gameplaySpeed}) => {
 	if (!elBoard) return;
 	
 	// Kill all existing timelines
@@ -22,8 +23,7 @@ export const aniLevel = ({elBoard, setTimelines, difficultySpeed}) => {
 
 	// Determine animation duration
 	const svgWidth = parseInt(svgElements[0].getAttribute('viewBox').split(' ')[2]) / 2;
-	const mod = (difficultySpeed / 100) / 100;
-	const gameplayDuration = mod * svgWidth;
+	let gameplayDuration = svgWidth / gameplaySpeed;
 	
 	// Create a separate timeline for each SVG
 	const timelines = [];
