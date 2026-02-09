@@ -6,13 +6,13 @@ import { checkCollisions, checkElevation } from './handleCollisions';
  * Track movement (fires whenever moving left/right)
  */
 export const trackMovement = (props) => {
-	const { gameplayContextRef, setCharacterStatus, jump } = props;
-	const { elsRef, elevationRef, statusRef } = gameplayContextRef.current;
+	const { gameplayContextRef, setCharacterStatus } = props;
+	const { elsRef, elevationRef, statusRef, jumpRef } = gameplayContextRef.current;
 	if (!elsRef?.current || (statusRef?.current?.move === 'none' && statusRef?.current?.jump === 'none')) return;
 	const els = elsRef?.current;
 	checkCollisions(els);
 	checkElevation(els, elevationRef);
-	doGravity({ setCharacterStatus, statusRef, elevationRef, elsRef, jump });
+	doGravity({ setCharacterStatus, statusRef, elevationRef, elsRef, jumpRef });
 };
 
 /**
@@ -56,7 +56,7 @@ export const doPlay = ({timelines, setCharacterStatus, direction = 'forward'}) =
  * Jump down
  */
 const doJumpDown = (props) => {
-	const { setCharacterStatus, jump, elevationRef, elsRef } = props;
+	const { setCharacterStatus, jumpRef, elevationRef, elsRef } = props;
 	setCharacterStatus(prev => ({ ...prev, jump: 'down' }));
 	const elCharacter = elsRef.current.elCharacter;
 	const fudge = 7;
@@ -71,7 +71,7 @@ const doJumpDown = (props) => {
 			}
 		},
 		y: elevationRef.current.floor * -1,
-		duration: jump.hangtime / 2,
+		duration: jumpRef.current.hangtime / 2,
 		ease: "power1.in",
 	});
 };
@@ -80,15 +80,15 @@ const doJumpDown = (props) => {
  * Jump up
  */
 const doJumpUp = (props) => {
-	const { setCharacterStatus, jump, elevationRef, elsRef } = props;
+	const { setCharacterStatus, jumpRef, elevationRef, elsRef } = props;
 	setCharacterStatus(prev => ({ ...prev, jump: 'up' }));
 	const elCharacter = elsRef.current.elCharacter;
-	const targetHeight = jump.height + elevationRef.current.below;
+	const targetHeight = jumpRef.current.height + elevationRef.current.below;
 	const fudge = 7;
 	const tlUp = gsap.timeline();
 	tlUp.to(elCharacter, {
 		y: targetHeight * -1,
-		duration: jump.hangtime / 2,
+		duration: jumpRef.current.hangtime / 2,
 		ease: "power1.out",
 		onUpdate: () => {
 			if(elevationRef.current.head + fudge >= elevationRef.current.above) {
@@ -130,12 +130,22 @@ const doRun = ({direction, timelines, setCharacterStatus}) => {
  * @param {Object} props.characterStatus The character status (move, jump)
  * @param {Function} props.setCharacterStatus Setter for character status
  * @param {Object} props.timelinesRef The timelines ref object
- * @param {Object} props.jump The jump object (height in em units and hangtime in seconds)
+ * @param {Object} props.jumpRef The jump object (height in em units and hangtime in seconds)
  * @param {Object} props.elevationRef The elevation ref object
  * @param {Object} props.statusRef The status ref object
  * @param {*} [props.currentLevelId] Level load id so autoplay runs after level (and timelines) exist
  */
-export function useCharacterMovement({ debug, elsRef, characterStatus, setCharacterStatus, jump, timelinesRef, elevationRef, statusRef, currentLevelId }) {
+export function useCharacterMovement({
+	debug,
+	elsRef,
+	characterStatus,
+	setCharacterStatus,
+	jumpRef,
+	timelinesRef,
+	elevationRef,
+	statusRef,
+	currentLevelId,
+}) {
   // Auto-play when debug autoplay is not '0', and only once timelines exist (level has loaded)
   useEffect(() => {
 	if (debug?.autoplay !== '0' && timelinesRef.current?.length) {
@@ -149,7 +159,7 @@ export function useCharacterMovement({ debug, elsRef, characterStatus, setCharac
 		if (e.repeat) return;
 		if (e.key === 'ArrowUp' || e.key === ' ') {
 			e.preventDefault();
-			doJump({ elsRef, setCharacterStatus, jump, elevationRef, statusRef });
+			doJump({ elsRef, setCharacterStatus, jumpRef, elevationRef, statusRef });
 		}
 
 		if (debug?.autoplay === '0') {
@@ -190,5 +200,5 @@ export function useCharacterMovement({ debug, elsRef, characterStatus, setCharac
 	  window.removeEventListener('keydown', handleKeyDown);
 	  window.removeEventListener('keyup', handleKeyUp);
 	};
-  }, [debug, characterStatus, setCharacterStatus, jump, timelinesRef, elevationRef, statusRef, elsRef]);
+  }, [debug, characterStatus, setCharacterStatus, jumpRef, timelinesRef, elevationRef, statusRef, elsRef]);
 }

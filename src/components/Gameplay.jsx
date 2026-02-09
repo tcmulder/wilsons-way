@@ -1,11 +1,14 @@
 import { gsap } from 'gsap';
 import { useEffect } from 'react';
-import { useGameplayContext, useLevelContext } from '../context/useContexts';
+import { throttle } from 'underscore';
+import { useGameplayContext, useLevelContext, useSettingsContext } from '../context/useContexts';
 
 const CollisionTracker = ({ boardRef }) => {
-	const { elsRef, elevationRef } = useGameplayContext();
+	const { elsRef, elevationRef, jumpRef } = useGameplayContext();
 	const { currentLevelId } = useLevelContext();
+	const { jump } = useSettingsContext();
 
+	// Setup elements.
 	useEffect(() => {
 		if (!boardRef?.current) return;
 		const elBoard = boardRef.current.querySelector('.sr-board');
@@ -55,17 +58,33 @@ const CollisionTracker = ({ boardRef }) => {
 		elsRef.current = { ...elsRef.current, ...newState };
 	}, [boardRef, elsRef, currentLevelId, elevationRef]);
 
+	// Setup elevations and jump.
 	useEffect(() => {
 		if (!elsRef?.current?.elBoard || !elsRef?.current?.elCharacter || !elsRef?.current?.elShelves?.at(-1)) return;
-		const elBoardRect = elsRef.current.elBoard.getBoundingClientRect();
-		const elFloorRect = elsRef.current.elShelves.filter(el => el.classList.contains('sr-sidewalk'))[0].getBoundingClientRect();
-		elevationRef.current = {
-			...elevationRef.current,
-			ceiling: Math.round(elBoardRect.height),
-			floor: Math.round(elBoardRect.height - elFloorRect.top),
+		const updateElevations = () => {
+			const elBoardRect = elsRef.current.elBoard.getBoundingClientRect();
+			const elFloorRect = elsRef.current.elShelves.filter(el => el.classList.contains('sr-sidewalk'))[0].getBoundingClientRect();
+			elevationRef.current = {
+				...elevationRef.current,
+				ceiling: Math.round(elBoardRect.height),
+				floor: Math.round(elBoardRect.height - elFloorRect.top),
+			};
+			jumpRef.current = {
+				height: Math.round(elBoardRect.height * jump.height),
+				hangtime: jump.hangtime,
+			};
+			gsap.set(elsRef.current.elCharacter, { y: elevationRef.current.floor * -1 });
 		};
-		gsap.set(elsRef.current.elCharacter, { y: elevationRef.current.floor * -1 });
-	}, [currentLevelId, elsRef, elevationRef]);
+		const throttledUpdate = throttle(updateElevations, 250);
+		updateElevations();
+		const observer = new ResizeObserver(throttledUpdate);
+		observer.observe(elsRef.current.elBoard);
+		return () => {
+			observer.disconnect();
+			throttledUpdate.cancel();
+		};
+	}, [currentLevelId, elsRef, elevationRef, jumpRef, jump]);
+
 
 	return null;
 };

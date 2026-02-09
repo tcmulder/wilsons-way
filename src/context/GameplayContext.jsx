@@ -11,6 +11,10 @@ export function GameplayContextProvider({ children }) {
     head: 0,
     foot: 0,
   });
+  const jumpRef = useRef({
+    height: 0,
+    hangtime: 0,
+  });
   const statusRef = useRef({
     move: 'none',
     jump: 'none'
@@ -28,6 +32,7 @@ export function GameplayContextProvider({ children }) {
     () => ({
       timelinesRef,
       elevationRef,
+      jumpRef,
       elsRef,
       statusRef,
     }),
