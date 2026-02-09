@@ -22,15 +22,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Define constants
  */
+
+// Plugin constants.
 define( 'SHELF_RUNNER_VERSION', '1.4.1' );
 define( 'SHELF_RUNNER_NAME', __( 'Wilson\'s Way', 'shelf-runner' ) );
-define( 'SHELF_RUNNER_LEVELS', 4 );
-define( 'SHELF_RUNNER_ENV', str_contains( ( isset( $_SERVER['HTTP_HOST'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_HOST'] ) ) : '' ), '5173' ) ? 'development' : 'production' );
 define( 'SHELF_RUNNER_BASENAME', plugin_basename( __FILE__ ) );
 define( 'SHELF_RUNNER_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'SHELF_RUNNER_PLUGIN_INC', SHELF_RUNNER_PLUGIN_DIR . 'includes/' );
 define( 'SHELF_RUNNER_PLUGIN_URI', plugin_dir_url( __FILE__ ) );
 define( 'SHELF_RUNNER_PLUGIN_DIST_URI', plugin_dir_url( __FILE__ ) . 'dist/' );
+define( 'SHELF_RUNNER_ENV', str_contains( ( isset( $_SERVER['HTTP_HOST'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_HOST'] ) ) : '' ), '5173' ) ? 'development' : 'production' );
+
+// Gameplay constants.
+define( 'SHELF_RUNNER_JUMP_HEIGHT', 20 ); // Base jump height (as percentage of game board height).
+define( 'SHELF_RUNNER_JUMP_HANGTIME', 1 ); // Base time in flight during jump (in seconds).
 
 /**
  * Include admin functionality

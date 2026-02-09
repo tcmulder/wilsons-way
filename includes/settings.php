@@ -197,10 +197,12 @@ function shelf_runner_settings_init() {
 		/* translators: %d: level number. */
 		$level_outro_default = __( 'Level %d Outro', 'shelf-runner' );
 
-		for ( $i = 1; $i <= SHELF_RUNNER_LEVELS; $i++ ) {
+		$number_of_levels = 4;
+
+		for ( $i = 1; $i <= $number_of_levels; $i++ ) {
 			add_option( "shelf_runner_settings_level_{$i}_intro", sprintf( $level_intro_default, $i ) );
 			register_setting( 'shelf_runner_settings', "shelf_runner_settings_level_{$i}_intro" );
-			if ( $i < SHELF_RUNNER_LEVELS ) {
+			if ( $i < $number_of_levels ) {
 				add_option( "shelf_runner_settings_level_{$i}_outro", sprintf( $level_outro_default, $i ) );
 				register_setting( 'shelf_runner_settings', "shelf_runner_settings_level_{$i}_outro" );
 			}
@@ -217,7 +219,7 @@ function shelf_runner_settings_init() {
 						"shelf_runner_level_{$i}_intro",
 						array_merge( $wysiwyg_settings, array( 'textarea_name' => "shelf_runner_settings_level_{$i}_intro" ) )
 					);
-					if ( $i < SHELF_RUNNER_LEVELS ) {
+					if ( $i < $number_of_levels ) {
 						/* translators: %d: level number. */
 						printf( '<h2>%s</h2>', esc_html( sprintf( __( 'Level %d Outro Message:', 'shelf-runner' ), $i ) ) );
 						wp_editor(

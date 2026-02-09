@@ -123,18 +123,11 @@ add_action(
 					$data = array(
 						'difficultyCrash' => $difficulty_crash,
 						'difficultySpeed' => $difficulty_speed,
+						'jumpHeight'      => (int) SHELF_RUNNER_JUMP_HEIGHT,
+						'jumpHangtime'    => (int) SHELF_RUNNER_JUMP_HANGTIME,
 						'sfx'             => get_option( 'shelf_runner_settings_sfx' ) === '1',
-						'debug'           => get_option( 'shelf_runner_settings_debug' ) === '1',
 						'delayMilestone'  => ( (int) get_option( 'shelf_runner_settings_milestone_duration' ) ) * 1000,
-						'scores'          => array_map(
-							function ( $score ) {
-								return array(
-									'user'  => esc_html( $score['user'] ),
-									'score' => (int) $score['score'],
-								);
-							},
-							get_option( 'shelf_runner_settings_leaderboard', array() )
-						),
+						'debugAllowed'    => get_option( 'shelf_runner_settings_debug' ) === '1',
 					);
 
 					return new WP_REST_Response(

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useDebugContext, useGameplayContext, useLevelContext, useCharacterContext } from '../context/useContexts';
+import { useDebugContext, useSettingsContext, useGameplayContext, useLevelContext, useCharacterContext } from '../context/useContexts';
 import { doPause, doPlay } from '../util/doMovement';
 
 import '../css/debug.css';
@@ -49,6 +49,7 @@ const DebugCharacter = ({ characterId, setCharacterId, path }) => {
 };
 
 export const Debug = () => {
+	const { settings } = useSettingsContext();
 	const { debug } = useDebugContext();
 	const { characterId, setCharacterId, characterStatus, setCharacterStatus } = useCharacterContext();
 	const { timelinesRef } = useGameplayContext();
@@ -73,7 +74,7 @@ export const Debug = () => {
 		}
 	}, [debug?.level, setLevel]);
 	
-	if (!debug) {
+	if (!settings.debugAllowed || !debug) {
 		return null;
 	}
 	

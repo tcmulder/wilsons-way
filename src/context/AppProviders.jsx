@@ -7,15 +7,15 @@ import { GameplayContextProvider } from './GameplayContext';
 export function AppProviders({ children }) {
   return (
     <DebugContextProvider>
-      <SettingsContextProvider>
-        <LevelContextProvider>
-          <CharacterContextProvider>
-            <GameplayContextProvider>
+      <GameplayContextProvider>
+        <SettingsContextProvider>
+          <LevelContextProvider>
+            <CharacterContextProvider>
               {children}
-            </GameplayContextProvider>
-          </CharacterContextProvider>
-        </LevelContextProvider>
-      </SettingsContextProvider>
+            </CharacterContextProvider>
+          </LevelContextProvider>
+        </SettingsContextProvider>
+      </GameplayContextProvider>
     </DebugContextProvider>
   );
 }

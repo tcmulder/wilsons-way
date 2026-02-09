@@ -71,7 +71,7 @@ const doJumpDown = (props) => {
 			}
 		},
 		y: elevationRef.current.floor * -1,
-		duration: jump.hangtime,
+		duration: jump.hangtime / 2,
 		ease: "power1.in",
 	});
 };
@@ -88,7 +88,7 @@ const doJumpUp = (props) => {
 	const tlUp = gsap.timeline();
 	tlUp.to(elCharacter, {
 		y: targetHeight * -1,
-		duration: jump.hangtime,
+		duration: jump.hangtime / 2,
 		ease: "power1.out",
 		onUpdate: () => {
 			if(elevationRef.current.head + fudge >= elevationRef.current.above) {
