@@ -43,6 +43,11 @@
 		display: block;
 		height: 100%;
 		width: auto;
+		shape-rendering: optimizeSpeed;
+	}
+
+	/* These move via parallax (so smooth out the animation) */
+	& > svg {
 		will-change: transform;
 	}
 }
