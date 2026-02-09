@@ -64,11 +64,11 @@ export const getNearestShelves = (el, els) => {
 /**
  * Check for collisions
  *
- * @param {HTMLElement[]} els Elements to check
+ * @param {Set<HTMLElement>} elObstaclesVisible Elements to check
  * @param {HTMLElement} elCharacterCrashArea The character crash area element
  */
-export const checkCollisions = ({elCharacterCrashArea, elObstacles}) => {
-	elObstacles.forEach((el) => {
+export const checkCollisions = ({elCharacterCrashArea, elObstaclesVisible}) => {
+	elObstaclesVisible.forEach((el) => {
 		if (
 			!el.classList.contains('sr-obstacle') &&
 			!el.hasAttribute('data-disabled') &&
@@ -218,10 +218,10 @@ export const checkCollisions = ({elCharacterCrashArea, elObstacles}) => {
 // };
 
 export const checkElevation = (els, elevationRef) => {
-	const { elCharacter, elShelves, elBoard } = els;
+	const { elCharacter, elShelvesVisible, elBoard } = els;
 	const elBoardRect = elBoard.getBoundingClientRect();
 	const elCharacterRect = elCharacter.getBoundingClientRect();
-	const { elAbove, elBelow } = getNearestShelves(elCharacter, elShelves);
+	const { elAbove, elBelow } = getNearestShelves(elCharacter, elShelvesVisible);
 	const localElevation = {
 		above: 0,
 		below: 0,

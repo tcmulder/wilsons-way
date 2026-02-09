@@ -25,7 +25,8 @@ export function GameplayContextProvider({ children }) {
     elCharacterCrashArea: null,
     elShelves: [],
     elObstacles: [],
-    elObstaclesNegative: [],
+    elShelvesVisible: new Set(),
+    elObstaclesVisible: new Set(),
   });
 
   const value = useMemo(
