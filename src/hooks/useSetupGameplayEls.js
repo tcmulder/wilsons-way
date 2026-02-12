@@ -70,10 +70,23 @@ export function useSetupGameplayElements(boardRef) {
 		elShelvesVisible.clear();
 		elObstaclesVisible.clear();
 
+		// Safari (and WebKit) delivers zero bounding rects in IntersectionObserver callbacks for SVG
+		// elements (see WebKit bug 196729). Use "all visible" fallback so gameplay works.
+		const isSafari = typeof navigator !== 'undefined' && /^((?!chrome|android).)*safari/i.test(navigator.userAgent) || (navigator.userAgent.includes('Safari') && !navigator.userAgent.includes('Chrome'));
+
+		if (isSafari) {
+			shelves.forEach((x) => elShelvesVisible.add(x));
+			obstacles.forEach((x) => elObstaclesVisible.add(x));
+			return () => {
+				elShelvesVisible.clear();
+				elObstaclesVisible.clear();
+			};
+		}
+
 		const options = {
 			root: null,
 			rootMargin: '0px 100px 0px 100px', // 100px left/right, 0 top/bottom
-			threshold: 0,
+			threshold: 0.01,
 		};
 
 		const shelvesObserver = new IntersectionObserver(
