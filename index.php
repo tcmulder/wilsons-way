@@ -53,7 +53,7 @@ if ( ! file_exists( '../../../wp-load.php' ) ) {
 			wp_json_encode(
 				array(
 					'url'   => esc_url( str_replace( 'http:', 'https:', SHELF_RUNNER_PLUGIN_URI ) ), // Otherwise vite+safari forces http.
-					'api'   => esc_url_raw( rest_url() ),
+					'api'   => esc_url( str_replace( 'http:', 'https:', rest_url() ) ), // Otherwise vite+safari forces http.
 					'nonce' => wp_create_nonce( 'wp_rest' ),
 				)
 			)
