@@ -70,34 +70,34 @@ export function useSetupGameplayElements(boardRef) {
 		elShelvesVisible.clear();
 		elObstaclesVisible.clear();
 
-		// Safari (and WebKit) delivers zero bounding rects in IntersectionObserver callbacks for SVG
-		// elements (see WebKit bug 196729). Use "all visible" fallback so gameplay works.
-		const isSafari = typeof navigator !== 'undefined' && /^((?!chrome|android).)*safari/i.test(navigator.userAgent) || (navigator.userAgent.includes('Safari') && !navigator.userAgent.includes('Chrome'));
-
-		if (isSafari) {
-			shelves.forEach((x) => elShelvesVisible.add(x));
-			obstacles.forEach((x) => elObstaclesVisible.add(x));
-			return () => {
-				elShelvesVisible.clear();
-				elObstaclesVisible.clear();
-			};
-		}
-
 		const options = {
 			root: null,
 			rootMargin: '0px 100px 0px 100px', // 100px left/right, 0 top/bottom
 			threshold: 0.01,
 		};
 
+		let firstShelvesCheck = true;
 		const shelvesObserver = new IntersectionObserver(
 			(entries) => {
 				for (const entry of entries) {
 					if (entry.isIntersecting) elShelvesVisible.add(entry.target);
 					else elShelvesVisible.delete(entry.target);
 				}
+				// After first run, visible shelves is always ≥1 when IO works (e.g. viewport hits at least one).
+				// If we have shelves but none visible, IO is broken (e.g. WebKit bug 196729 on SVG). Fallback.
+				if (firstShelvesCheck) {
+					firstShelvesCheck = false;
+					if (shelves.length > 0 && elShelvesVisible.size === 0) {
+						shelvesObserver.disconnect();
+						obstaclesObserver.disconnect();
+						shelves.forEach((x) => elShelvesVisible.add(x));
+						obstacles.forEach((x) => elObstaclesVisible.add(x));
+					}
+				}
 			},
 			options,
 		);
+
 		const obstaclesObserver = new IntersectionObserver(
 			(entries) => {
 				for (const entry of entries) {
