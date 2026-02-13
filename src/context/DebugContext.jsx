@@ -14,7 +14,10 @@ export function DebugContextProvider({ children }) {
     // Bail if we can't read
     if (typeof window === 'undefined') return null;
     // Setup debug object
-    const debugReturn = {};
+    const debugReturn = {
+      level: 1,
+      autoplay: true,
+    };
 
     // Get the parameters and bail if debut is not true
     const search = window.location.search || '';
