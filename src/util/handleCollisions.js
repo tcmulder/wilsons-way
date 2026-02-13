@@ -31,7 +31,7 @@ export const getNearestShelves = (el, els) => {
 	for (const shelf of els) {
 		const shelfRect = shelf.getBoundingClientRect();
 
-		const fudge = 5;
+		const fudge = 25;
 
 		// Bail if the shelf doesn't align left to right
 		if (!(shelfRect.left < charRect.right && shelfRect.right > charRect.left)) {
