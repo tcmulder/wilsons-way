@@ -8,7 +8,7 @@ import { useDebugContext } from './context/useContexts';
 
 export default function App() {
   const { debug } = useDebugContext();
-  const Router = debug?.router === '1' ? HashRouter : MemoryRouter;
+  const Router = debug?.router === 'true' ? HashRouter : MemoryRouter;
   return (
     <div className="sr">
       <div className="sr-stage">

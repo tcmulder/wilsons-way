@@ -39,7 +39,7 @@ export const doPause = ({timelines, setCharacterStatus}) => {
 /**
  * Play playback
  */
-export const doPlay = ({timelines, setCharacterStatus, direction = 'forward'}) => {
+export const doRun = ({timelines, setCharacterStatus, direction = 'forward'}) => {
 	if (!timelines?.length) return;
 	setCharacterStatus(prev => ({...prev, move: direction === 'backward' ? 'backward' : 'forward'}));
 	timelines.forEach(timeline => {
@@ -112,17 +112,6 @@ const doJump = (props) => {
 };
 
 /**
- * Run
- */
-const doRun = ({direction, timelines, setCharacterStatus}) => {
-	// Update movement direction in status
-	setCharacterStatus(prev => ({ ...prev, move: direction }));
-
-	// Control GSAP timelines based on direction (forward or backward)
-	doPlay({ timelines, setCharacterStatus, direction });
-};
-
-/**
  * Movements hook
  * @param {Object} props The properties object
  * @param {Object} props.debug Whether debug mode is enabled
@@ -148,8 +137,8 @@ export function useCharacterMovement({
 }) {
   // Auto-play when debug autoplay is not '0', and only once timelines exist (level has loaded)
   useEffect(() => {
-	if (debug?.autoplay !== '0' && timelinesRef.current?.length) {
-	  doPlay({ timelines: timelinesRef.current, setCharacterStatus, direction: 'forward' });
+	if (debug?.autoplay !== false && timelinesRef.current?.length) {
+	  doRun({ timelines: timelinesRef.current, setCharacterStatus, direction: 'forward' });
 	}
   }, [debug, timelinesRef, setCharacterStatus, currentLevelId]);
 
@@ -162,7 +151,7 @@ export function useCharacterMovement({
 			doJump({ elsRef, setCharacterStatus, jumpRef, elevationRef, statusRef });
 		}
 
-		if (debug?.autoplay === '0') {
+		if (debug?.autoplay === false) {
 		  if (e.key === 'ArrowDown') {
 			e.preventDefault();
 			// Toggle play/pause on each ArrowDown press
@@ -186,7 +175,7 @@ export function useCharacterMovement({
 	};
 
 	const handleKeyUp = (e) => {
-	  if (debug?.autoplay === '0') {
+	  if (debug?.autoplay === false) {
 		if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
 		  e.preventDefault();
 		  doPause({ timelines: timelinesRef.current, setCharacterStatus });

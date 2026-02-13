@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useDebugContext, useSettingsContext, useGameplayContext, useLevelContext, useCharacterContext } from '../context/useContexts';
-import { doPause, doPlay } from '../util/doMovement';
+import { doPause, doRun } from '../util/doMovement';
 
 import '../css/debug.css';
 
@@ -22,7 +22,7 @@ const DebugNavigation = ({navigate}) => {
 
 const DebugPlayPause = ({ timelinesRef, characterStatus, setCharacterStatus, path, navigate, setLevel }) => {
 	if (path === '/gameplay' && characterStatus.move === 'none') {
-		return <button onClick={(e) => { e.preventDefault(); doPlay({timelines: timelinesRef.current, setCharacterStatus, direction: 'forward'}); }}>▶︎</button>;
+		return <button onClick={(e) => { e.preventDefault(); doRun({timelines: timelinesRef.current, setCharacterStatus, direction: 'forward'}); }}>▶︎</button>;
 	} else if (path === '/gameplay' && characterStatus.move !== 'none') {
 		return <button onClick={(e) => { e.preventDefault(); doPause({timelines: timelinesRef.current, setCharacterStatus}); }}>⏸︎</button>;
 	} else {
