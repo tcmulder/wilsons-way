@@ -10,13 +10,16 @@ import { DebugContext } from './useContexts';
  */
 export function DebugContextProvider({ children }) {
   // Get debug settings from query string
-  const [debug] = useState(() => {
+  const [debug, setDebug] = useState(() => {
     // Bail if we can't read
     if (typeof window === 'undefined') return null;
     // Setup debug object
     const debugReturn = {
       level: 1,
+      characterId: 1,
       autoplay: true,
+      router: false,
+      outlines: false,
     };
 
     // Get the parameters and bail if debut is not true
@@ -62,7 +65,7 @@ export function DebugContextProvider({ children }) {
   }, [debug]);
 
   return (
-    <DebugContext.Provider value={{ debug }}>
+    <DebugContext.Provider value={{ debug, setDebug }}>
       {children}
     </DebugContext.Provider>
   );

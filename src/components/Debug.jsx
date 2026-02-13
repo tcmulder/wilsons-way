@@ -1,94 +1,141 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useDebugContext, useSettingsContext, useGameplayContext, useLevelContext, useCharacterContext } from '../context/useContexts';
-import { doPause, doRun } from '../util/doMovement';
+import { useDebugContext, useSettingsContext, useLevelContext, useCharacterContext } from '../context/useContexts';
+import { routes } from '../routes';
 
 import '../css/debug.css';
 
-const DebugRestart = () => {
+const setStateAndQuery = (key, value, setState) => {
+	setState(value);
+	const url = new URL(window.location.href);
+	url.searchParams.set(key, value);
+	window.history.pushState({}, '', url);
+};
+
+/**
+ * Checkbox selector
+ */
+const DebugCheckbox = ({ label, param = '', value, setValue, title = '' }) => {
+	const k = param || label.toLowerCase();
 	return (
-		<button onClick={(e) => { e.preventDefault(); window.location.reload(); }}>✖︎</button>
+		<label title={title}>
+			<span>{label}</span>
+			<input type="checkbox" checked={value} onChange={(e) => setStateAndQuery(k, e.target.checked, setValue)} />
+		</label>
 	);
 };
 
-const DebugNavigation = ({navigate}) => {
+/**
+ * Number selector
+ */
+const DebugNumber = ({ label, param = '', value, setValue, title = '' }) => {
+	const k = param || label.toLowerCase();
 	return (
-		<select onChange={(e) => { e.preventDefault(); navigate(e.target.value); }}>
-			<option value="/">Intro</option>
-			<option value="/gameplay">Gameplay</option>
-		</select>
+		<label title={title}>
+			<span>{label}</span>
+			<input
+				type="number"
+				value={value}
+				onChange={(e) => setStateAndQuery(k, parseFloat(e.target.value), setValue)}
+				onKeyDown={(e) => e.stopPropagation()}
+			/>
+		</label>
 	);
 };
 
-const DebugPlayPause = ({ timelinesRef, characterStatus, setCharacterStatus, path, navigate, setLevel }) => {
-	if (path === '/gameplay' && characterStatus.move === 'none') {
-		return <button onClick={(e) => { e.preventDefault(); doRun({timelines: timelinesRef.current, setCharacterStatus, direction: 'forward'}); }}>▶︎</button>;
-	} else if (path === '/gameplay' && characterStatus.move !== 'none') {
-		return <button onClick={(e) => { e.preventDefault(); doPause({timelines: timelinesRef.current, setCharacterStatus}); }}>⏸︎</button>;
-	} else {
-		return <button onClick={(e) => { e.preventDefault(); navigate('/gameplay'); setLevel(1); }}>⏯︎</button>;
-	}
-};
-
-const DebugLevel = ({ level, setLevel, path }) => {
-	if (path !== '/gameplay') return null;
-	return (
-		<span>
-			<button onClick={(e) => { e.preventDefault(); setLevel(level - 1); }}>←</button>level{level}<button onClick={(e) => { e.preventDefault(); setLevel(level + 1); }}>→</button>
-		</span>
-	);
-};
-
-const DebugCharacter = ({ characterId, setCharacterId, path }) => {
-	if (path !== '/gameplay') return null;
-	return (
-		<span>
-			<button onClick={(e) => { e.preventDefault(); setCharacterId(characterId - 1); }}>←</button>char{characterId}<button onClick={(e) => { e.preventDefault(); setCharacterId(characterId + 1); }}>→</button>
-		</span>
-	);
+/**
+ * Apply debug settings (usually from query string on page load)
+ * 
+ * @param {Object} props The properties object
+ * @param {Object} props.debug The debug object
+ * @param {Object} props.settings The settings object
+ * @param {Function} props.setLevel The function to set the level
+ * @param {Function} props.setCharacterId The function to set the character id
+ * @returns {void}
+ */
+const useDebug = ({debug, settings, setLevel, setCharacterId}) => {
+	useEffect(() => {
+		if (settings.debugAllowed && debug) {
+			if (debug?.level) {
+				setLevel(parseInt(debug.level));
+			}
+			if (debug?.characterId) {
+				setCharacterId(parseInt(debug.characterId));
+			}
+		}
+	}, [debug, setLevel, setCharacterId, settings.debugAllowed]);
 };
 
 export const Debug = () => {
+	const { debug, setDebug } = useDebugContext();
 	const { settings } = useSettingsContext();
-	const { debug } = useDebugContext();
-	const { characterId, setCharacterId, characterStatus, setCharacterStatus } = useCharacterContext();
-	const { timelinesRef } = useGameplayContext();
 	const { level, setLevel } = useLevelContext();
+	const { characterId, setCharacterId } = useCharacterContext();
 	const navigate = useNavigate();
-	const path = useLocation().pathname;
-	const props = {
-		debug,
-		characterStatus,
-		setCharacterStatus,
-		timelinesRef,
-		level,
-		setLevel,
-		characterId,
-		setCharacterId
-	};
+	const pagePath = useLocation().pathname;
+	
+	// Setup menu open/close state
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+	// Apply debug settings from state
+	useDebug({debug, setLevel, setCharacterId, settings});
 	
-	useEffect(() => {
-		if (debug?.level) {
-			setLevel(parseInt(debug.level));
-		}
-	}, [debug?.level, setLevel]);
-	
+	// Bail if debug is not allowed or enabled
 	if (!settings.debugAllowed || !debug) {
 		return null;
 	}
 	
 	return (
-		<div className="sr-debug">
-			<button onClick={(e) => { e.preventDefault(); setIsMenuOpen(!isMenuOpen); }}>Debug</button>
+		<div className={`sr-debug${debug?.outlines ? ' sr-debug--outlines' : ''}`}>
+			<button onClick={(e) => { e.preventDefault(); setIsMenuOpen(!isMenuOpen); }}>🐞 Debug</button>
 			{isMenuOpen && (
-				<ul className="sr-debug__menu">
-					<li><DebugNavigation {...props} navigate={navigate} path={path} /></li>
-					<li><DebugRestart /></li>
-					<li><DebugPlayPause {...props} path={path} navigate={navigate} /></li>
-					<li><DebugLevel {...props} path={path} /></li>
-					<li><DebugCharacter {...props} path={path} /></li>
-				</ul>
+				<div className="sr-debug__menu">
+					<DebugNumber
+						label="🧱 Level"
+						param="level"
+						value={level}
+						setValue={setLevel}
+					/>
+					<DebugNumber
+						label="🦸 Character"
+						param="characterId"
+						value={characterId}
+						setValue={setCharacterId}
+					/>
+					<DebugCheckbox
+						label="🚷 Autoplay"
+						param="autoplay"
+						value={debug?.autoplay}
+						setValue={(val) => setDebug({ ...debug, autoplay: val })}
+						title="Automatically play the game when the level loads"
+					/>
+					<DebugCheckbox
+						label="🔀 Router"
+						param="router"
+						value={debug?.router}
+						setValue={(val) => setDebug({ ...debug, router: val })}
+						title="Exposes the URL path so you can refresh without going back to the start"
+					/>
+					<DebugCheckbox
+						label="👁️ Outlines"
+						param="outlines"
+						value={debug?.outlines}
+						setValue={(val) => setDebug({ ...debug, outlines: val })}
+						title={[
+							// unused: 🟧🟦🟪🟫⬛
+							'⬜ level boundary',
+							'🟨 crash area',
+							'🟩 positive',
+							'🟥 negative',
+						].join('\n')}
+					/>
+					<select value={pagePath} onChange={(e) => { e.preventDefault(); navigate(e.target.value); }}>
+						{routes.map(({ path, title }) => (
+							<option key={path} value={path}>Page: {title}</option>
+						))}
+					</select>
+					<button onClick={(e) => { e.preventDefault(); window.location.reload(); }}>🔄 restart</button>
+				</div>
 			)}
 		</div>
 	);

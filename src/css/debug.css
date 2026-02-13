@@ -3,32 +3,55 @@
 	inset: auto auto 0 0;
 	z-index: 10;
 	padding: 0.1em;
-	background-color: rgba(2555, 255, 255, 0.5);
+	background-color: lime;
 	font-size: 0.8em;
 	line-height: 1;
-	
-	button, select {
-		padding: 0.2em;
-		font-size: 1em;
-		border-radius: 0.2em;
-		border: 1px solid black;
-		line-height: 1;
-		background-color: white;
-		text-box: trim-both cap alphabetic;
-	}
 
+	button,
 	select {
-		padding: 0;
+		cursor: pointer;
+		width: 100%;
+		padding: 0.2em 0.1em 0;
+		background-color: transparent;
+		border-radius: 0.2em;
+		border: 2px solid currentColor;
+		font-size: 1em;
+		line-height: 1;
+		text-align: left;
+		&:hover {
+			background-color: greenyellow;
+		}
 	}
 
-	span {
+	label {
+		cursor: pointer;
 		display: flex;
 		align-items: center;
-		gap: 0.2em;
-		outline: 1px solid black;
-		outline-offset: -1px;
-		border-radius: 0.2em;
-		line-height: 1;
+		gap: 0.5em;
+		white-space: nowrap;
+		border-bottom: 1px dashed currentColor;
+	}
+
+	:is([type="text"], [type="number"]) {
+		width: 2.5em;
+		margin-left: auto;
+		background-color: transparent;
+		border: 0;
+		font-size: inherit;
+		text-align: right;
+	}
+
+	:is([type="number"]) {
+		transform: translateX(0.2em);
+	}
+
+	:is([type="checkbox"]) {
+		cursor: pointer;
+		margin-left: auto;
+		width: 1.5em;
+		height: 1.5em;
+		accent-color: gray;
+		accent-color: black;
 	}
 }
 
@@ -36,23 +59,38 @@
 	position: absolute;
 	bottom: 100%;
 	left: 0;
-	margin: 0;
+	display: flex;
+	flex-direction: column;
 	padding: 0.2em;
-	list-style: none;
-	background-color: rgba(2555, 255, 255, 0.5);
+	gap: 0.2em;
+	background-color: color-mix(in srgb, lime 80%, transparent);
+	border-radius: 0 0.2em 0.2em 0;
+	color: black;
 }
 
-.sr-debug ~ .sr-gameplay {
-	.sr-shelves > * {
-		outline: 1px dashed grey;
+.sr-debug--outlines ~ .sr-gameplay {
+	:where(.is-collided) {
+		outline: 1px dashed black;
 	}
-	.sr-character {
-		outline: 1px dashed green;
+	:where(.sr-character) {
+		outline: 1px dashed lightgray;
 	}
-	.sr-character-crash {
-		outline: calc(1px / var(--sr-difficulty-crash, 1)) solid red;
+	:where(.sr-character-crash) {
+		outline: calc(1px / var(--sr-difficulty-crash, 1)) solid yellow;
 	}
-	.sr-obstacles > * {
-		outline: 1px dashed grey;
+	:where(.sr-shelves > *) {
+		outline: 1px dashed lightgray;
+	}
+	:where(:is(.sr-obstacles, .sr-milestones) [data-score]) {
+		outline: 1px dashed lime;
+		&.is-collided {
+			outline: 1px dashed teal;
+		}
+	}
+	:is(:is(.sr-obstacles, .sr-milestones) [data-score^="-"]) {
+		outline: 1px dashed red;
+		&.is-collided {
+			outline: 1px dashed maroon;
+		}
 	}
 }

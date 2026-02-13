@@ -1,14 +1,13 @@
 import { Routes, Route } from 'react-router-dom';
 import { MemoryRouter, HashRouter } from 'react-router-dom';
-import IntroPage from './routes/IntroPage';
-import LevelPage from './routes/LevelPage';
+import { routes } from './routes';
 import { Interface } from './components/Interface';
 import { Debug } from './components/Debug';
 import { useDebugContext } from './context/useContexts';
 
 export default function App() {
   const { debug } = useDebugContext();
-  const Router = debug?.router === 'true' ? HashRouter : MemoryRouter;
+  const Router = debug?.router ? HashRouter : MemoryRouter;
   return (
     <div className="sr">
       <div className="sr-stage">
@@ -17,8 +16,9 @@ export default function App() {
             <Debug />
             <Interface />
             <Routes>
-              <Route path="/" element={<IntroPage />} />
-              <Route path="/gameplay" element={<LevelPage />} />
+              {routes.map(({ path, element }) => (
+                <Route key={path} path={path} element={element} />
+              ))}
             </Routes>
           </Router>
         </div> 

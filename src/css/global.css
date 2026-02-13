@@ -110,6 +110,4 @@ body {
 
 .is-collided {
 	opacity: 0.5 !important;
-	border: 2px dashed red !important;
-	outline: 2px dotted red !important;
 }
