@@ -41,7 +41,11 @@ export const doPause = ({timelines, setCharacterStatus}) => {
  */
 export const doRun = ({timelines, setCharacterStatus, direction = 'forward'}) => {
 	if (!timelines?.length) return;
-	setCharacterStatus(prev => ({...prev, move: direction === 'backward' ? 'backward' : 'forward'}));
+	setCharacterStatus(prev => ({
+		...prev,
+		move: direction === 'backward' ? 'backward' : 'forward',
+		ani: 'sprite',
+	}));
 	timelines.forEach(timeline => {
 		if (!timeline) return;
 		if (direction === 'backward') {

@@ -17,10 +17,10 @@ const Character = () => {
 	const handleSvgLoad = useCallback((svgElement) => {
 		if (characterSvgRef.current && svgElement) {
 			characterSvgRef.current.replaceChildren(svgElement);
-			const timeline = createAniSprite({elParent: characterSvgRef.current, status: characterStatus});
+			const timeline = createAniSprite({elParent: characterSvgRef.current});
 			timelinesRef.current = [...timelinesRef.current, timeline];
 		}
-	}, [characterStatus, timelinesRef]);
+	}, [timelinesRef]);
 
 	useEffect(() => {
 		statusRef.current = { ...statusRef.current, ...characterStatus };

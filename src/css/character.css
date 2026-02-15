@@ -23,7 +23,7 @@
 	}
 
 	/* none and forward both show the forward-facing sprite */
-	&:is([data-move="none"], [data-move="forward"])[data-jump="none"] [data-state="move-forward"] {
+	&:is([data-move="forward"])[data-jump="none"] [data-state="move-forward"] {
 		opacity: 1;
 	}
 
@@ -36,6 +36,10 @@
 	}
 
 	&[data-jump="down"] [data-state="jump-down"] {
+		opacity: 1;
+	}
+
+	&[data-move="none"] [data-state="move-none"] {
 		opacity: 1;
 	}
 
