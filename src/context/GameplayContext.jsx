@@ -17,7 +17,8 @@ export function GameplayContextProvider({ children }) {
   });
   const statusRef = useRef({
     move: 'none',
-    jump: 'none'
+    jump: 'none',
+    ani: 'none',
   });
   const elsRef = useRef({
     elBoard: null,

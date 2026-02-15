@@ -39,7 +39,13 @@ const Character = () => {
 	});
 
 	return (
-		<div className="sr-character" tabIndex="0" data-move={characterStatus.move} data-jump={characterStatus.jump}>
+		<div
+			className="sr-character"
+			tabIndex="0"
+			data-move={characterStatus.move}
+			data-jump={characterStatus.jump}
+			data-ani={characterStatus.ani}
+		>
 			<div className="sr-character-svg" ref={characterSvgRef}>
 				<SVG path={characterSVG} onSvgLoad={handleSvgLoad} />
 			</div>

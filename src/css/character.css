@@ -22,12 +22,11 @@
 		opacity: 0;
 	}
 
-	/* none and forward both show the forward-facing sprite */
-	&:is([data-move="forward"])[data-jump="none"] [data-state="move-forward"] {
+	&[data-ani="none"][data-jump="none"] [data-state="move-none"] {
 		opacity: 1;
 	}
 
-	&[data-move="backward"][data-jump="none"] [data-state="move-forward"] {
+	&[data-ani="sprite"][data-jump="none"] [data-state="ani-sprite"] {
 		opacity: 1;
 	}
 
@@ -36,10 +35,6 @@
 	}
 
 	&[data-jump="down"] [data-state="jump-down"] {
-		opacity: 1;
-	}
-
-	&[data-move="none"] [data-state="move-none"] {
 		opacity: 1;
 	}
 

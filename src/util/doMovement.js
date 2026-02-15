@@ -32,7 +32,7 @@ const doGravity = (props) => {
  */
 export const doPause = ({timelines, setCharacterStatus}) => {
 	if (!timelines.length) return;
-	setCharacterStatus(prev => ({...prev, move: 'none'}));
+	setCharacterStatus(prev => ({...prev, ani: 'none'}));
 	timelines.forEach(timeline => timeline.pause());
 };
 
