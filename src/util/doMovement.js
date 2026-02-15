@@ -159,7 +159,7 @@ export function useCharacterMovement({
 		  if (e.key === 'ArrowDown') {
 			e.preventDefault();
 			// Toggle play/pause on each ArrowDown press
-			if (characterStatus.move === 'none') {
+			if (characterStatus.ani === 'none') {
 			  // Not moving: play forward
 			  doRun({ direction: 'forward', timelines: timelinesRef.current, setCharacterStatus });
 			} else {
