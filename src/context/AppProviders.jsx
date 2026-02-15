@@ -3,6 +3,7 @@ import { SettingsContextProvider } from './SettingsContext';
 import { LevelContextProvider } from './LevelContext';
 import { CharacterContextProvider } from './CharacterContext';
 import { GameplayContextProvider } from './GameplayContext';
+import { ScoreContextProvider } from './ScoreContext';
 
 export function AppProviders({ children }) {
   return (
@@ -11,7 +12,9 @@ export function AppProviders({ children }) {
         <SettingsContextProvider>
           <LevelContextProvider>
             <CharacterContextProvider>
-              {children}
+              <ScoreContextProvider>
+                {children}
+              </ScoreContextProvider>
             </CharacterContextProvider>
           </LevelContextProvider>
         </SettingsContextProvider>

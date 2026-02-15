@@ -24,6 +24,7 @@ export function GameplayContextProvider({ children }) {
     elBoard: null,
     elCharacter: null,
     elCharacterCrashArea: null,
+    elCharacterMessage: null,
     elShelves: [],
     elObstacles: [],
     elShelvesVisible: new Set(),

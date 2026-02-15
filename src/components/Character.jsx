@@ -49,9 +49,7 @@ const Character = () => {
 				<SVG path={characterSVG} onSvgLoad={handleSvgLoad} />
 			</div>
 			<div className="sr-character-crash" aria-hidden="true" style={{'--sr-difficulty-crash': userAdjustedCrash || 1}} />
-			<div className="sr-character-backpack">
-				<div className="sr-character-score" />
-			</div>
+			<div className="sr-character-mesage" />
 		</div>
 	);
 };

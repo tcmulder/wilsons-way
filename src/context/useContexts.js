@@ -5,6 +5,7 @@ export const SettingsContext = createContext();
 export const LevelContext = createContext();
 export const CharacterContext = createContext();
 export const GameplayContext = createContext();
+export const ScoreContext = createContext();
 
 export function useDebugContext() {
   return useContext(DebugContext);
@@ -24,4 +25,8 @@ export function useLevelContext() {
 
 export function useGameplayContext() {
   return useContext(GameplayContext);
+}
+
+export function useScoreContext() {
+  return useContext(ScoreContext);
 }

@@ -1,3 +1,5 @@
+import { checkCollisionScore } from './handleScore';
+
 /**
  * Check to see if two elements overlap
  *
@@ -64,43 +66,24 @@ export const getNearestShelves = (el, els) => {
 /**
  * Check for collisions
  *
- * @param {Set<HTMLElement>} elObstaclesVisible Elements to check
- * @param {HTMLElement} elCharacterCrashArea The character crash area element
+ * @param {Object} els The elements object
+ * @param {Function} setScore Function to set the score
  */
-export const checkCollisions = ({elCharacterCrashArea, elObstaclesVisible}) => {
+export const checkCollisions = (els, setScore) => {
+	const {elCharacterCrashArea, elCharacterMessage, elObstaclesVisible} = els;
 	elObstaclesVisible.forEach((el) => {
 		if (
-			!el.classList.contains('sr-obstacle') &&
+			!el.classList.contains('is-collided') &&
 			!el.hasAttribute('data-disabled') &&
 			checkOverlap(elCharacterCrashArea, el)
 		) {
 			el.classList.add('is-collided');
-			// checkCollisionScore(el);
+			checkCollisionScore(el, elCharacterMessage, setScore);
 			// checkCollisionMilestone(el);
 			// checkCollisionBonus(el);
 		}
 	});
 };
-
-// /**
-//  * Apply scoring if an obstacle provides scoring data
-//  *
-//  * @param {HTMLElement} el The element to score (if it has scoring data)
-//  */
-// const checkCollisionScore = (el) => {
-// 	const score = parseInt(el.dataset.score);
-// 	const posOrNeg = score > 0 ? 'positive' : 'negative';
-// 	if (score) {
-// 		setScoreState(score, true);
-// 		showCharacterMessage(
-// 			`${posOrNeg === 'positive' ? '+' : ''}${score}`,
-// 			`is-${posOrNeg}`,
-// 		);
-// 		if (state.sounds.makeSFX && state.sounds.makeSound) {
-// 			toggleSFX(posOrNeg);
-// 		}
-// 	}
-// };
 
 // /**
 //  * Check collision milestones
@@ -155,66 +138,6 @@ export const checkCollisions = ({elCharacterCrashArea, elObstaclesVisible}) => {
 // 	// 	endLevel();
 // 	// }
 // 	return false;
-// };
-
-// /**
-//  * Allow falling off the edge of a shelf to the next one down
-//  */
-// export const doGravity = () => {
-	// const { elStage, elCharacter, elShelves, status, jumpTween, hangtime } =
-	// 	state;
-	// const { below: nearest } = getNearestShelves(elCharacter, elShelves);
-	// const stageRect = elStage.getBoundingClientRect();
-	// const nearestRect = nearest.getBoundingClientRect();
-	// const charRect = elCharacter.getBoundingClientRect();
-
-	// // Calculate what the shelf height should be
-	// const h = Math.ceil(
-	// 	((stageRect.bottom - nearestRect.top) / stageRect.height) * 100,
-	// );
-
-	// // Calculate where the character currently is (in cqh units)
-	// const currentY = Math.ceil(
-	// 	((stageRect.bottom - charRect.bottom) / stageRect.height) * 100,
-	// );
-
-	// // Only update if character is not already on this shelf
-	// // Allow a small tolerance for floating point precision
-	// const tolerance = 1;
-	// if (Math.abs(currentY - h) < tolerance) {
-	// 	return;
-	// }
-
-	// elCharacter.style.setProperty('--cq-h-shelf', `${h}cqh`);
-
-	// // Update GSAP position when not jumping (so character follows shelf)
-	// if (status.jump === 'none' && !jumpTween) {
-	// 	const shelfPx = (h / 100) * stageRect.height;
-
-	// 	// If falling (character is above shelf), animate down
-	// 	if (currentY > h) {
-	// 		// Kill any existing gravity tween
-	// 		if (state.gravityTween) {
-	// 			state.gravityTween.kill();
-	// 		}
-	// 		// Calculate fall distance and duration (faster for shorter falls)
-	// 		const fallDistance = Math.abs(currentY - h);
-	// 		const fallDuration =
-	// 			Math.min((fallDistance / 100) * hangtime, hangtime) / 1000;
-
-	// 		state.gravityTween = gsap.to(elCharacter, {
-	// 			y: -shelfPx,
-	// 			duration: fallDuration,
-	// 			ease: 'power1.in',
-	// 			onComplete: () => {
-	// 				state.gravityTween = null;
-	// 			},
-	// 		});
-	// 	} else {
-	// 		// If character is below shelf (shouldn't happen), snap up
-	// 		gsap.set(elCharacter, { y: -shelfPx });
-	// 	}
-	// }
 // };
 
 export const checkElevation = (els, elevationRef) => {

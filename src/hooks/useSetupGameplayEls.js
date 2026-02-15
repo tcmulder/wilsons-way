@@ -49,11 +49,13 @@ export function useSetupGameplayElements(boardRef) {
 			}
 		});
 		// Update context with both
+		const elCharacter = elBoard?.nextElementSibling;
 		const newState = {
 			// fixed els (don't change per level)
 			elBoard,
-			elCharacter: elBoard?.nextElementSibling,
-			elCharacterCrashArea: elBoard?.nextElementSibling?.querySelector('.sr-character-crash'),
+			elCharacter,
+			elCharacterCrashArea: elCharacter?.querySelector('.sr-character-crash'),
+			elCharacterMessage: elCharacter?.querySelector('.sr-character-mesage'),
 			// dynamic els (change per level)
 			elShelves: Array.from(elShelves),
 			elObstacles,

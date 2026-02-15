@@ -1,6 +1,13 @@
 import { useRef, useCallback, useEffect } from 'react';
 import { gsap } from 'gsap';
-import { useDebugContext, useSettingsContext, useLevelContext, useGameplayContext, useCharacterContext } from '../context/useContexts';
+import {
+	useDebugContext,
+	useSettingsContext,
+	useLevelContext,
+	useGameplayContext,
+	useCharacterContext,
+	useScoreContext,
+} from '../context/useContexts';
 import { loadLevel } from '../util/loadLevel';
 import { allowDrop } from '../util/loadLevel';
 import SVG from '../components/SVG';
@@ -19,6 +26,7 @@ const GameplayPage = () => {
 	const { gameplaySpeed, userAdjustedSpeed } = settings;
 	const { level, setCurrentLevelId } = useLevelContext();
 	const { setCharacterStatus } = useCharacterContext();
+	const { setScore } = useScoreContext();
 	const gameplayContext = useGameplayContext();
 	const gameplayContextRef = useRef(gameplayContext);
 	const gameplayRef = useRef(null);
@@ -28,12 +36,17 @@ const GameplayPage = () => {
 		gsap.globalTimeline.timeScale(userAdjustedSpeed / 50);
 	}, [userAdjustedSpeed]);
 
-	// Run trackMovement on every GSAP tick (running, jumping, any animation) without duplicates
+	// Run movement on every GSAP tick (running, jumping, any animation) without duplicates
 	useEffect(() => {
-		const tick = () => trackMovement({gameplayContextRef, setCharacterStatus, jump});
+		const tick = () => trackMovement({
+			gameplayContextRef,
+			setCharacterStatus,
+			setScore,
+			jump,
+		});
 		gsap.ticker.add(tick);
 		return () => gsap.ticker.remove(tick);
-	}, [setCharacterStatus, jump]);
+	}, [setCharacterStatus, setScore, jump]);
 
 	// Load SVG for level and add movement to it
 	const handleSvgLoad = useCallback(async (svgElement) => {
