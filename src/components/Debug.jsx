@@ -62,13 +62,14 @@ const useDebug = ({debug, settings, setLevel, setCharacterId}) => {
 			if (debug?.characterId) {
 				setCharacterId(parseInt(debug.characterId));
 			}
+			console.log('🤞', settings);
 		}
-	}, [debug, setLevel, setCharacterId, settings.debugAllowed]);
+	}, [debug, setLevel, setCharacterId, settings.debugAllowed, settings]);
 };
 
 export const Debug = () => {
 	const { debug, setDebug } = useDebugContext();
-	const { settings } = useSettingsContext();
+	const { settings, makeMusic, setMakeMusic } = useSettingsContext();
 	const { level, setLevel } = useLevelContext();
 	const { characterId, setCharacterId } = useCharacterContext();
 	const navigate = useNavigate();
@@ -101,6 +102,13 @@ export const Debug = () => {
 						param="characterId"
 						value={characterId}
 						setValue={setCharacterId}
+					/>
+					<DebugCheckbox
+						label="🎵 Music"
+						param="music"
+						value={makeMusic}
+						setValue={(val) => setMakeMusic(val)}
+						title="Enable or disable background music"
 					/>
 					<DebugCheckbox
 						label="🚷 Autoplay"

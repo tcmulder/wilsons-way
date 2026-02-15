@@ -8,7 +8,7 @@ import { useGameAudio } from '../hooks/useSFX';
 const IntroPage = () => {
 	const navigate = useNavigate();
 	const { makeMusic, makeSFX, setMakeMusic, setMakeSFX } = useSettingsContext();
-	const { toggleMusic, playSound } = useGameAudio();
+	const { playSound } = useGameAudio();
 	return (
 		<div>
 			<h1>Welcome to the Game</h1>
@@ -20,10 +20,7 @@ const IntroPage = () => {
 						type="checkbox"
 						id="music"
 						checked={makeMusic}
-						onChange={(e) => {
-							setMakeMusic(e.target.checked);
-							toggleMusic(e.target.checked);
-						}}
+						onChange={(e) => setMakeMusic(e.target.checked)}
 						aria-label={`Music is ${makeMusic ? 'on' : 'off'}`}
 					/>
 					<span>Music is {makeMusic ? 'on' : 'off'}</span>

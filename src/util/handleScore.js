@@ -12,13 +12,13 @@ export const checkCollisionScore = (el, elCharacterMessage, setScore, playSound)
 	const score = parseInt(el.dataset.score);
 	if (score) {
 		const way = score > 0 ? 'positive' : 'negative';
+		playSound(way);
 		setScore(prev => prev + score);
 		showCharacterMessage({
 			el: elCharacterMessage,
 			message: `${'positive' === way ? '+' : ''}${score}`,
 			className: `is-${way}`,
 		});
-		playSound(way);
 	}
 };
 

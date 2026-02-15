@@ -7,7 +7,7 @@ import { useSettingsContext } from '../context/useContexts';
 export const useGameAudio = () => {
 	const musicRef = useRef(null);
 	const soundsRef = useRef({});
-	const { makeSFX } = useSettingsContext();
+	const { makeSFX, makeMusic } = useSettingsContext();
 
 	useEffect(() => {
 		// Initialize background music
@@ -23,16 +23,12 @@ export const useGameAudio = () => {
 		musicRef.current?.pause();
 		};
 	}, []);
-  
-	const playSound = (name, shouldSound = makeSFX) => {
-		if (!shouldSound) return;
-		soundsRef.current[name]?.play();
-	};
-  
-	const toggleMusic = () => {
-		if (musicRef?.current === null) return;
+
+	// Sync music playback to makeMusic state
+	useEffect(() => {
 		const music = musicRef.current;
-		if (music.paused) {
+		if (!music) return;
+		if (makeMusic) {
 			music.loop = true;
 			music.volume = 0.2;
 			music.currentTime = 0;
@@ -40,7 +36,21 @@ export const useGameAudio = () => {
 		} else {
 			music.pause();
 		}
+	}, [makeMusic]);
+  
+	const playSound = (name, shouldSound = makeSFX) => {
+		if (!shouldSound) return;
+		const audio = soundsRef.current[name];
+		if (audio) {
+			const clone = audio.cloneNode();
+			const onEnded = () => {
+				clone.removeEventListener('ended', onEnded);
+				clone.src = '';
+			};
+			clone.addEventListener('ended', onEnded);
+			clone.play();
+		}
 	};
   
-	return { playSound, toggleMusic };
+	return { playSound };
   };
