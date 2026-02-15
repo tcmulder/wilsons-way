@@ -408,33 +408,6 @@ function shelf_runner_settings_init() {
 			'sr_section'
 		);
 
-		add_option( 'shelf_runner_settings_sfx', true );
-		register_setting( 'shelf_runner_settings', 'shelf_runner_settings_sfx' );
-		add_settings_field(
-			'shelf_runner_settings_sfx',
-			esc_html( __( 'Sounds:', 'shelf-runner' ) ),
-			function () {
-				$sfx_enabled = get_option( 'shelf_runner_settings_sfx', true );
-				$html        = sprintf(
-					'<input type="checkbox" id="shelf_runner_settings_sfx" name="shelf_runner_settings_sfx" value="1" %s />',
-					checked( $sfx_enabled, true, false )
-				);
-				$html       .= sprintf( '<label for="shelf_runner_settings_sfx">%s</label>', esc_html( __( 'Allow Music and Sound Effects', 'shelf-runner' ) ) );
-				$allowed     = array(
-					'input' => array(
-						'type'    => true,
-						'name'    => true,
-						'value'   => true,
-						'id'      => true,
-						'checked' => true,
-					),
-					'label' => array( 'for' => true ),
-				);
-				echo wp_kses( $html, $allowed );
-			},
-			'shelf_runner_settings',
-			'sr_section'
-		);
 	}
 
 	add_option( 'shelf_runner_settings_debug', false );

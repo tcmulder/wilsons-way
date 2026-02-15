@@ -10,28 +10,37 @@ export const useGameAudio = () => {
 	const { makeSFX } = useSettingsContext();
 
 	useEffect(() => {
-	  // Initialize background music
-	  musicRef.current = new Audio(musicSound);
-	  musicRef.current.loop = true;
-	  
-	  // Preload sound effects
-	  soundsRef.current.positive = new Audio(positiveSound);
-	  soundsRef.current.negative = new Audio(negativeSound);
-	  
-	  return () => {
+		// Initialize background music
+		musicRef.current = new Audio(musicSound);
+		musicRef.current.loop = true;
+		
+		// Preload sound effects
+		soundsRef.current.positive = new Audio(positiveSound);
+		soundsRef.current.negative = new Audio(negativeSound);
+		
+		return () => {
 		// Cleanup
 		musicRef.current?.pause();
-	  };
+		};
 	}, []);
   
-	const playSound = (name) => {
-	  if (!makeSFX) return;
-	  soundsRef.current[name]?.play();
+	const playSound = (name, shouldSound = makeSFX) => {
+		if (!shouldSound) return;
+		soundsRef.current[name]?.play();
 	};
   
-	const startMusic = () => {
-	  musicRef.current?.play();
+	const toggleMusic = () => {
+		if (musicRef?.current === null) return;
+		const music = musicRef.current;
+		if (music.paused) {
+			music.loop = true;
+			music.volume = 0.2;
+			music.currentTime = 0;
+			music.play();
+		} else {
+			music.pause();
+		}
 	};
   
-	return { playSound, startMusic };
+	return { playSound, toggleMusic };
   };
