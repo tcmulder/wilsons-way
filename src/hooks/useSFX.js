@@ -37,6 +37,13 @@ export const useGameAudio = () => {
 			music.pause();
 		}
 	}, [makeMusic]);
+
+	// Play sound effect when SFX is turned on
+	useEffect(() => {
+		if(makeSFX) {
+			soundsRef.current.positive.play();
+		}
+	}, [makeSFX]);
   
 	const playSound = (name, shouldSound = makeSFX) => {
 		if (!shouldSound) return;

@@ -8,7 +8,7 @@ import { useGameAudio } from '../hooks/useSFX';
 const IntroPage = () => {
 	const navigate = useNavigate();
 	const { makeMusic, makeSFX, setMakeMusic, setMakeSFX } = useSettingsContext();
-	const { playSound } = useGameAudio();
+	useGameAudio();
 	return (
 		<div>
 			<h1>Welcome to the Game</h1>
@@ -32,11 +32,7 @@ const IntroPage = () => {
 						type="checkbox"
 						id="sounds"
 						checked={makeSFX}
-						onChange={(e) => {
-							const enabled = e.target.checked;
-							setMakeSFX(enabled);
-							playSound('positive', enabled);
-						}}
+						onChange={(e) => setMakeSFX(e.target.checked)}
 						aria-label={`SFX is ${makeSFX ? 'on' : 'off'}`}
 					/>
 					<span>SFX is {makeSFX ? 'on' : 'off'}</span>
