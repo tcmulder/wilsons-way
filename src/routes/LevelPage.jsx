@@ -8,6 +8,7 @@ import {
 	useCharacterContext,
 	useScoreContext,
 } from '../context/useContexts';
+import { useGameAudio } from '../hooks/useSFX';
 import { loadLevel } from '../util/loadLevel';
 import { allowDrop } from '../util/loadLevel';
 import SVG from '../components/SVG';
@@ -27,6 +28,7 @@ const GameplayPage = () => {
 	const { level, setCurrentLevelId } = useLevelContext();
 	const { setCharacterStatus } = useCharacterContext();
 	const { setScore } = useScoreContext();
+	const { playSound } = useGameAudio();
 	const gameplayContext = useGameplayContext();
 	const gameplayContextRef = useRef(gameplayContext);
 	const gameplayRef = useRef(null);
@@ -42,11 +44,12 @@ const GameplayPage = () => {
 			gameplayContextRef,
 			setCharacterStatus,
 			setScore,
+			playSound,
 			jump,
 		});
 		gsap.ticker.add(tick);
 		return () => gsap.ticker.remove(tick);
-	}, [setCharacterStatus, setScore, jump]);
+	}, [setCharacterStatus, setScore, playSound, jump]);
 
 	// Load SVG for level and add movement to it
 	const handleSvgLoad = useCallback(async (svgElement) => {

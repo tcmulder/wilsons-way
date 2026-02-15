@@ -4,6 +4,8 @@ import { SettingsContext } from './useContexts';
 export function SettingsContextProvider({ children }) {
   const [settings, setSettings] = useState({});
   const [jump, setJump] = useState({ height: 0, hangtime: 0 });
+  const [makeMusic, setMakeMusic] = useState(false);
+  const [makeSFX, setMakeSFX] = useState(false);
 
   useEffect(() => {
     fetch(`${window.sr.api}shelf-runner/v1/settings`)
@@ -20,7 +22,7 @@ export function SettingsContextProvider({ children }) {
       });
   }, []);
 
-  const value = { settings, setSettings, jump, setJump };
+  const value = { settings, setSettings, jump, setJump, makeMusic, setMakeMusic, makeSFX, setMakeSFX };
 
   return (
     <SettingsContext.Provider value={value}>

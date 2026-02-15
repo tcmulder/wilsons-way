@@ -68,8 +68,9 @@ export const getNearestShelves = (el, els) => {
  *
  * @param {Object} els The elements object
  * @param {Function} setScore Function to set the score
+ * @param {Function} [playSound] Function to play a sound ('positive' | 'negative')
  */
-export const checkCollisions = (els, setScore) => {
+export const checkCollisions = (els, setScore, playSound) => {
 	const {elCharacterCrashArea, elCharacterMessage, elObstaclesVisible} = els;
 	elObstaclesVisible.forEach((el) => {
 		if (
@@ -78,7 +79,7 @@ export const checkCollisions = (els, setScore) => {
 			checkOverlap(elCharacterCrashArea, el)
 		) {
 			el.classList.add('is-collided');
-			checkCollisionScore(el, elCharacterMessage, setScore);
+			checkCollisionScore(el, elCharacterMessage, setScore, playSound);
 			// checkCollisionMilestone(el);
 			// checkCollisionBonus(el);
 		}
