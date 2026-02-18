@@ -6,17 +6,18 @@ import gsap from 'gsap';
  * @param {HTMLElement} el The element to score (if it has scoring data)
  * @param {HTMLElement} elCharacterMessage The character messaging element
  * @param {Function} setScore Function to set the score
+ * @param {number} level The current level number
  * @param {Function} playSound Function to play a sound ('positive' | 'negative')
  */
-export const checkCollisionScore = (el, elCharacterMessage, setScore, playSound) => {
-	const score = parseInt(el.dataset.score);
-	if (score) {
-		const way = score > 0 ? 'positive' : 'negative';
+export const checkCollisionScore = (el, elCharacterMessage, setScore, level, playSound) => {
+	const num = parseInt(el.dataset.score);
+	if (num) {
+		const way = num > 0 ? 'positive' : 'negative';
 		playSound(way);
-		setScore(prev => prev + score);
+		setScore(prev => [ ...prev, { num, level } ]);
 		showCharacterMessage({
 			el: elCharacterMessage,
-			message: `${'positive' === way ? '+' : ''}${score}`,
+			message: `${'positive' === way ? '+' : ''}${num}`,
 			className: `is-${way}`,
 		});
 	}

@@ -44,12 +44,13 @@ const GameplayPage = () => {
 			gameplayContextRef,
 			setCharacterStatus,
 			setScore,
+			level,
 			playSound,
 			jump,
 		});
 		gsap.ticker.add(tick);
 		return () => gsap.ticker.remove(tick);
-	}, [setCharacterStatus, setScore, playSound, jump]);
+	}, [setCharacterStatus, setScore, playSound, jump, level]);
 
 	// Load SVG for level and add movement to it
 	const handleSvgLoad = useCallback(async (svgElement) => {
