@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useScoreContext, useLevelContext } from '../context/useContexts';
 import '../css/interface.css';
+import '../css/modifiers.css';
 
 export const Interface = () => {
 	const { score } = useScoreContext();

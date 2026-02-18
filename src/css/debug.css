@@ -74,6 +74,9 @@
 	}
 	:where(.sr-character) {
 		outline: 1px dashed lightgray;
+		&[class*=" is-mod-"] {
+			filter: drop-shadow(0 0 10px lime) sepia(1) hue-rotate(45deg) saturate(4);
+		}
 	}
 	:where(.sr-character-crash) {
 		outline: calc(1px / var(--sr-difficulty-crash, 1)) solid yellow;
@@ -84,7 +87,7 @@
 	:where(:is(.sr-obstacles, .sr-milestones) [data-score]) {
 		outline: 1px dashed lime;
 		&.is-collided {
-			outline: 1px dashed teal;
+			outline: 1px dashed green;
 		}
 	}
 	:is(:is(.sr-obstacles, .sr-milestones) [data-score^="-"]) {

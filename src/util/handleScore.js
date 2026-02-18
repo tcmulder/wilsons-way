@@ -7,12 +7,17 @@ import gsap from 'gsap';
  * @param {HTMLElement} elCharacterMessage The character messaging element
  * @param {Function} setScore Function to set the score
  * @param {number} level The current level number
+ * @param {string[]} characterModifiers The current character modifiers
  * @param {Function} playSound Function to play a sound ('positive' | 'negative')
  */
-export const checkCollisionScore = (el, elCharacterMessage, setScore, level, playSound) => {
+export const checkCollisionScore = (el, elCharacterMessage, setScore, level, characterModifiers, playSound) => {
 	const num = parseInt(el.dataset.score);
 	if (num) {
 		const way = num > 0 ? 'positive' : 'negative';
+		console.log('🤞', characterModifiers);
+		if (characterModifiers.includes('invisible') && way === 'negative') {
+			return;
+		}
 		playSound(way);
 		setScore(prev => [ ...prev, { num, level } ]);
 		showCharacterMessage({
@@ -20,6 +25,20 @@ export const checkCollisionScore = (el, elCharacterMessage, setScore, level, pla
 			message: `${'positive' === way ? '+' : ''}${num}`,
 			className: `is-${way}`,
 		});
+	}
+};
+
+/**
+ * Check for modifier collisions
+ *
+ * @param {HTMLElement} el The element to check for modifier collisions
+ * @param {Function} setCharacterModifiers Function to set the character modifiers
+ */
+export const checkCollisionModifier = (el, setCharacterModifiers) => {
+	const modifier = el.dataset.modifier;
+	console.log('🤞', modifier);
+	if (modifier) {
+		setCharacterModifiers(prev => [ ...prev, modifier ]);
 	}
 };
 

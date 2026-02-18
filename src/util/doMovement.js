@@ -6,11 +6,11 @@ import { checkCollisions, checkElevation } from './handleCollisions';
  * Track movement (fires whenever moving left/right)
  */
 export const trackMovement = (props) => {
-	const { gameplayContextRef, setCharacterStatus, setScore, level, playSound } = props;
+	const { gameplayContextRef, setCharacterStatus, setScore, level, characterModifiers, playSound, setCharacterModifiers } = props;
 	const { elsRef, elevationRef, statusRef, jumpRef } = gameplayContextRef.current;
 	if (!elsRef?.current || (statusRef?.current?.move === 'none' && statusRef?.current?.jump === 'none')) return;
 	const els = elsRef?.current;
-	checkCollisions(els, setScore, level, playSound);
+	checkCollisions(els, setScore, level, characterModifiers, playSound, setCharacterModifiers);
 	checkElevation(els, elevationRef);
 	doGravity({ setCharacterStatus, statusRef, elevationRef, elsRef, jumpRef });
 };

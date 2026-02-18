@@ -7,7 +7,7 @@ import '../css/character.css';
 
 const Character = () => {
 	const { debug } = useDebugContext();
-	const { characterId, characterStatus, setCharacterStatus } = useCharacterContext();
+	const { characterId, characterStatus, setCharacterStatus, characterModifiers } = useCharacterContext();
 	const { timelinesRef, elevationRef, statusRef, elsRef, jumpRef } = useGameplayContext();
 	const { settings: { userAdjustedCrash } } = useSettingsContext();
 	const { currentLevelId } = useLevelContext();
@@ -39,7 +39,7 @@ const Character = () => {
 
 	return (
 		<div
-			className="sr-character"
+			className={`sr-character${characterModifiers.map(modifier => ` is-mod-${modifier}`).join('')}`}
 			tabIndex="0"
 			data-move={characterStatus.move}
 			data-jump={characterStatus.jump}

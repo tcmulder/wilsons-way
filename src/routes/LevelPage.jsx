@@ -26,7 +26,7 @@ const GameplayPage = () => {
 	const { settings, jump } = useSettingsContext();
 	const { gameplaySpeed, userAdjustedSpeed } = settings;
 	const { level, setLevel, setCurrentLevelId } = useLevelContext();
-	const { setCharacterStatus } = useCharacterContext();
+	const { setCharacterStatus, setCharacterModifiers, characterModifiers } = useCharacterContext();
 	const { setScore } = useScoreContext();
 	const { playSound } = useGameAudio();
 	const gameplayContext = useGameplayContext();
@@ -45,12 +45,14 @@ const GameplayPage = () => {
 			setCharacterStatus,
 			setScore,
 			level,
+			characterModifiers,
 			playSound,
 			jump,
+			setCharacterModifiers,
 		});
 		gsap.ticker.add(tick);
 		return () => gsap.ticker.remove(tick);
-	}, [setCharacterStatus, setScore, playSound, jump, level]);
+	}, [setCharacterStatus, setScore, playSound, jump, level, setCharacterModifiers, characterModifiers]);
 
 	// Load SVG for level and add movement to it
 	const handleSvgLoad = useCallback(async (svgElement) => {

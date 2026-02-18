@@ -1,4 +1,4 @@
-import { checkCollisionScore } from './handleScore';
+import { checkCollisionScore, checkCollisionModifier } from './handleScore';
 
 /**
  * Check to see if two elements overlap
@@ -71,8 +71,10 @@ export const getNearestShelves = (el, els) => {
  * @param {Function} setScore Function to set the score
  * @param {number} level The current level number
  * @param {Function} [playSound] Function to play a sound ('positive' | 'negative')
+ * @param {string[]} characterModifiers The current character modifiers
+ * @param {Function} setCharacterModifiers Function to set the character modifiers
  */
-export const checkCollisions = (els, setScore, level, playSound) => {
+export const checkCollisions = (els, setScore, level, characterModifiers, playSound, setCharacterModifiers) => {
 	const {elCharacterCrashArea, elCharacterMessage, elObstaclesVisible} = els;
 	elObstaclesVisible.forEach((el) => {
 		if (
@@ -81,9 +83,9 @@ export const checkCollisions = (els, setScore, level, playSound) => {
 			checkOverlap(elCharacterCrashArea, el)
 		) {
 			el.classList.add('is-collided');
-			checkCollisionScore(el, elCharacterMessage, setScore, level, playSound);
+			checkCollisionScore(el, elCharacterMessage, setScore, level, characterModifiers, playSound);
+			checkCollisionModifier(el, setCharacterModifiers);
 			// checkCollisionMilestone(el);
-			// checkCollisionBonus(el);
 		}
 	});
 };
