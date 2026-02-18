@@ -151,11 +151,17 @@ export const Debug = () => {
 							'🟥 negative',
 						].join('\n')}
 					/>
-					<select value={pagePath} onChange={(e) => { e.preventDefault(); navigate(e.target.value); }}>
+					<select value={pagePath} onChange={(e) => { e.preventDefault(); navigate(e.target.value); }} title="Navigate to a different page">
 						{routes.map(({ path, title }) => (
-							<option key={path} value={path}>Page: {title}</option>
+							<option key={path} value={path}>📄 {title}</option>
 						))}
 					</select>
+					<button
+						title="Reveal and reset all collisions"
+						onClick={(e) => { e.preventDefault(); document.querySelectorAll('.is-collided').forEach(el => el.classList.remove('is-collided')); }}
+					>
+						🫥 Reveal
+					</button>
 					<button onClick={(e) => { e.preventDefault(); window.location.reload(); }}>🔄 restart</button>
 				</div>
 			)}

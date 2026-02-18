@@ -1,5 +1,9 @@
 import gsap from 'gsap';
 
+const isSkippableInvisible = (el, characterModifiers) => {
+	return characterModifiers.includes('invisible') && el.classList.contains('is-negative') && el.dataset.ignoreModifier !== 'invisible';
+};
+
 /**
  * Apply scoring if an obstacle provides scoring data
  *
@@ -12,19 +16,18 @@ import gsap from 'gsap';
  */
 export const doScoring = (el, elCharacterMessage, setScore, level, characterModifiers, playSound) => {
 	const num = parseInt(el.dataset.score);
-	if (num) {
-		const way = num > 0 ? 'positive' : 'negative';
-		if (characterModifiers.includes('invisible') && way === 'negative') {
-			return;
-		}
-		playSound(way);
-		setScore(prev => [ ...prev, { num, level } ]);
-		showCharacterMessage({
-			el: elCharacterMessage,
-			message: `${'positive' === way ? '+' : ''}${num}`,
-			className: `is-${way}`,
-		});
+	if (!num || isSkippableInvisible(el, characterModifiers)) return;
+	const way = num > 0 ? 'positive' : 'negative';
+	if (characterModifiers.includes('invisible') && way === 'negative' && !el.dataset.ignoreModifier === 'invisible') {
+		return;
 	}
+	playSound(way);
+	setScore(prev => [ ...prev, { num, level } ]);
+	showCharacterMessage({
+		el: elCharacterMessage,
+		message: `${'positive' === way ? '+' : ''}${num}`,
+		className: `is-${way}`,
+	});
 };
 
 /**
@@ -35,26 +38,24 @@ export const doScoring = (el, elCharacterMessage, setScore, level, characterModi
  * @param {Function} setCharacterModifiers Function to set the character modifiers
  */
 export const doModifiers = (el, characterModifiers, setCharacterModifiers) => {
-	// Get the modifier value and set it (it's set as a class on the character's element)
-	const modifier = el.dataset.modifier;
-	if (modifier) {
-		// Set the modifier
-		setCharacterModifiers(prev => [ ...prev, modifier ]);
-		// Clear the modifier after 5 seconds
-		setTimeout(() => {
-			setCharacterModifiers(prev => {
-				//  Remove the 1st matching modifier (so if new duplicate modifiers have been set they aren't cleared)
-				const index = prev.indexOf(modifier);
-				const newArr = index === -1 ? prev : [...prev.slice(0, index), ...prev.slice(index + 1)];
-				return newArr;
-			});
-		}, 5000);
-	}
-	// Only apply collision if the element should no longer accept future collision effects
-	const markAsFinalCollision = !(characterModifiers.includes('invisible') && el.classList.contains('is-negative'));
-	if (markAsFinalCollision) {
+	// Set the most basic flag: collided
+	if (!isSkippableInvisible(el, characterModifiers)) {
 		el.classList.add('is-collided');
 	}
+	// Get the modifier value and set it (it's set as a class on the character's element)
+	const modifier = el.dataset.modifier;
+	if (!modifier) return;
+	// Set the modifier
+	setCharacterModifiers(prev => [ ...prev, modifier ]);
+	// Clear the modifier after 5 seconds
+	setTimeout(() => {
+		setCharacterModifiers(prev => {
+			//  Remove the 1st matching modifier (so if new duplicate modifiers have been set they aren't cleared)
+			const index = prev.indexOf(modifier);
+			const newArr = index === -1 ? prev : [...prev.slice(0, index), ...prev.slice(index + 1)];
+			return newArr;
+		});
+	}, 5000);
 };
 
 /**
