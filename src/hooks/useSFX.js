@@ -32,7 +32,15 @@ export const useGameAudio = () => {
 			music.loop = true;
 			music.volume = 0.2;
 			music.currentTime = 0;
-			music.play();
+			const p = music.play();
+			// Prevent console error on initial load (NotAllowedError due to no user interaction)
+			if (p && typeof p.catch === 'function') {
+				p.catch(() => {
+					window.addEventListener('keydown', () => {
+						music.play();
+					}, { once: true });
+				});
+			}
 		} else {
 			music.pause();
 		}
