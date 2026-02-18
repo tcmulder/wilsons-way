@@ -8,7 +8,7 @@
 
 /* Modifiers */
 .sr-stage:has(.is-mod-invisible) {
-	.is-negative {
+	.is-negative:not([data-ignore-hide]) {
 		filter: grayscale(1) contrast(0.5);
 		animation: pulse-opacity 2s ease-in-out infinite;
 	}
