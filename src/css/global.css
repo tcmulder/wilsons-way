@@ -108,6 +108,15 @@ body {
 
 }
 
-.is-collided {
-	opacity: 0.5 !important;
+/**
+ * Animations
+ */
+@keyframes pulse-opacity {
+	0%,
+	100% {
+		opacity: 0.3;
+	}
+	50% {
+		opacity: 0.1;
+	}
 }

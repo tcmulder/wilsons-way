@@ -1,4 +1,4 @@
-import { checkCollisionScore, checkCollisionModifier } from './handleScore';
+import { doScoring, doModifiers } from './handleScore';
 
 /**
  * Check to see if two elements overlap
@@ -79,12 +79,10 @@ export const checkCollisions = (els, setScore, level, characterModifiers, playSo
 	elObstaclesVisible.forEach((el) => {
 		if (
 			!el.classList.contains('is-collided') &&
-			!el.hasAttribute('data-disabled') &&
 			checkOverlap(elCharacterCrashArea, el)
 		) {
-			el.classList.add('is-collided');
-			checkCollisionScore(el, elCharacterMessage, setScore, level, characterModifiers, playSound);
-			checkCollisionModifier(el, setCharacterModifiers);
+			doModifiers(el, characterModifiers, setCharacterModifiers);
+			doScoring(el, elCharacterMessage, setScore, level, characterModifiers, playSound);
 			// checkCollisionMilestone(el);
 		}
 	});

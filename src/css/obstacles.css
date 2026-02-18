@@ -1,0 +1,15 @@
+.sr-obstacles {
+	[data-score] {
+		&.is-collided:not([data-ignore-hide]) {
+			display: none;
+		}
+	}
+}
+
+/* Modifiers */
+.sr-stage:has(.is-mod-invisible) {
+	.is-negative {
+		filter: grayscale(1) contrast(0.5);
+		animation: pulse-opacity 2s ease-in-out infinite;
+	}
+}

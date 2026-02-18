@@ -10,11 +10,10 @@ import gsap from 'gsap';
  * @param {string[]} characterModifiers The current character modifiers
  * @param {Function} playSound Function to play a sound ('positive' | 'negative')
  */
-export const checkCollisionScore = (el, elCharacterMessage, setScore, level, characterModifiers, playSound) => {
+export const doScoring = (el, elCharacterMessage, setScore, level, characterModifiers, playSound) => {
 	const num = parseInt(el.dataset.score);
 	if (num) {
 		const way = num > 0 ? 'positive' : 'negative';
-		console.log('🤞', characterModifiers);
 		if (characterModifiers.includes('invisible') && way === 'negative') {
 			return;
 		}
@@ -29,16 +28,32 @@ export const checkCollisionScore = (el, elCharacterMessage, setScore, level, cha
 };
 
 /**
- * Check for modifier collisions
+ * Modify collided obstacles
  *
  * @param {HTMLElement} el The element to check for modifier collisions
+ * @param {string[]} characterModifiers The current character modifiers
  * @param {Function} setCharacterModifiers Function to set the character modifiers
  */
-export const checkCollisionModifier = (el, setCharacterModifiers) => {
+export const doModifiers = (el, characterModifiers, setCharacterModifiers) => {
+	// Get the modifier value and set it (it's set as a class on the character's element)
 	const modifier = el.dataset.modifier;
-	console.log('🤞', modifier);
 	if (modifier) {
+		// Set the modifier
 		setCharacterModifiers(prev => [ ...prev, modifier ]);
+		// Clear the modifier after 5 seconds
+		setTimeout(() => {
+			setCharacterModifiers(prev => {
+				//  Remove the 1st matching modifier (so if new duplicate modifiers have been set they aren't cleared)
+				const index = prev.indexOf(modifier);
+				const newArr = index === -1 ? prev : [...prev.slice(0, index), ...prev.slice(index + 1)];
+				return newArr;
+			});
+		}, 5000);
+	}
+	// Only apply collision if the element should no longer accept future collision effects
+	const markAsFinalCollision = !(characterModifiers.includes('invisible') && el.classList.contains('is-negative'));
+	if (markAsFinalCollision) {
+		el.classList.add('is-collided');
 	}
 };
 
