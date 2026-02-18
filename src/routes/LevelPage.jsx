@@ -25,7 +25,7 @@ const GameplayPage = () => {
 	const { debug } = useDebugContext();
 	const { settings, jump } = useSettingsContext();
 	const { gameplaySpeed, userAdjustedSpeed } = settings;
-	const { level, setCurrentLevelId } = useLevelContext();
+	const { level, setLevel, setCurrentLevelId } = useLevelContext();
 	const { setCharacterStatus } = useCharacterContext();
 	const { setScore } = useScoreContext();
 	const { playSound } = useGameAudio();
@@ -81,18 +81,22 @@ const GameplayPage = () => {
 				setTimelines: (timelines) => { gameplayContext.timelinesRef.current = timelines; },
 				gameplaySpeed,
 				onLevelLoaded: () => setCurrentLevelId(Date.now()),
+				setLevel,
 			});
 		}
-	}, [debug, gameplaySpeed, setCurrentLevelId, gameplayContext]);
+	}, [debug, gameplaySpeed, setCurrentLevelId, gameplayContext, setLevel]);
 	
 	return (
 		<div className="sr-gameplay" ref={gameplayRef}>
 			<Gameplay boardRef={gameplayRef} />
 			<div className="sr-board">
-				<SVG 
-					path={`${window.sr.url}public/svg/level-${level}.svg`} 
-					onSvgLoad={handleSvgLoad}
-				/>
+				{/* If level is 0, we're using a drag-and-dropped custom level, so don't load a numbered SVG file */}
+				{level !== 0 && (
+					<SVG 
+						path={`${window.sr.url}public/svg/level-${level}.svg`} 
+						onSvgLoad={handleSvgLoad}
+					/>
+				)}
 			</div>
 			<Character />
 		</div>

@@ -22,7 +22,7 @@ export const Interface = () => {
 			|
 			<Link to="/gameplay">Gameplay</Link>
 			|
-			<span><em>score: {parsed.pos}{parsed.neg}</em>={parsed.total}</span>
+			<span><em>score: {parsed.pos}-{Math.abs(parsed.neg)}</em>={parsed.total}</span>
 			|
 			<span>level {level} score: {parsed.level}</span>
 		</nav>

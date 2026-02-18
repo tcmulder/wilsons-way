@@ -51,9 +51,10 @@ export const loadLevel = async ({elBoard, elSVG}) => {
  * @param {Function} props.setTimelines Function to set timelines in context
  * @param {number} props.gameplaySpeed The game speed setting
  * @param {Function} [props.onLevelLoaded] Callback when level is loaded
+ * @param {Function} [props.setLevel] React state setter for level
  * @return {Function} Cleanup function to remove event listeners
  */
-export const allowDrop = ({elBoard, debug, setTimelines, gameplaySpeed, onLevelLoaded}) => {
+export const allowDrop = ({elBoard, debug, setTimelines, gameplaySpeed, onLevelLoaded, setLevel}) => {
 	if (!elBoard || !debug) return () => {};
 
 	const handleDrop = async (e) => {
@@ -79,6 +80,7 @@ export const allowDrop = ({elBoard, debug, setTimelines, gameplaySpeed, onLevelL
 					setTimelines,
 					gameplaySpeed,
 				});
+				setLevel(0);
 				onLevelLoaded?.();
 			};
 			reader.readAsText(file);
