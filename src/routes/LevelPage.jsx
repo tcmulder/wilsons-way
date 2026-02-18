@@ -5,17 +5,13 @@ import {
 	useSettingsContext,
 	useLevelContext,
 	useGameplayContext,
-	useCharacterContext,
-	useScoreContext,
 } from '../context/useContexts';
-import { useGameAudio } from '../hooks/useSFX';
 import { loadLevel } from '../util/loadLevel';
 import { allowDrop } from '../util/loadLevel';
 import SVG from '../components/SVG';
 import Character from '../components/Character';
 import Gameplay from '../components/Gameplay';
 import { aniLevel } from '../util/aniLevel';
-import { trackMovement } from '../util/doMovement';
 
 import '../css/board.css';
 import '../css/parallax.css';
@@ -23,14 +19,10 @@ import '../css/parallax.css';
 
 const GameplayPage = () => {
 	const { debug } = useDebugContext();
-	const { settings, jump } = useSettingsContext();
+	const { settings } = useSettingsContext();
 	const { gameplaySpeed, userAdjustedSpeed } = settings;
 	const { level, setLevel, setCurrentLevelId } = useLevelContext();
-	const { setCharacterStatus, setCharacterModifiers, characterModifiers } = useCharacterContext();
-	const { setScore } = useScoreContext();
-	const { playSound } = useGameAudio();
 	const gameplayContext = useGameplayContext();
-	const gameplayContextRef = useRef(gameplayContext);
 	const gameplayRef = useRef(null);
 
 	// Set global animations speed
@@ -38,25 +30,9 @@ const GameplayPage = () => {
 		gsap.globalTimeline.timeScale(userAdjustedSpeed / 50);
 	}, [userAdjustedSpeed]);
 
-	// Run movement on every GSAP tick (running, jumping, any animation) without duplicates
-	useEffect(() => {
-		const tick = () => trackMovement({
-			gameplayContextRef,
-			setCharacterStatus,
-			setScore,
-			level,
-			characterModifiers,
-			playSound,
-			jump,
-			setCharacterModifiers,
-		});
-		gsap.ticker.add(tick);
-		return () => gsap.ticker.remove(tick);
-	}, [setCharacterStatus, setScore, playSound, jump, level, setCharacterModifiers, characterModifiers]);
-
 	// Load SVG for level and add movement to it
 	const handleSvgLoad = useCallback(async (svgElement) => {
-		const ctx = gameplayContextRef.current;
+		const ctx = gameplayContext;
 		const elBoard = ctx.elsRef?.current?.elBoard;
 		if (elBoard && svgElement) {
 			// Setup level SVG
@@ -72,7 +48,7 @@ const GameplayPage = () => {
 			});
 			setCurrentLevelId(Date.now());
 		}
-	}, [gameplaySpeed, setCurrentLevelId]);
+	}, [gameplaySpeed, setCurrentLevelId, gameplayContext]);
 
 	// Allow drag-and-drop of SVG level files
 	useEffect(() => {
