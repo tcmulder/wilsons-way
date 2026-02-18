@@ -51,9 +51,11 @@ const DebugNumber = ({ label, param = '', value, setValue, title = '' }) => {
  * @param {Object} props.settings The settings object
  * @param {Function} props.setLevel The function to set the level
  * @param {Function} props.setCharacterId The function to set the character id
+ * @param {Function} props.setMakeSFX The function to set the make SFX
+ * @param {Function} props.setMakeMusic The function to set the make music
  * @returns {void}
  */
-const useDebug = ({debug, settings, setLevel, setCharacterId}) => {
+const useDebug = ({debug, settings, setLevel, setCharacterId, setMakeSFX, setMakeMusic}) => {
 	useEffect(() => {
 		if (settings.debugAllowed && debug) {
 			if (debug?.level) {
@@ -62,8 +64,14 @@ const useDebug = ({debug, settings, setLevel, setCharacterId}) => {
 			if (debug?.characterId) {
 				setCharacterId(parseInt(debug.characterId));
 			}
+			if (debug?.makeSFX) {
+				setMakeSFX(debug.makeSFX);
+			}
+			if (debug?.makeMusic) {
+				setMakeMusic(debug.makeMusic);
+			}
 		}
-	}, [debug, setLevel, setCharacterId, settings.debugAllowed, settings]);
+	}, [debug, setLevel, setCharacterId, settings.debugAllowed, settings, setMakeSFX, setMakeMusic]);
 };
 
 export const Debug = () => {
@@ -78,7 +86,7 @@ export const Debug = () => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 
 	// Apply debug settings from state
-	useDebug({debug, setLevel, setCharacterId, settings});
+	useDebug({debug, setLevel, setCharacterId, settings, setMakeSFX, setMakeMusic});
 	
 	// Bail if debug is not allowed or enabled
 	if (!settings.debugAllowed || !debug) {
@@ -104,14 +112,14 @@ export const Debug = () => {
 					/>
 					<DebugCheckbox
 						label="🎵 Music"
-						param="music"
+						param="makeMusic"
 						value={makeMusic}
 						setValue={(val) => setMakeMusic(val)}
 						title="Enable or disable background music"
 					/>
 					<DebugCheckbox
 						label="🔊 SFX"
-						param="sfx"
+						param="makeSFX"
 						value={makeSFX}
 						setValue={(val) => setMakeSFX(val)}
 						title="Enable or disable sound effects"

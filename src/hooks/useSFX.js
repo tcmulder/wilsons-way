@@ -38,10 +38,14 @@ export const useGameAudio = () => {
 		}
 	}, [makeMusic]);
 
-	// Play sound effect when SFX is turned on
+	// Play sound effect when SFX is turned on (may be blocked by autoplay policy until user has interacted)
 	useEffect(() => {
-		if(makeSFX) {
-			soundsRef.current.positive.play();
+		if (makeSFX && soundsRef.current.positive) {
+			const p = soundsRef.current.positive.play();
+			// Prevent console error on initial load (NotAllowedError due to no user interaction)
+			if (p && typeof p.catch === 'function') {
+				p.catch(() => {});
+			}
 		}
 	}, [makeSFX]);
   
