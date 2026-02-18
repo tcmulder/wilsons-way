@@ -16,7 +16,7 @@ const SvgImage = ({ path, onSvgLoad }) => {
 					svgUrl = path;
 				} else {
 					// Vite-processed asset - use dynamic import
-					const svgModule = await import(path);
+					const svgModule = await import(/* @vite-ignore */ path);
 					svgUrl = svgModule.default;
 				}
 				const response = await fetch(svgUrl);
