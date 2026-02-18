@@ -1,7 +1,25 @@
 import gsap from 'gsap';
 
+/**
+ * Check if an obstacle is skippable due to invisible modifier
+ *
+ * @param {HTMLElement} el The element to check
+ * @param {string[]} characterModifiers The current character modifiers
+ * @return {boolean} Whether or not the obstacle is skippable
+ */
 const isSkippableInvisible = (el, characterModifiers) => {
 	return characterModifiers.includes('invisible') && el.classList.contains('is-negative') && el.dataset.ignoreModifier !== 'invisible';
+};
+
+/**
+ * Check if an obstacle should switch polarity on positive objects (make them negative)
+ * @param {HTMLElement} el The element to check
+ * @param {string[]} characterModifiers The current character modifiers
+ * @return {boolean} Whether or not the obstacle should switch polarity on positive objects
+ * @returns 
+ */
+const isPosPolarity = (el, characterModifiers) => {
+	return characterModifiers.includes('polarity') && el.classList.contains('is-positive') && el.dataset.ignoreModifier !== 'polarity';
 };
 
 /**
@@ -15,12 +33,11 @@ const isSkippableInvisible = (el, characterModifiers) => {
  * @param {Function} playSound Function to play a sound ('positive' | 'negative')
  */
 export const doScoring = (el, elCharacterMessage, setScore, level, characterModifiers, playSound) => {
-	const num = parseInt(el.dataset.score);
-	if (!num || isSkippableInvisible(el, characterModifiers)) return;
+	const rawNum = el.dataset.score;
+	if (!rawNum || isSkippableInvisible(el, characterModifiers)) return;
+	let num = parseInt(rawNum);
+	num = isPosPolarity(el, characterModifiers) ? -Math.abs(num) : num;
 	const way = num > 0 ? 'positive' : 'negative';
-	if (characterModifiers.includes('invisible') && way === 'negative' && !el.dataset.ignoreModifier === 'invisible') {
-		return;
-	}
 	playSound(way);
 	setScore(prev => [ ...prev, { num, level } ]);
 	showCharacterMessage({

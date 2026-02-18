@@ -8,8 +8,13 @@
 
 /* Modifiers */
 .sr-stage:has(.is-mod-invisible) {
-	.is-negative:not([data-ignore-hide]) {
+	[data-score].is-negative:not([data-ignore-modifier="invisible"]) {
 		filter: grayscale(1) contrast(0.5);
 		animation: pulse-opacity 2s ease-in-out infinite;
+	}
+}
+.sr-stage:has(.is-mod-polarity) {
+	[data-score].is-positive:not([data-ignore-modifier="polarity"]) {
+		filter: sepia(1) hue-rotate(315deg) saturate(9);
 	}
 }
