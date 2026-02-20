@@ -13,7 +13,7 @@ export function SettingsContextProvider({ children }) {
       .then(d => {
         setSettings(d.data);
         setJump({
-          height: (d.data.jumpHeight) / 100, // Convert to percentage.
+          height: (d.data.jumpHeight), // Percentage like 0 - 1.
           hangtime: d.data.jumpHangtime // In seconds.
         });
       })

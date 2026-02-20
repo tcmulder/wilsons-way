@@ -5,11 +5,30 @@ import { routes } from '../routes';
 
 import '../css/debug.css';
 
+/**
+ * Set state and also update the URL (to preserve on refresh)
+ * 
+ * @param {string} key Param key to set
+ * @param {any} value Value to set
+ * @param {Function} setState Function to set the state
+ * @param {Function} setState 
+ */
 const setStateAndQuery = (key, value, setState) => {
 	setState(value);
 	const url = new URL(window.location.href);
 	url.searchParams.set(key, value);
 	window.history.pushState({}, '', url);
+};
+
+/**
+ * Generic button
+ */
+const DebugButton = ({ label, onClick, title = '' }) => {
+	return (
+		<button title={title} onClick={(e) => { e.preventDefault(); onClick(e); }}>
+			{label}
+		</button>
+	);
 };
 
 /**
@@ -44,20 +63,47 @@ const DebugNumber = ({ label, param = '', value, setValue, title = '' }) => {
 };
 
 /**
+ * Refresh and optionally reset all debug settings
+ */
+const DebugRefresh = ({ reset = false, title = '', label = '' }) => {
+	return (
+		<button
+			title={title}
+			onClick={(e) => {
+				e.preventDefault();
+				if (reset) {
+					e.preventDefault();
+					const url = new URL(window.location.href);
+					url.search = 'debug=true';
+					url.hash = '';
+					window.location.replace(url.toString());
+				} else {
+					window.location.reload();
+				}
+			}}
+		>
+			{label}
+		</button>
+	);
+};
+
+/**
  * Apply debug settings (usually from query string on page load)
  * 
  * @param {Object} props The properties object
  * @param {Object} props.debug The debug object
- * @param {Object} props.settings The settings object
+ * @param {Object} props.debugIsAllowed Whether or not to debug (clone of settings.debugAllowed)
  * @param {Function} props.setLevel The function to set the level
  * @param {Function} props.setCharacterId The function to set the character id
  * @param {Function} props.setMakeSFX The function to set the make SFX
  * @param {Function} props.setMakeMusic The function to set the make music
+ * @param {Function} props.setSettings The function to set the settings
+ * @param {Function} props.setJump The function to set the jump
  * @returns {void}
  */
-const useDebug = ({debug, settings, setLevel, setCharacterId, setMakeSFX, setMakeMusic}) => {
+const useDebug = ({debug, debugIsAllowed, setLevel, setCharacterId, setMakeSFX, setMakeMusic, setSettings, setJump}) => {
 	useEffect(() => {
-		if (settings.debugAllowed && debug) {
+		if (debugIsAllowed && debug) {
 			if (debug?.level) {
 				setLevel(parseInt(debug.level));
 			}
@@ -70,13 +116,22 @@ const useDebug = ({debug, settings, setLevel, setCharacterId, setMakeSFX, setMak
 			if (debug?.makeMusic) {
 				setMakeMusic(debug.makeMusic);
 			}
+			if (debug?.gameplaySpeed) {
+				setSettings((prev) => ({ ...prev, gameplaySpeed: debug.gameplaySpeed}));
+			}
+			if (debug?.jumpHeight) {
+				setJump((prev) => ({ ...prev, height: debug.jumpHeight / 100}));
+			}
+			if (debug?.jumpHangtime) {
+				setJump((prev) => ({ ...prev, hangtime: debug.jumpHangtime}));
+			}
 		}
-	}, [debug, setLevel, setCharacterId, settings.debugAllowed, settings, setMakeSFX, setMakeMusic]);
+	}, [debug, setLevel, setCharacterId, setMakeSFX, setMakeMusic, setSettings, setJump, debugIsAllowed]);
 };
 
 export const Debug = () => {
 	const { debug, setDebug } = useDebugContext();
-	const { settings, makeMusic, setMakeMusic, makeSFX, setMakeSFX } = useSettingsContext();
+	const { settings, setSettings, setJump, jump, makeMusic, setMakeMusic, makeSFX, setMakeSFX } = useSettingsContext();
 	const { level, setLevel } = useLevelContext();
 	const { characterId, setCharacterId } = useCharacterContext();
 	const navigate = useNavigate();
@@ -86,7 +141,7 @@ export const Debug = () => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 
 	// Apply debug settings from state
-	useDebug({debug, setLevel, setCharacterId, settings, setMakeSFX, setMakeMusic});
+	useDebug({debugIsAllowed: settings.debugAllowed, debug, setLevel, setCharacterId, setMakeSFX, setMakeMusic, setSettings, setJump});
 	
 	// Bail if debug is not allowed or enabled
 	if (!settings.debugAllowed || !debug) {
@@ -103,12 +158,35 @@ export const Debug = () => {
 						param="level"
 						value={level}
 						setValue={setLevel}
+						title="Set the level number"
 					/>
 					<DebugNumber
 						label="🦸 Character"
 						param="characterId"
 						value={characterId}
 						setValue={setCharacterId}
+						title="Set the character's jersey number"
+					/>
+					<DebugNumber
+						label="🏃‍➡️ Speed (px/s)"
+						param="gameplaySpeed"
+						value={settings.gameplaySpeed}
+						setValue={(value) => setSettings({ ...settings, gameplaySpeed: value })}
+						title="Set the gameplay speed in pixels per second"
+					/>
+					<DebugNumber
+						label="🦘 Height (%)"
+						param="jumpHeight"
+						value={jump.height * 100}
+						setValue={(value) => setJump({ ...jump, height: value / 100})}
+						title="Set the jump height in percentage of the screen height"
+					/>
+					<DebugNumber
+						label="🏀 Hangtime"
+						param="level (s)"
+						value={jump.hangtime}
+						setValue={(value) => setJump({ ...jump, hangtime: value })}
+						title="Set the jump hangtime in seconds"
 					/>
 					<DebugCheckbox
 						label="🎵 Music"
@@ -129,14 +207,14 @@ export const Debug = () => {
 						param="autoplay"
 						value={debug?.autoplay}
 						setValue={(val) => setDebug({ ...debug, autoplay: val })}
-						title="Automatically play the game when the level loads"
+						title="Automatically start running when the level loads"
 					/>
 					<DebugCheckbox
 						label="🔀 Router"
 						param="router"
 						value={debug?.router}
 						setValue={(val) => setDebug({ ...debug, router: val })}
-						title="Exposes the URL path so you can refresh without going back to the start"
+						title="Exposes the URL path so you can refresh without going back to the intro page"
 					/>
 					<DebugCheckbox
 						label="👁️ Outlines"
@@ -156,13 +234,21 @@ export const Debug = () => {
 							<option key={path} value={path}>📄 {title}</option>
 						))}
 					</select>
-					<button
-						title="Reveal and reset all collisions"
-						onClick={(e) => { e.preventDefault(); document.querySelectorAll('.is-collided').forEach(el => el.classList.remove('is-collided')); }}
-					>
-						🫥 Reveal
-					</button>
-					<button onClick={(e) => { e.preventDefault(); window.location.reload(); }}>🔄 restart</button>
+					<DebugButton
+						label="🫥 Un-collide"
+						onClick={() => { document.querySelectorAll('.is-collided').forEach(el => el.classList.remove('is-collided')); }}
+						title="Reveal and reset all collided elements"
+					/>
+					<DebugRefresh
+						reset={true}
+						title="Reset all debug settings"
+						label="🙅 Reset"
+					/>
+					<DebugRefresh
+						reset={false}
+						title="Restart the game"
+						label="🔄 Refresh"
+					/>
 				</div>
 			)}
 		</div>

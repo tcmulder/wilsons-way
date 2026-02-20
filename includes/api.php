@@ -122,7 +122,7 @@ add_action(
 					// Build response data.
 					$data = array(
 						'gameplaySpeed'     => SHELF_RUNNER_GAMEPLAY_SPEED,
-						'jumpHeight'        => SHELF_RUNNER_JUMP_HEIGHT,
+						'jumpHeight'        => SHELF_RUNNER_JUMP_HEIGHT / 100, // convert to percentage
 						'jumpHangtime'      => SHELF_RUNNER_JUMP_HANGTIME,
 						'userAdjustedCrash' => $difficulty_crash,
 						'userAdjustedSpeed' => $difficulty_speed,

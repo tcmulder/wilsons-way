@@ -66,6 +66,9 @@ export function useSetupGameplayElements(boardRef) {
 	// Track which shelves and obstacles are visible
 	useEffect(() => {
 		const shelves = elsRef.current?.elShelves ?? [];
+		
+		if (!shelves.length) return;
+		
 		const obstacles = elsRef.current?.elObstacles ?? [];
 		const elShelvesVisible = elsRef.current.elShelvesVisible;
 		const elObstaclesVisible = elsRef.current.elObstaclesVisible;
@@ -77,18 +80,28 @@ export function useSetupGameplayElements(boardRef) {
 			rootMargin: '0px 100px 0px 100px', // 100px left/right, 0 top/bottom
 			threshold: 0.01,
 		};
+		const obstaclesObserver = new IntersectionObserver(
+			(entries) => {
+				for (const entry of entries) {
+					if (entry.isIntersecting) elObstaclesVisible.add(entry.target);
+					else elObstaclesVisible.delete(entry.target);
+				}
+			},
+			options,
+		);
 
-		let firstShelvesCheck = true;
+		let firstRun = true;
 		const shelvesObserver = new IntersectionObserver(
 			(entries) => {
 				for (const entry of entries) {
 					if (entry.isIntersecting) elShelvesVisible.add(entry.target);
 					else elShelvesVisible.delete(entry.target);
 				}
-				// After first run, visible shelves is always ≥1 when IO works (e.g. viewport hits at least one).
-				// If we have shelves but none visible, IO is broken (e.g. WebKit bug 196729 on SVG). Fallback.
-				if (firstShelvesCheck) {
-					firstShelvesCheck = false;
+				// After first observation, visible shelves is always >=1 when SVG paths trigger observers.
+				// If we have shelves but none visible, the observer is broken (e.g. WebKit bug 196729 on SVG).
+				// Run fallback so ALL shelves and obstacles are used to track collisions (albeit inefficiently).
+				if (firstRun) {
+					firstRun = false;
 					if (shelves.length > 0 && elShelvesVisible.size === 0) {
 						shelvesObserver.disconnect();
 						obstaclesObserver.disconnect();
@@ -100,18 +113,9 @@ export function useSetupGameplayElements(boardRef) {
 			options,
 		);
 
-		const obstaclesObserver = new IntersectionObserver(
-			(entries) => {
-				for (const entry of entries) {
-					if (entry.isIntersecting) elObstaclesVisible.add(entry.target);
-					else elObstaclesVisible.delete(entry.target);
-				}
-			},
-			options,
-		);
-
 		shelves.forEach((el) => shelvesObserver.observe(el));
 		obstacles.forEach((el) => obstaclesObserver.observe(el));
+
 		return () => {
 			shelves.forEach((el) => shelvesObserver.unobserve(el));
 			obstacles.forEach((el) => obstaclesObserver.unobserve(el));
