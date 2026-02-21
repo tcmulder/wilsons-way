@@ -1,0 +1,195 @@
+<svg width="22413" height="810" viewBox="0 0 22413 810" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="sr-board" clip-path="url(#clip0_6551_50066)">
+<rect width="22413" height="810" fill="#8B8B8B"></rect>
+<g class="sr-bg [parallax:0]">
+<rect width="22413" height="810" fill="#8B8B8B" class="sr-bg"></rect>
+</g>
+<g class="sr-props [parallax:45]">
+<g id="parallax-2">
+<path id="object" d="M0 74C0 74 943.764 253.626 1333.33 253.626C1722.9 253.626 2666.67 74 2666.67 74V794H0V74Z" fill="#EAEAEA"></path>
+</g>
+<g id="parallax-2_2">
+<path id="object_2" d="M2667 74C2667 74 3610.76 253.626 4000.33 253.626C4389.9 253.626 5333.67 74 5333.67 74V794H2667V74Z" fill="#EAEAEA"></path>
+</g>
+<g id="parallax-2_3">
+<path id="object_3" d="M5334 74C5334 74 6277.76 253.626 6667.33 253.626C7056.9 253.626 8000.67 74 8000.67 74V794H5334V74Z" fill="#EAEAEA"></path>
+</g>
+<g id="parallax-2_4">
+<path id="object_4" d="M8001 74C8001 74 8944.76 253.626 9334.33 253.626C9723.9 253.626 10667.7 74 10667.7 74V794H8001V74Z" fill="#EAEAEA"></path>
+</g>
+<g id="parallax-2_5">
+<path id="object_5" d="M10668 74C10668 74 11611.8 253.626 12001.3 253.626C12390.9 253.626 13334.7 74 13334.7 74V794H10668V74Z" fill="#EAEAEA"></path>
+</g>
+<g id="parallax-2_6">
+<path id="object_6" d="M13335 74C13335 74 14278.8 253.626 14668.3 253.626C15057.9 253.626 16001.7 74 16001.7 74V794H13335V74Z" fill="#EAEAEA"></path>
+</g>
+</g>
+<g class="sr-props [parallax:40]">
+<g id="parallax-1">
+<path id="object_7" d="M-47 494C-47 494 660.823 577.576 953 577.576C1245.18 577.576 1953 494 1953 494V829H-47V494Z" fill="#D9D9D9"></path>
+</g>
+<g id="parallax-1_2">
+<path id="object_8" d="M1953 494C1953 494 2660.82 577.576 2953 577.576C3245.18 577.576 3953 494 3953 494V829H1953V494Z" fill="#D9D9D9"></path>
+</g>
+<g id="parallax-1_3">
+<path id="object_9" d="M3953 494C3953 494 4660.82 577.576 4953 577.576C5245.18 577.576 5953 494 5953 494V829H3953V494Z" fill="#D9D9D9"></path>
+</g>
+<g id="parallax-1_4">
+<path id="object_10" d="M5953 494C5953 494 6660.82 577.576 6953 577.576C7245.18 577.576 7953 494 7953 494V829H5953V494Z" fill="#D9D9D9"></path>
+</g>
+<g id="parallax-1_5">
+<path id="object_11" d="M7953 494C7953 494 8660.82 577.576 8953 577.576C9245.18 577.576 9953 494 9953 494V829H7953V494Z" fill="#D9D9D9"></path>
+</g>
+<g id="parallax-1_6">
+<path id="object_12" d="M9953 494C9953 494 10660.8 577.576 10953 577.576C11245.2 577.576 11953 494 11953 494V829H9953V494Z" fill="#D9D9D9"></path>
+</g>
+<g id="parallax-1_7">
+<path id="object_13" d="M11953 494C11953 494 12660.8 577.576 12953 577.576C13245.2 577.576 13953 494 13953 494V829H11953V494Z" fill="#D9D9D9"></path>
+</g>
+<g id="parallax-1_8">
+<path id="object_14" d="M13953 494C13953 494 14660.8 577.576 14953 577.576C15245.2 577.576 15953 494 15953 494V829H13953V494Z" fill="#D9D9D9"></path>
+</g>
+</g>
+<g class="sr-shelves">
+<rect y="718" width="22413" height="76" fill="#AAAAAA" class="sr-sidewalk"></rect>
+<rect id="object_15" x="3371" y="345" width="676" height="30" fill="#AAAAAA"></rect>
+<rect id="object_16" x="5030" y="345" width="676" height="30" fill="#AAAAAA"></rect>
+<rect id="object_17" x="1562" y="345" width="676" height="30" fill="#AAAAAA"></rect>
+<rect id="object_18" x="5884" y="256" width="338" height="30" fill="#AAAAAA"></rect>
+<rect id="object_19" x="702" y="541" width="676" height="30" fill="#AAAAAA"></rect>
+<rect id="object_20" x="2331" y="541" width="676" height="30" fill="#AAAAAA"></rect>
+<rect id="object_21" x="4170" y="541" width="676" height="30" fill="#AAAAAA"></rect>
+<rect id="object_22" x="4373" y="345" width="310" height="30" fill="#AAAAAA"></rect>
+</g>
+<g class="sr-props">
+<g id="prop">
+<path id="object_23" d="M7 663.541L34 626.5L72.5 667H55L83 689H55L95 734H0L20 697.5H-2.5L27 663.541H7Z" fill="#C8C4C4"></path>
+</g>
+<g id="prop_2">
+<path id="object_24" d="M922 663.541L949 626.5L987.5 667H970L998 689H970L1010 734H915L935 697.5H912.5L942 663.541H922Z" fill="#C8C4C4"></path>
+</g>
+<g id="prop_3">
+<path id="object_25" d="M1689 663.541L1716 626.5L1754.5 667H1737L1765 689H1737L1777 734H1682L1702 697.5H1679.5L1709 663.541H1689Z" fill="#C8C4C4"></path>
+</g>
+<g id="prop_4">
+<path id="object_26" d="M1847 663.541L1874 626.5L1912.5 667H1895L1923 689H1895L1935 734H1840L1860 697.5H1837.5L1867 663.541H1847Z" fill="#C8C4C4"></path>
+</g>
+<g id="prop_5">
+<path id="object_27" d="M2416 663.541L2443 626.5L2481.5 667H2464L2492 689H2464L2504 734H2409L2429 697.5H2406.5L2436 663.541H2416Z" fill="#C8C4C4"></path>
+</g>
+<g id="prop_6">
+<path id="object_28" d="M2824 663.541L2851 626.5L2889.5 667H2872L2900 689H2872L2912 734H2817L2837 697.5H2814.5L2844 663.541H2824Z" fill="#C8C4C4"></path>
+</g>
+<g id="prop_7">
+<path id="object_29" d="M3505 663.541L3532 626.5L3570.5 667H3553L3581 689H3553L3593 734H3498L3518 697.5H3495.5L3525 663.541H3505Z" fill="#C8C4C4"></path>
+</g>
+<g id="prop_8">
+<path id="object_30" d="M4082 663.541L4109 626.5L4147.5 667H4130L4158 689H4130L4170 734H4075L4095 697.5H4072.5L4102 663.541H4082Z" fill="#C8C4C4"></path>
+</g>
+<g id="prop_9">
+<path id="object_31" d="M5130 663.541L5157 626.5L5195.5 667H5178L5206 689H5178L5218 734H5123L5143 697.5H5120.5L5150 663.541H5130Z" fill="#C8C4C4"></path>
+</g>
+<g id="prop_10">
+<path id="object_32" d="M6539 663.541L6566 626.5L6604.5 667H6587L6615 689H6587L6627 734H6532L6552 697.5H6529.5L6559 663.541H6539Z" fill="#C8C4C4"></path>
+</g>
+<g id="prop_11">
+<path id="object_33" d="M7380 663.541L7407 626.5L7445.5 667H7428L7456 689H7428L7468 734H7373L7393 697.5H7370.5L7400 663.541H7380Z" fill="#C8C4C4"></path>
+</g>
+<g id="prop_12">
+<path id="object_34" d="M7821 663.541L7848 626.5L7886.5 667H7869L7897 689H7869L7909 734H7814L7834 697.5H7811.5L7841 663.541H7821Z" fill="#C8C4C4"></path>
+</g>
+<g id="prop_13">
+<path id="object_35" d="M10869 663.541L10896 626.5L10934.5 667H10917L10945 689H10917L10957 734H10862L10882 697.5H10859.5L10889 663.541H10869Z" fill="#C8C4C4"></path>
+</g>
+<g id="prop_14">
+<path id="object_36" d="M11784 663.541L11811 626.5L11849.5 667H11832L11860 689H11832L11872 734H11777L11797 697.5H11774.5L11804 663.541H11784Z" fill="#C8C4C4"></path>
+</g>
+<g id="prop_15">
+<path id="object_37" d="M12551 663.541L12578 626.5L12616.5 667H12599L12627 689H12599L12639 734H12544L12564 697.5H12541.5L12571 663.541H12551Z" fill="#C8C4C4"></path>
+</g>
+<g id="prop_16">
+<path id="object_38" d="M12709 663.541L12736 626.5L12774.5 667H12757L12785 689H12757L12797 734H12702L12722 697.5H12699.5L12729 663.541H12709Z" fill="#C8C4C4"></path>
+</g>
+<g id="prop_17">
+<path id="object_39" d="M13278 663.541L13305 626.5L13343.5 667H13326L13354 689H13326L13366 734H13271L13291 697.5H13268.5L13298 663.541H13278Z" fill="#C8C4C4"></path>
+</g>
+<g id="prop_18">
+<path id="object_40" d="M13686 663.541L13713 626.5L13751.5 667H13734L13762 689H13734L13774 734H13679L13699 697.5H13676.5L13706 663.541H13686Z" fill="#C8C4C4"></path>
+</g>
+<g id="prop_19">
+<path id="object_41" d="M14367 663.541L14394 626.5L14432.5 667H14415L14443 689H14415L14455 734H14360L14380 697.5H14357.5L14387 663.541H14367Z" fill="#C8C4C4"></path>
+</g>
+<g id="prop_20">
+<path id="object_42" d="M14944 663.541L14971 626.5L15009.5 667H14992L15020 689H14992L15032 734H14937L14957 697.5H14934.5L14964 663.541H14944Z" fill="#C8C4C4"></path>
+</g>
+<g id="prop_21">
+<path id="object_43" d="M15992 663.541L16019 626.5L16057.5 667H16040L16068 689H16040L16080 734H15985L16005 697.5H15982.5L16012 663.541H15992Z" fill="#C8C4C4"></path>
+</g>
+<g id="prop_22">
+<path id="object_44" d="M17401 663.541L17428 626.5L17466.5 667H17449L17477 689H17449L17489 734H17394L17414 697.5H17391.5L17421 663.541H17401Z" fill="#C8C4C4"></path>
+</g>
+<g id="prop_23">
+<path id="object_45" d="M18242 663.541L18269 626.5L18307.5 667H18290L18318 689H18290L18330 734H18235L18255 697.5H18232.5L18262 663.541H18242Z" fill="#C8C4C4"></path>
+</g>
+<g id="prop_24">
+<path id="object_46" d="M18683 663.541L18710 626.5L18748.5 667H18731L18759 689H18731L18771 734H18676L18696 697.5H18673.5L18703 663.541H18683Z" fill="#C8C4C4"></path>
+</g>
+</g>
+<g class="sr-obstacles [score:10]">
+<g id="object_47">
+<rect id="object_48" x="1166" y="446" width="55" height="55" fill="#00DC54"></rect>
+<text id="score" fill="white" style="white-space: pre" xml:space="preserve" font-family="VT323" font-size="28.9474" letter-spacing="0em"><tspan x="1176.11" y="481.816">+10</tspan></text>
+</g>
+<g id="object_49">
+<rect id="object_50" x="1702" y="250" width="55" height="55" fill="#00DC54"></rect>
+<text id="score_2" fill="white" style="white-space: pre" xml:space="preserve" font-family="VT323" font-size="28.9474" letter-spacing="0em"><tspan x="1712.11" y="285.816">+10</tspan></text>
+</g>
+<g id="object_51">
+<rect id="object_52" x="2494" y="466" width="55" height="55" fill="#00DC54"></rect>
+<text id="score_3" fill="white" style="white-space: pre" xml:space="preserve" font-family="VT323" font-size="28.9474" letter-spacing="0em"><tspan x="2504.11" y="501.816">+10</tspan></text>
+</g>
+<g id="object_53">
+<rect id="object_54" x="2584" y="395" width="55" height="55" fill="#00DC54"></rect>
+<text id="score_4" fill="white" style="white-space: pre" xml:space="preserve" font-family="VT323" font-size="28.9474" letter-spacing="0em"><tspan x="2594.11" y="430.816">+10</tspan></text>
+</g>
+<g id="object_55">
+<rect id="object_56" x="2705" y="367" width="55" height="55" fill="#00DC54"></rect>
+<text id="score_5" fill="white" style="white-space: pre" xml:space="preserve" font-family="VT323" font-size="28.9474" letter-spacing="0em"><tspan x="2715.11" y="402.816">+10</tspan></text>
+</g>
+<g id="object_57">
+<rect id="object_58" x="2807" y="419" width="55" height="55" fill="#00DC54"></rect>
+<text id="score_6" fill="white" style="white-space: pre" xml:space="preserve" font-family="VT323" font-size="28.9474" letter-spacing="0em"><tspan x="2817.11" y="454.816">+10</tspan></text>
+</g>
+<g id="object_59">
+<rect id="object_60" x="2898" y="482" width="55" height="55" fill="#00DC54"></rect>
+<text id="score_7" fill="white" style="white-space: pre" xml:space="preserve" font-family="VT323" font-size="28.9474" letter-spacing="0em"><tspan x="2908.11" y="517.816">+10</tspan></text>
+</g>
+<g id="object" class="[score:75]">
+<rect id="object_61" x="702" y="627" width="55" height="55" fill="#00DC54"></rect>
+<text id="score_8" fill="white" style="white-space: pre" xml:space="preserve" font-family="VT323" font-size="28.9474" letter-spacing="0em"><tspan x="712.115" y="662.816">+75</tspan></text>
+</g>
+</g>
+<g class="sr-obstacles [score:-10]">
+<g id="object" class="[score:-75]">
+<rect id="object_62" x="1455" y="645" width="55" height="55" fill="#EC4301"></rect>
+<text id="score_9" fill="white" style="white-space: pre" xml:space="preserve" font-family="VT323" font-size="28.9474" letter-spacing="0em"><tspan x="1465.11" y="680.816">-75</tspan></text>
+</g>
+<g id="object_63">
+<rect id="object_64" x="2139" y="645" width="55" height="55" fill="#EC4301"></rect>
+<text id="score_10" fill="white" style="white-space: pre" xml:space="preserve" font-family="VT323" font-size="28.9474" letter-spacing="0em"><tspan x="2149.11" y="680.816">-10</tspan></text>
+</g>
+<g id="object_65">
+<rect id="object_66" x="1830" y="249" width="55" height="55" fill="#EC4301"></rect>
+<text id="score_11" fill="white" style="white-space: pre" xml:space="preserve" font-family="VT323" font-size="28.9474" letter-spacing="0em"><tspan x="1840.11" y="284.816">-10</tspan></text>
+</g>
+</g>
+<g class="sr-last">
+<rect id="object_67" x="20639" y="4" width="1768" height="800" fill="#AAAAAA" fill-opacity="0.61" stroke="black" stroke-width="10" stroke-dasharray="20 20"></rect>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_6551_50066">
+<rect width="22413" height="810" fill="white"></rect>
+</clipPath>
+</defs>
+</svg>
