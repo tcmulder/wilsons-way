@@ -9,7 +9,8 @@ import { convertClassToData } from './convertClassToData';
  * @param {SVGElement} props.elSVG SVG element
  * @return {Promise<SVGElement>} Promise that resolves to the loaded SVG element
  */
-export const loadLevel = async ({elBoard, elSVG}) => {
+export const loadLevel = async (props) => {
+	const { elBoard, elSVG } = props;
 	elBoard.replaceChildren(elSVG);
 
 	// Move any parallax layers to their own SVG graphics for better animation performance
@@ -54,7 +55,8 @@ export const loadLevel = async ({elBoard, elSVG}) => {
  * @param {Function} [props.setLevel] React state setter for level
  * @return {Function} Cleanup function to remove event listeners
  */
-export const allowDrop = ({elBoard, debug, setTimelines, gameplaySpeed, onLevelLoaded, setLevel}) => {
+export const allowDrop = (props) => {
+	const { elBoard, debug, setTimelines, gameplaySpeed, onLevelLoaded, setLevel } = props;
 	if (!elBoard || !debug) return () => {};
 
 	const handleDrop = async (e) => {

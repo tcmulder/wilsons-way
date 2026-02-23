@@ -10,7 +10,8 @@ import { gsap } from 'gsap';
  *
  * @param {HTMLElement} elParent Parent that may contain sprites
  */
-export const createAniSprite = ({elParent}) => {
+export const createAniSprite = (props) => {
+	const { elParent } = props;
 	// Create a single master timeline to control all sprite animations
 	const masterTimeline = gsap.timeline({ repeat: -1 });
 	

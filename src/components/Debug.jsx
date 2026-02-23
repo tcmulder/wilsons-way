@@ -8,12 +8,13 @@ import '../css/debug.css';
 /**
  * Set state and also update the URL (to preserve on refresh)
  * 
- * @param {string} key Param key to set
- * @param {any} value Value to set
- * @param {Function} setState Function to set the state
- * @param {Function} setState 
+ * @param {Object} props The properties object
+ * @param {string} props.key Param key to set
+ * @param {any} props.value Value to set
+ * @param {Function} props.setState Function to set the state
  */
-const setStateAndQuery = (key, value, setState) => {
+const setStateAndQuery = (props) => {
+	const { key, value, setState } = props;
 	setState(value);
 	const url = new URL(window.location.href);
 	url.searchParams.set(key, value);
@@ -39,7 +40,17 @@ const DebugCheckbox = ({ label, param = '', value, setValue, title = '' }) => {
 	return (
 		<label title={title}>
 			<span>{label}</span>
-			<input type="checkbox" checked={value} onChange={(e) => setStateAndQuery(k, e.target.checked, setValue)} />
+			<input
+				type="checkbox"
+				checked={value}
+				onChange={(e) =>
+					setStateAndQuery({
+						key: k,
+						value: e.target.checked,
+						setState: setValue,
+					})
+				}
+			/>
 		</label>
 	);
 };
@@ -55,7 +66,13 @@ const DebugNumber = ({ label, param = '', value, setValue, title = '' }) => {
 			<input
 				type="number"
 				value={value}
-				onChange={(e) => setStateAndQuery(k, parseFloat(e.target.value), setValue)}
+				onChange={(e) =>
+					setStateAndQuery({
+						key: k,
+						value: parseFloat(e.target.value),
+						setState: setValue,
+					})
+				}
 				onKeyDown={(e) => e.stopPropagation()}
 			/>
 		</label>
@@ -101,7 +118,8 @@ const DebugRefresh = ({ reset = false, title = '', label = '' }) => {
  * @param {Function} props.setJump The function to set the jump
  * @returns {void}
  */
-const useDebug = ({debug, debugIsAllowed, setLevel, setCharacterId, setMakeSFX, setMakeMusic, setSettings, setJump}) => {
+const useDebug = (props) => {
+	const { debug, debugIsAllowed, setLevel, setCharacterId, setMakeSFX, setMakeMusic, setSettings, setJump } = props;
 	useEffect(() => {
 		if (debugIsAllowed && debug) {
 			if (debug?.level) {

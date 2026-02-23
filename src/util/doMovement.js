@@ -4,26 +4,54 @@ import { checkCollisions, checkElevation } from './handleCollisions';
 
 /**
  * Track movement (fires whenever moving left/right)
+ *
+ * @param {Object} props The properties object
+ * @param {Object} props.gameplayContext Gameplay refs and state
+ * @param {Function} props.setCharacterStatus Setter for character status
+ * @param {Function} props.setScore Setter for score
+ * @param {number} props.level The current level number
+ * @param {string[]} props.characterModifiers The current character modifiers
+ * @param {Function} props.playSound Function to play a sound ('positive' | 'negative')
+ * @param {Function} props.setCharacterModifiers Setter for character modifiers
  */
 export const trackMovement = (props) => {
 	const { gameplayContext, setCharacterStatus, setScore, level, characterModifiers, playSound, setCharacterModifiers } = props;
 	const { elsRef, elevationRef, statusRef, jumpRef } = gameplayContext;
 	if (!elsRef?.current || (statusRef?.current?.move === 'none' && statusRef?.current?.jump === 'none')) return;
 	const els = elsRef?.current;
-	checkCollisions(els, setScore, level, characterModifiers, playSound, setCharacterModifiers);
+	checkCollisions({
+		els,
+		setScore,
+		level,
+		characterModifiers,
+		playSound,
+		setCharacterModifiers,
+	});
 	checkElevation(els, elevationRef);
 	doGravity({ setCharacterStatus, statusRef, elevationRef, elsRef, jumpRef });
 };
 
 /**
  * Fall off the edge of a shelf to the next one down
+ *
+ * @param {Object} props The properties object
+ * @param {Function} props.setCharacterStatus Setter for character status
+ * @param {Object} props.statusRef The status ref object
+ * @param {Object} props.elevationRef The elevation ref object
+ * @param {Object} props.elsRef The els ref object
+ * @param {Object} props.jumpRef The jump ref object
  */
 const doGravity = (props) => {
-	if (props.statusRef?.current?.jump !== 'none') return;
-	const { elevationRef } = props;
+	const { setCharacterStatus, statusRef, elevationRef, elsRef, jumpRef } = props;
+	if (statusRef?.current?.jump !== 'none') return;
 	const { foot, below } = elevationRef.current;
 	if(foot > below) {
-		doJumpDown(props);
+		doJumpDown({
+			setCharacterStatus,
+			jumpRef,
+			elevationRef,
+			elsRef,
+		});
 	}
 };
 
@@ -41,7 +69,8 @@ export const doFreeze = (shouldFreeze = true) => {
 /**
  * Pause playback
  */
-export const doPause = ({timelines, setCharacterStatus}) => {
+export const doPause = (props) => {
+	const { timelines, setCharacterStatus } = props;
 	if (!timelines.length) return;
 	setCharacterStatus(prev => ({...prev, ani: 'none'}));
 	timelines.forEach(timeline => timeline.pause());
@@ -50,7 +79,8 @@ export const doPause = ({timelines, setCharacterStatus}) => {
 /**
  * Play playback
  */
-export const doRun = ({timelines, setCharacterStatus, direction = 'forward'}) => {
+export const doRun = (props) => {
+	const { timelines, setCharacterStatus, direction = 'forward' } = props;
 	if (!timelines?.length) return;
 	setCharacterStatus(prev => ({
 		...prev,
@@ -123,11 +153,19 @@ const doJumpUp = (props) => {
 
 /**
  * Jump up and down
+ *
+ * @param {Object} props The properties object
+ * @param {Function} props.setCharacterStatus Setter for character status
+ * @param {Object} props.jumpRef The jump object (height in em units and hangtime in seconds)
+ * @param {Object} props.elevationRef The elevation ref object
+ * @param {Object} props.elsRef The els ref object
+ * @param {Object} props.statusRef The status ref object
  */
 const doJump = (props) => {
+	const { statusRef, elsRef } = props;
 	// Prevent double-jumps while already mid-air
-	if (props.statusRef?.current?.jump !== 'none') return;
-	if (!props.elsRef?.current?.elCharacter) return;
+	if (statusRef?.current?.jump !== 'none') return;
+	if (!elsRef?.current?.elCharacter) return;
 
 	doJumpUp(props);
 };
@@ -145,17 +183,18 @@ const doJump = (props) => {
  * @param {Object} props.statusRef The status ref object
  * @param {*} [props.currentLevelId] Level load id so autoplay runs after level (and timelines) exist
  */
-export function useCharacterMovement({
-	debug,
-	elsRef,
-	characterStatus,
-	setCharacterStatus,
-	jumpRef,
-	timelinesRef,
-	elevationRef,
-	statusRef,
-	currentLevelId,
-}) {
+export function useCharacterMovement(props) {
+	const {
+		debug,
+		elsRef,
+		characterStatus,
+		setCharacterStatus,
+		jumpRef,
+		timelinesRef,
+		elevationRef,
+		statusRef,
+		currentLevelId,
+	} = props;
   // Auto-play when debug autoplay is not '0', and only once timelines exist (level has loaded)
   useEffect(() => {
 	if (debug?.autoplay !== false && timelinesRef.current?.length) {

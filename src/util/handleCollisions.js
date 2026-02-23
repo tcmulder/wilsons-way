@@ -67,22 +67,35 @@ export const getNearestShelves = (el, els) => {
 /**
  * Check for collisions
  *
- * @param {Object} els The elements object
- * @param {Function} setScore Function to set the score
- * @param {number} level The current level number
- * @param {Function} [playSound] Function to play a sound ('positive' | 'negative')
- * @param {string[]} characterModifiers The current character modifiers
- * @param {Function} setCharacterModifiers Function to set the character modifiers
+ * @param {Object} props The properties object
+ * @param {Object} props.els The elements object
+ * @param {Function} props.setScore Function to set the score
+ * @param {number} props.level The current level number
+ * @param {string[]} props.characterModifiers The current character modifiers
+ * @param {Function} [props.playSound] Function to play a sound ('positive' | 'negative')
+ * @param {Function} props.setCharacterModifiers Function to set the character modifiers
  */
-export const checkCollisions = (els, setScore, level, characterModifiers, playSound, setCharacterModifiers) => {
-	const {elCharacterCrashArea, elCharacterMessage, elObstaclesVisible} = els;
+export const checkCollisions = (props) => {
+	const { els, setScore, level, characterModifiers, playSound, setCharacterModifiers } = props;
+	const { elCharacterCrashArea, elCharacterMessage, elObstaclesVisible } = els;
 	elObstaclesVisible.forEach((el) => {
 		if (
 			!el.classList.contains('is-collided') &&
 			checkOverlap(elCharacterCrashArea, el)
 		) {
-			doModifiers(el, characterModifiers, setCharacterModifiers);
-			doScoring(el, elCharacterMessage, setScore, level, characterModifiers, playSound);
+			doModifiers({
+				el,
+				characterModifiers,
+				setCharacterModifiers,
+			});
+			doScoring({
+				el,
+				elCharacterMessage,
+				setScore,
+				level,
+				characterModifiers,
+				playSound,
+			});
 			doMilestones(el);
 		}
 	});

@@ -4,40 +4,46 @@ import { doFreeze } from './doMovement';
 /**
  * Check if an obstacle is skippable due to invisible modifier
  *
- * @param {HTMLElement} el The element to check
- * @param {string[]} characterModifiers The current character modifiers
+ * @param {Object} props The properties object
+ * @param {HTMLElement} props.el The element to check
+ * @param {string[]} props.characterModifiers The current character modifiers
  * @return {boolean} Whether or not the obstacle is skippable
  */
-const isSkippableInvisible = (el, characterModifiers) => {
+const isSkippableInvisible = (props) => {
+	const { el, characterModifiers } = props;
 	return characterModifiers.includes('invisible') && el.classList.contains('is-negative') && el.dataset.ignoreModifier !== 'invisible';
 };
 
 /**
  * Check if an obstacle should switch polarity on positive objects (make them negative)
- * @param {HTMLElement} el The element to check
- * @param {string[]} characterModifiers The current character modifiers
+ *
+ * @param {Object} props The properties object
+ * @param {HTMLElement} props.el The element to check
+ * @param {string[]} props.characterModifiers The current character modifiers
  * @return {boolean} Whether or not the obstacle should switch polarity on positive objects
- * @returns 
  */
-const isPosPolarity = (el, characterModifiers) => {
+const isPosPolarity = (props) => {
+	const { el, characterModifiers } = props;
 	return characterModifiers.includes('polarity') && el.classList.contains('is-positive') && el.dataset.ignoreModifier !== 'polarity';
 };
 
 /**
  * Apply scoring if an obstacle provides scoring data
  *
- * @param {HTMLElement} el The element to score (if it has scoring data)
- * @param {HTMLElement} elCharacterMessage The character messaging element
- * @param {Function} setScore Function to set the score
- * @param {number} level The current level number
- * @param {string[]} characterModifiers The current character modifiers
- * @param {Function} playSound Function to play a sound ('positive' | 'negative')
+ * @param {Object} props The properties object
+ * @param {HTMLElement} props.el The element to score (if it has scoring data)
+ * @param {HTMLElement} props.elCharacterMessage The character messaging element
+ * @param {Function} props.setScore Function to set the score
+ * @param {number} props.level The current level number
+ * @param {string[]} props.characterModifiers The current character modifiers
+ * @param {Function} props.playSound Function to play a sound ('positive' | 'negative')
  */
-export const doScoring = (el, elCharacterMessage, setScore, level, characterModifiers, playSound) => {
+export const doScoring = (props) => {
+	const { el, elCharacterMessage, setScore, level, characterModifiers, playSound } = props;
 	const rawNum = el.dataset.score;
-	if (!rawNum || isSkippableInvisible(el, characterModifiers)) return;
+	if (!rawNum || isSkippableInvisible({ el, characterModifiers })) return;
 	let num = parseInt(rawNum);
-	num = isPosPolarity(el, characterModifiers) ? -Math.abs(num) : num;
+	num = isPosPolarity({ el, characterModifiers }) ? -Math.abs(num) : num;
 	const way = num > 0 ? 'positive' : 'negative';
 	playSound(way);
 	setScore(prev => [ ...prev, { num, level } ]);
@@ -51,13 +57,15 @@ export const doScoring = (el, elCharacterMessage, setScore, level, characterModi
 /**
  * Modify collided obstacles
  *
- * @param {HTMLElement} el The element to check for modifier collisions
- * @param {string[]} characterModifiers The current character modifiers
- * @param {Function} setCharacterModifiers Function to set the character modifiers
+ * @param {Object} props The properties object
+ * @param {HTMLElement} props.el The element to check for modifier collisions
+ * @param {string[]} props.characterModifiers The current character modifiers
+ * @param {Function} props.setCharacterModifiers Function to set the character modifiers
  */
-export const doModifiers = (el, characterModifiers, setCharacterModifiers) => {
+export const doModifiers = (props) => {
+	const { el, characterModifiers, setCharacterModifiers } = props;
 	// Set the most basic flag: collided
-	if (!isSkippableInvisible(el, characterModifiers)) {
+	if (!isSkippableInvisible({ el, characterModifiers })) {
 		el.classList.add('is-collided');
 	}
 	// Get the modifier value and set it (it's set as a class on the character's element)

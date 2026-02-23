@@ -9,7 +9,8 @@ import { UNSAFE_getTurboStreamSingleFetchDataStrategy } from 'react-router-dom';
  * @param {Function} props.setTimelines Function to set timelines in context
  * @param {number} props.gameplaySpeed The game speed setting
  */
-export const aniLevel = ({elBoard, setTimelines, gameplaySpeed}) => {
+export const aniLevel = (props) => {
+	const { elBoard, setTimelines, gameplaySpeed } = props;
 	if (!elBoard) return;
 	
 	// Kill all existing timelines

@@ -3,6 +3,8 @@ import { useGameplayContext, useLevelContext } from '../context/useContexts';
 
 /**
  * Sets up board element refs from the level SVG: shelves, obstacles, character, etc.
+ *
+ * @param {Object} boardRef React ref to the gameplay board container
  */
 export function useSetupGameplayElements(boardRef) {
 	const { elsRef, elevationRef } = useGameplayContext();
