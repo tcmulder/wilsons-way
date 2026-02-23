@@ -16,7 +16,7 @@ This plugin adds the Shelf Runner game to your website. It can either be set up 
 
 == Installation ==
 
-1. Upload "campos-game" to the "/wp-content/plugins/" directory.
+1. Upload "shelf-runner" to the "/wp-content/plugins/" directory.
 2. Activate the plugin through the "Plugins" menu in WordPress.
 
 == Changelog ==
