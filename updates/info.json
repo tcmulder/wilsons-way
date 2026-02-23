@@ -3,7 +3,7 @@
 	"slug" : "shelf-runner",
 	"author" : "<a href='https://www.thinkaquamarine.com'>Aquamarine</a>",
 	"author_profile" : "https://profiles.wordpress.org/thinkaquamarine/",
-	"version" : "1.4.1",
+	"version" : "2.0.0",
 	"download_url" : "https://github.com/tcmulder/shelf-runner/raw/refs/heads/master/updates/shelf-runner.zip",
 	"requires" : "6.5.4",
 	"tested" : "6.8.1",
