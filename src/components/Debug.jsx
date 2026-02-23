@@ -125,6 +125,9 @@ const useDebug = ({debug, debugIsAllowed, setLevel, setCharacterId, setMakeSFX, 
 			if (debug?.jumpHangtime) {
 				setJump((prev) => ({ ...prev, hangtime: debug.jumpHangtime}));
 			}
+			if (debug?.heroHeight) {
+				setSettings((prev) => ({ ...prev, heroHeight: debug.heroHeight}));
+			}
 		}
 	}, [debug, setLevel, setCharacterId, setMakeSFX, setMakeMusic, setSettings, setJump, debugIsAllowed]);
 };
@@ -141,7 +144,16 @@ export const Debug = () => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 
 	// Apply debug settings from state
-	useDebug({debugIsAllowed: settings.debugAllowed, debug, setLevel, setCharacterId, setMakeSFX, setMakeMusic, setSettings, setJump});
+	useDebug({
+		debugIsAllowed: settings.debugAllowed,
+		debug,
+		setLevel,
+		setCharacterId,
+		setMakeSFX,
+		setMakeMusic,
+		setSettings,
+		setJump,
+	});
 	
 	// Bail if debug is not allowed or enabled
 	if (!settings.debugAllowed || !debug) {
@@ -166,6 +178,13 @@ export const Debug = () => {
 						value={characterId}
 						setValue={setCharacterId}
 						title="Set the character's jersey number"
+					/>
+					<DebugNumber
+						label="🦒 Height (%)"
+						param="heroHeight"
+						value={settings.heroHeight}
+						setValue={(value) => setSettings({ ...settings, heroHeight: value })}
+						title="Set the height of the character"
 					/>
 					<DebugNumber
 						label="🏃‍➡️ Speed (px/s)"

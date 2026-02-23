@@ -35,6 +35,7 @@ define( 'SHELF_RUNNER_ENV', str_contains( ( isset( $_SERVER['HTTP_HOST'] ) ? san
 
 // Gameplay constants.
 define( 'SHELF_RUNNER_GAMEPLAY_SPEED', 250 ); // Base game speed (in pixels per second moved).
+define( 'SHELF_RUNNER_HERO_HEIGHT', 15 );    // Base hero height (as percentage of game board height).
 define( 'SHELF_RUNNER_JUMP_HEIGHT', 20 );    // Base jump height (as percentage of game board height).
 define( 'SHELF_RUNNER_JUMP_HANGTIME', 1 );   // Base time in flight during jump (in seconds).
 

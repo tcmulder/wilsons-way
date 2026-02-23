@@ -6,19 +6,8 @@
 
 /*
  * CSS custom properties.
- *
- * Also set via JS:
- * --sr-difficulty-crash: 1; difficulty crash size factor
- * --sr-hangtime: 300ms; jump duration
- * --sr-h-jump: 10cqw; jump distance up
  */
  :root {
-	/* character settings */
-	--sr-h-hero: 7cqw; /* height of the hero character */
-
-	/* shelves */
-	--sr-h-ground: 7cqw;
-
 	/* font */
 	--sr-ff: "VT323", monospace;
 
