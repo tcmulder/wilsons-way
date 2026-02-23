@@ -40,7 +40,7 @@
 
 	svg {
 		width: auto;
-		height: var(--sr-h-hero);
+		height: var(--sr-h-character);
 		transform: translateY(var(--sr-y-shift));
 		[data-move="backward"] & {
 			transform: scaleX(-1);

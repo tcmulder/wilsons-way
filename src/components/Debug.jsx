@@ -125,8 +125,8 @@ const useDebug = ({debug, debugIsAllowed, setLevel, setCharacterId, setMakeSFX, 
 			if (debug?.jumpHangtime) {
 				setJump((prev) => ({ ...prev, hangtime: debug.jumpHangtime}));
 			}
-			if (debug?.heroHeight) {
-				setSettings((prev) => ({ ...prev, heroHeight: debug.heroHeight}));
+			if (debug?.characterHeight) {
+				setSettings((prev) => ({ ...prev, characterHeight: debug.characterHeight}));
 			}
 		}
 	}, [debug, setLevel, setCharacterId, setMakeSFX, setMakeMusic, setSettings, setJump, debugIsAllowed]);
@@ -181,9 +181,9 @@ export const Debug = () => {
 					/>
 					<DebugNumber
 						label="🦒 Height (%)"
-						param="heroHeight"
-						value={settings.heroHeight}
-						setValue={(value) => setSettings({ ...settings, heroHeight: value })}
+						param="characterHeight"
+						value={settings.characterHeight}
+						setValue={(value) => setSettings({ ...settings, characterHeight: value })}
 						title="Set the height of the character"
 					/>
 					<DebugNumber

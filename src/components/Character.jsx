@@ -10,7 +10,7 @@ const Character = () => {
 	const { characterId, characterStatus, setCharacterStatus, characterModifiers } = useCharacterContext();
 	const { timelinesRef, elevationRef, statusRef, elsRef, jumpRef } = useGameplayContext();
 	const { settings } = useSettingsContext();
-	const { userAdjustedCrash, heroHeight } = settings;
+	const { userAdjustedCrash, characterHeight } = settings;
 	const { currentLevelId } = useLevelContext();
 	const characterSvgRef = useRef(null);
 	const characterSVG = `${window.sr.url}public/svg/character-${characterId}.svg`;
@@ -45,7 +45,7 @@ const Character = () => {
 			data-move={characterStatus.move}
 			data-jump={characterStatus.jump}
 			data-ani={characterStatus.ani}
-			style={{'--sr-h-hero': `${heroHeight}cqmin`}}
+			style={{'--sr-h-character': `${characterHeight}cqmin`}}
 		>
 			<div className="sr-character-svg" ref={characterSvgRef}>
 				<SVG path={characterSVG} onSvgLoad={handleSvgLoad} />
