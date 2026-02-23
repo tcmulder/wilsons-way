@@ -69,6 +69,12 @@ export const doRun = ({timelines, setCharacterStatus, direction = 'forward'}) =>
 
 /**
  * Jump down
+ * 
+ * @param {Object} props The properties object
+ * @param {Function} props.setCharacterStatus Setter for character status
+ * @param {Object} props.jumpRef The jump object (height in em units and hangtime in seconds)
+ * @param {Object} props.elevationRef The elevation ref object
+ * @param {Object} props.elsRef The els ref object
  */
 const doJumpDown = (props) => {
 	const { setCharacterStatus, jumpRef, elevationRef, elsRef } = props;
