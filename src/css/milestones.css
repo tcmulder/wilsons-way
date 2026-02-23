@@ -1,0 +1,26 @@
+
+.sr-milestone-message {
+	opacity: 0;
+	&.is-visible {
+		opacity: 1;
+	}
+}
+.sr-milestone-progress {
+	.sr-milestone-message:not(.is-visible) & {
+		opacity: 0;
+	}
+}
+.sr-milestone-progress-bar {
+	clip-path: inset(0 0 0 0);
+	transition: clip-path var(--sr-milestone-delay) linear;
+	.sr-milestone-message:not(.is-visible) & {
+		clip-path: inset(0 100% 0 0);
+	}
+}
+
+/* Don't show paused scores while a milestone is visible */
+.sr-gameplay:has(.sr-milestone-message.is-visible) {
+	.sr-character-mesage {
+		opacity: 0;
+	}
+}

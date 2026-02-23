@@ -8,17 +8,17 @@ export function useSetupGameplayElements(boardRef) {
 	const { elsRef, elevationRef } = useGameplayContext();
 	const { currentLevelId } = useLevelContext();
 
+	/**
+	 * Get elements from the new level SVG and configure them for use
+	 */
 	useEffect(() => {
+		// Get the board where the level SVG shown
 		if (!boardRef?.current) return;
 		const elBoard = boardRef.current.querySelector('.sr-board');
-		/**
-		 * Get elements from the new level SVG
-		 */
 		// Elevated shelves we can jump on/off plus the ground floor
 		const elShelves = elBoard
 			.querySelector('.sr-shelves')
 			?.querySelectorAll(':scope > *') || [];
-
 		// All obstacles (good bad or neutral)
 		const elObstacles = [];
 		// Add all obstacles that score on impact (good or bad)
@@ -32,11 +32,15 @@ export function useSetupGameplayElements(boardRef) {
 					elObstacles.push(elChild);
 				});
 			});
-		// Add all milestone obstacles we can impact
+		// Setup milestones
 		elBoard
-			.querySelectorAll('.sr-milestone-target')
-			?.forEach((elMilestone) => {
-				elObstacles.push(elMilestone);
+			.querySelectorAll('.sr-milestones')
+			?.forEach((elMilestones) => {
+				elMilestones.querySelectorAll('.sr-milestone-target').forEach((elMilestoneTarget) => {
+					const delay = elMilestoneTarget.dataset.delay || elMilestones.dataset.delay || '500';
+					elMilestoneTarget.dataset.delay = delay;
+					elObstacles.push(elMilestoneTarget);
+				});
 			});
 		// Identify as negative/positive
 		elObstacles.forEach((obstacle) => {

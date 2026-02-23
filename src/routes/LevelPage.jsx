@@ -14,8 +14,9 @@ import Gameplay from '../components/Gameplay';
 import { aniLevel } from '../util/aniLevel';
 
 import '../css/board.css';
-import '../css/obstacles.css';
 import '../css/parallax.css';
+import '../css/obstacles.css';
+import '../css/milestones.css';
 
 
 const GameplayPage = () => {

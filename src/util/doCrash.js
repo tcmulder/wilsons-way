@@ -1,4 +1,5 @@
 import gsap from 'gsap';
+import { doFreeze } from './doMovement';
 
 /**
  * Check if an obstacle is skippable due to invisible modifier
@@ -73,6 +74,22 @@ export const doModifiers = (el, characterModifiers, setCharacterModifiers) => {
 			return newArr;
 		});
 	}, 5000);
+};
+
+/**
+ * Handle milestone messaging.
+ */
+export const doMilestones = (el) => {
+	if (!el.classList.contains('sr-milestone-target')) return;
+	const elMessage = el.nextElementSibling;
+	const delay = parseInt(el.dataset.delay);
+	elMessage.style.setProperty('--sr-milestone-delay', `${delay}ms`);
+	elMessage.classList.add('is-visible');
+	doFreeze();
+	setTimeout(() => {
+		elMessage.classList.remove('is-visible');
+		doFreeze(false);
+	}, delay);
 };
 
 /**

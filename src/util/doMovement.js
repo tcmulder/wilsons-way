@@ -28,6 +28,17 @@ const doGravity = (props) => {
 };
 
 /**
+ * Freeze all gsap animation
+ */
+export const doFreeze = (shouldFreeze = true) => {
+	if(shouldFreeze) {
+		gsap.globalTimeline.pause();
+	} else {
+		gsap.globalTimeline.resume();
+	}
+};
+
+/**
  * Pause playback
  */
 export const doPause = ({timelines, setCharacterStatus}) => {

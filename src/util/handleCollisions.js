@@ -1,4 +1,4 @@
-import { doScoring, doModifiers } from './handleScore';
+import { doScoring, doModifiers, doMilestones } from './doCrash';
 
 /**
  * Check to see if two elements overlap
@@ -83,65 +83,10 @@ export const checkCollisions = (els, setScore, level, characterModifiers, playSo
 		) {
 			doModifiers(el, characterModifiers, setCharacterModifiers);
 			doScoring(el, elCharacterMessage, setScore, level, characterModifiers, playSound);
-			// checkCollisionMilestone(el);
+			doMilestones(el);
 		}
 	});
 };
-
-// /**
-//  * Check collision milestones
-//  *
-//  * @param {HTMLElement} el Milestone element to check
-//  */
-// const checkCollisionMilestone = (el) => {
-// 	const { delayMilestone } = state;
-// 	if (el.classList.contains('cq-milestone-target')) {
-// 		const parent = el.parentElement;
-// 		parent.classList.add('has-collided');
-// 		doPause(true);
-// 		state.timer = setTimeout(() => {
-// 			doPause(false);
-// 		}, delayMilestone);
-// 	}
-// };
-
-// /**
-//  * Check collision bonuses
-//  *
-//  * @param {HTMLElement} el The element to check
-//  */
-// const checkCollisionBonus = (el) => {
-// 	const { elObstaclesNegative, delayInvisible, status } = state;
-// 	// If the bonus is invisibility then temporarily disable negative items (they will fade visually)
-// 	if (el.dataset.bonus === 'invisible') {
-// 		const disableNegativeEls = (delay = delayInvisible) => {
-// 			elObstaclesNegative.forEach((obstacle) => {
-// 				// If we respect this bonus then have it take effect
-// 				if (!obstacle.dataset?.ignoreBonus?.split(',')?.includes('invisible')) {
-// 					obstacle.setAttribute('data-disabled', '');
-// 					setTimeout(() => {
-// 						obstacle.removeAttribute('data-disabled');
-// 						// Extend the bonus if paused (e.g. a milestone is open)
-// 						if (status.pause === 'paused') {
-// 							disableNegativeEls(delayInvisible / 2);
-// 						}
-// 					}, delay);
-// 				}
-// 			});
-// 		};
-// 		disableNegativeEls();
-// 	}
-// };
-
-/**
- * Track level completion
- */
-// const checkHitTheEnd = () => {
-// 	// if (isTimelineEnd()) {
-// 	// 	endLevel();
-// 	// }
-// 	return false;
-// };
 
 export const checkElevation = (els, elevationRef) => {
 	const { elCharacter, elShelvesVisible, elBoard } = els;
