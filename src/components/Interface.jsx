@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useScoreContext, useLevelContext } from '../context/useContexts';
+import { Version } from './Version';
 import '../css/interface.css';
 
 export const Interface = () => {
@@ -17,14 +18,17 @@ export const Interface = () => {
 	}, [score, level]);
 
 	return (
-		<nav className="sr-interface">
-			<Link to="/">Intro</Link>
-			|
-			<Link to="/gameplay">Gameplay</Link>
-			|
-			<span><em>score: {parsed.pos}-{Math.abs(parsed.neg)}</em>={parsed.total}</span>
-			|
-			<span>level {level} score: {parsed.level}</span>
-		</nav>
+		<>
+			<nav className="sr-interface">
+				<Link to="/">Intro</Link>
+				|
+				<Link to="/gameplay">Gameplay</Link>
+				|
+				<span><em>score: {parsed.pos}-{Math.abs(parsed.neg)}</em>={parsed.total}</span>
+				|
+				<span>level {level} score: {parsed.level}</span>
+			</nav>
+			<Version />
+		</>
 	);
 };
