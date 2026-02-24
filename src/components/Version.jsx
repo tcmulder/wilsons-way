@@ -4,6 +4,6 @@
 
 export const Version = () => {
 	return (
-		<span className="sr-version">v2.0.1</span>
+		<span className="sr-version">v2.0.2</span>
 	);
 };
