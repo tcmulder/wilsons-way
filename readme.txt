@@ -4,7 +4,7 @@ Contributors: thinkaquamarine
 Tags: game
 Requires at least: 6.5.4
 Tested up to: 6.8.1
-Stable tag: 2.0.2
+Stable tag: 2.0.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -20,6 +20,10 @@ This plugin adds the Shelf Runner game to your website. It can either be set up 
 2. Activate the plugin through the "Plugins" menu in WordPress.
 
 == Changelog ==
+
+= 2.0.3 =
+
+* Improve standalone shell and update handling.
 
 = 2.0.2 =
 

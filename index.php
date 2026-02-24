@@ -5,10 +5,9 @@
 	 * @package Shelf_Runner
 	 */
 
-// Load WordPress if not already loaded
+// Load WordPress if not already loaded (e.g. when this file is required via template_redirect).
 if ( ! defined( 'ABSPATH' ) ) {
-	$plugin_dir = dirname( __DIR__ );
-	$wp_load    = $plugin_dir . '/../../../wp-load.php';
+	$wp_load = dirname( __DIR__ ) . '/../../../wp-load.php';
 	if ( ! file_exists( $wp_load ) ) {
 		die( 'WordPress not loaded' );
 	}
