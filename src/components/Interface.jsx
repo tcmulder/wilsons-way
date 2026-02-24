@@ -7,7 +7,6 @@ import '../css/interface.css';
 export const Interface = () => {
 	const { score } = useScoreContext();
 	const { level } = useLevelContext();
-	const { isLevelComplete } = useLevelContext();
 	
 	const parsed = useMemo(() => {
 		return {
@@ -28,8 +27,6 @@ export const Interface = () => {
 				<span><em>score: {parsed.pos}-{Math.abs(parsed.neg)}</em>={parsed.total}</span>
 				|
 				<span>level {level} score: {parsed.level}</span>
-				|
-				<span>level {level} complete: {isLevelComplete ? 'true' : 'false'}</span>
 			</nav>
 			<Version />
 		</>

@@ -1,9 +1,6 @@
 import { Link } from 'react-router-dom';
-import { useResetLevelComplete } from '../hooks/useCompleteLevel';
 
 const Level3OutroPage = () => {
-	useResetLevelComplete();
-
 	return (
 		<div>
 			<h1>You've completed Level 3!</h1>
