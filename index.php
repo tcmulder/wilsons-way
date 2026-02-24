@@ -5,10 +5,15 @@
 	 * @package Shelf_Runner
 	 */
 
-if ( ! file_exists( '../../../wp-load.php' ) ) {
-	die( 'WordPress not loaded' );
+// Load WordPress if not already loaded
+if ( ! defined( 'ABSPATH' ) ) {
+	$plugin_dir = dirname( __DIR__ );
+	$wp_load    = $plugin_dir . '/../../../wp-load.php';
+	if ( ! file_exists( $wp_load ) ) {
+		die( 'WordPress not loaded' );
+	}
+	require_once $wp_load;
 }
-	require_once '../../../wp-load.php';
 ?><!doctype html>
 <html lang="en">
 	<head>

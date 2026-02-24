@@ -34,6 +34,71 @@ function shelf_runner_load_page_template( $template ) {
 add_filter( 'template_include', 'shelf_runner_load_page_template' );
 
 /**
+ * Register a pretty permalink for the standalone game shell.
+ *
+ * Example: https://example.com/shelf-runner
+ */
+function shelf_runner_register_rewrite_rule() {
+	add_rewrite_rule(
+		'^shelf-runner/?$',
+		'index.php?shelf_runner_game=1',
+		'top'
+	);
+}
+add_action( 'init', 'shelf_runner_register_rewrite_rule' );
+
+/**
+ * Redirect direct plugin URL to the pretty permalink.
+ *
+ * E.g. /wp-content/plugins/shelf-runner/ → /shelf-runner/
+ */
+function shelf_runner_redirect_direct_plugin_url() {
+	$request_uri = isset( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
+	if ( strpos( $request_uri, 'wp-content/plugins/shelf-runner' ) !== false ) {
+		wp_safe_redirect( home_url( '/shelf-runner/' ), 301 );
+		exit;
+	}
+}
+add_action( 'init', 'shelf_runner_redirect_direct_plugin_url' );
+
+/**
+ * Register custom query var used for the game route.
+ *
+ * @param array $vars Public query vars.
+ * @return array
+ */
+function shelf_runner_register_query_var( $vars ) {
+	$vars[] = 'shelf_runner_game';
+	return $vars;
+}
+add_filter( 'query_vars', 'shelf_runner_register_query_var' );
+
+/**
+ * When hitting the pretty game URL, render the plugin's standalone url.
+ */
+function shelf_runner_pretty_game_template_redirect() {
+	if ( get_query_var( 'shelf_runner_game' ) ) {
+		status_header( 200 );
+		require SHELF_RUNNER_PLUGIN_DIR . 'index.php';
+		exit;
+	}
+}
+add_action( 'template_redirect', 'shelf_runner_pretty_game_template_redirect' );
+
+/**
+ * Send no-cache headers for the standalone game route.
+ *
+ * This discourages old versions of the game from loading after updates.
+ */
+function shelf_runner_send_nocache_headers_for_game() {
+	if ( get_query_var( 'shelf_runner_game' ) ) {
+		header( 'Cache-Control: no-store, no-cache, must-revalidate, max-age=0' );
+		header( 'Pragma: no-cache' );
+	}
+}
+add_action( 'send_headers', 'shelf_runner_send_nocache_headers_for_game' );
+
+/**
  * Shortcode callback for [shelf-runner].
  *
  * @param array  $atts    Shortcode attributes.
@@ -48,3 +113,11 @@ function shortcode_shelf_runner( $atts = array(), $content = null ) {
 	return $content;
 }
 add_shortcode( 'shelf-runner', 'shortcode_shelf_runner' );
+
+/**
+ * Get URL for the game.
+ */
+function shelf_runner_url() {
+	$game_mode  = get_option( 'shelf_runner_settings_game_mode', 'client' );
+	return 'client' === $game_mode ? get_option( 'shelf_runner_settings_iframe_url', '' ) : SHELF_RUNNER_PLUGIN_GAME_URI;
+}

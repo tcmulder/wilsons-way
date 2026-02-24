@@ -128,6 +128,14 @@ function shelf_runner_settings_init() {
 				'<p><em>%s</em></p>',
 				esc_html( __( 'Note: you must save changes after making a new selection above for the relevant settings to appear.', 'shelf-runner' ) )
 			);
+			if ( 'host' === $game_mode ) {
+				$disclaimer_html = sprintf(
+					'%s<p>%s: <br /><code>%s</code></p>',
+					$disclaimer_html,
+					esc_html( __( 'Use the iframe URL below to embed this hosted game on other websites', 'shelf-runner' ) ),
+					esc_url( shelf_runner_url() )
+				);
+			}
 			// Allow form elements; wp_kses_post() strips input/label.
 			$allowed_fieldset = array(
 				'p'     => array(),
@@ -139,6 +147,8 @@ function shelf_runner_settings_init() {
 					'checked' => true,
 				),
 				'em'    => array(),
+				'br'    => array(),
+				'code'  => array(),
 			);
 			printf(
 				'<fieldset>%s%s%s</fieldset>',
@@ -392,74 +402,57 @@ function shelf_runner_settings_init() {
 			'sr_section'
 		);
 
-	}
-
-	add_option( 'shelf_runner_settings_debug', false );
-	register_setting( 'shelf_runner_settings', 'shelf_runner_settings_debug' );
-	add_settings_field(
-		'shelf_runner_settings_debug',
-		esc_html( __( 'Debug Mode:', 'shelf-runner' ) ),
-		function () {
-			$debug_enabled = get_option( 'shelf_runner_settings_debug', false );
-			$html          = sprintf(
-				'<input type="checkbox" id="shelf_runner_settings_debug" name="shelf_runner_settings_debug" value="1" %s />',
-				checked( $debug_enabled, true, false )
-			);
-			$html         .= sprintf( '<label for="shelf_runner_settings_debug">%s</label>', esc_html( __( 'Enable debug mode', 'shelf-runner' ) ) );
-
-			if ( $debug_enabled ) {
-				$game_template_page = get_posts(
-					array(
-						'post_type'      => 'page',
-						'posts_per_page' => 1,
-						'meta_key'       => '_wp_page_template', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Single page lookup.
-						'meta_value'     => 'templates/game-template.php', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Single page lookup.
-						'fields'         => 'ids',
-					)
+		add_option( 'shelf_runner_settings_debug', false );
+		register_setting( 'shelf_runner_settings', 'shelf_runner_settings_debug' );
+		add_settings_field(
+			'shelf_runner_settings_debug',
+			esc_html( __( 'Debug Mode:', 'shelf-runner' ) ),
+			function () {
+				$debug_enabled = get_option( 'shelf_runner_settings_debug', false );
+				$html          = sprintf(
+					'<input type="checkbox" id="shelf_runner_settings_debug" name="shelf_runner_settings_debug" value="1" %s />',
+					checked( $debug_enabled, true, false )
 				);
-				if ( $game_template_page ) {
-					$debug_url = add_query_arg( 'debug', '1', get_permalink( $game_template_page[0] ) );
+				$html         .= sprintf( '<label for="shelf_runner_settings_debug">%s</label>', esc_html( __( 'Enable debug mode', 'shelf-runner' ) ) );
+	
+				if ( $debug_enabled ) {
 					$html     .= sprintf(
 						'<p><a href="%s" class="button button-secondary" target="_blank">%s <span style="transform:rotate(-45deg);display:inline-block;">→</span></a></p>',
-						esc_url( $debug_url ),
+						esc_url( shelf_runner_url() . '?debug=true' ),
 						esc_html( __( 'Open Debug URL', 'shelf-runner' ) )
 					);
-				} else {
 					$html .= sprintf(
-						'<p>%s <code>?debug=1</code> %s</p>',
-						esc_html( __( 'Add a query string to the end of your game page URL like ', 'shelf-runner' ) ),
-						esc_html( __( 'to enable this feature.', 'shelf-runner' ) )
+						'<p><em>%s</em></p>',
+						esc_html( __( 'Note: when enabled, scores will not be saved to the leaderboard.', 'shelf-runner' ) )
 					);
 				}
-				$html .= sprintf(
-					'<p><em>%s</em></p>',
-					esc_html( __( 'Note: when enabled, scores will not be saved to the leaderboard.', 'shelf-runner' ) )
+				// Allow checkbox, label, and debug UI; wp_kses_post() strips input/label.
+				$allowed = array(
+					'input' => array(
+						'type'    => true,
+						'name'    => true,
+						'value'   => true,
+						'id'      => true,
+						'checked' => true,
+					),
+					'label' => array( 'for' => true ),
+					'p'     => array(),
+					'a'     => array(
+						'href'   => true,
+						'class'  => true,
+						'target' => true,
+					),
+					'span'  => array( 'style' => true ),
+					'code'  => array(),
+					'em'    => array(),
 				);
-			}
-			// Allow checkbox, label, and debug UI; wp_kses_post() strips input/label.
-			$allowed = array(
-				'input' => array(
-					'type'    => true,
-					'name'    => true,
-					'value'   => true,
-					'id'      => true,
-					'checked' => true,
-				),
-				'label' => array( 'for' => true ),
-				'p'     => array(),
-				'a'     => array(
-					'href'   => true,
-					'class'  => true,
-					'target' => true,
-				),
-				'span'  => array( 'style' => true ),
-				'code'  => array(),
-				'em'    => array(),
-			);
-			echo wp_kses( $html, $allowed );
-		},
-		'shelf_runner_settings',
-		'sr_section'
-	);
+				echo wp_kses( $html, $allowed );
+			},
+			'shelf_runner_settings',
+			'sr_section'
+		);
+
+	}
+
 }
 add_action( 'admin_init', 'shelf_runner_settings_init' );
