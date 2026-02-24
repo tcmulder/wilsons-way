@@ -9,7 +9,7 @@ import Level3OutroPage from './Level3OutroPage';
 import Level4OutroPage from './Level4OutroPage';
 
 /**
- * Route config: path, title (for debug nav), and element for intro, levels 1–4, and level outros.
+ * Route config: path, title (for debug nav), and element for the pages of the game.
  */
 export const routes = [
   { path: '/', title: 'Intro', element: <IntroPage /> },
