@@ -1,5 +1,4 @@
 import { gsap } from 'gsap';
-import { UNSAFE_getTurboStreamSingleFetchDataStrategy } from 'react-router-dom';
 
 /**
  * Create animation timelines for level gameplay
