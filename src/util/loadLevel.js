@@ -81,6 +81,7 @@ export const allowDrop = (props) => {
 					elBoard,
 					setTimelines,
 					gameplaySpeed,
+					setIsLevelComplete,
 				});
 				setLevel(0);
 				onLevelLoaded?.();

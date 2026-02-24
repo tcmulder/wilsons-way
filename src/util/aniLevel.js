@@ -7,10 +7,14 @@ import { gsap } from 'gsap';
  * @param {HTMLElement} props.elBoard The board DOM element
  * @param {Function} props.setTimelines Function to set timelines in context
  * @param {number} props.gameplaySpeed The game speed setting
+ * @param {Function} props.setIsLevelComplete Function to set is level complete in context
  */
 export const aniLevel = (props) => {
-	const { elBoard, setTimelines, gameplaySpeed } = props;
+	const { elBoard, setTimelines, gameplaySpeed, setIsLevelComplete } = props;
 	if (!elBoard) return;
+
+	// Set is level complete to false (we're just getting started)
+	setIsLevelComplete(false);
 	
 	// Kill all existing timelines
 	setTimelines(prevTimelines => {
@@ -39,6 +43,9 @@ export const aniLevel = (props) => {
 				x: '100cqw',
 				ease: 'none',
 				duration: gameplayDuration,
+				onComplete: () => {
+					setIsLevelComplete(true);
+				},
 			},
 			0,
 		);

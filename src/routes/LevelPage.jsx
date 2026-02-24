@@ -1,5 +1,6 @@
 import { useRef, useCallback, useEffect } from 'react';
 import { gsap } from 'gsap';
+import { useNavigate } from 'react-router-dom';
 import {
 	useDebugContext,
 	useSettingsContext,
@@ -23,9 +24,10 @@ const GameplayPage = () => {
 	const { debug } = useDebugContext();
 	const { settings } = useSettingsContext();
 	const { gameplaySpeed, userAdjustedSpeed } = settings;
-	const { level, setLevel, setCurrentLevelId } = useLevelContext();
+	const { level, setLevel, setCurrentLevelId, setIsLevelComplete, isLevelComplete } = useLevelContext();
 	const gameplayContext = useGameplayContext();
 	const gameplayRef = useRef(null);
+	const navigate = useNavigate();
 
 	// Set global animations speed
 	useEffect(() => {
@@ -47,10 +49,11 @@ const GameplayPage = () => {
 				elBoard,
 				setTimelines: (timelines) => { ctx.timelinesRef.current = timelines; },
 				gameplaySpeed,
+				setIsLevelComplete,
 			});
 			setCurrentLevelId(Date.now());
 		}
-	}, [gameplaySpeed, setCurrentLevelId, gameplayContext]);
+	}, [gameplaySpeed, setCurrentLevelId, gameplayContext, setIsLevelComplete]);
 
 	// Allow drag-and-drop of SVG level files
 	useEffect(() => {
@@ -62,9 +65,17 @@ const GameplayPage = () => {
 				gameplaySpeed,
 				onLevelLoaded: () => setCurrentLevelId(Date.now()),
 				setLevel,
+				setIsLevelComplete
 			});
 		}
-	}, [debug, gameplaySpeed, setCurrentLevelId, gameplayContext, setLevel]);
+	}, [debug, gameplaySpeed, setCurrentLevelId, gameplayContext, setLevel, setIsLevelComplete]);
+
+	// Go to the outro page if the level is complete
+	useEffect(() => {
+		if (isLevelComplete) {
+			navigate(`/outro/${level}`);
+		}
+	}, [isLevelComplete, level, navigate]);
 	
 	return (
 		<div className="sr-gameplay" ref={gameplayRef}>
@@ -79,6 +90,7 @@ const GameplayPage = () => {
 				)}
 			</div>
 			<Character />
+			<div className="sr-level-complete" style={{position: 'absolute', top: 0, left: 0, backgroundColor: 'red', zIndex: 1000}}>done: {isLevelComplete ? 'true' : 'false'}</div>
 		</div>
 	);
 };
