@@ -127,7 +127,6 @@ add_action(
 						'jumpHangtime'      => SHELF_RUNNER_JUMP_HANGTIME,
 						'userAdjustedCrash' => $difficulty_crash,
 						'userAdjustedSpeed' => $difficulty_speed,
-						'delayMilestone'    => ( (int) get_option( 'shelf_runner_settings_milestone_duration' ) ) * 1000,
 						'debugAllowed'      => get_option( 'shelf_runner_settings_debug' ) === '1',
 					);
 

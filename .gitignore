@@ -7,6 +7,7 @@ local-xdebuginfo.php
 
 # editor
 .vscode
+.cursor
 
 # apple system files
 .DS_Store

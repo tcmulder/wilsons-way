@@ -8,15 +8,14 @@
 wp_enqueue_style( 'shelf-runner-style' );
 wp_enqueue_script( 'shelf-runner-script' );
 
-$game_mode  = get_option( 'shelf_runner_settings_game_mode', 'client' );
-$iframe_url = 'client' === $game_mode ? get_option( 'shelf_runner_settings_iframe_url', '' ) : SHELF_RUNNER_PLUGIN_URI;
+$iframe_url = shelf_runner_url();
 if ( ! $iframe_url ) {
 	printf( '<p>%s</p>', esc_html( __( 'Error: please enter an iframe URL in the plugin settings.', 'shelf-runner' ) ) );
 	return;
 }
 $debug_enabled = get_option( 'shelf_runner_settings_debug', false );
 if ( $debug_enabled ) {
-	$iframe_url = add_query_arg( 'debug', '1', $iframe_url );
+	$iframe_url = add_query_arg( 'debug', 'true', $iframe_url );
 }
 ?>
 <?php if ( $parent_shortcode_call_uses_lightbox ) : ?>

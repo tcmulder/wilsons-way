@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Wilson's Way
  * Description: Adds the Shelf Runner game as an embed or template.
- * Version:     2.0.1
+ * Version:     2.0.2
  * Author:      Tomas Mulder
  * Author URI:  https://www.thinkaquamarine.com
  * License:     GPL2
@@ -24,13 +24,14 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 
 // Plugin constants.
-define( 'SHELF_RUNNER_VERSION', '2.0.1' );
+define( 'SHELF_RUNNER_VERSION', '2.0.2' );
 define( 'SHELF_RUNNER_NAME', __( 'Wilson\'s Way', 'shelf-runner' ) );
 define( 'SHELF_RUNNER_BASENAME', plugin_basename( __FILE__ ) );
 define( 'SHELF_RUNNER_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'SHELF_RUNNER_PLUGIN_INC', SHELF_RUNNER_PLUGIN_DIR . 'includes/' );
 define( 'SHELF_RUNNER_PLUGIN_URI', plugin_dir_url( __FILE__ ) );
 define( 'SHELF_RUNNER_PLUGIN_DIST_URI', plugin_dir_url( __FILE__ ) . 'dist/' );
+define( 'SHELF_RUNNER_PLUGIN_GAME_URI', home_url( '/shelf-runner/' ) );
 define( 'SHELF_RUNNER_ENV', str_contains( ( isset( $_SERVER['HTTP_HOST'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_HOST'] ) ) : '' ), '5173' ) ? 'development' : 'production' );
 
 // Gameplay constants.
@@ -42,6 +43,7 @@ define( 'SHELF_RUNNER_JUMP_HANGTIME', 1 );        // Base time in flight during 
 /**
  * Include admin functionality
  */
+require_once SHELF_RUNNER_PLUGIN_INC . 'setup.php';
 require_once SHELF_RUNNER_PLUGIN_INC . 'settings.php';
 require_once SHELF_RUNNER_PLUGIN_INC . 'enqueue.php';
 require_once SHELF_RUNNER_PLUGIN_INC . 'api.php';
