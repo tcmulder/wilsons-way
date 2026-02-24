@@ -1,5 +1,6 @@
 import { useRef, useCallback, useEffect } from 'react';
 import { gsap } from 'gsap';
+import { useNavigate } from 'react-router-dom';
 import {
 	useDebugContext,
 	useSettingsContext,
@@ -26,11 +27,17 @@ const Level = () => {
 	const { level, setLevel, setCurrentLevelId } = useLevelContext();
 	const gameplayContext = useGameplayContext();
 	const gameplayRef = useRef(null);
+	const navigate = useNavigate();
 
 	// Set global animations speed
 	useEffect(() => {
 		gsap.globalTimeline.timeScale(userAdjustedSpeed / 50);
 	}, [userAdjustedSpeed]);
+
+	// When a level completes, advance to the next level route
+	const handleLevelComplete = useCallback(() => {
+		navigate(`/outro/${level}`);
+	}, [navigate, level]);
 
 	// Load SVG for level and add movement to it
 	const handleSvgLoad = useCallback(async (svgElement) => {
@@ -47,10 +54,11 @@ const Level = () => {
 				elBoard,
 				setTimelines: (timelines) => { ctx.timelinesRef.current = timelines; },
 				gameplaySpeed,
+				onComplete: handleLevelComplete,
 			});
 			setCurrentLevelId(Date.now());
 		}
-	}, [gameplaySpeed, setCurrentLevelId, gameplayContext]);
+	}, [gameplaySpeed, gameplayContext, handleLevelComplete, setCurrentLevelId]);
 
 	// Allow drag-and-drop of SVG level files
 	useEffect(() => {
