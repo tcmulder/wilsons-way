@@ -22,7 +22,12 @@ const setStateAndQuery = (props) => {
 };
 
 /**
- * Generic button
+ * Generic debug button.
+ * 
+ * @param {Object} props
+ * @param {string} props.label Button text
+ * @param {() => void} props.onClick Handler
+ * @param {string} [props.title] Title/tooltip
  */
 const DebugButton = ({ label, onClick, title = '' }) => {
 	return (
@@ -33,7 +38,14 @@ const DebugButton = ({ label, onClick, title = '' }) => {
 };
 
 /**
- * Checkbox selector
+ * Checkbox selector.
+ * 
+ * @param {Object} props
+ * @param {string} props.label Label text
+ * @param {string} [props.param] URL param key (defaults to label lowercased)
+ * @param {boolean} props.value Checked state
+ * @param {(v: boolean) => void} props.setValue Setter (also pushes URL)
+ * @param {string} [props.title] Title/tooltip
  */
 const DebugCheckbox = ({ label, param = '', value, setValue, title = '' }) => {
 	const k = param || label.toLowerCase();
@@ -56,7 +68,14 @@ const DebugCheckbox = ({ label, param = '', value, setValue, title = '' }) => {
 };
 
 /**
- * Number selector
+ * Number input.
+ * 
+ * @param {Object} props
+ * @param {string} props.label Label text
+ * @param {string} [props.param] URL param key (defaults to label lowercased)
+ * @param {number} props.value Current value
+ * @param {(v: number) => void} props.setValue Setter (also pushes URL)
+ * @param {string} [props.title] Title/tooltip
  */
 const DebugNumber = ({ label, param = '', value, setValue, title = '' }) => {
 	const k = param || label.toLowerCase();
@@ -80,7 +99,12 @@ const DebugNumber = ({ label, param = '', value, setValue, title = '' }) => {
 };
 
 /**
- * Refresh and optionally reset all debug settings
+ * Refresh and optionally reset all debug settings.
+ * 
+ * @param {Object} props
+ * @param {boolean} [props.reset] If true, reset URL to debug=true and reload
+ * @param {string} [props.title] Title/tooltip
+ * @param {string} [props.label] Button text
  */
 const DebugRefresh = ({ reset = false, title = '', label = '' }) => {
 	return (
@@ -146,6 +170,9 @@ const useDebug = (props) => {
 	}, [debug, setCharacterId, setMakeSFX, setMakeMusic, setSettings, setJump, debugIsAllowed]);
 };
 
+/**
+ * Debug panel (only when settings.debugAllowed and debug enabled).
+ */
 export const Debug = () => {
 	const { debug, setDebug } = useDebugContext();
 	const { settings, setSettings, setJump, jump, makeMusic, setMakeMusic, makeSFX, setMakeSFX } = useSettingsContext();

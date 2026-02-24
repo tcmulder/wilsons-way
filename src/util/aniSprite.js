@@ -1,14 +1,12 @@
 import { gsap } from 'gsap';
 
 /**
- * Animate image sprites
+ * Animate sprite elements by cycling visibility of their children.
+ * Each sprite element should have data-sprite set to the frame interval in ms.
  *
- *
- * This function takes an array of elements, and animates them by swapping between
- * their child elements. The elements should have a data attribute of "sprite" set
- * to the interval (in milliseconds) of the animation.
- *
- * @param {HTMLElement} elParent Parent that may contain sprites
+ * @param {Object} props
+ * @param {HTMLElement} props.elParent Parent element to search for [data-sprite] children.
+ * @returns {import('gsap').Timeline} Master timeline controlling all sprite animations.
  */
 export const createAniSprite = (props) => {
 	const { elParent } = props;

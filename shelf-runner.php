@@ -39,6 +39,7 @@ define( 'SHELF_RUNNER_GAMEPLAY_SPEED', 250 );     // Base game speed (in pixels 
 define( 'SHELF_RUNNER_CHARACTER_HEIGHT', 15 );    // Base character height (as percentage of game board height).
 define( 'SHELF_RUNNER_JUMP_HEIGHT', 20 );         // Base jump height (as percentage of game board height).
 define( 'SHELF_RUNNER_JUMP_HANGTIME', 1 );        // Base time in flight during jump (in seconds).
+define( 'SHELF_RUNNER_LEADERBOARD_COUNT', 10 );   // Max number of entries kept on the leaderboard.
 
 /**
  * Include admin functionality

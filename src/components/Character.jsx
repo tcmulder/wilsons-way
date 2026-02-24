@@ -5,6 +5,11 @@ import { createAniSprite } from '../util/aniSprite';
 import { useCharacterMovement } from '../util/doMovement';
 import '../css/character.css';
 
+/**
+ * Character hero: loads character SVG by id, runs sprite animation, applies movement hook and modifier classes.
+ * 
+ * @returns {React.ReactNode} The Character component.
+ */
 const Character = () => {
 	const { debug } = useDebugContext();
 	const { characterId, characterStatus, setCharacterStatus, characterModifiers } = useCharacterContext();

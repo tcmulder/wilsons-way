@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { ScoreContext } from './useContexts';
 
+/**
+ * Provides score context.
+ */
 export function ScoreContextProvider({ children }) {
   const [score, setScore] = useState([]);
 

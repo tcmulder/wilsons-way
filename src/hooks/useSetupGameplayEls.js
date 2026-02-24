@@ -2,9 +2,10 @@ import { useEffect } from 'react';
 import { useGameplayContext, useLevelContext } from '../context/useContexts';
 
 /**
- * Sets up board element refs from the level SVG: shelves, obstacles, character, etc.
+ * Sets up board element refs from the level SVG: shelves, obstacles, character, crash area, etc.
+ * Also runs IntersectionObserver to track visible shelves/obstacles (with fallback if observer fails).
  *
- * @param {Object} boardRef React ref to the gameplay board container
+ * @param {React.RefObject<HTMLElement>} boardRef Ref to the gameplay wrapper (e.g. .sr-gameplay); .sr-board is found inside it.
  */
 export function useSetupGameplayElements(boardRef) {
 	const { elsRef, elevationRef } = useGameplayContext();

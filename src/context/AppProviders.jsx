@@ -5,6 +5,9 @@ import { CharacterContextProvider } from './CharacterContext';
 import { GameplayContextProvider } from './GameplayContext';
 import { ScoreContextProvider } from './ScoreContext';
 
+/**
+ * Wraps app in all context providers.
+ */
 export function AppProviders({ children }) {
   return (
     <DebugContextProvider>

@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { CharacterContext } from './useContexts';
 
+/**
+ * Provides character context.
+ */
 export function CharacterContextProvider({ children }) {
   const [characterId, setCharacterId] = useState(1);
   const [characterStatus, setCharacterStatus] = useState({ move: 'forward', jump: 'none', ani: 'none' });

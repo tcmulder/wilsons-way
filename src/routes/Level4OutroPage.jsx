@@ -1,5 +1,8 @@
 import { Link } from 'react-router-dom';
 
+/**
+ * Level 4 completion screen.
+ */
 const Level4OutroPage = () => {
 	return (
 		<div>

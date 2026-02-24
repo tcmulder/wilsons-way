@@ -10,7 +10,7 @@ import { useGameAudio } from '../hooks/useSFX';
 import { trackMovement } from '../util/doMovement';
 
 /**
- * Runs character movement logic on every GSAP tick.
+ * Subscribes to the GSAP ticker and runs trackMovement each frame (collisions, elevation, gravity).
  */
 export function useMovementTicker() {
 	const gameplayContext = useGameplayContext();

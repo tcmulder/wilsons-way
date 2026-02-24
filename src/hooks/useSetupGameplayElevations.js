@@ -4,7 +4,8 @@ import { throttle } from 'underscore';
 import { useGameplayContext, useLevelContext, useSettingsContext } from '../context/useContexts';
 
 /**
- * Sets up elevation refs (ceiling/floor) and jump ref from board/shelves, and observes board resize.
+ * Sets elevationRef (ceiling, floor) and jumpRef (height, hangtime) from board/sidewalk, and syncs character Y on resize.
+ * Observes the board with ResizeObserver so values stay correct when the window or container resizes.
  */
 export function useSetupGameplayElevations() {
 	const { elsRef, elevationRef, jumpRef } = useGameplayContext();

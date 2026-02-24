@@ -30,7 +30,9 @@ function shelf_runner_action_links( $links ) {
 add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'shelf_runner_action_links' );
 
 /**
- * Add sidebar link.
+ * Add sidebar link to the plugin settings page.
+ *
+ * @return void
  */
 function shelf_runner_add_admin_menu() {
 	add_menu_page(
@@ -47,6 +49,8 @@ add_action( 'admin_menu', 'shelf_runner_add_admin_menu' );
 
 /**
  * Output the options page form.
+ *
+ * @return void
  */
 function shelf_runner_options_page() {
 	echo '<form action="options.php" method="post">';
@@ -74,6 +78,8 @@ function shelf_runner_accordion( $content, $summary = '' ) {
 
 /**
  * Establish option page setting sections/fields.
+ *
+ * @return void
  */
 function shelf_runner_settings_init() {
 	// Shared WYSIWYG options for editor fields.

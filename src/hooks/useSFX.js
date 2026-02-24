@@ -4,6 +4,11 @@ import negativeSound from '../mp3/negative.mp3';
 import musicSound from '../mp3/music.mp3';
 import { useSettingsContext } from '../context/useContexts';
 
+/**
+ * Hook: background music and sound effects. Music follows makeMusic; SFX play via returned playSound.
+ *
+ * @returns {{ playSound: (name: 'positive'|'negative', shouldSound?: boolean) => void }}
+ */
 export const useGameAudio = () => {
 	const musicRef = useRef(null);
 	const soundsRef = useRef({});
@@ -56,7 +61,13 @@ export const useGameAudio = () => {
 			}
 		}
 	}, [makeSFX]);
-  
+
+	/**
+	 * Play a sound effect.
+	 *
+	 * @param {'positive'|'negative'} name Which effect to play.
+	 * @param {boolean} [shouldSound] Override SFX enabled (defaults to makeSFX).
+	 */
 	const playSound = (name, shouldSound = makeSFX) => {
 		if (!shouldSound) return;
 		const audio = soundsRef.current[name];

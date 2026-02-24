@@ -1,5 +1,10 @@
 import { Link } from 'react-router-dom';
 
+/**
+ * Level 2 completion screen.
+ * 
+ * @returns {React.ReactNode} The Level2OutroPage component.`
+ */
 const Level2OutroPage = () => {
 	return (
 		<div>

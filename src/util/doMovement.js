@@ -56,7 +56,9 @@ const doGravity = (props) => {
 };
 
 /**
- * Freeze all gsap animation
+ * Freeze or resume all GSAP animations (global timeline).
+ *
+ * @param {boolean} [shouldFreeze=true] If true, pause; if false, resume.
  */
 export const doFreeze = (shouldFreeze = true) => {
 	if(shouldFreeze) {
@@ -67,7 +69,11 @@ export const doFreeze = (shouldFreeze = true) => {
 };
 
 /**
- * Pause playback
+ * Pause level timeline playback and set character animation state to none.
+ *
+ * @param {Object} props
+ * @param {import('gsap').Timeline[]} props.timelines Level timelines to pause.
+ * @param {Function} props.setCharacterStatus Setter for character status.
  */
 export const doPause = (props) => {
 	const { timelines, setCharacterStatus } = props;
@@ -77,7 +83,12 @@ export const doPause = (props) => {
 };
 
 /**
- * Play playback
+ * Start or resume level timeline playback in the given direction.
+ *
+ * @param {Object} props
+ * @param {import('gsap').Timeline[]} props.timelines Level timelines to play.
+ * @param {Function} props.setCharacterStatus Setter for character status.
+ * @param {'forward'|'backward'} [props.direction='forward'] Play direction (backward reverses timelines).
  */
 export const doRun = (props) => {
 	const { timelines, setCharacterStatus, direction = 'forward' } = props;
@@ -128,7 +139,9 @@ const doJumpDown = (props) => {
 };
 
 /**
- * Jump up
+ * Animate character jumping upward; on peak or obstacle hit, triggers doJumpDown.
+ *
+ * @param {Object} props Same as doJumpDown (setCharacterStatus, jumpRef, elevationRef, elsRef).
  */
 const doJumpUp = (props) => {
 	const { setCharacterStatus, jumpRef, elevationRef, elsRef } = props;
@@ -171,10 +184,11 @@ const doJump = (props) => {
 };
 
 /**
- * Movements hook
+ * Hook: keyboard-driven movement (jump, play/pause, direction) and autoplay when level is ready.
+ *
  * @param {Object} props The properties object
- * @param {Object} props.debug Whether debug mode is enabled
- * @param {Object} props.elsRef The els ref object
+ * @param {Object|null} [props.debug] Debug state; when autoplay is false, Arrow keys control play/pause/direction.
+ * @param {Object} props.elsRef React ref to board/character/shelves/obstacles
  * @param {Object} props.characterStatus The character status (move, jump)
  * @param {Function} props.setCharacterStatus Setter for character status
  * @param {Object} props.timelinesRef The timelines ref object

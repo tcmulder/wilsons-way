@@ -101,6 +101,13 @@ export const checkCollisions = (props) => {
 	});
 };
 
+/**
+ * Update elevation ref with character/shelf positions (ceiling, floor, head, foot, above, below).
+ * Used by movement to know when to fall (doJumpDown) and for jump height.
+ *
+ * @param {Object} els Element refs: elCharacter, elShelvesVisible, elBoard
+ * @param {Object} elevationRef Ref to update with above, below, head, foot, floor, etc.
+ */
 export const checkElevation = (els, elevationRef) => {
 	const { elCharacter, elShelvesVisible, elBoard } = els;
 	const elBoardRect = elBoard.getBoundingClientRect();

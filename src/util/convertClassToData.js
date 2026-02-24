@@ -1,5 +1,5 @@
 /**
- * Convert classes to data attributes
+ * Convert classes to data attributes.
  *
  * We're using a Figma plugin that can export
  * SVG graphics with class names, but we want
@@ -7,7 +7,7 @@
  * plugin, we could remove this and simply add
  * data attributes manually.
  *
- * @param {HTMLElement} elContainer The stage element to look within
+ * @param {HTMLElement} elContainer The stage element to look within (e.g. SVG root).
  */
 export const convertClassToData = (elContainer) => {
 	elContainer.querySelectorAll('[class*="["')?.forEach((el) => {

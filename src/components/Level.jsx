@@ -19,7 +19,11 @@ import '../css/parallax.css';
 import '../css/obstacles.css';
 import '../css/milestones.css';
 
-
+/**
+ * Level screen: loads level SVG, runs parallax animation, handles level completion outro. Supports debug drag-and-drop SVG.
+ *
+ * @returns {React.ReactNode} The Level component.
+ */
 const Level = () => {
 	const { debug } = useDebugContext();
 	const { settings } = useSettingsContext();

@@ -85,7 +85,9 @@ export const doModifiers = (props) => {
 };
 
 /**
- * Handle milestone messaging.
+ * When a milestone obstacle is hit, show its message, freeze gameplay for the delay, then resume.
+ *
+ * @param {HTMLElement} el The milestone target element (must have .sr-milestone-target and data-delay).
  */
 export const doMilestones = (el) => {
 	if (!el.classList.contains('sr-milestone-target')) return;

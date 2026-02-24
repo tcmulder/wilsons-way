@@ -1,6 +1,14 @@
 import { useState, useEffect } from 'react';
 import { convertClassToData } from '../util/convertClassToData';
 
+/**
+ * Loads an SVG from path. If onSvgLoad is provided, passes the parsed SVG to it and renders nothing;
+ * otherwise converts classes to data attrs and renders the SVG inline.
+ *
+ * @param {Object} props
+ * @param {string} props.path URL (http(s)) or Vite-import path to the SVG.
+ * @param {(el: SVGElement) => void} [props.onSvgLoad] Callback with the parsed SVG element; when set, component does not render.
+ */
 const SvgImage = ({ path, onSvgLoad }) => {
 	const [svgAttributes, setSvgAttributes] = useState({});
 	const [svgInnerHTML, setSvgInnerHTML] = useState('');

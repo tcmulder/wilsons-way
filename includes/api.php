@@ -6,7 +6,7 @@
  */
 
 /**
- * Create endpoint for updating user/score
+ * Create endpoint for updating user/score.
  */
 add_action(
 	'rest_api_init',
