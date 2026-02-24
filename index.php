@@ -1,14 +1,25 @@
 <?php
 	/**
-	 * Vite game implementation
+	 * Shelf Runner game
 	 *
 	 * @package Shelf_Runner
 	 */
 
-// Load WordPress if not already loaded (e.g. when this file is required via template_redirect).
+// Load WordPress if not already loaded
 if ( ! defined( 'ABSPATH' ) ) {
-	$wp_load = dirname( __DIR__ ) . '/../../../wp-load.php';
-	if ( ! file_exists( $wp_load ) ) {
+	$plugin_dir = dirname( __DIR__ );
+	$candidates = array(
+		$plugin_dir . '/../../wp-load.php',
+		$plugin_dir . '/../../../wp-load.php',
+	);
+	$wp_load = '';
+	foreach ( $candidates as $candidate ) {
+		if ( file_exists( $candidate ) ) {
+			$wp_load = $candidate;
+			break;
+		}
+	}
+	if ( '' === $wp_load ) {
 		die( 'WordPress not loaded' );
 	}
 	require_once $wp_load;
