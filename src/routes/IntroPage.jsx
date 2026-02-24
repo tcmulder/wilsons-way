@@ -13,7 +13,7 @@ const IntroPage = () => {
 		<div>
 			<h1>Welcome to the Game</h1>
 			<p>This is an introductory page, and content is TBD.</p>
-			<button style={{fontSize: '7em'}} onClick={() => navigate('/gameplay')}>Start Game</button>
+			<button style={{fontSize: '7em'}} onClick={() => navigate('/level/1')}>Start Game</button>
 			<div>
 				<label>
 					<input

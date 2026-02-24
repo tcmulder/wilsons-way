@@ -20,7 +20,7 @@ import '../css/obstacles.css';
 import '../css/milestones.css';
 
 
-const GameplayPage = () => {
+const Level = () => {
 	const { debug } = useDebugContext();
 	const { settings } = useSettingsContext();
 	const { gameplaySpeed, userAdjustedSpeed } = settings;
@@ -28,6 +28,7 @@ const GameplayPage = () => {
 	const gameplayContext = useGameplayContext();
 	const gameplayRef = useRef(null);
 	const navigate = useNavigate();
+	const prevIsLevelCompleteRef = useRef(isLevelComplete);
 
 	// Set global animations speed
 	useEffect(() => {
@@ -70,9 +71,12 @@ const GameplayPage = () => {
 		}
 	}, [debug, gameplaySpeed, setCurrentLevelId, gameplayContext, setLevel, setIsLevelComplete]);
 
-	// Go to the outro page if the level is complete
+	// Go to the outro page only when this level transitions from incomplete to complete
 	useEffect(() => {
-		if (isLevelComplete) {
+		const wasComplete = prevIsLevelCompleteRef.current;
+		prevIsLevelCompleteRef.current = isLevelComplete;
+
+		if (!wasComplete && isLevelComplete) {
 			navigate(`/outro/${level}`);
 		}
 	}, [isLevelComplete, level, navigate]);
@@ -90,9 +94,8 @@ const GameplayPage = () => {
 				)}
 			</div>
 			<Character />
-			<div className="sr-level-complete" style={{position: 'absolute', top: 0, left: 0, backgroundColor: 'red', zIndex: 1000}}>done: {isLevelComplete ? 'true' : 'false'}</div>
 		</div>
 	);
 };
 
-export default GameplayPage;
+export default Level;

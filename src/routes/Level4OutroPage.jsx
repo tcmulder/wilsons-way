@@ -1,17 +1,17 @@
 import { Link } from 'react-router-dom';
 import { useResetLevelComplete } from '../hooks/useCompleteLevel';
 
-const Level1OutroPage = () => {
+const Level4OutroPage = () => {
 	useResetLevelComplete();
 
 	return (
 		<div>
-			<h1>You've completed Level 1!</h1>
-			<Link to="/level/2">
-				Next Level &gt;&gt;
+			<h1>You've completed Level 4!</h1>
+			<Link to="/">
+				Back to Start
 			</Link>
 		</div>
 	);
 };
 
-export default Level1OutroPage;
+export default Level4OutroPage;

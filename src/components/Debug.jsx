@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useDebugContext, useSettingsContext, useLevelContext, useCharacterContext } from '../context/useContexts';
+import { useDebugContext, useSettingsContext, useCharacterContext } from '../context/useContexts';
 import { routes } from '../routes';
 
 import '../css/debug.css';
@@ -110,7 +110,6 @@ const DebugRefresh = ({ reset = false, title = '', label = '' }) => {
  * @param {Object} props The properties object
  * @param {Object} props.debug The debug object
  * @param {Object} props.debugIsAllowed Whether or not to debug (clone of settings.debugAllowed)
- * @param {Function} props.setLevel The function to set the level
  * @param {Function} props.setCharacterId The function to set the character id
  * @param {Function} props.setMakeSFX The function to set the make SFX
  * @param {Function} props.setMakeMusic The function to set the make music
@@ -119,12 +118,9 @@ const DebugRefresh = ({ reset = false, title = '', label = '' }) => {
  * @returns {void}
  */
 const useDebug = (props) => {
-	const { debug, debugIsAllowed, setLevel, setCharacterId, setMakeSFX, setMakeMusic, setSettings, setJump } = props;
+	const { debug, debugIsAllowed, setCharacterId, setMakeSFX, setMakeMusic, setSettings, setJump } = props;
 	useEffect(() => {
 		if (debugIsAllowed && debug) {
-			if (debug?.level) {
-				setLevel(parseInt(debug.level));
-			}
 			if (debug?.characterId) {
 				setCharacterId(parseInt(debug.characterId));
 			}
@@ -140,20 +136,19 @@ const useDebug = (props) => {
 			if (debug?.jumpHeight) {
 				setJump((prev) => ({ ...prev, height: debug.jumpHeight / 100}));
 			}
-			if (debug?.jumpHangtime) {
-				setJump((prev) => ({ ...prev, hangtime: debug.jumpHangtime}));
-			}
-			if (debug?.characterHeight) {
-				setSettings((prev) => ({ ...prev, characterHeight: debug.characterHeight}));
-			}
+		if (debug?.jumpHangtime) {
+			setJump((prev) => ({ ...prev, hangtime: debug.jumpHangtime}));
 		}
-	}, [debug, setLevel, setCharacterId, setMakeSFX, setMakeMusic, setSettings, setJump, debugIsAllowed]);
+		if (debug?.characterHeight) {
+			setSettings((prev) => ({ ...prev, characterHeight: debug.characterHeight}));
+		}
+	}
+	}, [debug, setCharacterId, setMakeSFX, setMakeMusic, setSettings, setJump, debugIsAllowed]);
 };
 
 export const Debug = () => {
 	const { debug, setDebug } = useDebugContext();
 	const { settings, setSettings, setJump, jump, makeMusic, setMakeMusic, makeSFX, setMakeSFX } = useSettingsContext();
-	const { level, setLevel } = useLevelContext();
 	const { characterId, setCharacterId } = useCharacterContext();
 	const navigate = useNavigate();
 	const pagePath = useLocation().pathname;
@@ -165,7 +160,6 @@ export const Debug = () => {
 	useDebug({
 		debugIsAllowed: settings.debugAllowed,
 		debug,
-		setLevel,
 		setCharacterId,
 		setMakeSFX,
 		setMakeMusic,
@@ -182,16 +176,9 @@ export const Debug = () => {
 		<div className={`sr-debug${debug?.outlines ? ' sr-debug--outlines' : ''}`}>
 			<button onClick={(e) => { e.preventDefault(); setIsMenuOpen(!isMenuOpen); }}>🐞 Debug</button>
 			{isMenuOpen && (
-				<div className="sr-debug__menu">
-					<DebugNumber
-						label="🧱 Level"
-						param="level"
-						value={level}
-						setValue={setLevel}
-						title="Set the level number"
-					/>
-					<DebugNumber
-						label="🦸 Character"
+			<div className="sr-debug__menu">
+				<DebugNumber
+					label="🦸 Character"
 						param="characterId"
 						value={characterId}
 						setValue={setCharacterId}
@@ -268,7 +255,7 @@ export const Debug = () => {
 					/>
 					<select value={pagePath} onChange={(e) => { e.preventDefault(); navigate(e.target.value); }} title="Navigate to a different page">
 						{routes.map(({ path, title }) => (
-							<option key={path} value={path}>📄 {title}</option>
+							<option key={path} value={path}>📄 goto: {title}</option>
 						))}
 					</select>
 					<DebugButton

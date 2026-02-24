@@ -1,22 +1,14 @@
-import { useEffect } from 'react';
-import { useLevelContext } from '../context/useContexts';
 import { Link } from 'react-router-dom';
+import { useResetLevelComplete } from '../hooks/useCompleteLevel';
 
 const Level2OutroPage = () => {
-	const { level, setLevel, setIsLevelComplete } = useLevelContext();
-
-	useEffect(() => {
-		setIsLevelComplete(false);
-	}, [setIsLevelComplete]);
+	useResetLevelComplete();
 
 	return (
 		<div>
 			<h2>You've completed Level 2!</h2>
-			<Link
-				to="/gameplay"
-				onClick={() => setLevel(level + 1)}
-				>
-					Next Level &gt;&gt;
+			<Link to="/level/3">
+				Next Level &gt;&gt;
 			</Link>
 		</div>
 	);
