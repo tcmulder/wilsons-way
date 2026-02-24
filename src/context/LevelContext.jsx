@@ -4,7 +4,6 @@ import { LevelContext } from './useContexts';
 export function LevelContextProvider({ children }) {
   const [level, setLevel] = useState(1);
   const [currentLevelId, setCurrentLevelId] = useState(null);
-  const [isLevelComplete, setIsLevelComplete] = useState(true);
 
   return (
     <LevelContext.Provider
@@ -13,8 +12,6 @@ export function LevelContextProvider({ children }) {
         setLevel,
         currentLevelId,
         setCurrentLevelId,
-        isLevelComplete,
-        setIsLevelComplete,
       }}
     >
       {children}

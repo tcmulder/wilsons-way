@@ -20,11 +20,11 @@ import '../css/obstacles.css';
 import '../css/milestones.css';
 
 
-const GameplayPage = () => {
+const Level = () => {
 	const { debug } = useDebugContext();
 	const { settings } = useSettingsContext();
 	const { gameplaySpeed, userAdjustedSpeed } = settings;
-	const { level, setLevel, setCurrentLevelId, setIsLevelComplete, isLevelComplete } = useLevelContext();
+	const { level, setLevel, setCurrentLevelId } = useLevelContext();
 	const gameplayContext = useGameplayContext();
 	const gameplayRef = useRef(null);
 	const navigate = useNavigate();
@@ -33,6 +33,11 @@ const GameplayPage = () => {
 	useEffect(() => {
 		gsap.globalTimeline.timeScale(userAdjustedSpeed / 50);
 	}, [userAdjustedSpeed]);
+
+	// When a level completes, advance to the next level route
+	const handleLevelComplete = useCallback(() => {
+		navigate(`/outro/${level}`);
+	}, [navigate, level]);
 
 	// Load SVG for level and add movement to it
 	const handleSvgLoad = useCallback(async (svgElement) => {
@@ -49,11 +54,11 @@ const GameplayPage = () => {
 				elBoard,
 				setTimelines: (timelines) => { ctx.timelinesRef.current = timelines; },
 				gameplaySpeed,
-				setIsLevelComplete,
+				onComplete: handleLevelComplete,
 			});
 			setCurrentLevelId(Date.now());
 		}
-	}, [gameplaySpeed, setCurrentLevelId, gameplayContext, setIsLevelComplete]);
+	}, [gameplaySpeed, gameplayContext, handleLevelComplete, setCurrentLevelId]);
 
 	// Allow drag-and-drop of SVG level files
 	useEffect(() => {
@@ -65,17 +70,10 @@ const GameplayPage = () => {
 				gameplaySpeed,
 				onLevelLoaded: () => setCurrentLevelId(Date.now()),
 				setLevel,
-				setIsLevelComplete
 			});
 		}
-	}, [debug, gameplaySpeed, setCurrentLevelId, gameplayContext, setLevel, setIsLevelComplete]);
+	}, [debug, gameplaySpeed, setCurrentLevelId, gameplayContext, setLevel]);
 
-	// Go to the outro page if the level is complete
-	useEffect(() => {
-		if (isLevelComplete) {
-			navigate(`/outro/${level}`);
-		}
-	}, [isLevelComplete, level, navigate]);
 	
 	return (
 		<div className="sr-gameplay" ref={gameplayRef}>
@@ -90,9 +88,8 @@ const GameplayPage = () => {
 				)}
 			</div>
 			<Character />
-			<div className="sr-level-complete" style={{position: 'absolute', top: 0, left: 0, backgroundColor: 'red', zIndex: 1000}}>done: {isLevelComplete ? 'true' : 'false'}</div>
 		</div>
 	);
 };
 
-export default GameplayPage;
+export default Level;
