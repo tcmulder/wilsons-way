@@ -56,7 +56,7 @@ if ( ! class_exists( 'ShelfRunnerUpdateChecker' ) ) {
 			$this->version       = SHELF_RUNNER_VERSION;
 			$this->cache_key     = 'shelf_runner_custom_upd';
 			$this->cache_allowed = true;
-			$this->updater_json  = 'https://raw.githubusercontent.com/tcmulder/wilsons-way/refs/heads/master/updates/info.json';
+			$this->updater_json  = 'https://raw.githubusercontent.com/tcmulder/wilsons-way/master/updates/info.json';
 
 			add_filter( 'plugins_api', array( $this, 'info' ), 20, 3 );
 			add_filter( 'site_transient_update_plugins', array( $this, 'update' ) );
@@ -116,8 +116,9 @@ if ( ! class_exists( 'ShelfRunnerUpdateChecker' ) ) {
 				return $res;
 			}
 
-			// do nothing if it is not our plugin
-			if ( $this->plugin_slug !== $args->slug ) {
+			// do nothing if it is not our plugin (slug can be basename or directory name)
+			$plugin_dir = dirname( $this->plugin_slug );
+			if ( $this->plugin_slug !== $args->slug && $plugin_dir !== $args->slug ) {
 				return $res;
 			}
 
