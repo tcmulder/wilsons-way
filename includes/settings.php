@@ -360,7 +360,7 @@ function shelf_runner_settings_init() {
 			'sr_section'
 		);
 
-		add_option( 'shelf_runner_settings_size', 100 );
+		add_option( 'shelf_runner_settings_size', 50 );
 		register_setting( 'shelf_runner_settings', 'shelf_runner_settings_size' );
 		add_settings_field(
 			'shelf_runner_settings_size',
@@ -376,7 +376,7 @@ function shelf_runner_settings_init() {
 			'sr_section'
 		);
 
-		add_option( 'shelf_runner_settings_speed', 100 );
+		add_option( 'shelf_runner_settings_speed', 50 );
 		register_setting( 'shelf_runner_settings', 'shelf_runner_settings_speed' );
 		add_settings_field(
 			'shelf_runner_settings_speed',
@@ -386,22 +386,6 @@ function shelf_runner_settings_init() {
 					'<input name="shelf_runner_settings_speed" value="%s" type="number" step="1" min="1" max="200" required /><p><em>%s</em></p>',
 					esc_attr( (string) get_option( 'shelf_runner_settings_speed' ) ),
 					esc_html( __( '50% is average. Lower values will make the game easier. (Note that the game was originally calibrated for 50% for jump trajectories, etc.)', 'shelf-runner' ) )
-				);
-			},
-			'shelf_runner_settings',
-			'sr_section'
-		);
-
-		add_option( 'shelf_runner_settings_milestone_duration', 3 );
-		register_setting( 'shelf_runner_settings', 'shelf_runner_settings_milestone_duration' );
-		add_settings_field(
-			'shelf_runner_settings_milestone_duration',
-			esc_html( __( 'Milestone duration:', 'shelf-runner' ) ),
-			function () {
-				printf(
-					'<input name="shelf_runner_settings_milestone_duration" value="%s" type="number" step="1" min="1" max="200" required /><p><em>%s</em></p>',
-					esc_attr( (string) get_option( 'shelf_runner_settings_milestone_duration' ) ),
-					esc_html( __( 'In seconds', 'shelf-runner' ) )
 				);
 			},
 			'shelf_runner_settings',
