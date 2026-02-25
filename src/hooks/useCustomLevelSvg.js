@@ -45,6 +45,7 @@ export function useCustomLevelSvg(props) {
 			});
 			aniLevel({
 				elBoard,
+				timelinesRef: ctx.timelinesRef,
 				setTimelines: (timelines) => { ctx.timelinesRef.current = timelines; },
 				gameplaySpeed,
 				onComplete: handleLevelComplete,

@@ -54,6 +54,7 @@ const Level = () => {
 			// Create animation after level is loaded
 			aniLevel({
 				elBoard,
+				timelinesRef: ctx.timelinesRef,
 				setTimelines: (timelines) => { ctx.timelinesRef.current = timelines; },
 				gameplaySpeed,
 				onComplete: handleLevelComplete,

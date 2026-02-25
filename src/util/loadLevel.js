@@ -50,7 +50,8 @@ export const loadLevel = async (props) => {
  * @param {HTMLElement} props.elBoard The board DOM element
  * @param {HTMLElement} [props.elDropTarget] The element that should act as the drop target (defaults to elBoard)
  * @param {boolean} props.debug Debug mode
- * @param {Function} props.setTimelines Function to set timelines in context
+ * @param {React.MutableRefObject<import('gsap').Timeline[]>} props.timelinesRef Ref holding current timelines
+ * @param {Function} props.setTimelines Simple setter (value) => void to set timelines in context
  * @param {number} props.gameplaySpeed The game speed setting
  * @param {Function} [props.onLevelLoaded] Callback when level is loaded
  * @param {Function} [props.setLevel] React state setter for level
@@ -61,6 +62,7 @@ export const allowDrop = (props) => {
 		elBoard,
 		elDropTarget = elBoard,
 		debug,
+		timelinesRef,
 		setTimelines,
 		gameplaySpeed,
 		onLevelLoaded,
@@ -89,6 +91,7 @@ export const allowDrop = (props) => {
 				// Create animation after level is loaded
 				aniLevel({
 					elBoard,
+					timelinesRef,
 					setTimelines,
 					gameplaySpeed,
 				});
