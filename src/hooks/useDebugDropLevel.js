@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useDebugContext, useLevelContext } from '../context/useContexts';
+import { useDebugContext, useLevelContext, useSettingsContext } from '../context/useContexts';
 
 /**
  * Handles drag-and-drop of SVG level files over the debug panel.
@@ -9,6 +9,7 @@ import { useDebugContext, useLevelContext } from '../context/useContexts';
  */
 export function useDebugDropLevel(debugRef) {
 	const { debug } = useDebugContext();
+	const { settings } = useSettingsContext();
 	const { setLevel, setCurrentLevelId, setCustomLevelSvg } = useLevelContext();
 	const navigate = useNavigate();
 	const pagePath = useLocation().pathname;
@@ -58,6 +59,6 @@ export function useDebugDropLevel(debugRef) {
 			elDebug.removeEventListener('dragleave', handleDragLeave);
 			elDebug.removeEventListener('dragend', handleDragLeave);
 		};
-	}, [debug, debugRef, navigate, pagePath, setCurrentLevelId, setLevel, setCustomLevelSvg]);
+	}, [debug, debugRef, navigate, pagePath, setCurrentLevelId, setLevel, setCustomLevelSvg, settings?.debugAllowed]);
 }
 
