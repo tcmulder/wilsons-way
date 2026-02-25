@@ -23,8 +23,7 @@ export function useSetupGameplayElements(boardRef) {
 		const elBoard = boardRef.current.querySelector('.sr-board');
 		// Elevated shelves we can jump on/off plus the ground floor
 		const elShelves = elBoard
-			.querySelector('.sr-shelves')
-			?.querySelectorAll(':scope > *') || [];
+			.querySelectorAll('.sr-shelves > *') || [];
 		// All obstacles (good bad or neutral)
 		const elObstacles = [];
 		// Add all obstacles that score on impact (good or bad)
