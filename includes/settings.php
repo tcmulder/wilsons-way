@@ -408,6 +408,22 @@ function shelf_runner_settings_init() {
 			'sr_section'
 		);
 
+		add_option( 'shelf_runner_settings_milestone_duration', 50 );
+		register_setting( 'shelf_runner_settings', 'shelf_runner_settings_milestone_duration' );
+		add_settings_field(
+			'shelf_runner_settings_milestone_duration',
+			esc_html( __( 'Milestone duration:', 'shelf-runner' ) ),
+			function () {
+				printf(
+					'<input name="shelf_runner_settings_milestone_duration" value="%s" type="number" step="1" min="1" max="100" required /><p><em>%s</em></p>',
+					esc_attr( (string) get_option( 'shelf_runner_settings_milestone_duration' ) ),
+					esc_html( __( '50% is average. Lower values will make the duration milestones appear faster.', 'shelf-runner' ) )
+				);
+			},
+			'shelf_runner_settings',
+			'sr_section'
+		);
+
 		add_option( 'shelf_runner_settings_debug', false );
 		register_setting( 'shelf_runner_settings', 'shelf_runner_settings_debug' );
 		add_settings_field(
