@@ -222,8 +222,8 @@ export const Debug = () => {
 			<button onClick={(e) => { e.preventDefault(); setIsMenuOpen(!isMenuOpen); }}>🐞 Debug</button>
 			{isMenuOpen && (
 			<div className="sr-debug__menu">
-				<DebugNumber
-					label="🦸 Character"
+					<DebugNumber
+						label="🦸 Character"
 						param="characterId"
 						value={characterId}
 						setValue={setCharacterId}
