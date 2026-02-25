@@ -174,6 +174,9 @@ const useDebug = (props) => {
 			if (debug?.userAdjustedMilestone) {
 				setSettings((prev) => ({ ...prev, userAdjustedMilestone: (debug.userAdjustedMilestone / 100) / 0.5 }));
 			}
+			if (debug?.userAdjustedSpeed) {
+				setSettings((prev) => ({ ...prev, userAdjustedSpeed: debug.userAdjustedSpeed }));
+			}
 		}
 	}, [debug, setCharacterId, setMakeSFX, setMakeMusic, setSettings, setJump, debugIsAllowed]);
 };
@@ -234,11 +237,18 @@ export const Debug = () => {
 						title="Set the height of the character"
 					/>
 					<DebugNumber
-						label="🏃‍➡️ Speed (px/s)"
+						label="🏎️ Speed (%)"
+						param="userAdjustedMilestone"
+						value={(settings.userAdjustedSpeed)}
+						setValue={(value) => setSettings({ ...settings, userAdjustedSpeed: value })}
+						title="The user-adjusted speed multiplier (usually use base speed instead)."
+					/>
+					<DebugNumber
+						label="🏃‍➡️ Base (px/s)"
 						param="gameplaySpeed"
 						value={settings.gameplaySpeed}
 						setValue={(value) => setSettings({ ...settings, gameplaySpeed: value })}
-						title="Set the gameplay speed in pixels per second"
+						title="Set the base gameplay speed in pixels per second"
 					/>
 					<DebugNumber
 						label="🦘 Height (%)"
