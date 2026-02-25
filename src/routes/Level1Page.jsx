@@ -1,6 +1,5 @@
-import { useEffect } from 'react';
-import { useLevelContext } from '../context/useContexts';
 import Level from '../components/Level';
+import { useSetLevel } from '../hooks/useSetLevel';
 
 /**
  * Level 1 gameplay page.
@@ -8,12 +7,7 @@ import Level from '../components/Level';
  * @returns {React.ReactNode} The Level1Page component.`
  */
 const Level1Page = () => {
-	const { setLevel } = useLevelContext();
-
-	useEffect(() => {
-		setLevel(1);
-	}, [setLevel]);
-
+	useSetLevel();
 	return <Level />;
 };
 

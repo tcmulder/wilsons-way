@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { useLevelContext } from '../context/useContexts';
 
 /**
  * Level 2 completion screen.
@@ -6,11 +7,12 @@ import { Link } from 'react-router-dom';
  * @returns {React.ReactNode} The Level2OutroPage component.`
  */
 const Level2OutroPage = () => {
+	const { level } = useLevelContext();
 	return (
 		<div>
-			<h2>You've completed Level 2!</h2>
-			<Link to="/level/3">
-				Next Level &gt;&gt;
+			<h1>You've completed Level {level}!</h1>
+			<Link to={`/level/${level + 1}`}>
+				Load Level {level + 1} &gt;&gt;
 			</Link>
 		</div>
 	);
