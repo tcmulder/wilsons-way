@@ -21,10 +21,13 @@ export const aniLevel = (props) => {
 	
 	// Find all direct descendant SVGs
 	const svgElements = elBoard.querySelectorAll(':scope > svg');
+	if (!svgElements.length) return;
 
 	// Determine animation duration
 	const svgWidth = parseInt(svgElements[0].getAttribute('viewBox').split(' ')[2]) / 2;
-	let gameplayDuration = svgWidth / gameplaySpeed;
+	const gameplayDuration = svgWidth / gameplaySpeed;
+	if (gameplayDuration <= 0 || !Number.isFinite(gameplayDuration)) return;
+
 	
 	// Create a separate timeline for each SVG
 	const timelines = [];
