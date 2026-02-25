@@ -165,13 +165,16 @@ const useDebug = (props) => {
 			if (debug?.jumpHeight) {
 				setJump((prev) => ({ ...prev, height: debug.jumpHeight / 100}));
 			}
-		if (debug?.jumpHangtime) {
-			setJump((prev) => ({ ...prev, hangtime: debug.jumpHangtime}));
+			if (debug?.jumpHangtime) {
+				setJump((prev) => ({ ...prev, hangtime: debug.jumpHangtime}));
+			}
+			if (debug?.characterHeight) {
+				setSettings((prev) => ({ ...prev, characterHeight: debug.characterHeight}));
+			}
+			if (debug?.userAdjustedMilestone) {
+				setSettings((prev) => ({ ...prev, userAdjustedMilestone: (debug.userAdjustedMilestone / 100) / 0.5 }));
+			}
 		}
-		if (debug?.characterHeight) {
-			setSettings((prev) => ({ ...prev, characterHeight: debug.characterHeight}));
-		}
-	}
 	}, [debug, setCharacterId, setMakeSFX, setMakeMusic, setSettings, setJump, debugIsAllowed]);
 };
 
@@ -250,6 +253,13 @@ export const Debug = () => {
 						value={jump.hangtime}
 						setValue={(value) => setJump({ ...jump, hangtime: value })}
 						title="Set the jump hangtime in seconds"
+					/>
+					<DebugNumber
+						label="💬 Milestone (%)"
+						param="userAdjustedMilestone"
+						value={(settings.userAdjustedMilestone * 100) * 0.5}
+						setValue={(value) => setSettings({ ...settings, userAdjustedMilestone: (value / 100) / 0.5 })}
+						title="Set the milestone duration modifier in percentage (0 to skip)"
 					/>
 					<DebugCheckbox
 						label="🎵 Music"

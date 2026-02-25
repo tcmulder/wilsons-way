@@ -4,7 +4,7 @@
 	z-index: 10;
 	padding: 0.1em;
 	background-color: lime;
-	font-size: 0.8em;
+	font-size: 0.6em;
 	line-height: 1;
 
 	&.is-dragging {
@@ -53,8 +53,8 @@
 	:is([type="checkbox"]) {
 		cursor: pointer;
 		margin-left: auto;
-		width: 1.5em;
-		height: 1.5em;
+		width: 1.2em;
+		height: 1.2em;
 		accent-color: gray;
 		accent-color: black;
 	}

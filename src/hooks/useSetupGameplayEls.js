@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useGameplayContext, useLevelContext } from '../context/useContexts';
+import { useSettingsContext } from '../context/useContexts';
 
 /**
  * Sets up board element refs from the level SVG: shelves, obstacles, character, crash area, etc.
@@ -10,6 +11,8 @@ import { useGameplayContext, useLevelContext } from '../context/useContexts';
 export function useSetupGameplayElements(boardRef) {
 	const { elsRef, elevationRef } = useGameplayContext();
 	const { currentLevelId } = useLevelContext();
+	const { settings } = useSettingsContext();
+	const { userAdjustedMilestone } = settings;
 
 	/**
 	 * Get elements from the new level SVG and configure them for use
@@ -39,9 +42,12 @@ export function useSetupGameplayElements(boardRef) {
 		elBoard
 			.querySelectorAll('.sr-milestones')
 			?.forEach((elMilestones) => {
+				const milestoneFactor = Number(userAdjustedMilestone) || 1;
 				elMilestones.querySelectorAll('.sr-milestone-target').forEach((elMilestoneTarget) => {
-					const delay = elMilestoneTarget.dataset.delay || elMilestones.dataset.delay || '500';
-					elMilestoneTarget.dataset.delay = delay;
+					const baseDelay =
+						Number(elMilestoneTarget.dataset.delay || elMilestones.dataset.delay || '500');
+					const adjustedDelay = baseDelay * milestoneFactor;
+					elMilestoneTarget.dataset.delay = String(adjustedDelay);
 					elObstacles.push(elMilestoneTarget);
 				});
 			});
@@ -68,7 +74,7 @@ export function useSetupGameplayElements(boardRef) {
 			elObstacles,
 		};
 		elsRef.current = { ...elsRef.current, ...newState };
-	}, [boardRef, elsRef, currentLevelId, elevationRef]);
+	}, [boardRef, elsRef, currentLevelId, elevationRef, userAdjustedMilestone]);
 
 	// Track which shelves and obstacles are visible
 	useEffect(() => {

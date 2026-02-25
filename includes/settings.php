@@ -401,7 +401,7 @@ function shelf_runner_settings_init() {
 				printf(
 					'<input name="shelf_runner_settings_speed" value="%s" type="number" step="1" min="1" max="200" required /><p><em>%s</em></p>',
 					esc_attr( (string) get_option( 'shelf_runner_settings_speed' ) ),
-					esc_html( __( '50% is average. Lower values will make the game easier. (Note that the game was originally calibrated for 50% for jump trajectories, etc.)', 'shelf-runner' ) )
+					esc_html( __( '50% is average. Lower values will make the game harder. (Note that the game was originally calibrated for 50% for jump trajectories, etc.)', 'shelf-runner' ) )
 				);
 			},
 			'shelf_runner_settings',
