@@ -48,6 +48,7 @@ export const loadLevel = async (props) => {
  *
  * @param {Object} props The properties object
  * @param {HTMLElement} props.elBoard The board DOM element
+ * @param {HTMLElement} [props.elDropTarget] The element that should act as the drop target (defaults to elBoard)
  * @param {boolean} props.debug Debug mode
  * @param {Function} props.setTimelines Function to set timelines in context
  * @param {number} props.gameplaySpeed The game speed setting
@@ -56,12 +57,21 @@ export const loadLevel = async (props) => {
  * @return {Function} Cleanup function to remove event listeners
  */
 export const allowDrop = (props) => {
-	const { elBoard, debug, setTimelines, gameplaySpeed, onLevelLoaded, setLevel } = props;
-	if (!elBoard || !debug) return () => {};
+	const {
+		elBoard,
+		elDropTarget = elBoard,
+		debug,
+		setTimelines,
+		gameplaySpeed,
+		onLevelLoaded,
+		setLevel,
+	} = props;
+
+	if (!elBoard || !elDropTarget || !debug) return () => {};
 
 	const handleDrop = async (e) => {
 		e.preventDefault();
-		elBoard.classList.remove('is-dragging');
+		elDropTarget.classList.remove('is-dragging');
 		const file = e.dataTransfer?.files[0];
 		if (file?.type === 'image/svg+xml') {
 			const reader = new FileReader();
@@ -91,15 +101,24 @@ export const allowDrop = (props) => {
 
 	const handleDragOver = (e) => {
 		e.preventDefault();
-		elBoard.classList.add('is-dragging');
+		elDropTarget.classList.add('is-dragging');
 	};
 
-	elBoard.addEventListener('drop', handleDrop);
-	elBoard.addEventListener('dragover', handleDragOver);
+	const handleDragLeave = (e) => {
+		e.preventDefault();
+		elDropTarget.classList.remove('is-dragging');
+	};
+
+	elDropTarget.addEventListener('drop', handleDrop);
+	elDropTarget.addEventListener('dragover', handleDragOver);
+	elDropTarget.addEventListener('dragleave', handleDragLeave);
+	elDropTarget.addEventListener('dragend', handleDragLeave);
 
 	// Return cleanup function
 	return () => {
-		elBoard.removeEventListener('drop', handleDrop);
-		elBoard.removeEventListener('dragover', handleDragOver);
+		elDropTarget.removeEventListener('drop', handleDrop);
+		elDropTarget.removeEventListener('dragover', handleDragOver);
+		elDropTarget.removeEventListener('dragleave', handleDragLeave);
+		elDropTarget.removeEventListener('dragend', handleDragLeave);
 	};
 };

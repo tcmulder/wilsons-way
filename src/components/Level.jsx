@@ -2,17 +2,16 @@ import { useRef, useCallback, useEffect } from 'react';
 import { gsap } from 'gsap';
 import { useNavigate } from 'react-router-dom';
 import {
-	useDebugContext,
 	useSettingsContext,
 	useLevelContext,
 	useGameplayContext,
 } from '../context/useContexts';
 import { loadLevel } from '../util/loadLevel';
-import { allowDrop } from '../util/loadLevel';
 import SVG from '../components/SVG';
 import Character from '../components/Character';
 import Gameplay from '../components/Gameplay';
 import { aniLevel } from '../util/aniLevel';
+import { useCustomLevelSvg } from '../hooks/useCustomLevelSvg';
 
 import '../css/board.css';
 import '../css/parallax.css';
@@ -25,10 +24,9 @@ import '../css/milestones.css';
  * @returns {React.ReactNode} The Level component.
  */
 const Level = () => {
-	const { debug } = useDebugContext();
 	const { settings } = useSettingsContext();
 	const { gameplaySpeed, userAdjustedSpeed } = settings;
-	const { level, setLevel, setCurrentLevelId } = useLevelContext();
+	const { level, setCurrentLevelId, customLevelSvg } = useLevelContext();
 	const gameplayContext = useGameplayContext();
 	const gameplayRef = useRef(null);
 	const navigate = useNavigate();
@@ -64,21 +62,16 @@ const Level = () => {
 		}
 	}, [gameplaySpeed, gameplayContext, handleLevelComplete, setCurrentLevelId]);
 
-	// Allow drag-and-drop of SVG level files
-	useEffect(() => {
-		if (gameplayContext.elsRef.current.elBoard) {
-			return allowDrop({
-				elBoard: gameplayContext.elsRef.current.elBoard,
-				debug,
-				setTimelines: (timelines) => { gameplayContext.timelinesRef.current = timelines; },
-				gameplaySpeed,
-				onLevelLoaded: () => setCurrentLevelId(Date.now()),
-				setLevel,
-			});
-		}
-	}, [debug, gameplaySpeed, setCurrentLevelId, gameplayContext, setLevel]);
+	// When using a custom dropped SVG (level 0), load and animate it
+	useCustomLevelSvg({
+		level,
+		customLevelSvg,
+		gameplayContext,
+		gameplaySpeed,
+		handleLevelComplete,
+		setCurrentLevelId,
+	});
 
-	
 	return (
 		<div className="sr-gameplay" ref={gameplayRef}>
 			<Gameplay boardRef={gameplayRef} />

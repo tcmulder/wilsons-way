@@ -11,6 +11,7 @@ import { LevelContext } from './useContexts';
 export function LevelContextProvider({ children }) {
   const [level, setLevel] = useState(1);
   const [currentLevelId, setCurrentLevelId] = useState(null);
+  const [customLevelSvg, setCustomLevelSvg] = useState(null);
 
   return (
     <LevelContext.Provider
@@ -19,6 +20,8 @@ export function LevelContextProvider({ children }) {
         setLevel,
         currentLevelId,
         setCurrentLevelId,
+        customLevelSvg,
+        setCustomLevelSvg,
       }}
     >
       {children}

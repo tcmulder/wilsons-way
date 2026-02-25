@@ -1,4 +1,5 @@
 import IntroPage from './IntroPage';
+import Level0Page from './Level0Page';
 import Level1Page from './Level1Page';
 import Level2Page from './Level2Page';
 import Level3Page from './Level3Page';
@@ -13,6 +14,7 @@ import Level4OutroPage from './Level4OutroPage';
  */
 export const routes = [
   { path: '/', title: 'Intro', element: <IntroPage /> },
+  { path: '/level/0', title: 'Level 0', element: <Level0Page /> },
   { path: '/level/1', title: 'Level 1', element: <Level1Page /> },
   { path: '/level/2', title: 'Level 2', element: <Level2Page /> },
   { path: '/level/3', title: 'Level 3', element: <Level3Page /> },

@@ -22,23 +22,6 @@
 	inset: 0;
 	overflow: hidden;
 
-	&.is-dragging {
-		&::before {
-			content: 'Drop level SVG here';
-			position: absolute;
-			z-index: 999;
-			inset: 0;
-			display: grid;
-			place-items: center;
-			background: rgba(0, 0, 0, 0.3);
-			color: aquamarine;
-			font-size: 2em;
-			outline: 0.2em dashed aquamarine;
-			outline-offset: -0.4em;
-			backdrop-filter: blur(0.1rem) contrast(0.5);
-		}
-	}
-
 	svg {
 		display: block;
 		height: 100%;

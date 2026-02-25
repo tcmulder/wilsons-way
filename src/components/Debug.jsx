@@ -1,7 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useDebugContext, useSettingsContext, useCharacterContext } from '../context/useContexts';
+import {
+	useDebugContext,
+	useSettingsContext,
+	useCharacterContext,
+} from '../context/useContexts';
 import { routes } from '../routes';
+import { useDebugDropLevel } from '../hooks/useDebugDropLevel';
 
 import '../css/debug.css';
 
@@ -179,6 +184,7 @@ export const Debug = () => {
 	const { characterId, setCharacterId } = useCharacterContext();
 	const navigate = useNavigate();
 	const pagePath = useLocation().pathname;
+	const debugRef = useRef(null);
 	
 	// Setup menu open/close state
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -194,13 +200,19 @@ export const Debug = () => {
 		setJump,
 	});
 	
+	// Allow drag-and-drop of SVG level files over the debug panel
+	useDebugDropLevel(debugRef);
+	
 	// Bail if debug is not allowed or enabled
 	if (!settings.debugAllowed || !debug) {
 		return null;
 	}
 	
 	return (
-		<div className={`sr-debug${debug?.outlines ? ' sr-debug--outlines' : ''}`}>
+		<div
+			className={`sr-debug${debug?.outlines ? ' sr-debug--outlines' : ''}`}
+			ref={debugRef}
+		>
 			<button onClick={(e) => { e.preventDefault(); setIsMenuOpen(!isMenuOpen); }}>🐞 Debug</button>
 			{isMenuOpen && (
 			<div className="sr-debug__menu">

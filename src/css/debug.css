@@ -7,6 +7,11 @@
 	font-size: 0.8em;
 	line-height: 1;
 
+	&.is-dragging {
+		outline: 0.2em dashed lime;
+		outline-offset: 0.1em;
+	}
+
 	button,
 	select {
 		cursor: pointer;
