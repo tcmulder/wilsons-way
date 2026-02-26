@@ -1,6 +1,9 @@
 import { useRef, useMemo } from 'react';
 import { GameplayContext } from './useContexts';
 
+/**
+ * Provides context related to gameplay.
+ */
 export function GameplayContextProvider({ children }) {
   const timelinesRef = useRef([]);
   const elevationRef = useRef({

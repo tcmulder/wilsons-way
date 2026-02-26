@@ -1,6 +1,13 @@
 import { useState, useEffect } from 'react';
 import { SettingsContext } from './useContexts';
 
+/**
+ * Fetches /shelf-runner/v1/settings once to collect user or PHP-provided constants and settings.
+ * 
+ * @param {Object} props
+ * @param {React.ReactNode} props.children The children to render
+ * @returns {React.ReactNode} The SettingsContextProvider component
+ */
 export function SettingsContextProvider({ children }) {
   const [settings, setSettings] = useState({});
   const [jump, setJump] = useState({ height: 0, hangtime: 0 });

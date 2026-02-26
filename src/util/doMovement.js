@@ -3,7 +3,7 @@ import { gsap } from 'gsap';
 import { checkCollisions, checkElevation } from './handleCollisions';
 
 /**
- * Track movement (fires whenever moving left/right)
+ * Track movement
  *
  * @param {Object} props The properties object
  * @param {Object} props.gameplayContext Gameplay refs and state
@@ -13,9 +13,19 @@ import { checkCollisions, checkElevation } from './handleCollisions';
  * @param {string[]} props.characterModifiers The current character modifiers
  * @param {Function} props.playSound Function to play a sound ('positive' | 'negative')
  * @param {Function} props.setCharacterModifiers Setter for character modifiers
+ * @param {number} [props.userAdjustedMilestone] Multiplier for milestone delay
  */
 export const trackMovement = (props) => {
-	const { gameplayContext, setCharacterStatus, setScore, level, characterModifiers, playSound, setCharacterModifiers } = props;
+	const {
+		gameplayContext,
+		setCharacterStatus,
+		setScore,
+		level,
+		characterModifiers,
+		playSound,
+		setCharacterModifiers,
+		userAdjustedMilestone,
+	} = props;
 	const { elsRef, elevationRef, statusRef, jumpRef } = gameplayContext;
 	if (!elsRef?.current || (statusRef?.current?.move === 'none' && statusRef?.current?.jump === 'none')) return;
 	const els = elsRef?.current;
@@ -26,6 +36,7 @@ export const trackMovement = (props) => {
 		characterModifiers,
 		playSound,
 		setCharacterModifiers,
+		userAdjustedMilestone,
 	});
 	checkElevation(els, elevationRef);
 	doGravity({ setCharacterStatus, statusRef, elevationRef, elsRef, jumpRef });
@@ -56,7 +67,9 @@ const doGravity = (props) => {
 };
 
 /**
- * Freeze all gsap animation
+ * Freeze or resume all GSAP animations (global timeline).
+ *
+ * @param {boolean} [shouldFreeze=true] If true, pause; if false, resume.
  */
 export const doFreeze = (shouldFreeze = true) => {
 	if(shouldFreeze) {
@@ -67,7 +80,11 @@ export const doFreeze = (shouldFreeze = true) => {
 };
 
 /**
- * Pause playback
+ * Pause level timeline playback and set character animation state to none.
+ *
+ * @param {Object} props
+ * @param {import('gsap').Timeline[]} props.timelines Level timelines to pause.
+ * @param {Function} props.setCharacterStatus Setter for character status.
  */
 export const doPause = (props) => {
 	const { timelines, setCharacterStatus } = props;
@@ -77,7 +94,12 @@ export const doPause = (props) => {
 };
 
 /**
- * Play playback
+ * Start or resume level timeline playback in the given direction.
+ *
+ * @param {Object} props
+ * @param {import('gsap').Timeline[]} props.timelines Level timelines to play.
+ * @param {Function} props.setCharacterStatus Setter for character status.
+ * @param {'forward'|'backward'} [props.direction='forward'] Play direction (backward reverses timelines).
  */
 export const doRun = (props) => {
 	const { timelines, setCharacterStatus, direction = 'forward' } = props;
@@ -129,6 +151,8 @@ const doJumpDown = (props) => {
 
 /**
  * Jump up
+ *
+ * @param {Object} props Same as doJumpDown (setCharacterStatus, jumpRef, elevationRef, elsRef).
  */
 const doJumpUp = (props) => {
 	const { setCharacterStatus, jumpRef, elevationRef, elsRef } = props;
@@ -171,10 +195,20 @@ const doJump = (props) => {
 };
 
 /**
- * Movements hook
+ * Check if we're frozen (e.g. a milestone is visible or we're in the middle of a jump).
+ * 
+ * This allows us to disable keyboard controls temporarily.
+ */
+const isFrozen = () => {
+	return document.querySelector('.is-frozen') !== null;
+};
+
+/**
+ * Hook: keyboard-driven movement (jump, play/pause, direction) and autoplay when level is ready.
+ *
  * @param {Object} props The properties object
- * @param {Object} props.debug Whether debug mode is enabled
- * @param {Object} props.elsRef The els ref object
+ * @param {Object|null} [props.debug] Debug state; when autoplay is false, Arrow keys control play/pause/direction.
+ * @param {Object} props.elsRef React ref to board/character/shelves/obstacles
  * @param {Object} props.characterStatus The character status (move, jump)
  * @param {Function} props.setCharacterStatus Setter for character status
  * @param {Object} props.timelinesRef The timelines ref object
@@ -195,59 +229,73 @@ export function useCharacterMovement(props) {
 		statusRef,
 		currentLevelId,
 	} = props;
-  // Auto-play when debug autoplay is not '0', and only once timelines exist (level has loaded)
-  useEffect(() => {
-	if (debug?.autoplay !== false && timelinesRef.current?.length) {
-	  doRun({ timelines: timelinesRef.current, setCharacterStatus, direction: 'forward' });
-	}
-  }, [debug, timelinesRef, setCharacterStatus, currentLevelId]);
 
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-		// Ignore auto-repeat so logic only runs once per key press
-		if (e.repeat) return;
-		if (e.key === 'ArrowUp' || e.key === ' ') {
-			e.preventDefault();
-			doJump({ elsRef, setCharacterStatus, jumpRef, elevationRef, statusRef });
+	// Auto-play when debug autoplay is not false, and only once timelines exist (level has loaded)
+	useEffect(() => {
+		if (debug?.autoplay !== false && timelinesRef.current?.length) {
+			doRun({ timelines: timelinesRef.current, setCharacterStatus, direction: 'forward' });
 		}
+	}, [debug, timelinesRef, setCharacterStatus, currentLevelId]);
 
-		if (debug?.autoplay === false) {
-		  if (e.key === 'ArrowDown') {
-			e.preventDefault();
-			// Toggle play/pause on each ArrowDown press
-			if (characterStatus.ani === 'none') {
-			  // Not moving: play forward
-			  doRun({ direction: 'forward', timelines: timelinesRef.current, setCharacterStatus });
-			} else {
-			  // Currently moving: pause
-			  doPause({ timelines: timelinesRef.current, setCharacterStatus });
+	useEffect(() => {
+		const handleKeyDown = (e) => {
+			// Ignore auto-repeat so logic only runs once per key press
+			if (e.repeat) return;
+
+			if (e.key === 'ArrowUp' || e.key === ' ') {
+				e.preventDefault();
+				if (isFrozen()) return;
+				doJump({ elsRef, setCharacterStatus, jumpRef, elevationRef, statusRef });
 			}
-		  }
-		  if (e.key === 'ArrowRight') {
-			e.preventDefault();
-			doRun({ direction: 'forward', timelines: timelinesRef.current, setCharacterStatus });
-		  }
-		  if (e.key === 'ArrowLeft') {
-			e.preventDefault();
-			doRun({ direction: 'backward', timelines: timelinesRef.current, setCharacterStatus });
-		  }
-		}
-	};
 
-	const handleKeyUp = (e) => {
-	  if (debug?.autoplay === false) {
-		if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
-		  e.preventDefault();
-		  doPause({ timelines: timelinesRef.current, setCharacterStatus });
-		}
-	  }
-	};
+			if (debug?.autoplay === false) {
+				// Toggle running
+				if (e.key === 'ArrowDown') {
+					e.preventDefault();
+					if (isFrozen()) return;
+					// Toggle play/pause on each ArrowDown press
+					if (characterStatus.ani === 'none') {
+						// Not moving: play forward
+						doRun({ direction: 'forward', timelines: timelinesRef.current, setCharacterStatus });
+					} else {
+						// Currently moving: pause
+						doPause({ timelines: timelinesRef.current, setCharacterStatus });
+					}
+				}
 
-    window.addEventListener('keydown', handleKeyDown);
-    window.addEventListener('keyup', handleKeyUp);
-    return () => {
-	  window.removeEventListener('keydown', handleKeyDown);
-	  window.removeEventListener('keyup', handleKeyUp);
-	};
-  }, [debug, characterStatus, setCharacterStatus, jumpRef, timelinesRef, elevationRef, statusRef, elsRef]);
+				// Move forward
+				if (e.key === 'ArrowRight') {
+					e.preventDefault();
+					if (isFrozen()) return;
+					doRun({ direction: 'forward', timelines: timelinesRef.current, setCharacterStatus });
+				}
+
+				// Move backwards
+				if (e.key === 'ArrowLeft') {
+					e.preventDefault();
+					if (isFrozen()) return;
+					doRun({ direction: 'backward', timelines: timelinesRef.current, setCharacterStatus });
+				}
+			}
+		};
+
+		// Pause movement when key is released
+		const handleKeyUp = (e) => {
+			if (debug?.autoplay === false) {
+				if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+					e.preventDefault();
+					if (isFrozen()) return;
+					doPause({ timelines: timelinesRef.current, setCharacterStatus });
+				}
+			}
+		};
+
+		window.addEventListener('keydown', handleKeyDown);
+		window.addEventListener('keyup', handleKeyUp);
+
+		return () => {
+			window.removeEventListener('keydown', handleKeyDown);
+			window.removeEventListener('keyup', handleKeyUp);
+		};
+	}, [debug, characterStatus, setCharacterStatus, jumpRef, timelinesRef, elevationRef, statusRef, elsRef]);
 }

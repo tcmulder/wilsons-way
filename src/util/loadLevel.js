@@ -48,20 +48,32 @@ export const loadLevel = async (props) => {
  *
  * @param {Object} props The properties object
  * @param {HTMLElement} props.elBoard The board DOM element
+ * @param {HTMLElement} [props.elDropTarget] The element that should act as the drop target (defaults to elBoard)
  * @param {boolean} props.debug Debug mode
- * @param {Function} props.setTimelines Function to set timelines in context
+ * @param {{ current: import('gsap').Timeline[] }} props.timelinesRef Ref holding current timelines
+ * @param {Function} props.setTimelines Simple setter (value) => void to set timelines in context
  * @param {number} props.gameplaySpeed The game speed setting
  * @param {Function} [props.onLevelLoaded] Callback when level is loaded
  * @param {Function} [props.setLevel] React state setter for level
  * @return {Function} Cleanup function to remove event listeners
  */
 export const allowDrop = (props) => {
-	const { elBoard, debug, setTimelines, gameplaySpeed, onLevelLoaded, setLevel } = props;
-	if (!elBoard || !debug) return () => {};
+	const {
+		elBoard,
+		elDropTarget = elBoard,
+		debug,
+		timelinesRef,
+		setTimelines,
+		gameplaySpeed,
+		onLevelLoaded,
+		setLevel,
+	} = props;
+
+	if (!elBoard || !elDropTarget || !debug) return () => {};
 
 	const handleDrop = async (e) => {
 		e.preventDefault();
-		elBoard.classList.remove('is-dragging');
+		elDropTarget.classList.remove('is-dragging');
 		const file = e.dataTransfer?.files[0];
 		if (file?.type === 'image/svg+xml') {
 			const reader = new FileReader();
@@ -79,6 +91,7 @@ export const allowDrop = (props) => {
 				// Create animation after level is loaded
 				aniLevel({
 					elBoard,
+					timelinesRef,
 					setTimelines,
 					gameplaySpeed,
 				});
@@ -91,15 +104,24 @@ export const allowDrop = (props) => {
 
 	const handleDragOver = (e) => {
 		e.preventDefault();
-		elBoard.classList.add('is-dragging');
+		elDropTarget.classList.add('is-dragging');
 	};
 
-	elBoard.addEventListener('drop', handleDrop);
-	elBoard.addEventListener('dragover', handleDragOver);
+	const handleDragLeave = (e) => {
+		e.preventDefault();
+		elDropTarget.classList.remove('is-dragging');
+	};
+
+	elDropTarget.addEventListener('drop', handleDrop);
+	elDropTarget.addEventListener('dragover', handleDragOver);
+	elDropTarget.addEventListener('dragleave', handleDragLeave);
+	elDropTarget.addEventListener('dragend', handleDragLeave);
 
 	// Return cleanup function
 	return () => {
-		elBoard.removeEventListener('drop', handleDrop);
-		elBoard.removeEventListener('dragover', handleDragOver);
+		elDropTarget.removeEventListener('drop', handleDrop);
+		elDropTarget.removeEventListener('dragover', handleDragOver);
+		elDropTarget.removeEventListener('dragleave', handleDragLeave);
+		elDropTarget.removeEventListener('dragend', handleDragLeave);
 	};
 };

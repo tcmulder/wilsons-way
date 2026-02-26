@@ -48,6 +48,13 @@ if ( ! class_exists( 'ShelfRunnerUpdateChecker' ) ) {
 		public $cache_allowed;
 
 		/**
+		 * URL to the remote update info JSON.
+		 *
+		 * @var string
+		 */
+		public $updater_json;
+
+		/**
 		 * Constructor.
 		 */
 		public function __construct() {

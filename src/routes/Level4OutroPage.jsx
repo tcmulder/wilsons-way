@@ -2,11 +2,9 @@ import { Link } from 'react-router-dom';
 import { useLevelContext } from '../context/useContexts';
 
 /**
- * Level 1 completion screen.
- * 
- * @returns {React.ReactNode} The Level1OutroPage component.`
+ * Level 4 completion screen.
  */
-const Level1OutroPage = () => {
+const Level4OutroPage = () => {
 	const { level } = useLevelContext();
 	return (
 		<div>
@@ -18,4 +16,4 @@ const Level1OutroPage = () => {
 	);
 };
 
-export default Level1OutroPage;
+export default Level4OutroPage;

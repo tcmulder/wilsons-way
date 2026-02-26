@@ -4,10 +4,16 @@ import { useScoreContext, useLevelContext } from '../context/useContexts';
 import { Version } from './Version';
 import '../css/interface.css';
 
+/**
+ * Persistent game interface.
+ * 
+ * @returns {React.ReactNode} The Interface component.
+ */
 export const Interface = () => {
 	const { score } = useScoreContext();
 	const { level } = useLevelContext();
-	
+
+	// Aggregated score: total, negative sum, positive sum, and score for current level only.
 	const parsed = useMemo(() => {
 		return {
 			total: score.reduce((acc, curr) => acc + curr.num, 0),
@@ -22,7 +28,7 @@ export const Interface = () => {
 			<nav className="sr-interface">
 				<Link to="/">Intro</Link>
 				|
-				<Link to="/gameplay">Gameplay</Link>
+				<Link to="/level/1">Level 1</Link>
 				|
 				<span><em>score: {parsed.pos}-{Math.abs(parsed.neg)}</em>={parsed.total}</span>
 				|

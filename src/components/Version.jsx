@@ -1,9 +1,13 @@
+import { useSettingsContext } from '../context/useContexts';
+
 /**
  * Show current version information
  */
-
 export const Version = () => {
-	return (
-		<span className="sr-version">v2.0.4</span>
-	);
+	const { settings } = useSettingsContext();
+	const { version } = settings;
+
+	if (!version) return null;
+
+	return <span className="sr-version">v{version}</span>;
 };

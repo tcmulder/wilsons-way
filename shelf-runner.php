@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Wilson's Way
  * Description: Adds the Shelf Runner game as an embed or template.
- * Version:     2.0.4
+ * Version:     2.1.0
  * Author:      Tomas Mulder
  * Author URI:  https://www.thinkaquamarine.com
  * License:     GPL2
@@ -24,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 
 // Plugin constants.
-define( 'SHELF_RUNNER_VERSION', '2.0.4' );
+define( 'SHELF_RUNNER_VERSION', '2.1.0' );
 define( 'SHELF_RUNNER_NAME', __( 'Wilson\'s Way', 'shelf-runner' ) );
 define( 'SHELF_RUNNER_BASENAME', plugin_basename( __FILE__ ) );
 define( 'SHELF_RUNNER_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
@@ -39,6 +39,7 @@ define( 'SHELF_RUNNER_GAMEPLAY_SPEED', 250 );     // Base game speed (in pixels 
 define( 'SHELF_RUNNER_CHARACTER_HEIGHT', 15 );    // Base character height (as percentage of game board height).
 define( 'SHELF_RUNNER_JUMP_HEIGHT', 20 );         // Base jump height (as percentage of game board height).
 define( 'SHELF_RUNNER_JUMP_HANGTIME', 1 );        // Base time in flight during jump (in seconds).
+define( 'SHELF_RUNNER_LEADERBOARD_COUNT', 10 );   // Max number of entries kept on the leaderboard.
 
 /**
  * Include admin functionality

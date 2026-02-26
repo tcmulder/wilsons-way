@@ -5,12 +5,13 @@ import {
 	useCharacterContext,
 	useLevelContext,
 	useScoreContext,
+	useSettingsContext,
 } from '../context/useContexts';
 import { useGameAudio } from '../hooks/useSFX';
 import { trackMovement } from '../util/doMovement';
 
 /**
- * Runs character movement logic on every GSAP tick.
+ * Subscribes to the GSAP ticker and runs trackMovement each frame (for collisions, elevation, gravity).
  */
 export function useMovementTicker() {
 	const gameplayContext = useGameplayContext();
@@ -18,10 +19,11 @@ export function useMovementTicker() {
 	const { level } = useLevelContext();
 	const { setScore } = useScoreContext();
 	const { playSound } = useGameAudio();
+	const { settings } = useSettingsContext();
+	const { userAdjustedMilestone = 1 } = settings || {};
 
 	useEffect(() => {
 		if (!gameplayContext) return;
-
 		const tick = () =>
 			trackMovement({
 				gameplayContext,
@@ -31,8 +33,8 @@ export function useMovementTicker() {
 				characterModifiers,
 				playSound,
 				setCharacterModifiers,
+				userAdjustedMilestone,
 			});
-
 		gsap.ticker.add(tick);
 		return () => gsap.ticker.remove(tick);
 	}, [
@@ -43,6 +45,7 @@ export function useMovementTicker() {
 		characterModifiers,
 		playSound,
 		setCharacterModifiers,
+		userAdjustedMilestone,
 	]);
 }
 

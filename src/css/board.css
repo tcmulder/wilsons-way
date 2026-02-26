@@ -14,30 +14,12 @@
 	max-width: 100%;
 	aspect-ratio: 16 / 9;
 	margin: 0 auto;
-	outline: 1px dashed aquamarine; outline-offset: -2px;
 }
 
 .sr-board {
 	position: absolute;
 	inset: 0;
 	overflow: hidden;
-
-	&.is-dragging {
-		&::before {
-			content: 'Drop level SVG here';
-			position: absolute;
-			z-index: 999;
-			inset: 0;
-			display: grid;
-			place-items: center;
-			background: rgba(0, 0, 0, 0.3);
-			color: aquamarine;
-			font-size: 2em;
-			outline: 0.2em dashed aquamarine;
-			outline-offset: -0.4em;
-			backdrop-filter: blur(0.1rem) contrast(0.5);
-		}
-	}
 
 	svg {
 		display: block;

@@ -1,13 +1,13 @@
 /**
- * Styles for the playable characters.
+ * Styles for the playable character(s).
  */
 
 .sr-character {
+	/* Allows us to shift the character relative to the crash area. */
 	--sr-y-shift: 0.5cqw;
 	position: absolute;
-	left: 33cqw;
+	left: 25%;
 	bottom: 0;
-	transition: transform var(--sr-hangtime) ease-in;
 	will-change: transform;
 
 	&:focus {
@@ -19,23 +19,23 @@
 	}
 
 	[data-state] {
-		opacity: 0;
+		display: none;
 	}
 
 	&[data-ani="none"][data-jump="none"] [data-state="move-none"] {
-		opacity: 1;
+		display: block;
 	}
 
 	&[data-ani="sprite"][data-jump="none"] [data-state="ani-sprite"] {
-		opacity: 1;
+		display: block;
 	}
 
 	&[data-jump="up"] [data-state="jump-up"] {
-		opacity: 1;
+		display: block;
 	}
 
 	&[data-jump="down"] [data-state="jump-down"] {
-		opacity: 1;
+		display: block;
 	}
 
 	svg {
@@ -48,7 +48,7 @@
 	}
 }
 
-.sr-character-mesage {
+.sr-character-message {
 	-webkit-text-stroke: 0.1cqmax var(--sr-c-navy);
 	position: absolute;
 	inset: auto 0 125%;
@@ -76,6 +76,5 @@
 	z-index: 999;
 	inset: 0;
 	border-radius: 50%;
-	transform: scale(var(--sr-difficulty-crash, 1))
-		translateY(var(--sr-y-shift));
+	transform: scale(var(--sr-difficulty-crash, 1)) translateY(var(--sr-y-shift));
 }

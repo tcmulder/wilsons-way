@@ -33,13 +33,13 @@ export const getNearestShelves = (el, els) => {
 	for (const shelf of els) {
 		const shelfRect = shelf.getBoundingClientRect();
 
-		// Fudge a bit (otherwise character falls through shelves if falling too fast)
-		const fudge = charRect.height * 0.25;
-
 		// Bail if the shelf doesn't align left to right
 		if (!(shelfRect.left < charRect.right && shelfRect.right > charRect.left)) {
 			continue;
 		}
+
+		// Fudge a bit (otherwise character falls through shelves if falling too fast)
+		const fudge = charRect.height * 0.25;
 
 		// Get the shelf above the character
 		if (shelfRect.bottom <= charRect.top + fudge) {
@@ -65,7 +65,7 @@ export const getNearestShelves = (el, els) => {
 };
 
 /**
- * Check for collisions
+ * Check for and respond to collisions.
  *
  * @param {Object} props The properties object
  * @param {Object} props.els The elements object
@@ -74,9 +74,18 @@ export const getNearestShelves = (el, els) => {
  * @param {string[]} props.characterModifiers The current character modifiers
  * @param {Function} [props.playSound] Function to play a sound ('positive' | 'negative')
  * @param {Function} props.setCharacterModifiers Function to set the character modifiers
+ * @param {number} [props.userAdjustedMilestone] Multiplier for milestone delay
  */
 export const checkCollisions = (props) => {
-	const { els, setScore, level, characterModifiers, playSound, setCharacterModifiers } = props;
+	const {
+		els,
+		setScore,
+		level,
+		characterModifiers,
+		playSound,
+		setCharacterModifiers,
+		userAdjustedMilestone,
+	} = props;
 	const { elCharacterCrashArea, elCharacterMessage, elObstaclesVisible } = els;
 	elObstaclesVisible.forEach((el) => {
 		if (
@@ -96,11 +105,17 @@ export const checkCollisions = (props) => {
 				characterModifiers,
 				playSound,
 			});
-			doMilestones(el);
+			doMilestones({ el, userAdjustedMilestone });
 		}
 	});
 };
 
+/**
+ * Update elevation ref with character/shelf positions.
+ *
+ * @param {Object} els Element refs: elCharacter, elShelvesVisible, elBoard
+ * @param {Object} elevationRef Ref to update with above, below, head, foot, floor, etc.
+ */
 export const checkElevation = (els, elevationRef) => {
 	const { elCharacter, elShelvesVisible, elBoard } = els;
 	const elBoardRect = elBoard.getBoundingClientRect();

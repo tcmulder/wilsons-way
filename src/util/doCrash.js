@@ -45,7 +45,8 @@ export const doScoring = (props) => {
 	let num = parseInt(rawNum);
 	num = isPosPolarity({ el, characterModifiers }) ? -Math.abs(num) : num;
 	const way = num > 0 ? 'positive' : 'negative';
-	playSound(way);
+	const sound = el.dataset.sound || way;
+	playSound(sound);
 	setScore(prev => [ ...prev, { num, level } ]);
 	showCharacterMessage({
 		el: elCharacterMessage,
@@ -68,12 +69,13 @@ export const doModifiers = (props) => {
 	if (!isSkippableInvisible({ el, characterModifiers })) {
 		el.classList.add('is-collided');
 	}
-	// Get the modifier value and set it (it's set as a class on the character's element)
+	// Get the modifier value if any
 	const modifier = el.dataset.modifier;
 	if (!modifier) return;
 	// Set the modifier
 	setCharacterModifiers(prev => [ ...prev, modifier ]);
-	// Clear the modifier after 5 seconds
+	// Clear the modifier after a delay
+	const delay = parseInt(el.dataset.modifierDelay) || 5000;
 	setTimeout(() => {
 		setCharacterModifiers(prev => {
 			//  Remove the 1st matching modifier (so if new duplicate modifiers have been set they aren't cleared)
@@ -81,22 +83,30 @@ export const doModifiers = (props) => {
 			const newArr = index === -1 ? prev : [...prev.slice(0, index), ...prev.slice(index + 1)];
 			return newArr;
 		});
-	}, 5000);
+	}, delay);
 };
 
 /**
- * Handle milestone messaging.
+ * When a milestone obstacle is hit, show its message, freeze gameplay for the delay, then resume.
+ *
+ * @param {Object} props The properties object
+ * @param {HTMLElement} props.el The milestone target element (must have .sr-milestone-target and data-delay).
+ * @param {number} [props.userAdjustedMilestone=1] Multiplier for milestone delay
  */
-export const doMilestones = (el) => {
+export const doMilestones = (props) => {
+	const { el, userAdjustedMilestone = 1 } = props;
 	if (!el.classList.contains('sr-milestone-target')) return;
 	const elMessage = el.nextElementSibling;
-	const delay = parseInt(el.dataset.delay);
+	const baseDelay = parseInt(el.dataset.delay);
+	const multiplier = Number.isFinite(userAdjustedMilestone) ? userAdjustedMilestone : 1;
+	const delay = Math.max(0, Math.round(baseDelay * multiplier));
 	elMessage.style.setProperty('--sr-milestone-delay', `${delay}ms`);
 	elMessage.classList.add('is-visible');
+	elMessage.classList.add('is-frozen');
 	doFreeze();
 	setTimeout(() => {
-		elMessage.classList.remove('is-visible');
 		doFreeze(false);
+		elMessage.classList.remove('is-frozen');
 	}, delay);
 };
 

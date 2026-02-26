@@ -1,27 +1,30 @@
 import { useRef, useEffect } from 'react';
 import positiveSound from '../mp3/positive.mp3';
 import negativeSound from '../mp3/negative.mp3';
+import buffSound from '../mp3/buff.mp3';
+import debuffSound from '../mp3/debuff.mp3';
 import musicSound from '../mp3/music.mp3';
 import { useSettingsContext } from '../context/useContexts';
 
+/**
+ * Hook: background music and sound effects
+ *
+ * @returns {{ playSound: (name: 'positive'|'negative', shouldSound?: boolean) => void }}
+ */
 export const useGameAudio = () => {
 	const musicRef = useRef(null);
 	const soundsRef = useRef({});
 	const { makeSFX, makeMusic } = useSettingsContext();
 
+	// Initialize background music and sound effects when the component mounts
 	useEffect(() => {
-		// Initialize background music
 		musicRef.current = new Audio(musicSound);
 		musicRef.current.loop = true;
-		
-		// Preload sound effects
 		soundsRef.current.positive = new Audio(positiveSound);
 		soundsRef.current.negative = new Audio(negativeSound);
-		
-		return () => {
-		// Cleanup
-		musicRef.current?.pause();
-		};
+		soundsRef.current.buff = new Audio(buffSound);
+		soundsRef.current.debuff = new Audio(debuffSound);
+		return () => musicRef.current?.pause();
 	}, []);
 
 	// Sync music playback to makeMusic state
@@ -36,9 +39,7 @@ export const useGameAudio = () => {
 			// Prevent console error on initial load (NotAllowedError due to no user interaction)
 			if (p && typeof p.catch === 'function') {
 				p.catch(() => {
-					window.addEventListener('keydown', () => {
-						music.play();
-					}, { once: true });
+					window.addEventListener('keydown', () => music.play(), { once: true });
 				});
 			}
 		} else {
@@ -46,7 +47,7 @@ export const useGameAudio = () => {
 		}
 	}, [makeMusic]);
 
-	// Play sound effect when SFX is turned on (may be blocked by autoplay policy until user has interacted)
+	// Play sound effect when SFX is turned on
 	useEffect(() => {
 		if (makeSFX && soundsRef.current.positive) {
 			const p = soundsRef.current.positive.play();
@@ -56,11 +57,18 @@ export const useGameAudio = () => {
 			}
 		}
 	}, [makeSFX]);
-  
+
+	/**
+	 * Play a sound effect.
+	 *
+	 * @param {'positive'|'negative'} name Which effect to play.
+	 * @param {boolean} [shouldSound] Override SFX enabled (defaults to makeSFX).
+	 */
 	const playSound = (name, shouldSound = makeSFX) => {
 		if (!shouldSound) return;
 		const audio = soundsRef.current[name];
 		if (audio) {
+			// By cloning we allow the same audio element to overlap itself
 			const clone = audio.cloneNode();
 			const onEnded = () => {
 				clone.removeEventListener('ended', onEnded);

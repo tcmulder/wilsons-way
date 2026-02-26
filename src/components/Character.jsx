@@ -5,6 +5,11 @@ import { createAniSprite } from '../util/aniSprite';
 import { useCharacterMovement } from '../util/doMovement';
 import '../css/character.css';
 
+/**
+ * Character hero: loads character SVG by id, runs sprite animation, applies movement hook and modifier classes.
+ * 
+ * @returns {React.ReactNode} The Character component.
+ */
 const Character = () => {
 	const { debug } = useDebugContext();
 	const { characterId, characterStatus, setCharacterStatus, characterModifiers } = useCharacterContext();
@@ -13,8 +18,9 @@ const Character = () => {
 	const { userAdjustedCrash, characterHeight } = settings;
 	const { currentLevelId } = useLevelContext();
 	const characterSvgRef = useRef(null);
-	const characterSVG = `${window.sr.url}public/svg/character-${characterId}.svg`;
+	const characterSvgUrl = `${window.sr.url}public/svg/character-${characterId}.svg`;
 
+	// When the SVG loads, create the animation sprite and replace the character SVG with it.
 	const handleSvgLoad = useCallback((svgElement) => {
 		if (characterSvgRef.current && svgElement) {
 			characterSvgRef.current.replaceChildren(svgElement);
@@ -22,10 +28,13 @@ const Character = () => {
 		}
 	}, []);
 
+	// Update the character status ref when the character status changes
 	useEffect(() => {
+		// We use a ref so we can update the status from the movement hook without re-rendering the component.
 		statusRef.current = { ...statusRef.current, ...characterStatus };
 	}, [characterStatus, statusRef]);
 
+	// Apply the movement hook to the character (handles keyboard controls and autoplay).
 	useCharacterMovement({
 		debug,
 		characterStatus,
@@ -38,6 +47,7 @@ const Character = () => {
 		currentLevelId,
 	});
 
+	// Render the character component.
 	return (
 		<div
 			className={`sr-character${characterModifiers.map(modifier => ` is-mod-${modifier}`).join('')}`}
@@ -48,10 +58,10 @@ const Character = () => {
 			style={{'--sr-h-character': `${characterHeight}cqmin`}}
 		>
 			<div className="sr-character-svg" ref={characterSvgRef}>
-				<SVG path={characterSVG} onSvgLoad={handleSvgLoad} />
+				<SVG path={characterSvgUrl} onSvgLoad={handleSvgLoad} />
 			</div>
 			<div className="sr-character-crash" aria-hidden="true" style={{'--sr-difficulty-crash': userAdjustedCrash || 1}} />
-			<div className="sr-character-mesage" />
+			<div className="sr-character-message" />
 		</div>
 	);
 };

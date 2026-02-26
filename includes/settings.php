@@ -30,7 +30,9 @@ function shelf_runner_action_links( $links ) {
 add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'shelf_runner_action_links' );
 
 /**
- * Add sidebar link.
+ * Add sidebar link to the plugin settings page.
+ *
+ * @return void
  */
 function shelf_runner_add_admin_menu() {
 	add_menu_page(
@@ -47,6 +49,8 @@ add_action( 'admin_menu', 'shelf_runner_add_admin_menu' );
 
 /**
  * Output the options page form.
+ *
+ * @return void
  */
 function shelf_runner_options_page() {
 	echo '<form action="options.php" method="post">';
@@ -74,6 +78,8 @@ function shelf_runner_accordion( $content, $summary = '' ) {
 
 /**
  * Establish option page setting sections/fields.
+ *
+ * @return void
  */
 function shelf_runner_settings_init() {
 	// Shared WYSIWYG options for editor fields.
@@ -395,7 +401,23 @@ function shelf_runner_settings_init() {
 				printf(
 					'<input name="shelf_runner_settings_speed" value="%s" type="number" step="1" min="1" max="200" required /><p><em>%s</em></p>',
 					esc_attr( (string) get_option( 'shelf_runner_settings_speed' ) ),
-					esc_html( __( '50% is average. Lower values will make the game easier. (Note that the game was originally calibrated for 50% for jump trajectories, etc.)', 'shelf-runner' ) )
+					esc_html( __( '50% is average. Lower values will make the game harder. (Note that the game was originally calibrated for 50% for jump trajectories, etc.)', 'shelf-runner' ) )
+				);
+			},
+			'shelf_runner_settings',
+			'sr_section'
+		);
+
+		add_option( 'shelf_runner_settings_milestone_duration', 50 );
+		register_setting( 'shelf_runner_settings', 'shelf_runner_settings_milestone_duration' );
+		add_settings_field(
+			'shelf_runner_settings_milestone_duration',
+			esc_html( __( 'Milestone duration:', 'shelf-runner' ) ),
+			function () {
+				printf(
+					'<input name="shelf_runner_settings_milestone_duration" value="%s" type="number" step="1" min="1" max="100" required /><p><em>%s</em></p>',
+					esc_attr( (string) get_option( 'shelf_runner_settings_milestone_duration' ) ),
+					esc_html( __( '50% is average. Lower values will make the duration milestones appear faster.', 'shelf-runner' ) )
 				);
 			},
 			'shelf_runner_settings',

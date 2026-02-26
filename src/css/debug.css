@@ -1,25 +1,45 @@
+:root {
+	--sr-debug-c: black;
+	--sr-debug-c-2: lime;
+	--sr-debug-c-3: green;
+}
 .sr-debug {
 	position: absolute;
 	inset: auto auto 0 0;
 	z-index: 10;
 	padding: 0.1em;
-	background-color: lime;
-	font-size: 0.8em;
+	background-color: var(--sr-debug-c-2);
+	font-size: 0.4em;
 	line-height: 1;
+	font-weight: bold;
+
+	* {
+		font-family: monospace;
+		font-weight: normal;
+	}
+
+	&::before {
+		content: '';
+		position: absolute;
+		inset: -4em;
+		z-index: -1;
+	}
 
 	button,
 	select {
 		cursor: pointer;
 		width: 100%;
 		padding: 0.2em 0.1em 0;
-		background-color: transparent;
+		background-color: var(--sr-debug-c-3);
+		border: 0;
 		border-radius: 0.2em;
-		border: 2px solid currentColor;
 		font-size: 1em;
 		line-height: 1;
 		text-align: left;
+		color: var(--sr-debug-c-2);
 		&:hover {
-			background-color: greenyellow;
+			background-color: transparent;
+			outline: 1px solid var(--sr-debug-c-3);
 		}
 	}
 
@@ -29,29 +49,59 @@
 		align-items: center;
 		gap: 0.5em;
 		white-space: nowrap;
-		border-bottom: 1px dashed currentColor;
+		&:not(:first-child) {
+			border-top: 1px solid var(--sr-debug-c-3);
+		}
 	}
 
 	:is([type="text"], [type="number"]) {
-		width: 2.5em;
+		width: 3.5em;
 		margin-left: auto;
 		background-color: transparent;
 		border: 0;
 		font-size: inherit;
 		text-align: right;
+		color: var(--sr-debug-c-2);
 	}
 
 	:is([type="number"]) {
-		transform: translateX(0.2em);
+		color: var(--sr-debug-c-2);
+		transform: translateX(1em);
 	}
 
 	:is([type="checkbox"]) {
 		cursor: pointer;
 		margin-left: auto;
-		width: 1.5em;
-		height: 1.5em;
-		accent-color: gray;
-		accent-color: black;
+		width: 1.2em;
+		height: 1.2em;
+		accent-color: var(--sr-debug-c-2);
+	}
+}
+button.sr-debug__toggle {
+	&,
+	&:hover {
+		background-color: transparent;
+		color: var(--sr-debug-c-1);
+	}
+}
+.sr-stage:has(.sr-debug.is-dragging) {
+	&::before {
+		pointer-events: none;
+		content: "↙ DROP SVG LEVEL HERE";
+		font-size: 5em;
+		position: absolute;
+		inset: 0;
+		z-index: 999;
+		display: flex;
+		align-items: flex-end;
+		padding: 1em;
+		background-color: color-mix(in srgb, var(--sr-debug-c-3) 40%, transparent);
+		outline: 0.2em dashed currentColor;
+		outline-offset: -0.3em;
+		font-family: monospace;
+		font-family: var(--sr-ff);
+		color: var(--sr-debug-c-2);
+		backdrop-filter: grayscale(1);
 	}
 }
 
@@ -62,10 +112,9 @@
 	display: flex;
 	flex-direction: column;
 	padding: 0.2em;
+	background-color: color-mix(in srgb, var(--sr-debug-c) 80%, transparent);
 	gap: 0.2em;
-	background-color: color-mix(in srgb, lime 80%, transparent);
-	border-radius: 0 0.2em 0.2em 0;
-	color: black;
+	color: var(--sr-debug-c-2);
 }
 
 .sr-debug--outlines ~ .sr-gameplay {

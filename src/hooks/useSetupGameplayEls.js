@@ -2,25 +2,22 @@ import { useEffect } from 'react';
 import { useGameplayContext, useLevelContext } from '../context/useContexts';
 
 /**
- * Sets up board element refs from the level SVG: shelves, obstacles, character, etc.
+ * Sets up board element refs from the level SVG: shelves, obstacles, character, crash area, etc.
  *
- * @param {Object} boardRef React ref to the gameplay board container
+ * @param {React.RefObject<HTMLElement>} boardRef Ref to the gameplay wrapper
  */
 export function useSetupGameplayElements(boardRef) {
 	const { elsRef, elevationRef } = useGameplayContext();
 	const { currentLevelId } = useLevelContext();
 
-	/**
-	 * Get elements from the new level SVG and configure them for use
-	 */
+	// Get elements from the new level SVG and configure them for use
 	useEffect(() => {
 		// Get the board where the level SVG shown
 		if (!boardRef?.current) return;
 		const elBoard = boardRef.current.querySelector('.sr-board');
 		// Elevated shelves we can jump on/off plus the ground floor
 		const elShelves = elBoard
-			.querySelector('.sr-shelves')
-			?.querySelectorAll(':scope > *') || [];
+			.querySelectorAll('.sr-shelves > *') || [];
 		// All obstacles (good bad or neutral)
 		const elObstacles = [];
 		// Add all obstacles that score on impact (good or bad)
@@ -34,17 +31,19 @@ export function useSetupGameplayElements(boardRef) {
 					elObstacles.push(elChild);
 				});
 			});
-		// Setup milestones
+		// Get and setup milestones
 		elBoard
 			.querySelectorAll('.sr-milestones')
 			?.forEach((elMilestones) => {
 				elMilestones.querySelectorAll('.sr-milestone-target').forEach((elMilestoneTarget) => {
-					const delay = elMilestoneTarget.dataset.delay || elMilestones.dataset.delay || '500';
-					elMilestoneTarget.dataset.delay = delay;
+					// Set the delay (set by parent, or milestone itself, with a fallback of 500ms)
+					const delay =
+						Number(elMilestoneTarget.dataset.delay || elMilestones.dataset.delay || '5000');
+					elMilestoneTarget.dataset.delay = String(delay);
 					elObstacles.push(elMilestoneTarget);
 				});
 			});
-		// Identify as negative/positive
+		// Identify as negative/positive/neutral
 		elObstacles.forEach((obstacle) => {
 			if (obstacle.dataset?.score?.startsWith('-')) {
 				obstacle.classList.add('is-negative');
@@ -61,7 +60,7 @@ export function useSetupGameplayElements(boardRef) {
 			elBoard,
 			elCharacter,
 			elCharacterCrashArea: elCharacter?.querySelector('.sr-character-crash'),
-			elCharacterMessage: elCharacter?.querySelector('.sr-character-mesage'),
+			elCharacterMessage: elCharacter?.querySelector('.sr-character-message'),
 			// dynamic els (change per level)
 			elShelves: Array.from(elShelves),
 			elObstacles,

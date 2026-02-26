@@ -1,7 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useDebugContext, useSettingsContext, useLevelContext, useCharacterContext } from '../context/useContexts';
+import {
+	useDebugContext,
+	useSettingsContext,
+	useCharacterContext,
+} from '../context/useContexts';
 import { routes } from '../routes';
+import { useDebugDropLevel } from '../hooks/useDebugDropLevel';
 
 import '../css/debug.css';
 
@@ -22,7 +27,12 @@ const setStateAndQuery = (props) => {
 };
 
 /**
- * Generic button
+ * Debug button.
+ * 
+ * @param {Object} props
+ * @param {string} props.label Button text
+ * @param {() => void} props.onClick Handler
+ * @param {string} [props.title] Title/tooltip
  */
 const DebugButton = ({ label, onClick, title = '' }) => {
 	return (
@@ -33,7 +43,14 @@ const DebugButton = ({ label, onClick, title = '' }) => {
 };
 
 /**
- * Checkbox selector
+ * Checkbox selector.
+ * 
+ * @param {Object} props
+ * @param {string} props.label Label text
+ * @param {string} [props.param] URL param key (defaults to label lowercased)
+ * @param {boolean} props.value Checked state
+ * @param {(v: boolean) => void} props.setValue Setter (also pushes URL)
+ * @param {string} [props.title] Title/tooltip
  */
 const DebugCheckbox = ({ label, param = '', value, setValue, title = '' }) => {
 	const k = param || label.toLowerCase();
@@ -56,7 +73,14 @@ const DebugCheckbox = ({ label, param = '', value, setValue, title = '' }) => {
 };
 
 /**
- * Number selector
+ * Number input.
+ * 
+ * @param {Object} props
+ * @param {string} props.label Label text
+ * @param {string} [props.param] URL param key (defaults to label lowercased)
+ * @param {number} props.value Current value
+ * @param {(v: number) => void} props.setValue Setter (also pushes URL)
+ * @param {string} [props.title] Title/tooltip
  */
 const DebugNumber = ({ label, param = '', value, setValue, title = '' }) => {
 	const k = param || label.toLowerCase();
@@ -80,7 +104,12 @@ const DebugNumber = ({ label, param = '', value, setValue, title = '' }) => {
 };
 
 /**
- * Refresh and optionally reset all debug settings
+ * Refresh and optionally reset all debug settings.
+ * 
+ * @param {Object} props
+ * @param {boolean} [props.reset] If true, reset URL to debug=true and reload
+ * @param {string} [props.title] Title/tooltip
+ * @param {string} [props.label] Button text
  */
 const DebugRefresh = ({ reset = false, title = '', label = '' }) => {
 	return (
@@ -105,73 +134,47 @@ const DebugRefresh = ({ reset = false, title = '', label = '' }) => {
 };
 
 /**
- * Apply debug settings (usually from query string on page load)
+ * Load debug settings from query string on page load.
  * 
- * @param {Object} props The properties object
- * @param {Object} props.debug The debug object
- * @param {Object} props.debugIsAllowed Whether or not to debug (clone of settings.debugAllowed)
- * @param {Function} props.setLevel The function to set the level
- * @param {Function} props.setCharacterId The function to set the character id
- * @param {Function} props.setMakeSFX The function to set the make SFX
- * @param {Function} props.setMakeMusic The function to set the make music
- * @param {Function} props.setSettings The function to set the settings
- * @param {Function} props.setJump The function to set the jump
- * @returns {void}
+ * @param {boolean} should If true, set the state.
+ * @param {Function} set Function to set the state.
  */
-const useDebug = (props) => {
-	const { debug, debugIsAllowed, setLevel, setCharacterId, setMakeSFX, setMakeMusic, setSettings, setJump } = props;
-	useEffect(() => {
-		if (debugIsAllowed && debug) {
-			if (debug?.level) {
-				setLevel(parseInt(debug.level));
-			}
-			if (debug?.characterId) {
-				setCharacterId(parseInt(debug.characterId));
-			}
-			if (debug?.makeSFX) {
-				setMakeSFX(debug.makeSFX);
-			}
-			if (debug?.makeMusic) {
-				setMakeMusic(debug.makeMusic);
-			}
-			if (debug?.gameplaySpeed) {
-				setSettings((prev) => ({ ...prev, gameplaySpeed: debug.gameplaySpeed}));
-			}
-			if (debug?.jumpHeight) {
-				setJump((prev) => ({ ...prev, height: debug.jumpHeight / 100}));
-			}
-			if (debug?.jumpHangtime) {
-				setJump((prev) => ({ ...prev, hangtime: debug.jumpHangtime}));
-			}
-			if (debug?.characterHeight) {
-				setSettings((prev) => ({ ...prev, characterHeight: debug.characterHeight}));
-			}
-		}
-	}, [debug, setLevel, setCharacterId, setMakeSFX, setMakeMusic, setSettings, setJump, debugIsAllowed]);
+const loadState = (should, set) => {
+	if (should) set();
 };
 
+/**
+ * Debug panel (only when settings.debugAllowed and debug enabled).
+ */
 export const Debug = () => {
 	const { debug, setDebug } = useDebugContext();
 	const { settings, setSettings, setJump, jump, makeMusic, setMakeMusic, makeSFX, setMakeSFX } = useSettingsContext();
-	const { level, setLevel } = useLevelContext();
+	const { debugAllowed } = settings;
 	const { characterId, setCharacterId } = useCharacterContext();
 	const navigate = useNavigate();
 	const pagePath = useLocation().pathname;
+	const debugRef = useRef(null);
 	
 	// Setup menu open/close state
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-	// Apply debug settings from state
-	useDebug({
-		debugIsAllowed: settings.debugAllowed,
-		debug,
-		setLevel,
-		setCharacterId,
-		setMakeSFX,
-		setMakeMusic,
-		setSettings,
-		setJump,
-	});
+	// Apply debug settings from query string on page load
+	useEffect(() => {
+		if (debugAllowed && debug) {
+			loadState(debug?.characterId, () => setCharacterId(parseInt(debug.characterId)));
+			loadState(debug?.makeSFX, () => setMakeSFX(debug.makeSFX));
+			loadState(debug?.makeMusic, () => setMakeMusic(debug.makeMusic));
+			loadState(debug?.gameplaySpeed, () => setSettings((prev) => ({ ...prev, gameplaySpeed: debug.gameplaySpeed})));
+			loadState(debug?.jumpHeight, () => setJump((prev) => ({ ...prev, height: debug.jumpHeight / 100})));
+			loadState(debug?.jumpHangtime, () => setJump((prev) => ({ ...prev, hangtime: debug.jumpHangtime})));
+			loadState(debug?.characterHeight, () => setSettings((prev) => ({ ...prev, characterHeight: debug.characterHeight})));
+			loadState(debug?.userAdjustedMilestone, () => setSettings((prev) => ({ ...prev, userAdjustedMilestone: (debug.userAdjustedMilestone / 100) / 0.5 })));
+			loadState(debug?.userAdjustedSpeed, () => setSettings((prev) => ({ ...prev, userAdjustedSpeed: debug.userAdjustedSpeed })));
+		}
+	}, [debug, setCharacterId, setMakeSFX, setMakeMusic, setSettings, setJump, debugAllowed]);
+	
+	// Allow drag-and-drop of SVG level files over the debug panel
+	useDebugDropLevel(debugRef);
 	
 	// Bail if debug is not allowed or enabled
 	if (!settings.debugAllowed || !debug) {
@@ -179,17 +182,13 @@ export const Debug = () => {
 	}
 	
 	return (
-		<div className={`sr-debug${debug?.outlines ? ' sr-debug--outlines' : ''}`}>
-			<button onClick={(e) => { e.preventDefault(); setIsMenuOpen(!isMenuOpen); }}>🐞 Debug</button>
+		<div
+			className={`sr-debug${debug?.outlines ? ' sr-debug--outlines' : ''}`}
+			ref={debugRef}
+		>
+			<button className="sr-debug__toggle" onClick={(e) => { e.preventDefault(); setIsMenuOpen(!isMenuOpen); }}>🐞 Debug</button>
 			{isMenuOpen && (
-				<div className="sr-debug__menu">
-					<DebugNumber
-						label="🧱 Level"
-						param="level"
-						value={level}
-						setValue={setLevel}
-						title="Set the level number"
-					/>
+			<div className="sr-debug__menu">
 					<DebugNumber
 						label="🦸 Character"
 						param="characterId"
@@ -205,11 +204,18 @@ export const Debug = () => {
 						title="Set the height of the character"
 					/>
 					<DebugNumber
-						label="🏃‍➡️ Speed (px/s)"
+						label="🏎️ Speed (%)"
+						param="userAdjustedMilestone"
+						value={(settings.userAdjustedSpeed)}
+						setValue={(value) => setSettings({ ...settings, userAdjustedSpeed: value })}
+						title="The user-adjusted speed multiplier (usually use base speed instead)."
+					/>
+					<DebugNumber
+						label="🏃‍➡️ Base (px/s)"
 						param="gameplaySpeed"
 						value={settings.gameplaySpeed}
 						setValue={(value) => setSettings({ ...settings, gameplaySpeed: value })}
-						title="Set the gameplay speed in pixels per second"
+						title="Set the base gameplay speed in pixels per second"
 					/>
 					<DebugNumber
 						label="🦘 Height (%)"
@@ -224,6 +230,13 @@ export const Debug = () => {
 						value={jump.hangtime}
 						setValue={(value) => setJump({ ...jump, hangtime: value })}
 						title="Set the jump hangtime in seconds"
+					/>
+					<DebugNumber
+						label="💬 Milestone (%)"
+						param="userAdjustedMilestone"
+						value={(settings.userAdjustedMilestone * 100) * 0.5}
+						setValue={(value) => setSettings({ ...settings, userAdjustedMilestone: (value / 100) / 0.5 })}
+						title="Set the milestone duration modifier in percentage (0 to skip)"
 					/>
 					<DebugCheckbox
 						label="🎵 Music"
@@ -268,12 +281,15 @@ export const Debug = () => {
 					/>
 					<select value={pagePath} onChange={(e) => { e.preventDefault(); navigate(e.target.value); }} title="Navigate to a different page">
 						{routes.map(({ path, title }) => (
-							<option key={path} value={path}>📄 {title}</option>
+							<option key={path} value={path}>📄 goto: {title}</option>
 						))}
 					</select>
 					<DebugButton
 						label="🫥 Un-collide"
-						onClick={() => { document.querySelectorAll('.is-collided').forEach(el => el.classList.remove('is-collided')); }}
+						onClick={() => {
+							document.querySelectorAll('.is-collided').forEach(el => el.classList.remove('is-collided'));
+							document.querySelectorAll('.sr-milestone-message.is-visible').forEach(el => el.classList.remove('is-visible'));	
+						}}
 						title="Reveal and reset all collided elements"
 					/>
 					<DebugRefresh

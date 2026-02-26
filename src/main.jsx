@@ -1,3 +1,6 @@
+/**
+ * Game entry point: mounts the app with context providers into #root.
+ */
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import './css/global.css';
