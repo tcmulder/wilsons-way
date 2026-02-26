@@ -209,15 +209,15 @@ export function useCharacterMovement(props) {
 		statusRef,
 		currentLevelId,
 	} = props;
-  // Auto-play when debug autoplay is not '0', and only once timelines exist (level has loaded)
-  useEffect(() => {
+	// Auto-play when debug autoplay is not '0', and only once timelines exist (level has loaded)
+	useEffect(() => {
 	if (debug?.autoplay !== false && timelinesRef.current?.length) {
-	  doRun({ timelines: timelinesRef.current, setCharacterStatus, direction: 'forward' });
+		doRun({ timelines: timelinesRef.current, setCharacterStatus, direction: 'forward' });
 	}
-  }, [debug, timelinesRef, setCharacterStatus, currentLevelId]);
+	}, [debug, timelinesRef, setCharacterStatus, currentLevelId]);
 
-  useEffect(() => {
-    const handleKeyDown = (e) => {
+	useEffect(() => {
+		const handleKeyDown = (e) => {
 		// Ignore auto-repeat so logic only runs once per key press
 		if (e.repeat) return;
 		if (e.key === 'ArrowUp' || e.key === ' ') {
@@ -226,42 +226,42 @@ export function useCharacterMovement(props) {
 		}
 
 		if (debug?.autoplay === false) {
-		  if (e.key === 'ArrowDown') {
+			if (e.key === 'ArrowDown') {
 			e.preventDefault();
 			// Toggle play/pause on each ArrowDown press
 			if (characterStatus.ani === 'none') {
-			  // Not moving: play forward
-			  doRun({ direction: 'forward', timelines: timelinesRef.current, setCharacterStatus });
+				// Not moving: play forward
+				doRun({ direction: 'forward', timelines: timelinesRef.current, setCharacterStatus });
 			} else {
-			  // Currently moving: pause
-			  doPause({ timelines: timelinesRef.current, setCharacterStatus });
+				// Currently moving: pause
+				doPause({ timelines: timelinesRef.current, setCharacterStatus });
 			}
-		  }
-		  if (e.key === 'ArrowRight') {
+			}
+			if (e.key === 'ArrowRight') {
 			e.preventDefault();
 			doRun({ direction: 'forward', timelines: timelinesRef.current, setCharacterStatus });
-		  }
-		  if (e.key === 'ArrowLeft') {
+			}
+			if (e.key === 'ArrowLeft') {
 			e.preventDefault();
 			doRun({ direction: 'backward', timelines: timelinesRef.current, setCharacterStatus });
-		  }
+			}
 		}
 	};
 
 	const handleKeyUp = (e) => {
-	  if (debug?.autoplay === false) {
+		if (debug?.autoplay === false) {
 		if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
-		  e.preventDefault();
-		  doPause({ timelines: timelinesRef.current, setCharacterStatus });
+			e.preventDefault();
+			doPause({ timelines: timelinesRef.current, setCharacterStatus });
 		}
-	  }
+		}
 	};
 
-    window.addEventListener('keydown', handleKeyDown);
-    window.addEventListener('keyup', handleKeyUp);
-    return () => {
-	  window.removeEventListener('keydown', handleKeyDown);
-	  window.removeEventListener('keyup', handleKeyUp);
+		window.addEventListener('keydown', handleKeyDown);
+		window.addEventListener('keyup', handleKeyUp);
+		return () => {
+		window.removeEventListener('keydown', handleKeyDown);
+		window.removeEventListener('keyup', handleKeyUp);
 	};
-  }, [debug, characterStatus, setCharacterStatus, jumpRef, timelinesRef, elevationRef, statusRef, elsRef]);
+	}, [debug, characterStatus, setCharacterStatus, jumpRef, timelinesRef, elevationRef, statusRef, elsRef]);
 }
