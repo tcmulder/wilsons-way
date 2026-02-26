@@ -45,7 +45,8 @@ export const doScoring = (props) => {
 	let num = parseInt(rawNum);
 	num = isPosPolarity({ el, characterModifiers }) ? -Math.abs(num) : num;
 	const way = num > 0 ? 'positive' : 'negative';
-	playSound(way);
+	const sound = el.dataset.sound || way;
+	playSound(sound);
 	setScore(prev => [ ...prev, { num, level } ]);
 	showCharacterMessage({
 		el: elCharacterMessage,

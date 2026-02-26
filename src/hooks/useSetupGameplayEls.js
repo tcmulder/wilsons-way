@@ -4,9 +4,8 @@ import { useSettingsContext } from '../context/useContexts';
 
 /**
  * Sets up board element refs from the level SVG: shelves, obstacles, character, crash area, etc.
- * Also runs IntersectionObserver to track visible shelves/obstacles (with fallback if observer fails).
  *
- * @param {React.RefObject<HTMLElement>} boardRef Ref to the gameplay wrapper (e.g. .sr-gameplay); .sr-board is found inside it.
+ * @param {React.RefObject<HTMLElement>} boardRef Ref to the gameplay wrapper
  */
 export function useSetupGameplayElements(boardRef) {
 	const { elsRef, elevationRef } = useGameplayContext();
@@ -14,9 +13,7 @@ export function useSetupGameplayElements(boardRef) {
 	const { settings } = useSettingsContext();
 	const { userAdjustedMilestone } = settings;
 
-	/**
-	 * Get elements from the new level SVG and configure them for use
-	 */
+	// Get elements from the new level SVG and configure them for use
 	useEffect(() => {
 		// Get the board where the level SVG shown
 		if (!boardRef?.current) return;
@@ -37,12 +34,13 @@ export function useSetupGameplayElements(boardRef) {
 					elObstacles.push(elChild);
 				});
 			});
-		// Setup milestones
+		// Get and setup milestones
 		elBoard
 			.querySelectorAll('.sr-milestones')
 			?.forEach((elMilestones) => {
 				const milestoneFactor = Number(userAdjustedMilestone) || 1;
 				elMilestones.querySelectorAll('.sr-milestone-target').forEach((elMilestoneTarget) => {
+					// Set the delay (set by parent, or milestone itself, with a fallback of 500ms, and the user can scale the delay)
 					const baseDelay =
 						Number(elMilestoneTarget.dataset.delay || elMilestones.dataset.delay || '500');
 					const adjustedDelay = baseDelay * milestoneFactor;
@@ -50,7 +48,7 @@ export function useSetupGameplayElements(boardRef) {
 					elObstacles.push(elMilestoneTarget);
 				});
 			});
-		// Identify as negative/positive
+		// Identify as negative/positive/neutral
 		elObstacles.forEach((obstacle) => {
 			if (obstacle.dataset?.score?.startsWith('-')) {
 				obstacle.classList.add('is-negative');

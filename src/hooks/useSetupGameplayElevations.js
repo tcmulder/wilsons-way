@@ -5,15 +5,15 @@ import { useGameplayContext, useLevelContext, useSettingsContext } from '../cont
 
 /**
  * Sets elevationRef (ceiling, floor) and jumpRef (height, hangtime) from board/sidewalk, and syncs character Y on resize.
- * Observes the board with ResizeObserver so values stay correct when the window or container resizes.
  */
 export function useSetupGameplayElevations() {
 	const { elsRef, elevationRef, jumpRef } = useGameplayContext();
 	const { jump } = useSettingsContext();
 	const { currentLevelId } = useLevelContext();
 
+	// Set the elevations and jump values when the component mounts
 	useEffect(() => {
-		if (!elsRef?.current?.elBoard || !elsRef?.current?.elCharacter || !elsRef?.current?.elShelves?.at(-1)) return;
+		if (!elsRef?.current?.elBoard || !elsRef?.current?.elCharacter || !elsRef?.current?.elShelves?.length) return;
 		const updateElevations = () => {
 			const elBoardRect = elsRef.current.elBoard.getBoundingClientRect();
 			const elFloorRect = elsRef.current.elShelves.filter(el => el.classList.contains('sr-sidewalk'))[0].getBoundingClientRect();
@@ -30,6 +30,8 @@ export function useSetupGameplayElevations() {
 		};
 		const throttledUpdate = throttle(updateElevations, 250);
 		updateElevations();
+		
+		// Observe the board with ResizeObserver so values stay correct when the window or container resizes.
 		const observer = new ResizeObserver(throttledUpdate);
 		observer.observe(elsRef.current.elBoard);
 		return () => {

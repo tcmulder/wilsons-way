@@ -10,7 +10,7 @@ import { useGameAudio } from '../hooks/useSFX';
 import { trackMovement } from '../util/doMovement';
 
 /**
- * Subscribes to the GSAP ticker and runs trackMovement each frame (collisions, elevation, gravity).
+ * Subscribes to the GSAP ticker and runs trackMovement each frame (for collisions, elevation, gravity).
  */
 export function useMovementTicker() {
 	const gameplayContext = useGameplayContext();
@@ -21,7 +21,6 @@ export function useMovementTicker() {
 
 	useEffect(() => {
 		if (!gameplayContext) return;
-
 		const tick = () =>
 			trackMovement({
 				gameplayContext,
@@ -32,7 +31,6 @@ export function useMovementTicker() {
 				playSound,
 				setCharacterModifiers,
 			});
-
 		gsap.ticker.add(tick);
 		return () => gsap.ticker.remove(tick);
 	}, [
