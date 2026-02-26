@@ -8,14 +8,10 @@
 wp_enqueue_style( 'shelf-runner-style' );
 wp_enqueue_script( 'shelf-runner-script' );
 
-$iframe_url = shelf_runner_url();
+$iframe_url = shelf_runner_url( array( 'debug' => true ) );
 if ( ! $iframe_url ) {
 	printf( '<p>%s</p>', esc_html( __( 'Error: please enter an iframe URL in the plugin settings.', 'shelf-runner' ) ) );
 	return;
-}
-$debug_enabled = get_option( 'shelf_runner_settings_debug', false );
-if ( $debug_enabled ) {
-	$iframe_url = add_query_arg( 'debug', 'true', $iframe_url );
 }
 ?>
 <?php if ( $parent_shortcode_call_uses_lightbox ) : ?>
