@@ -30,5 +30,5 @@
 	}
 </style>
 <div class="sr-iframe-frame">
-	<iframe src="<?php echo esc_url( shelf_runner_url() ); ?>"></iframe>
+	<iframe src="<?php echo esc_url( shelf_runner_url( array( 'debug' => true ) ) ); ?>"></iframe>
 </div>
