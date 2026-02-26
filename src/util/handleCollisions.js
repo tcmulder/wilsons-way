@@ -33,13 +33,13 @@ export const getNearestShelves = (el, els) => {
 	for (const shelf of els) {
 		const shelfRect = shelf.getBoundingClientRect();
 
-		// Fudge a bit (otherwise character falls through shelves if falling too fast)
-		const fudge = charRect.height * 0.25;
-
 		// Bail if the shelf doesn't align left to right
 		if (!(shelfRect.left < charRect.right && shelfRect.right > charRect.left)) {
 			continue;
 		}
+
+		// Fudge a bit (otherwise character falls through shelves if falling too fast)
+		const fudge = charRect.height * 0.25;
 
 		// Get the shelf above the character
 		if (shelfRect.bottom <= charRect.top + fudge) {
@@ -65,7 +65,7 @@ export const getNearestShelves = (el, els) => {
 };
 
 /**
- * Check for collisions
+ * Check for and respond to collisions.
  *
  * @param {Object} props The properties object
  * @param {Object} props.els The elements object
@@ -102,8 +102,7 @@ export const checkCollisions = (props) => {
 };
 
 /**
- * Update elevation ref with character/shelf positions (ceiling, floor, head, foot, above, below).
- * Used by movement to know when to fall (doJumpDown) and for jump height.
+ * Update elevation ref with character/shelf positions.
  *
  * @param {Object} els Element refs: elCharacter, elShelvesVisible, elBoard
  * @param {Object} elevationRef Ref to update with above, below, head, foot, floor, etc.
