@@ -129,21 +129,15 @@ export const doRun = (props) => {
  * @param {Object} props.elsRef The els ref object
  */
 const doJumpDown = (props) => {
-	if (isFrozen()) return;
 	const { setCharacterStatus, jumpRef, elevationRef, elsRef } = props;
 	setCharacterStatus(prev => ({ ...prev, jump: 'down' }));
 	const elCharacter = elsRef.current.elCharacter;
 	const fudge = 7;
 	const tlDown = gsap.timeline();
-	elCharacter.classList.add('is-frozen');
 	tlDown.to(elCharacter, {
-		onComplete: () => {
-			elCharacter.classList.remove('is-frozen');
-			setCharacterStatus(prev => ({ ...prev, jump: 'none' }));
-		},
+		onComplete: () => setCharacterStatus(prev => ({ ...prev, jump: 'none' })),
 		onUpdate: () => {
 			if(elevationRef.current.foot - fudge <= elevationRef.current.below) {
-				elCharacter.classList.remove('is-frozen');
 				tlDown.kill();
 				gsap.set(elCharacter, { y: -elevationRef.current.below });
 				setCharacterStatus(prev => ({ ...prev, jump: 'none' }));
@@ -161,14 +155,12 @@ const doJumpDown = (props) => {
  * @param {Object} props Same as doJumpDown (setCharacterStatus, jumpRef, elevationRef, elsRef).
  */
 const doJumpUp = (props) => {
-	if (isFrozen()) return;
 	const { setCharacterStatus, jumpRef, elevationRef, elsRef } = props;
 	setCharacterStatus(prev => ({ ...prev, jump: 'up' }));
 	const elCharacter = elsRef.current.elCharacter;
 	const targetHeight = jumpRef.current.height + elevationRef.current.below;
 	const fudge = 7;
 	const tlUp = gsap.timeline();
-	elCharacter.classList.add('is-frozen');
 	tlUp.to(elCharacter, {
 		y: targetHeight * -1,
 		duration: jumpRef.current.hangtime / 2,
@@ -176,14 +168,10 @@ const doJumpUp = (props) => {
 		onUpdate: () => {
 			if(elevationRef.current.head + fudge >= elevationRef.current.above) {
 				tlUp.kill();
-				elCharacter.classList.remove('is-frozen');
 				doJumpDown(props);
 			}
 		},
-		onComplete: () => {
-			elCharacter.classList.remove('is-frozen');
-			doJumpDown(props);
-		},
+		onComplete: () => doJumpDown(props),
 	});
 };
 
