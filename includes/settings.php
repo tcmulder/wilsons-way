@@ -226,7 +226,7 @@ function shelf_runner_settings_init() {
 				"shelf_runner_settings_level_{$i}_intro",
 				/* translators: %d: level number. */
 				sprintf( __( 'Level %d Messages:', 'shelf-runner' ), $i ),
-				function () use ( $i, $wysiwyg_settings ) {
+				function () use ( $i, $wysiwyg_settings, $number_of_levels ) {
 					ob_start();
 					/* translators: %d: level number. */
 					printf( '<h2>%s</h2>', esc_html( sprintf( __( 'Level %d Intro Message:', 'shelf-runner' ), $i ) ) );
