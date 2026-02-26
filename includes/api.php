@@ -27,7 +27,7 @@ add_action(
 					// /*DEBUG*/$is_debug = false; // allows us to debug debug mode 😏
 					
 					$user = strtoupper( sanitize_title( $params['user'] ) );
-					$user = substr( $user, 0, 10 ); // max 10 characters (matches max on the winner form number input)
+					$user = substr( $user, 0, 6 ); // trim to max characters (matches max on the winner form number input)
 					$score = (int) $params['score'];
 					$data = array(
 						'user'  => $user,

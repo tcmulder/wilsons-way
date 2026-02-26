@@ -34,8 +34,8 @@ const HighScorePage = () => {
 						value={user}
 						onChange={(e) => setUser(e.target.value)}
 						required
-						minLength={3}
-						maxLength={10}
+						minLength={2}
+						maxLength={6}
 					/>
 				</label>
 				<button type="submit">Submit</button>
