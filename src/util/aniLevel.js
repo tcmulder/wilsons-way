@@ -5,7 +5,7 @@ import { gsap } from 'gsap';
  *
  * @param {Object} props The properties object
  * @param {HTMLElement} props.elBoard The board DOM element
- * @param {React.MutableRefObject<import('gsap').Timeline[]>} props.timelinesRef Ref holding current timelines
+ * @param {{ current: import('gsap').Timeline[] }} props.timelinesRef Ref holding current timelines
  * @param {Function} props.setTimelines Simple setter (value) => void to update timelines in context
  * @param {number} props.gameplaySpeed The game speed setting
  * @param {Function} [props.onComplete] Optional callback to run when the level animation finishes
@@ -14,7 +14,7 @@ export const aniLevel = (props) => {
 	const { elBoard, timelinesRef, setTimelines, gameplaySpeed, onComplete } = props;
 	if (!elBoard) return;
 
-	// Kill all existing timelines and clear
+	// Kill/clear all existing timelines
 	const prevTimelines = timelinesRef?.current ?? [];
 	prevTimelines.forEach(timeline => timeline.kill());
 	setTimelines([]);
@@ -28,7 +28,6 @@ export const aniLevel = (props) => {
 	const gameplayDuration = svgWidth / gameplaySpeed;
 	if (gameplayDuration <= 0 || !Number.isFinite(gameplayDuration)) return;
 
-	
 	// Create a separate timeline for each SVG
 	const timelines = [];
 	svgElements.forEach((svg) => {
