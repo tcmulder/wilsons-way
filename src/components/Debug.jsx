@@ -27,7 +27,7 @@ const setStateAndQuery = (props) => {
 };
 
 /**
- * Generic debug button.
+ * Debug button.
  * 
  * @param {Object} props
  * @param {string} props.label Button text
@@ -134,51 +134,13 @@ const DebugRefresh = ({ reset = false, title = '', label = '' }) => {
 };
 
 /**
- * Apply debug settings (usually from query string on page load)
+ * Load debug settings from query string on page load.
  * 
- * @param {Object} props The properties object
- * @param {Object} props.debug The debug object
- * @param {Object} props.debugIsAllowed Whether or not to debug (clone of settings.debugAllowed)
- * @param {Function} props.setCharacterId The function to set the character id
- * @param {Function} props.setMakeSFX The function to set the make SFX
- * @param {Function} props.setMakeMusic The function to set the make music
- * @param {Function} props.setSettings The function to set the settings
- * @param {Function} props.setJump The function to set the jump
- * @returns {void}
+ * @param {boolean} should If true, set the state.
+ * @param {Function} set Function to set the state.
  */
-const useDebug = (props) => {
-	const { debug, debugIsAllowed, setCharacterId, setMakeSFX, setMakeMusic, setSettings, setJump } = props;
-	useEffect(() => {
-		if (debugIsAllowed && debug) {
-			if (debug?.characterId) {
-				setCharacterId(parseInt(debug.characterId));
-			}
-			if (debug?.makeSFX) {
-				setMakeSFX(debug.makeSFX);
-			}
-			if (debug?.makeMusic) {
-				setMakeMusic(debug.makeMusic);
-			}
-			if (debug?.gameplaySpeed) {
-				setSettings((prev) => ({ ...prev, gameplaySpeed: debug.gameplaySpeed}));
-			}
-			if (debug?.jumpHeight) {
-				setJump((prev) => ({ ...prev, height: debug.jumpHeight / 100}));
-			}
-			if (debug?.jumpHangtime) {
-				setJump((prev) => ({ ...prev, hangtime: debug.jumpHangtime}));
-			}
-			if (debug?.characterHeight) {
-				setSettings((prev) => ({ ...prev, characterHeight: debug.characterHeight}));
-			}
-			if (debug?.userAdjustedMilestone) {
-				setSettings((prev) => ({ ...prev, userAdjustedMilestone: (debug.userAdjustedMilestone / 100) / 0.5 }));
-			}
-			if (debug?.userAdjustedSpeed) {
-				setSettings((prev) => ({ ...prev, userAdjustedSpeed: debug.userAdjustedSpeed }));
-			}
-		}
-	}, [debug, setCharacterId, setMakeSFX, setMakeMusic, setSettings, setJump, debugIsAllowed]);
+const loadState = (should, set) => {
+	if (should) set();
 };
 
 /**
@@ -187,6 +149,7 @@ const useDebug = (props) => {
 export const Debug = () => {
 	const { debug, setDebug } = useDebugContext();
 	const { settings, setSettings, setJump, jump, makeMusic, setMakeMusic, makeSFX, setMakeSFX } = useSettingsContext();
+	const { debugAllowed } = settings;
 	const { characterId, setCharacterId } = useCharacterContext();
 	const navigate = useNavigate();
 	const pagePath = useLocation().pathname;
@@ -195,16 +158,20 @@ export const Debug = () => {
 	// Setup menu open/close state
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-	// Apply debug settings from state
-	useDebug({
-		debugIsAllowed: settings.debugAllowed,
-		debug,
-		setCharacterId,
-		setMakeSFX,
-		setMakeMusic,
-		setSettings,
-		setJump,
-	});
+	// Apply debug settings from query string on page load
+	useEffect(() => {
+		if (debugAllowed && debug) {
+			loadState(debug?.characterId, () => setCharacterId(parseInt(debug.characterId)));
+			loadState(debug?.makeSFX, () => setMakeSFX(debug.makeSFX));
+			loadState(debug?.makeMusic, () => setMakeMusic(debug.makeMusic));
+			loadState(debug?.gameplaySpeed, () => setSettings((prev) => ({ ...prev, gameplaySpeed: debug.gameplaySpeed})));
+			loadState(debug?.jumpHeight, () => setJump((prev) => ({ ...prev, height: debug.jumpHeight / 100})));
+			loadState(debug?.jumpHangtime, () => setJump((prev) => ({ ...prev, hangtime: debug.jumpHangtime})));
+			loadState(debug?.characterHeight, () => setSettings((prev) => ({ ...prev, characterHeight: debug.characterHeight})));
+			loadState(debug?.userAdjustedMilestone, () => setSettings((prev) => ({ ...prev, userAdjustedMilestone: (debug.userAdjustedMilestone / 100) / 0.5 })));
+			loadState(debug?.userAdjustedSpeed, () => setSettings((prev) => ({ ...prev, userAdjustedSpeed: debug.userAdjustedSpeed })));
+		}
+	}, [debug, setCharacterId, setMakeSFX, setMakeMusic, setSettings, setJump, debugAllowed]);
 	
 	// Allow drag-and-drop of SVG level files over the debug panel
 	useDebugDropLevel(debugRef);
