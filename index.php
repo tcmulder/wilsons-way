@@ -27,38 +27,71 @@ if ( ! defined( 'ABSPATH' ) ) {
 ?><!doctype html>
 <html lang="en">
 	<head>
-	<meta charset="UTF-8">
-	<link rel="icon" type="image/svg+xml" href="<?php echo esc_url( SHELF_RUNNER_PLUGIN_URI . 'public/game-icon-fav.svg' ); ?>">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="apple-mobile-web-app-capable" content="yes">
-	<meta name="apple-mobile-web-app-status-bar-style" content="black">
-	<meta name="apple-mobile-web-app-title" content="<?php echo esc_attr( SHELF_RUNNER_NAME ); ?>">
-	<link rel="apple-touch-icon" href="<?php echo esc_url( SHELF_RUNNER_PLUGIN_URI . 'public/game-icon-apple.png' ); ?>">
-	<title><?php echo esc_html( SHELF_RUNNER_NAME ); ?></title>
+		<meta charset="UTF-8">
+		<link rel="icon" type="image/svg+xml" href="<?php echo esc_url( SHELF_RUNNER_PLUGIN_URI . 'public/game-icon-fav.svg' ); ?>">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="apple-mobile-web-app-title" content="<?php echo esc_attr( SHELF_RUNNER_NAME ); ?>">
+		<link rel="apple-touch-icon" href="<?php echo esc_url( SHELF_RUNNER_PLUGIN_URI . 'public/game-icon-apple.png' ); ?>">
+		<title><?php echo esc_html( SHELF_RUNNER_NAME ); ?></title>
 	</head>
 	<body>
-	<?php
-		// Get manifest values.
-		$manifest_url      = SHELF_RUNNER_PLUGIN_DIST_URI . 'manifest.json';
-		$manifest_response = wp_remote_get( esc_url_raw( $manifest_url ) );
-		$manifest          = ! is_wp_error( $manifest_response ) ? json_decode( wp_remote_retrieve_body( $manifest_response ), true ) : array();
-	?>
-
+	
 	<!-- Prevent SVG loading flash with fade-in animation -->
 	<style>#root{opacity:1;transition:opacity 0.3s 0.15s;@starting-style{opacity:0;}}</style>
+	
 	<div id="root">[game loading...]</div>
 	
 	<?php if ( 'development' === SHELF_RUNNER_ENV ) : ?>
 		<?php // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript -- Standalone HTML shell, not WP enqueue context. ?>
 		<script type="module" src="/src/main.jsx"></script>
 	<?php else : ?>
-		<?php $script_file = isset( $manifest['src/main.jsx']['file'] ) ? $manifest['src/main.jsx']['file'] : ''; ?>
-		<?php $css_file = isset( $manifest['src/main.jsx']['css'][0] ) ? $manifest['src/main.jsx']['css'][0] : ''; ?>
-		<?php // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript -- Standalone HTML shell. ?>
-		<script type="module" src="<?php echo esc_url( SHELF_RUNNER_PLUGIN_DIST_URI . $script_file ); ?>"></script>
-		<?php // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet -- Standalone HTML shell. ?>
-		<link rel="stylesheet" href="<?php echo esc_url( SHELF_RUNNER_PLUGIN_DIST_URI . $css_file ); ?>">
+		<script type="module">
+			// Load game client-side from manifest.json (with no caching on that file) to avoid stale plugin version issues.
+			const distBase = <?php echo wp_json_encode( trailingslashit( SHELF_RUNNER_PLUGIN_DIST_URI ) ); ?>;
+			const manifestUrl = distBase + 'manifest.json';
+			const cacheBust = 'cb=' + Date.now();
+			const toFreshUrl = (url) => (url.includes('?') ? (url + '&' + cacheBust) : (url + '?' + cacheBust));
+			fetch(toFreshUrl(manifestUrl), {
+					cache: 'no-store',
+					headers: {
+						'Cache-Control': 'no-cache, no-store, max-age=0',
+						Pragma: 'no-cache'
+					}
+				})
+					.then((response) => {
+						if (!response.ok) {
+							throw new Error('Failed to fetch manifest.json');
+						}
+						return response.json();
+					})
+					.then((manifest) => {
+						const entry = manifest['src/main.jsx'] || {};
+
+						if (Array.isArray(entry.css)) {
+							entry.css.forEach((cssFile) => {
+								const link = document.createElement('link');
+								link.rel = 'stylesheet';
+								link.href = toFreshUrl(distBase + cssFile);
+								document.head.appendChild(link);
+							});
+						}
+
+						if (!entry.file) {
+							throw new Error('Missing src/main.jsx entry in manifest.json');
+						}
+
+						const script = document.createElement('script');
+						script.type = 'module';
+						script.src = toFreshUrl(distBase + entry.file);
+						document.body.appendChild(script);
+					})
+					.catch((error) => {
+						console.error('Shelf Runner asset load failed:', error);
+					});
+		</script>
 	<?php endif; ?>
 
 	<?php

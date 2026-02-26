@@ -86,19 +86,6 @@ function shelf_runner_pretty_game_template_redirect() {
 add_action( 'template_redirect', 'shelf_runner_pretty_game_template_redirect' );
 
 /**
- * Send no-cache headers for the standalone game route.
- *
- * This discourages old versions of the game from loading after updates.
- */
-function shelf_runner_send_nocache_headers_for_game() {
-	if ( get_query_var( 'shelf_runner_game' ) ) {
-		header( 'Cache-Control: no-store, no-cache, must-revalidate, max-age=0' );
-		header( 'Pragma: no-cache' );
-	}
-}
-add_action( 'send_headers', 'shelf_runner_send_nocache_headers_for_game' );
-
-/**
  * Shortcode callback for [shelf-runner].
  * 
  * Examples: 
