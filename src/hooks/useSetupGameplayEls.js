@@ -42,7 +42,7 @@ export function useSetupGameplayElements(boardRef) {
 				elMilestones.querySelectorAll('.sr-milestone-target').forEach((elMilestoneTarget) => {
 					// Set the delay (set by parent, or milestone itself, with a fallback of 500ms, and the user can scale the delay)
 					const baseDelay =
-						Number(elMilestoneTarget.dataset.delay || elMilestones.dataset.delay || '500');
+						Number(elMilestoneTarget.dataset.delay || elMilestones.dataset.delay || '5000');
 					const adjustedDelay = baseDelay * milestoneFactor;
 					elMilestoneTarget.dataset.delay = String(adjustedDelay);
 					elObstacles.push(elMilestoneTarget);

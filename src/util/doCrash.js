@@ -97,9 +97,11 @@ export const doMilestones = (el) => {
 	const delay = parseInt(el.dataset.delay);
 	elMessage.style.setProperty('--sr-milestone-delay', `${delay}ms`);
 	elMessage.classList.add('is-visible');
+	elMessage.classList.add('is-frozen');
 	doFreeze();
 	setTimeout(() => {
 		doFreeze(false);
+		elMessage.classList.remove('is-frozen');
 	}, delay);
 };
 

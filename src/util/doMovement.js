@@ -184,6 +184,13 @@ const doJump = (props) => {
 };
 
 /**
+ * Check if we're frozen (e.g. a milestone is visible)
+ */
+const isFrozen = () => {
+	return document.querySelector('.sr-milestone-message.is-frozen') !== null;
+};
+
+/**
  * Hook: keyboard-driven movement (jump, play/pause, direction) and autoplay when level is ready.
  *
  * @param {Object} props The properties object
@@ -222,12 +229,14 @@ export function useCharacterMovement(props) {
 		if (e.repeat) return;
 		if (e.key === 'ArrowUp' || e.key === ' ') {
 			e.preventDefault();
+			if (isFrozen()) return;
 			doJump({ elsRef, setCharacterStatus, jumpRef, elevationRef, statusRef });
 		}
 
 		if (debug?.autoplay === false) {
 			if (e.key === 'ArrowDown') {
 			e.preventDefault();
+			if (isFrozen()) return;
 			// Toggle play/pause on each ArrowDown press
 			if (characterStatus.ani === 'none') {
 				// Not moving: play forward
@@ -238,12 +247,14 @@ export function useCharacterMovement(props) {
 			}
 			}
 			if (e.key === 'ArrowRight') {
-			e.preventDefault();
-			doRun({ direction: 'forward', timelines: timelinesRef.current, setCharacterStatus });
+				e.preventDefault();
+				if (isFrozen()) return;
+				doRun({ direction: 'forward', timelines: timelinesRef.current, setCharacterStatus });
 			}
 			if (e.key === 'ArrowLeft') {
-			e.preventDefault();
-			doRun({ direction: 'backward', timelines: timelinesRef.current, setCharacterStatus });
+				e.preventDefault();
+				if (isFrozen()) return;
+				doRun({ direction: 'backward', timelines: timelinesRef.current, setCharacterStatus });
 			}
 		}
 	};
@@ -252,6 +263,7 @@ export function useCharacterMovement(props) {
 		if (debug?.autoplay === false) {
 		if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
 			e.preventDefault();
+			if (isFrozen()) return;
 			doPause({ timelines: timelinesRef.current, setCharacterStatus });
 		}
 		}
