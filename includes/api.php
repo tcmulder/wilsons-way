@@ -18,33 +18,43 @@ add_action(
 				'methods'             => 'POST',
 				'callback'            => function ( $request ) {
 					$params = json_decode( $request->get_body(), true );
+					if ( ! is_array( $params ) || ! isset( $params['user'] ) || ! isset( $params['score'] ) ) {
+						return new WP_REST_Response( array( 'data' => array( 'status' => 400, 'message' => 'Invalid request body' ) ), 400 );
+					}
+					
+					// Debugging mode (doesn't save to database)
+					$is_debug = $params['isDebugMode'] ?? false;
+					// /*DEBUG*/$is_debug = false; // allows us to debug debug mode 😏
+					
 					$user = strtoupper( sanitize_title( $params['user'] ) );
+					$user = substr( $user, 0, 10 ); // max 10 characters (matches max on the winner form number input)
 					$score = (int) $params['score'];
-					$is_debug = isset( $params['enableDebug'] ) && $params['enableDebug'];
 					$data = array(
 						'user'  => $user,
 						'score' => $score,
 					);
 
+					$leaderboard = get_option( 'shelf_runner_settings_leaderboard', array() );
+					$leaderboard = ! empty( $leaderboard ) ? $leaderboard : array();
+					$leaderboard[] = array(
+						'user'  => $user,
+						'score' => $score,
+					);
+					usort(
+						$leaderboard,
+						function ( $a, $b ) {
+							return $b['score'] - $a['score'];
+						}
+					);
+					$leaderboard = array_slice( $leaderboard, 0, SHELF_RUNNER_LEADERBOARD_COUNT );
+					
 					if ( ! $is_debug ) {
-						$leaderboard = get_option( 'shelf_runner_settings_leaderboard', array() );
-						$leaderboard = ! empty( $leaderboard ) ? $leaderboard : array();
-						$leaderboard[] = array(
-							'user'  => $user,
-							'score' => $score,
-						);
-						usort(
-							$leaderboard,
-							function ( $a, $b ) {
-								return $b['score'] - $a['score'];
-							}
-						);
-						$leaderboard = array_slice( $leaderboard, 0, SHELF_RUNNER_LEADERBOARD_COUNT );
 						update_option( 'shelf_runner_settings_leaderboard', $leaderboard );
 					} else {
 						$data['debug'] = $is_debug;
+						$data['leaderboard'] = $leaderboard;
 					}
-
+					
 					$data['status'] = 200;
 
 					return new WP_REST_Response( array( 'data' => $data ) );

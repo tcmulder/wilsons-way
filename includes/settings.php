@@ -93,6 +93,35 @@ function shelf_runner_settings_init() {
 		'quicktags'     => false,
 	);
 
+	// Shared allowed HTML for wp_kses (form fields, leaderboard, debug field).
+	$kses_allowed = array(
+		'p'      => array(),
+		'em'     => array(),
+		'br'     => array(),
+		'code'   => array(),
+		'div'    => array( 'style' => true ),
+		'label'  => array( 'for' => true, 'style' => true ),
+		'input'  => array(
+			'type'        => true,
+			'name'        => true,
+			'value'       => true,
+			'id'          => true,
+			'checked'     => true,
+			'placeholder' => true,
+			'pattern'     => true,
+			'maxlength'   => true,
+			'min'         => true,
+			'step'        => true,
+			'style'       => true,
+		),
+		'a'      => array(
+			'href'   => true,
+			'class'  => true,
+			'target' => true,
+		),
+		'span'   => array( 'style' => true ),
+	);
+
 	$mode = get_option( 'shelf_runner_settings_game_mode', 'client' );
 
 	/**
@@ -118,7 +147,7 @@ function shelf_runner_settings_init() {
 	add_settings_field(
 		'shelf_runner_settings_game_mode',
 		esc_html( __( 'Game Mode:', 'shelf-runner' ) ),
-		function () {
+		function () use ( $kses_allowed ) {
 			$game_mode       = get_option( 'shelf_runner_settings_game_mode', 'client' );
 			$client_html     = sprintf(
 				'<p><label><input type="radio" name="shelf_runner_settings_game_mode" value="client" %s /> %s</label></p>',
@@ -143,24 +172,11 @@ function shelf_runner_settings_init() {
 				);
 			}
 			// Allow form elements; wp_kses_post() strips input/label.
-			$allowed_fieldset = array(
-				'p'     => array(),
-				'label' => array(),
-				'input' => array(
-					'type'    => true,
-					'name'    => true,
-					'value'   => true,
-					'checked' => true,
-				),
-				'em'    => array(),
-				'br'    => array(),
-				'code'  => array(),
-			);
 			printf(
 				'<fieldset>%s%s%s</fieldset>',
-				wp_kses( $client_html, $allowed_fieldset ),
-				wp_kses( $host_html, $allowed_fieldset ),
-				wp_kses( $disclaimer_html, $allowed_fieldset )
+				wp_kses( $client_html, $kses_allowed ),
+				wp_kses( $host_html, $kses_allowed ),
+				wp_kses( $disclaimer_html, $kses_allowed )
 			);
 		},
 		'shelf_runner_settings',
@@ -343,7 +359,7 @@ function shelf_runner_settings_init() {
 		add_settings_field(
 			'shelf_runner_settings_leaderboard',
 			esc_html( __( 'Leaderboard:', 'shelf-runner' ) ),
-			function () {
+			function () use ( $kses_allowed ) {
 				$html        = sprintf(
 					'<p><em>%s<br>%s<br>%s</em></p>',
 					esc_html( __( 'Leave username blank to remove an entry.', 'shelf-runner' ) ),
@@ -356,7 +372,7 @@ function shelf_runner_settings_init() {
 					$score = isset( $leaderboard[ $i ]['score'] ) ? $leaderboard[ $i ]['score'] : 0;
 					$html .= sprintf(
 						'<div style="margin-block:5px;">
-							<label for="shelf_runner_settings_leaderboard[%d]_user" style="display:inline-block;width:80px;">#%d %s:</label>
+							<label for="shelf_runner_settings_leaderboard[%d]_user" style="display:inline-block;width:80px;">#%d %s:</label><br />
 							<input type="text" id="shelf_runner_settings_leaderboard[%d]_user" name="shelf_runner_settings_leaderboard[%d][user]" value="%s" placeholder="username" pattern="[^\s]{1,6}" maxlength="6" style="width: 7em; margin-right: 0.5em;" />
 							<input type="number" name="shelf_runner_settings_leaderboard[%d][score]" value="%d" min="0" step="1" style="width: 6em;" />
 						</div>',
@@ -370,7 +386,7 @@ function shelf_runner_settings_init() {
 						(int) $score
 					);
 				}
-				echo wp_kses_post( $html );
+				echo wp_kses( $html, $kses_allowed );
 			},
 			'shelf_runner_settings',
 			'sr_section'
@@ -429,7 +445,7 @@ function shelf_runner_settings_init() {
 		add_settings_field(
 			'shelf_runner_settings_debug',
 			esc_html( __( 'Debug Mode:', 'shelf-runner' ) ),
-			function () {
+			function () use ( $kses_allowed ) {
 				$debug_enabled = get_option( 'shelf_runner_settings_debug', false );
 				$html          = sprintf(
 					'<input type="checkbox" id="shelf_runner_settings_debug" name="shelf_runner_settings_debug" value="1" %s />',
@@ -449,26 +465,7 @@ function shelf_runner_settings_init() {
 					);
 				}
 				// Allow checkbox, label, and debug UI; wp_kses_post() strips input/label.
-				$allowed = array(
-					'input' => array(
-						'type'    => true,
-						'name'    => true,
-						'value'   => true,
-						'id'      => true,
-						'checked' => true,
-					),
-					'label' => array( 'for' => true ),
-					'p'     => array(),
-					'a'     => array(
-						'href'   => true,
-						'class'  => true,
-						'target' => true,
-					),
-					'span'  => array( 'style' => true ),
-					'code'  => array(),
-					'em'    => array(),
-				);
-				echo wp_kses( $html, $allowed );
+				echo wp_kses( $html, $kses_allowed );
 			},
 			'shelf_runner_settings',
 			'sr_section'

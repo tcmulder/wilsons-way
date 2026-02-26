@@ -8,6 +8,7 @@ import Level1OutroPage from './Level1OutroPage';
 import Level2OutroPage from './Level2OutroPage';
 import Level3OutroPage from './Level3OutroPage';
 import Level4OutroPage from './Level4OutroPage';
+import HighScorePage from './HighScorePage';
 
 /**
  * Route config: path, title (for debug nav), and element for the pages of the game.
@@ -23,4 +24,5 @@ export const routes = [
   { path: '/outro/2', title: 'Level 2 Outro', element: <Level2OutroPage /> },
   { path: '/outro/3', title: 'Level 3 Outro', element: <Level3OutroPage /> },
   { path: '/outro/4', title: 'Level 4 Outro', element: <Level4OutroPage /> },
+  { path: '/form', title: 'High Score', element: <HighScorePage /> },
 ];

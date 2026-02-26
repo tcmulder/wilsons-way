@@ -279,11 +279,14 @@ export const Debug = () => {
 							'🟥 negative',
 						].join('\n')}
 					/>
-					<select value={pagePath} onChange={(e) => { e.preventDefault(); navigate(e.target.value); }} title="Navigate to a different page">
-						{routes.map(({ path, title }) => (
-							<option key={path} value={path}>📄 goto: {title}</option>
-						))}
-					</select>
+					<label>
+						<span>📄 goto</span>
+						<select value={pagePath} onChange={(e) => { e.preventDefault(); navigate(e.target.value); }} title="Navigate to a different page">
+							{routes.map(({ path, title }) => (
+								<option key={path} value={path}>{title}</option>
+							))}
+						</select>
+					</label>
 					<DebugButton
 						label="🫥 Un-collide"
 						onClick={() => {

@@ -68,6 +68,7 @@ body {
 .sr-typography {
 	/* Base font sizes off of .sr-stage's width or height (allows simple usage of em units within) */
 	font-size: 2cqmax;
+	color: var(--sr-c-white);
 	
 	* {
 		font-family: var(--sr-ff);
