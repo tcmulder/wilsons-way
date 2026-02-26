@@ -47,6 +47,7 @@ add_action(
 						}
 					);
 					$leaderboard = array_slice( $leaderboard, 0, SHELF_RUNNER_LEADERBOARD_COUNT );
+					$leaderboard = array_pad( $leaderboard, SHELF_RUNNER_LEADERBOARD_COUNT, array( 'user' => '', 'score' => 0 ) );
 					
 					if ( ! $is_debug ) {
 						update_option( 'shelf_runner_settings_leaderboard', $leaderboard );
@@ -99,6 +100,7 @@ add_action(
 						},
 						$leaderboard
 					);
+					$leaderboard = array_pad( $leaderboard, SHELF_RUNNER_LEADERBOARD_COUNT, array( 'user' => '', 'score' => 0 ) );
 					return new WP_REST_Response(
 						array(
 							'data'   => $leaderboard,

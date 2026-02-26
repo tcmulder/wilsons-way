@@ -32,6 +32,7 @@ export const submitHighScore = async (props) => {
 					// eslint-disable-next-line no-console
 					console.log(response.data);
 				}
+				navigate('/leaderboard');
 				return true;
 			}
 			console.error('Error', response);
