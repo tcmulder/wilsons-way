@@ -8,6 +8,7 @@ import { convertClassToData } from '../util/convertClassToData';
  * @param {Object} props
  * @param {string} props.path URL (http(s)) or Vite-import path to the SVG.
  * @param {(el: SVGElement) => void} [props.onSvgLoad] Callback with the parsed SVG element; when set, component does not render.
+ * @returns {React.ReactNode} The SvgImage component.
  */
 const SvgImage = ({ path, onSvgLoad }) => {
 	const [svgAttributes, setSvgAttributes] = useState({});
@@ -72,9 +73,7 @@ const SvgImage = ({ path, onSvgLoad }) => {
 	}, [path, onSvgLoad]);
 
 	// If onSvgLoad is provided, don't render (the callback handles it)
-	if (onSvgLoad) {
-		return null;
-	}
+	if (onSvgLoad) return null;
 
 	return (
 		<svg {...svgAttributes} dangerouslySetInnerHTML={{ __html: svgInnerHTML }} />
