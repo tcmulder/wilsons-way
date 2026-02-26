@@ -123,7 +123,7 @@ add_action(
 
 					// Build response data.
 					$data = array(
-						'gameplaySpeed'        => SHELF_RUNNER_GAMEPLAY_SPEED,
+						'gameplaySpeed'         => SHELF_RUNNER_GAMEPLAY_SPEED,
 						'characterHeight'       => SHELF_RUNNER_CHARACTER_HEIGHT,
 						'jumpHeight'            => SHELF_RUNNER_JUMP_HEIGHT / 100, // convert to percentage
 						'jumpHangtime'          => SHELF_RUNNER_JUMP_HANGTIME,
@@ -131,6 +131,7 @@ add_action(
 						'userAdjustedSpeed'     => $difficulty_speed,
 						'userAdjustedMilestone' => $duration_milestone,
 						'debugAllowed'          => get_option( 'shelf_runner_settings_debug' ) === '1',
+						'version'               => SHELF_RUNNER_VERSION,
 					);
 
 					return new WP_REST_Response(
