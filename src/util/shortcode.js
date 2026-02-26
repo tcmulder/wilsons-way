@@ -20,7 +20,7 @@ import '../css/shortcode.css';
 	 * Show the game in a lightbox on click of any triggering link
 	 *
 	 * Simply link to #shelf-runner to open this lightbox. Note that if there
-	 * are multiple light boxes, this will always imply show the first one.
+	 * are multiple light boxes, this will always simply show the first one.
 	 */
 	const lightboxElement = document.querySelector('.sr-portal-lightbox');
 	if (lightboxElement) {
