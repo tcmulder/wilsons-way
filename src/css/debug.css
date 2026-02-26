@@ -55,7 +55,7 @@
 	}
 
 	:is([type="text"], [type="number"]) {
-		width: 2.5em;
+		width: 3.5em;
 		margin-left: auto;
 		background-color: transparent;
 		border: 0;
@@ -65,8 +65,8 @@
 	}
 
 	:is([type="number"]) {
-		transform: translateX(0.2em);
 		color: var(--sr-debug-c-2);
+		transform: translateX(1em);
 	}
 
 	:is([type="checkbox"]) {

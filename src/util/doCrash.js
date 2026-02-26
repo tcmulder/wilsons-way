@@ -69,12 +69,13 @@ export const doModifiers = (props) => {
 	if (!isSkippableInvisible({ el, characterModifiers })) {
 		el.classList.add('is-collided');
 	}
-	// Get the modifier value and set it (it's set as a class on the character's element)
+	// Get the modifier value if any
 	const modifier = el.dataset.modifier;
 	if (!modifier) return;
 	// Set the modifier
 	setCharacterModifiers(prev => [ ...prev, modifier ]);
-	// Clear the modifier after 5 seconds
+	// Clear the modifier after a delay
+	const delay = parseInt(el.dataset.modifierDelay) || 5000;
 	setTimeout(() => {
 		setCharacterModifiers(prev => {
 			//  Remove the 1st matching modifier (so if new duplicate modifiers have been set they aren't cleared)
@@ -82,7 +83,7 @@ export const doModifiers = (props) => {
 			const newArr = index === -1 ? prev : [...prev.slice(0, index), ...prev.slice(index + 1)];
 			return newArr;
 		});
-	}, 5000);
+	}, delay);
 };
 
 /**
