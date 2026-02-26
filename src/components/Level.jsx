@@ -1,18 +1,13 @@
 import { useRef, useCallback, useEffect } from 'react';
 import { gsap } from 'gsap';
 import { useNavigate } from 'react-router-dom';
-import {
-	useSettingsContext,
-	useLevelContext,
-	useGameplayContext,
-} from '../context/useContexts';
+import { useSettingsContext, useLevelContext, useGameplayContext } from '../context/useContexts';
 import { loadLevel } from '../util/loadLevel';
 import SVG from '../components/SVG';
 import Character from '../components/Character';
 import Gameplay from '../components/Gameplay';
 import { aniLevel } from '../util/aniLevel';
 import { useCustomLevelSvg } from '../hooks/useCustomLevelSvg';
-
 import '../css/board.css';
 import '../css/parallax.css';
 import '../css/obstacles.css';
@@ -28,8 +23,8 @@ const Level = () => {
 	const { gameplaySpeed, userAdjustedSpeed } = settings;
 	const { level, setCurrentLevelId, customLevelSvg } = useLevelContext();
 	const gameplayContext = useGameplayContext();
-	const gameplayRef = useRef(null);
 	const navigate = useNavigate();
+	const gameplayRef = useRef(null);
 
 	// Set global animations speed
 	useEffect(() => {
@@ -59,11 +54,12 @@ const Level = () => {
 				gameplaySpeed,
 				onComplete: handleLevelComplete,
 			});
+			// Set a unique level id
 			setCurrentLevelId(Date.now());
 		}
 	}, [gameplaySpeed, gameplayContext, handleLevelComplete, setCurrentLevelId]);
 
-	// When using a custom dropped SVG (level 0), load and animate it
+	// When using a custom-dropped SVG (level 0), load and animate it
 	useCustomLevelSvg({
 		level,
 		customLevelSvg,
@@ -78,12 +74,7 @@ const Level = () => {
 			<Gameplay boardRef={gameplayRef} />
 			<div className="sr-board">
 				{/* If level is 0, we're using a drag-and-dropped custom level, so don't load a numbered SVG file */}
-				{level !== 0 && (
-					<SVG 
-						path={`${window.sr.url}public/svg/level-${level}.svg`} 
-						onSvgLoad={handleSvgLoad}
-					/>
-				)}
+				{level !== 0 && <SVG path={`${window.sr.url}public/svg/level-${level}.svg`} onSvgLoad={handleSvgLoad} />}
 			</div>
 			<Character />
 		</div>
