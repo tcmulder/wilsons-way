@@ -6,17 +6,15 @@ import { gsap } from 'gsap';
  *
  * @param {Object} props
  * @param {HTMLElement} props.elParent Parent element to search for [data-sprite] children.
- * @returns {import('gsap').Timeline} Master timeline controlling all sprite animations.
+ * @returns {void} No return value.
  */
 export const createAniSprite = (props) => {
 	const { elParent } = props;
-	// Create a single master timeline to control all sprite animations
-	const masterTimeline = gsap.timeline({ repeat: -1 });
-	
+
 	elParent?.querySelectorAll('[data-sprite]')?.forEach((el) => {
-		if (el.classList.contains('is-animating')) {
-			return;
-		}
+		// If the element is already animating, skip it.
+		if (el.classList.contains('is-animating')) return;
+
 		el.classList.add('is-animating');
 		const children = [...el.children];
 		const interval = parseInt(el.dataset.sprite) || 100;
@@ -25,7 +23,7 @@ export const createAniSprite = (props) => {
 		// Hide all children initially
 		gsap.set(children, { visibility: 'hidden' });
 		
-		// Create a sub-timeline for this sprite that cycles through children infinitely
+		// Create a timeline for this sprite that cycles through children infinitely
 		const spriteTimeline = gsap.timeline({ repeat: -1 });
 		
 		children.forEach((child, index) => {
@@ -43,11 +41,5 @@ export const createAniSprite = (props) => {
 		const lastIndex = children.length - 1;
 		spriteTimeline.set(children[lastIndex], { visibility: 'hidden' }, lastIndex * duration + duration);
 		spriteTimeline.set(children[0], { visibility: 'visible' }, lastIndex * duration + duration);
-		
-		// Add this sprite's timeline to the master timeline at time 0 (runs in parallel)
-		masterTimeline.add(spriteTimeline, 0);
 	});
-	
-	// Return the single master timeline
-	return masterTimeline;
 };
