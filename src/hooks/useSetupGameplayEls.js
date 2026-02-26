@@ -67,7 +67,7 @@ export function useSetupGameplayElements(boardRef) {
 			elBoard,
 			elCharacter,
 			elCharacterCrashArea: elCharacter?.querySelector('.sr-character-crash'),
-			elCharacterMessage: elCharacter?.querySelector('.sr-character-mesage'),
+			elCharacterMessage: elCharacter?.querySelector('.sr-character-message'),
 			// dynamic els (change per level)
 			elShelves: Array.from(elShelves),
 			elObstacles,

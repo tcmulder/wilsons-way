@@ -20,7 +20,7 @@
 
 /* Don't show paused scores while a milestone is visible */
 .sr-gameplay:has(.sr-milestone-message.is-visible) {
-	.sr-character-mesage {
+	.sr-character-message {
 		opacity: 0;
 	}
 }
