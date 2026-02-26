@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Wilson's Way
  * Description: Adds the Shelf Runner game as an embed or template.
- * Version:     2.0.4
+ * Version:     2.1.0
  * Author:      Tomas Mulder
  * Author URI:  https://www.thinkaquamarine.com
  * License:     GPL2
@@ -24,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 
 // Plugin constants.
-define( 'SHELF_RUNNER_VERSION', '2.0.4' );
+define( 'SHELF_RUNNER_VERSION', '2.1.0' );
 define( 'SHELF_RUNNER_NAME', __( 'Wilson\'s Way', 'shelf-runner' ) );
 define( 'SHELF_RUNNER_BASENAME', plugin_basename( __FILE__ ) );
 define( 'SHELF_RUNNER_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
