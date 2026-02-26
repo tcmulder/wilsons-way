@@ -14,7 +14,6 @@
 	max-width: 100%;
 	aspect-ratio: 16 / 9;
 	margin: 0 auto;
-	outline: 1px dashed aquamarine; outline-offset: -2px;
 }
 
 .sr-board {

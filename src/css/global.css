@@ -80,14 +80,11 @@ body {
 	p {
 		margin-top: 0;
 	}
-	li:empty,
-	li:has(> span:empty:only-child) {
-		list-style-type: none;
-	}
 
 	a {
 		color: inherit;
 	}
+
 	a,
 	input,
 	label,

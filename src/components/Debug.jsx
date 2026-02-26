@@ -186,7 +186,7 @@ export const Debug = () => {
 			className={`sr-debug${debug?.outlines ? ' sr-debug--outlines' : ''}`}
 			ref={debugRef}
 		>
-			<button onClick={(e) => { e.preventDefault(); setIsMenuOpen(!isMenuOpen); }}>🐞 Debug</button>
+			<button className="sr-debug__toggle" onClick={(e) => { e.preventDefault(); setIsMenuOpen(!isMenuOpen); }}>🐞 Debug</button>
 			{isMenuOpen && (
 			<div className="sr-debug__menu">
 					<DebugNumber

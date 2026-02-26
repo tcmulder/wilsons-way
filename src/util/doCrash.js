@@ -97,7 +97,6 @@ export const doMilestones = (el) => {
 	elMessage.classList.add('is-visible');
 	doFreeze();
 	setTimeout(() => {
-		elMessage.classList.remove('is-visible');
 		doFreeze(false);
 	}, delay);
 };

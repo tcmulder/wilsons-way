@@ -1,13 +1,13 @@
 
 .sr-milestone-message {
-	opacity: 0;
+	display: none;
 	&.is-visible {
-		opacity: 1;
+		display: block;
 	}
 }
 .sr-milestone-progress {
 	.sr-milestone-message:not(.is-visible) & {
-		opacity: 0;
+		display: none;
 	}
 }
 .sr-milestone-progress-bar {
@@ -21,6 +21,6 @@
 /* Don't show paused scores while a milestone is visible */
 .sr-gameplay:has(.sr-milestone-message.is-visible) {
 	.sr-character-message {
-		opacity: 0;
+		display: none;
 	}
 }
