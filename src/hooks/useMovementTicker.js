@@ -5,6 +5,7 @@ import {
 	useCharacterContext,
 	useLevelContext,
 	useScoreContext,
+	useSettingsContext,
 } from '../context/useContexts';
 import { useGameAudio } from '../hooks/useSFX';
 import { trackMovement } from '../util/doMovement';
@@ -18,6 +19,8 @@ export function useMovementTicker() {
 	const { level } = useLevelContext();
 	const { setScore } = useScoreContext();
 	const { playSound } = useGameAudio();
+	const { settings } = useSettingsContext();
+	const { userAdjustedMilestone = 1 } = settings || {};
 
 	useEffect(() => {
 		if (!gameplayContext) return;
@@ -30,6 +33,7 @@ export function useMovementTicker() {
 				characterModifiers,
 				playSound,
 				setCharacterModifiers,
+				userAdjustedMilestone,
 			});
 		gsap.ticker.add(tick);
 		return () => gsap.ticker.remove(tick);
@@ -41,6 +45,7 @@ export function useMovementTicker() {
 		characterModifiers,
 		playSound,
 		setCharacterModifiers,
+		userAdjustedMilestone,
 	]);
 }
 

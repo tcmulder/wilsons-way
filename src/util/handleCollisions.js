@@ -74,9 +74,18 @@ export const getNearestShelves = (el, els) => {
  * @param {string[]} props.characterModifiers The current character modifiers
  * @param {Function} [props.playSound] Function to play a sound ('positive' | 'negative')
  * @param {Function} props.setCharacterModifiers Function to set the character modifiers
+ * @param {number} [props.userAdjustedMilestone] Multiplier for milestone delay
  */
 export const checkCollisions = (props) => {
-	const { els, setScore, level, characterModifiers, playSound, setCharacterModifiers } = props;
+	const {
+		els,
+		setScore,
+		level,
+		characterModifiers,
+		playSound,
+		setCharacterModifiers,
+		userAdjustedMilestone,
+	} = props;
 	const { elCharacterCrashArea, elCharacterMessage, elObstaclesVisible } = els;
 	elObstaclesVisible.forEach((el) => {
 		if (
@@ -96,7 +105,7 @@ export const checkCollisions = (props) => {
 				characterModifiers,
 				playSound,
 			});
-			doMilestones(el);
+			doMilestones({ el, userAdjustedMilestone });
 		}
 	});
 };

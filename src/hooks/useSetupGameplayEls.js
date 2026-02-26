@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { useGameplayContext, useLevelContext } from '../context/useContexts';
-import { useSettingsContext } from '../context/useContexts';
 
 /**
  * Sets up board element refs from the level SVG: shelves, obstacles, character, crash area, etc.
@@ -10,8 +9,6 @@ import { useSettingsContext } from '../context/useContexts';
 export function useSetupGameplayElements(boardRef) {
 	const { elsRef, elevationRef } = useGameplayContext();
 	const { currentLevelId } = useLevelContext();
-	const { settings } = useSettingsContext();
-	const { userAdjustedMilestone } = settings;
 
 	// Get elements from the new level SVG and configure them for use
 	useEffect(() => {
@@ -38,13 +35,11 @@ export function useSetupGameplayElements(boardRef) {
 		elBoard
 			.querySelectorAll('.sr-milestones')
 			?.forEach((elMilestones) => {
-				const milestoneFactor = Number(userAdjustedMilestone) || 1;
 				elMilestones.querySelectorAll('.sr-milestone-target').forEach((elMilestoneTarget) => {
-					// Set the delay (set by parent, or milestone itself, with a fallback of 500ms, and the user can scale the delay)
-					const baseDelay =
+					// Set the delay (set by parent, or milestone itself, with a fallback of 500ms)
+					const delay =
 						Number(elMilestoneTarget.dataset.delay || elMilestones.dataset.delay || '5000');
-					const adjustedDelay = baseDelay * milestoneFactor;
-					elMilestoneTarget.dataset.delay = String(adjustedDelay);
+					elMilestoneTarget.dataset.delay = String(delay);
 					elObstacles.push(elMilestoneTarget);
 				});
 			});
@@ -71,7 +66,7 @@ export function useSetupGameplayElements(boardRef) {
 			elObstacles,
 		};
 		elsRef.current = { ...elsRef.current, ...newState };
-	}, [boardRef, elsRef, currentLevelId, elevationRef, userAdjustedMilestone]);
+	}, [boardRef, elsRef, currentLevelId, elevationRef]);
 
 	// Track which shelves and obstacles are visible
 	useEffect(() => {

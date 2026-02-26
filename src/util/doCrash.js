@@ -89,12 +89,17 @@ export const doModifiers = (props) => {
 /**
  * When a milestone obstacle is hit, show its message, freeze gameplay for the delay, then resume.
  *
- * @param {HTMLElement} el The milestone target element (must have .sr-milestone-target and data-delay).
+ * @param {Object} props The properties object
+ * @param {HTMLElement} props.el The milestone target element (must have .sr-milestone-target and data-delay).
+ * @param {number} [props.userAdjustedMilestone=1] Multiplier for milestone delay
  */
-export const doMilestones = (el) => {
+export const doMilestones = (props) => {
+	const { el, userAdjustedMilestone = 1 } = props;
 	if (!el.classList.contains('sr-milestone-target')) return;
 	const elMessage = el.nextElementSibling;
-	const delay = parseInt(el.dataset.delay);
+	const baseDelay = parseInt(el.dataset.delay);
+	const multiplier = Number.isFinite(userAdjustedMilestone) ? userAdjustedMilestone : 1;
+	const delay = Math.max(0, Math.round(baseDelay * multiplier));
 	elMessage.style.setProperty('--sr-milestone-delay', `${delay}ms`);
 	elMessage.classList.add('is-visible');
 	elMessage.classList.add('is-frozen');
