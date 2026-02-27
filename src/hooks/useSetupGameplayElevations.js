@@ -17,6 +17,7 @@ export function useSetupGameplayElevations() {
 		const updateElevations = () => {
 			const elBoardRect = elsRef.current.elBoard.getBoundingClientRect();
 			const elFloorRect = elsRef.current.elShelves.filter(el => el.classList.contains('sr-sidewalk'))[0].getBoundingClientRect();
+			if(!elBoardRect.height || !elFloorRect.top) return;
 			elevationRef.current = {
 				...elevationRef.current,
 				ceiling: Math.round(elBoardRect.height),
@@ -26,6 +27,7 @@ export function useSetupGameplayElevations() {
 				height: Math.round(elBoardRect.height * jump.height),
 				hangtime: jump.hangtime,
 			};
+			// Start our character off on the floor
 			gsap.set(elsRef.current.elCharacter, { y: elevationRef.current.floor * -1 });
 		};
 		const throttledUpdate = throttle(updateElevations, 250);
