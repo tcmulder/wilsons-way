@@ -1,21 +1,25 @@
 import { motion as Motion, AnimatePresence } from "framer-motion";
 import { Routes, Route, useLocation } from "react-router-dom";
 
-const levelVariants = {
-	initial: { opacity: 0 },
-	animate: { opacity: 1, transition: { duration: 1, delay: 0.5 } },
-	exit: { opacity: 0, transition: { duration: 0.3, delay: 0.3 } },
-};
-	
-const defaultVariants = {
-	initial: { opacity: 0 },
-	animate: { opacity: 1, transition: { duration: 0.3 } },
-	exit: { opacity: 0, transition: { duration: 0.3 } },
-};
-
+/**
+ * Animate routes for the game.
+ *
+ * @param {Object} props The properties object
+ * @param {Object[]} props.routes The routes to animate
+ * @returns 
+ */
 export function AnimatedRoutes({ routes }) {
 	const location = useLocation();
-
+	const levelVariants = {
+		initial: { opacity: 0 },
+		animate: { opacity: 1, transition: { duration: 1, delay: 0.5 } },
+		exit: { opacity: 0, transition: { duration: 0.3, delay: 0.3 } },
+	};
+	const defaultVariants = {
+		initial: { opacity: 0 },
+		animate: { opacity: 1, transition: { duration: 0.3 } },
+		exit: { opacity: 0, transition: { duration: 0.3 } },
+	};
 	return (
 		<AnimatePresence mode="wait">
 			<Routes location={location} key={location.pathname}>
