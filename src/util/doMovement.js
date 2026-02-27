@@ -227,15 +227,7 @@ export function useCharacterMovement(props) {
 		timelinesRef,
 		elevationRef,
 		statusRef,
-		currentLevelId,
 	} = props;
-
-	// Auto-play when debug autoplay is not false, and only once timelines exist (level has loaded)
-	useEffect(() => {
-		if (debug?.autoplay !== false && timelinesRef.current?.length) {
-			doRun({ timelines: timelinesRef.current, setCharacterStatus, direction: 'forward' });
-		}
-	}, [debug, timelinesRef, setCharacterStatus, currentLevelId]);
 
 	useEffect(() => {
 		const handleKeyDown = (e) => {

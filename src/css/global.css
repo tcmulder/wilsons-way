@@ -33,12 +33,22 @@
 	box-sizing: border-box;
 }
 
+html,
+body {
+	height: 100%;
+}
+
 body {
 	touch-action: manipulation;
 	overflow: clip;
-	height: 100%;
+	display: grid;
+	place-items: center;
 	margin: 0;
 	background: var(--sr-c-black);
+	& > * {
+		width: 100%;
+		min-width: 0;
+	}
 }
 
 .sr {
