@@ -1,33 +1,46 @@
 import { motion as Motion, AnimatePresence } from "framer-motion";
 import { Routes, Route, useLocation } from "react-router-dom";
 
+const levelVariants = {
+	initial: { opacity: 0 },
+	animate: { opacity: 1, transition: { duration: 1, delay: 0.5 } },
+	exit: { opacity: 0, transition: { duration: 0.3, delay: 0.3 } },
+};
+	
+const defaultVariants = {
+	initial: { opacity: 0 },
+	animate: { opacity: 1, transition: { duration: 0.3 } },
+	exit: { opacity: 0, transition: { duration: 0.3 } },
+};
+
 export function AnimatedRoutes({ routes }) {
-  const location = useLocation();
+	const location = useLocation();
 
-  return (
-    <AnimatePresence mode="wait">
-      <Routes location={location} key={location.pathname}>
-        {routes.map(({ path, element }) => (
-          <Route
-            key={path}
-            path={path}
-            element={<PageTransition>{element}</PageTransition>}
-          />
-        ))}
-      </Routes>
-    </AnimatePresence>
-  );
-}
-
-export default function PageTransition({ children }) {
-  return (
-    <Motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.3 }}
-    >
-      {children}
-    </Motion.div>
-  );
+	return (
+		<AnimatePresence mode="wait">
+			<Routes location={location} key={location.pathname}>
+				{routes.map(({ path, element }) => {
+					const isLevelRoute = path.startsWith("/level/");
+					const variant = isLevelRoute ? levelVariants : defaultVariants;
+					return (
+						<Route
+							key={path}
+							path={path}
+							element={
+								<Motion.div
+									className="sr-page-transition"
+									variants={variant}
+									initial="initial"
+									animate="animate"
+									exit="exit"
+								>
+									{element}
+								</Motion.div>
+							}
+						/>
+					);
+				})}
+			</Routes>
+		</AnimatePresence>
+	);
 }
