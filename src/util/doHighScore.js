@@ -2,7 +2,6 @@
  * Submit high score form data
  */
 export const submitHighScore = async (props) => {
-	console.log('🤞', props);
 	const {
 		e,
 		score,
