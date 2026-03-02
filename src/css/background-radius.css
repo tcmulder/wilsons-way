@@ -4,7 +4,7 @@
 	--c-fg: var(--sr-c-black);
 }
 .sr-background-radius {
-	--sr-bg-rad-size: 3cqmax;
+	--sr-bg-rad-size: 3.8cqmax;
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;

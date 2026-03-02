@@ -6,25 +6,25 @@ import '../css/interface.css';
 
 const RestartControl = () => {
 	return (
-		<span className="sr-interface-control sr-interface-control--restart">🔄</span>
+		<BackgroundRadius className="sr-interface-header__circle"><button>🔄</button></BackgroundRadius>
 	);
 };
 
 const PauseControl = () => {
 	return (
-		<span className="sr-interface-control sr-interface-control--pause">⏸️</span>
+		<BackgroundRadius className="sr-interface-header__circle"><button>⏸️</button></BackgroundRadius>
 	);
 };
 
 const SoundControl = () => {
 	return (
-		<span className="sr-interface-control sr-interface-control--sound">🔊</span>
+		<BackgroundRadius className="sr-interface-header__circle"><button>🔊</button></BackgroundRadius>
 	);
 };
 
 const Battery = () => {
 	return (
-		<span className="sr-interface-die">🪫</span>
+		<BackgroundRadius className="sr-interface-header__battery"><button>🪫</button></BackgroundRadius>
 	);
 };
 
@@ -42,7 +42,7 @@ const Score = () => {
 		};
 	}, [score, level]);
 	return (
-		<span className="sr-interface-score"><em>💯 {parsed.pos}-{Math.abs(parsed.neg)}</em>={parsed.total}</span>
+		<BackgroundRadius className="sr-interface-header__score">{parsed.total.toString().padStart(3, '0')}</BackgroundRadius>
 	);
 };
 
@@ -66,11 +66,6 @@ export const Interface = () => {
 				<SoundControl />
 				<Battery />
 				<Score />
-				<BackgroundRadius className="sr-interface-header__circle" backgroundColor="var(--sr-c-navy)" borderColor="var(--sr-c-azure)">
-					<button style={{color: 'var(--sr-c-white)'}}>
-						Close
-					</button>
-				</BackgroundRadius>
 			</nav>
 			<footer className="sr-interface-footer">
 				<Progress />

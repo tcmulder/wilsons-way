@@ -1,12 +1,16 @@
 .sr-interface-header {
+	pointer-events: none;
 	position: absolute;
 	inset: 0 0 auto 0;
 	z-index: 10;
-}
-.sr-interface-header__circle {
-	--c-bg: color-mix(in srgb, var(--sr-c-navy) 50%, transparent);
-	--c-bd: color-mix(in srgb, var(--sr-c-azure) 50%, transparent);
-	--c-fg: color-mix(in srgb, var(--sr-c-white) 50%, transparent);
+	padding: 1em;
+	button {
+		pointer-events: auto;
+	}
+	.sr-background-radius__svg {
+		--c-bg: color-mix(in srgb, var(--sr-c-navy) 80%, transparent);
+		--c-bd: var(--sr-c-sky);
+	}
 }
 .sr-interface-footer {
 	position: absolute;
