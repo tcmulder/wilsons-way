@@ -2,14 +2,34 @@ import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useScoreContext, useLevelContext } from '../context/useContexts';
 import { Version } from './Version';
+import BackgroundRadius from './BackgroundRadius';
 import '../css/interface.css';
 
-/**
- * Persistent game interface.
- * 
- * @returns {React.ReactNode} The Interface component.
- */
-export const Interface = () => {
+const RestartControl = () => {
+	return (
+		<span className="sr-interface-control sr-interface-control--restart">🔄</span>
+	);
+};
+
+const PauseControl = () => {
+	return (
+		<span className="sr-interface-control sr-interface-control--pause">⏸️</span>
+	);
+};
+
+const SoundControl = () => {
+	return (
+		<span className="sr-interface-control sr-interface-control--sound">🔊</span>
+	);
+};
+
+const Battery = () => {
+	return (
+		<span className="sr-interface-die">🪫</span>
+	);
+};
+
+const Score = () => {
 	const { score } = useScoreContext();
 	const { level } = useLevelContext();
 
@@ -22,19 +42,42 @@ export const Interface = () => {
 			level: score.reduce((acc, curr) => acc + (curr.level === level ? curr.num : 0), 0),
 		};
 	}, [score, level]);
+	return (
+		<span className="sr-interface-score"><em>💯 {parsed.pos}-{Math.abs(parsed.neg)}</em>={parsed.total}</span>
+	);
+};
 
+const Progress = () => {
+	return (
+		<progress className="sr-interface-progress" value="50" max="100" aria-label="Progress">50%</progress>
+	);
+};
+
+/**
+ * Persistent game interface.
+ * 
+ * @returns {React.ReactNode} The Interface component.
+ */
+export const Interface = () => {
 	return (
 		<>
-			<nav className="sr-interface">
-				<Link to="/">Intro</Link>
-				|
-				<Link to="/level/1">Level 1</Link>
-				|
-				<span><em>score: {parsed.pos}-{Math.abs(parsed.neg)}</em>={parsed.total}</span>
-				|
-				<span>level {level} score: {parsed.level}</span>
+			<nav className="sr-interface-header">
+				<RestartControl />
+				<PauseControl />
+				<SoundControl />
+				<Battery />
+				<Score />
+				{/* <BackgroundRadius backgroundColor="rgba(0, 0, 255, 0.636)" borderColor="rgba(255, 0, 0, 0.358)"> */}
+				<BackgroundRadius backgroundColor="var(--sr-c-creme)" borderColor="var(--sr-c-yellow)">
+					<button>
+						Close
+					</button>
+				</BackgroundRadius>
 			</nav>
-			<Version />
+			<footer className="sr-interface-footer">
+				<Progress />
+				<Version />
+			</footer>
 		</>
 	);
 };

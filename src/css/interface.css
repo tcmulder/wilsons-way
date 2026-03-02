@@ -1,18 +1,40 @@
-.sr-interface {
+.sr-interface-header {
 	position: absolute;
 	inset: 0 0 auto 0;
 	z-index: 10;
-	padding: 10px;
-	background-color: rgba(2555, 255, 255, 0.5);
-	float: left;
-	line-height: 0;
+}
+.sr-interface-footer {
+	position: absolute;
+	inset: auto 0 0 0;
+	z-index: 10;
+	display: flex;
+}
+.sr-interface-progress {
+	height: 1cqmax;
+	max-width: 88%;
+	margin: 0 auto;
 }
 .sr-version {
 	position: absolute;
-	z-index: 10;
-	inset: auto 0 0 auto;
-	opacity: 0.33;
-	color: var(--sr-c-white);
-	box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.5);
+	right: 0;
+	bottom: 0;
 	font-size: 0.7em;
+	color: var(--sr-c-white);
+	text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
 }
+
+progress {
+	appearance: none;
+	width: 100%;
+	height: 8px;
+	border-radius: 4px;
+	padding: 2px;
+	border: none;
+	background: #e5e7eb;
+	/* Chrome/Safari */
+	&::-webkit-progress-bar { background: #e5e7eb; border-radius: 4px; }
+	&::-webkit-progress-value { background: red; border-radius: 4px; }	
+	/* Firefox */
+	&::-moz-progress-bar { background: red; border-radius: 4px; }
+}
+  
