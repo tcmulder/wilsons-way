@@ -1,7 +1,14 @@
+:where(.sr-background-radius) {
+	--c-bg: var(--sr-c-yellow);
+	--c-bd: var(--sr-c-gold);
+	--c-fg: var(--sr-c-black);
+}
 .sr-background-radius {
 	--sr-bg-rad-size: 3cqmax;
 	display: inline-flex;
 	align-items: center;
+	justify-content: center;
+	text-align: center;
 	position: relative;
 	min-width: var(--sr-bg-rad-size);
 	min-height: var(--sr-bg-rad-size);

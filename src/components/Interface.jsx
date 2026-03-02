@@ -1,8 +1,7 @@
 import { useMemo } from 'react';
-import { Link } from 'react-router-dom';
 import { useScoreContext, useLevelContext } from '../context/useContexts';
 import { Version } from './Version';
-import BackgroundRadius from './BackgroundRadius';
+import { BackgroundRadius } from './BackgroundRadius';
 import '../css/interface.css';
 
 const RestartControl = () => {
@@ -67,7 +66,7 @@ export const Interface = () => {
 				<SoundControl />
 				<Battery />
 				<Score />
-				<BackgroundRadius backgroundColor="var(--sr-c-navy)" borderColor="var(--sr-c-azure)">
+				<BackgroundRadius className="sr-interface-header__circle" backgroundColor="var(--sr-c-navy)" borderColor="var(--sr-c-azure)">
 					<button style={{color: 'var(--sr-c-white)'}}>
 						Close
 					</button>

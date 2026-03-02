@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import BackgroundRadius from '../components/BackgroundRadius';
+import { BackgroundRadius } from '../components/BackgroundRadius';
 import { useSettingsContext } from '../context/useContexts';
 import { useGameAudio } from '../hooks/useSFX';
 
@@ -14,7 +14,7 @@ const IntroPage = () => {
 		<div>
 			<h1>Welcome to the Game</h1>
 			<p>This is an introductory page, and content is TBD.</p>
-			<BackgroundRadius backgroundColor="var(--sr-c-yellow)" borderColor="var(--sr-c-gold)">
+			<BackgroundRadius backgroundColor="var(--sr-c-yellow)" borderColor="var(--sr-c-gold)" scale={1.5}>
 				<button style={{fontSize: '7em'}} onClick={() => navigate('/level/1')}>Start Game</button>
 			</BackgroundRadius>
 			<div>
