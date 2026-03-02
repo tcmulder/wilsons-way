@@ -1,5 +1,5 @@
 .sr-background-radius {
-	--sr-bg-rad-size: 2.7cqmax;
+	--sr-bg-rad-size: 3cqmax;
 	display: inline-flex;
 	align-items: center;
 	position: relative;
@@ -9,10 +9,12 @@
 		display: block;
 		background-color: transparent;
 		border: 0;
-		text-box: trim-start cap alphabetic;
 	}
-	svg {
-		position: absolute;
-		z-index: -1;
-	}
+}
+.sr-background-radius__svg {
+	position: absolute;
+}
+.sr-background-radius__content {
+	position: relative;
+	z-index: 1;
 }

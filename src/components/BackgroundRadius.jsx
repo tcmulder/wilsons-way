@@ -1,4 +1,4 @@
-import { useId } from 'react';
+import { useId, useRef, useEffect, useState } from 'react';
 import '../css/background-radius.css';
 
 /**
@@ -43,13 +43,30 @@ const Corner = (props) => {
  * @returns 
  */
 const BackgroundRadius = (props) => {
-	const { children, backgroundColor, borderColor } = props;
+	const {
+		children,
+		backgroundColor = 'var(--sr-c-yellow',
+		foregroundColor = 'var(--sr-c-white)',
+		borderColor = 'var(--sr-c-gold)',
+	} = props;
 	const id = useId();
+	const parentRef = useRef(null);
+	const svgRef = useRef(null);
+	const [viewBox, setViewBox] = useState("0 0 100 100");
+
+	useEffect(() => {
+		const observer = new ResizeObserver(([entry]) => {
+			const { width, height } = entry.contentRect;
+			setViewBox(`0 0 ${width} ${height}`);
+		});
+		observer.observe(parentRef.current);
+		return () => observer.disconnect();
+	}, []);
 	const borderRadius = 22;
 	const borderWidth = 4;
 	return (
-		<div className="sr-background-radius">
-			<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+		<div ref={parentRef} className="sr-background-radius" style={{ color: foregroundColor }}>
+			<svg ref={svgRef} className="sr-background-radius__svg" viewBox={viewBox} width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
 				<defs>
 					<mask id={`background-radius-mask-${id}`} maskUnits="userSpaceOnUse" style={{ maskType: "luminance" }}>
 						<rect width="100%" height="100%" fill="white"/>
@@ -60,13 +77,15 @@ const BackgroundRadius = (props) => {
 					</mask>
 				</defs>
 				<rect x={borderWidth} y={borderWidth} width={`calc(100% - ${borderWidth * 2}px)`} height={`calc(100% - ${borderWidth * 2}px)`} fill={backgroundColor} mask={`url(#background-radius-mask-${id})`}/>
-				<rect width="100%" height="100%" fill="none" stroke={borderColor} stroke-width={borderWidth * 2} mask={`url(#background-radius-mask-${id})`}/>
+				<rect width="100%" height="100%" fill="none" stroke={borderColor} strokeWidth={borderWidth * 2} mask={`url(#background-radius-mask-${id})`}/>
 				<Corner pos={[0, 0]} rotate={0} borderRadius={borderRadius} borderColor={borderColor} backgroundColor={backgroundColor} />
 				<Corner pos={[100, 0]} rotate={90} borderRadius={borderRadius} borderColor={borderColor} backgroundColor={backgroundColor} />
 				<Corner pos={[100, 100]} rotate={180} borderRadius={borderRadius} borderColor={borderColor} backgroundColor={backgroundColor} />
 				<Corner pos={[0, 100]} rotate={270} borderRadius={borderRadius} borderColor={borderColor} backgroundColor={backgroundColor} />
 			</svg>
-			{children}
+			<span className="sr-background-radius__content">
+				{children}
+			</span>
 		</div>
 	);
 };
