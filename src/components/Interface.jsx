@@ -67,8 +67,7 @@ export const Interface = () => {
 				<SoundControl />
 				<Battery />
 				<Score />
-				{/* <BackgroundRadius backgroundColor="rgba(0, 0, 255, 0.636)" borderColor="rgba(255, 0, 0, 0.358)"> */}
-				<BackgroundRadius backgroundColor="var(--sr-c-creme)" borderColor="var(--sr-c-yellow)">
+				<BackgroundRadius backgroundColor="var(--sr-c-yellow)" borderColor="var(--sr-c-gold)">
 					<button>
 						Close
 					</button>
