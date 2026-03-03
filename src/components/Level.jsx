@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSettingsContext, useLevelContext, useGameplayContext, useDebugContext, useCharacterContext } from '../context/useContexts';
 import { loadLevel } from '../util/loadLevel';
 import SVG from '../components/SVG';
+import { Interface } from '../components/Interface';
 import Character from '../components/Character';
 import Gameplay from '../components/Gameplay';
 import { aniLevel } from '../util/aniLevel';
@@ -98,6 +99,7 @@ const Level = () => {
 
 	return (
 		<div className="sr-gameplay" ref={gameplayRef}>
+			<Interface />
 			<Gameplay boardRef={gameplayRef} />
 			<Countdown countdown={countdown} setCountdown={setCountdown} />
 			<div className="sr-board">

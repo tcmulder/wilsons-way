@@ -1,5 +1,4 @@
 import { MemoryRouter, HashRouter } from 'react-router-dom';
-import { Interface } from './components/Interface';
 import { Debug } from './components/Debug';
 import { useDebugContext } from './context/useContexts';
 import { AnimatedRoutes } from './components/PageTransition';
@@ -20,7 +19,6 @@ export default function App() {
         <div className="sr-typography">
           <Router>
             <Debug />
-            <Interface />
             <AnimatedRoutes routes={routes} />
           </Router>
         </div> 
