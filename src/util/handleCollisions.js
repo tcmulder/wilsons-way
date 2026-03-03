@@ -118,16 +118,12 @@ export const checkCollisions = (props) => {
  */
 export const checkElevation = (els, elevationRef) => {
 	const { elCharacter, elShelvesVisible, elBoard } = els;
+	const { elAbove, elBelow } = getNearestShelves(elCharacter, elShelvesVisible);
 	const elBoardRect = elBoard.getBoundingClientRect();
 	const elCharacterRect = elCharacter.getBoundingClientRect();
 	const boardTop = elBoardRect.top;
 	const boardHeight = elBoardRect.height;
-	const { elAbove, elBelow } = getNearestShelves(elCharacter, elShelvesVisible);
-	const localElevation = {
-		above: 0,
-		below: 0,
-		charBelow: 0,
-	};
+	const localElevation = { above: 0, below: 0, charBelow: 0 };
 	if (elAbove) {
 		const aboveBottom = elAbove.getBoundingClientRect().bottom - boardTop;
 		localElevation.above = Math.round(boardHeight - aboveBottom);
