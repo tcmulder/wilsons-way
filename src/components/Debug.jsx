@@ -164,15 +164,15 @@ export const Debug = () => {
 	useEffect(() => {
 		if (debugAllowed && debug) {
 			loadState(debug?.characterId, () => setCharacterId(parseInt(debug.characterId)));
-			loadState(debug?.makeSFX, () => setMakeSFX(debug.makeSFX));
-			loadState(debug?.makeMusic, () => setMakeMusic(debug.makeMusic));
+			loadState(debug?.characterHeight, () => setSettings((prev) => ({ ...prev, characterHeight: debug.characterHeight})));
+			loadState(debug?.userAdjustedSpeed, () => setSettings((prev) => ({ ...prev, userAdjustedSpeed: debug.userAdjustedSpeed })));
 			loadState(debug?.gameplaySpeed, () => setSettings((prev) => ({ ...prev, gameplaySpeed: debug.gameplaySpeed})));
 			loadState(debug?.jumpHeight, () => setJump((prev) => ({ ...prev, height: debug.jumpHeight / 100})));
 			loadState(debug?.jumpHangtime, () => setJump((prev) => ({ ...prev, hangtime: debug.jumpHangtime})));
 			loadState(debug?.userAdjustedCrash, () => setSettings((prev) => ({ ...prev, userAdjustedCrash: debug.userAdjustedCrash / 100})));
-			loadState(debug?.characterHeight, () => setSettings((prev) => ({ ...prev, characterHeight: debug.characterHeight})));
 			loadState(debug?.userAdjustedMilestone, () => setSettings((prev) => ({ ...prev, userAdjustedMilestone: (debug.userAdjustedMilestone / 100) / 0.5 })));
-			loadState(debug?.userAdjustedSpeed, () => setSettings((prev) => ({ ...prev, userAdjustedSpeed: debug.userAdjustedSpeed })));
+			loadState(debug?.makeMusic, () => setMakeMusic(debug.makeMusic));
+			loadState(debug?.makeSFX, () => setMakeSFX(debug.makeSFX));
 		}
 	}, [debug, setCharacterId, setMakeSFX, setMakeMusic, setSettings, setJump, debugAllowed, isMenuOpen]);
 	
