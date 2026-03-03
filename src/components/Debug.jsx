@@ -169,11 +169,12 @@ export const Debug = () => {
 			loadState(debug?.gameplaySpeed, () => setSettings((prev) => ({ ...prev, gameplaySpeed: debug.gameplaySpeed})));
 			loadState(debug?.jumpHeight, () => setJump((prev) => ({ ...prev, height: debug.jumpHeight / 100})));
 			loadState(debug?.jumpHangtime, () => setJump((prev) => ({ ...prev, hangtime: debug.jumpHangtime})));
+			loadState(debug?.userAdjustedCrash, () => setSettings((prev) => ({ ...prev, userAdjustedCrash: debug.userAdjustedCrash / 100})));
 			loadState(debug?.characterHeight, () => setSettings((prev) => ({ ...prev, characterHeight: debug.characterHeight})));
 			loadState(debug?.userAdjustedMilestone, () => setSettings((prev) => ({ ...prev, userAdjustedMilestone: (debug.userAdjustedMilestone / 100) / 0.5 })));
 			loadState(debug?.userAdjustedSpeed, () => setSettings((prev) => ({ ...prev, userAdjustedSpeed: debug.userAdjustedSpeed })));
 		}
-	}, [debug, setCharacterId, setMakeSFX, setMakeMusic, setSettings, setJump, debugAllowed]);
+	}, [debug, setCharacterId, setMakeSFX, setMakeMusic, setSettings, setJump, debugAllowed, isMenuOpen]);
 	
 	// Allow drag-and-drop of SVG level files over the debug panel
 	useDebugDropLevel(debugRef);
@@ -233,6 +234,13 @@ export const Debug = () => {
 						setValue={(value) => setJump({ ...jump, hangtime: value })}
 						title="Set the jump hangtime in seconds"
 						step={0.1}
+					/>
+					<DebugNumber
+						label="💥 Crash (%)"
+						param="userAdjustedCrash"
+						value={settings.userAdjustedCrash * 100}
+						setValue={(value) => setSettings({ ...settings, userAdjustedCrash: value / 100 })}
+						title="Set the crash difficulty in percentage"
 					/>
 					<DebugNumber
 						label="💬 Milestone (%)"

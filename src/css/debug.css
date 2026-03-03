@@ -118,32 +118,33 @@ button.sr-debug__toggle {
 	color: var(--sr-debug-c-2);
 }
 
-.sr-debug--outlines ~ .sr-gameplay {
+.sr-debug--outlines ~ .sr-page-transition > .sr-gameplay {
+	--sr-debug-op: 75%;
 	:where(.is-collided) {
-		outline: 1px dashed black;
+		outline: 1px dashed color-mix(in srgb, black var(--sr-debug-op), transparent);
 	}
 	:where(.sr-character) {
-		outline: 1px dashed lightgray;
+		outline: 1px dashed color-mix(in srgb, lightgray var(--sr-debug-op), transparent);
 		&[class*=" is-mod-"] svg {
 			filter: grayscale(1) opacity(0.8);
 		}
 	}
 	:where(.sr-character-crash) {
-		outline: calc(1px / var(--sr-difficulty-crash, 1)) solid yellow;
+		outline: calc(1px / var(--sr-difficulty-crash, 1)) solid color-mix(in srgb, yellow var(--sr-debug-op), transparent);
 	}
 	:where(.sr-shelves > *) {
-		outline: 1px dashed lightgray;
+		outline: 1px dashed color-mix(in srgb, lightgray var(--sr-debug-op), transparent);
 	}
 	:where(:is(.sr-obstacles, .sr-milestones) [data-score]) {
-		outline: 1px dashed lime;
+		outline: 1px dashed color-mix(in srgb, lime var(--sr-debug-op), transparent);
 		&.is-collided {
-			outline: 1px dashed green;
+			outline: 1px dashed color-mix(in srgb, green var(--sr-debug-op), transparent);
 		}
 	}
 	:is(:is(.sr-obstacles, .sr-milestones) [data-score^="-"]) {
-		outline: 1px dashed red;
+		outline: 1px dashed color-mix(in srgb, red var(--sr-debug-op), transparent);
 		&.is-collided {
-			outline: 1px dashed maroon;
+			outline: 1px dashed color-mix(in srgb, maroon var(--sr-debug-op), transparent);
 		}
 	}
 }
