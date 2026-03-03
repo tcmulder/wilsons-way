@@ -42,7 +42,7 @@ const Countdown = ({ countdown, setCountdown }) => {
 const Level = () => {
 	const { debug } = useDebugContext();
 	const { settings } = useSettingsContext();
-	const { gameplaySpeed, userAdjustedSpeed } = settings;
+	const { version, gameplaySpeed, userAdjustedSpeed } = settings;
 	const { level, setCurrentLevelId, customLevelSvg } = useLevelContext();
 	const gameplayContext = useGameplayContext();
 	const navigate = useNavigate();
@@ -102,7 +102,7 @@ const Level = () => {
 			<Countdown countdown={countdown} setCountdown={setCountdown} />
 			<div className="sr-board">
 				{/* If level is 0, we're using a drag-and-dropped custom level, so don't load a numbered SVG file */}
-				{level !== 0 && <SVG path={`${window.sr.url}public/svg/level-${level}.svg`} onSvgLoad={handleSvgLoad} />}
+				{level !== 0 && <SVG path={`${window.sr.url}public/svg/level-${level}.svg?v=${version}`} onSvgLoad={handleSvgLoad} />}
 			</div>
 			<Character />
 		</div>

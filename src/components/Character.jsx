@@ -15,10 +15,9 @@ const Character = () => {
 	const { characterId, characterStatus, setCharacterStatus, characterModifiers } = useCharacterContext();
 	const { timelinesRef, elevationRef, statusRef, elsRef, jumpRef } = useGameplayContext();
 	const { settings } = useSettingsContext();
-	const { userAdjustedCrash, characterHeight } = settings;
+	const { version, userAdjustedCrash, characterHeight } = settings;
 	const { currentLevelId } = useLevelContext();
 	const characterSvgRef = useRef(null);
-	const characterSvgUrl = `${window.sr.url}public/svg/character-${characterId}.svg`;
 
 	// When the SVG loads, create the animation sprite and replace the character SVG with it.
 	const handleSvgLoad = useCallback((svgElement) => {
@@ -58,7 +57,7 @@ const Character = () => {
 			style={{'--sr-h-character': `${characterHeight}cqmin`}}
 		>
 			<div className="sr-character-svg" ref={characterSvgRef}>
-				<SVG path={characterSvgUrl} onSvgLoad={handleSvgLoad} />
+				<SVG path={`${window.sr.url}public/svg/character-${characterId}.svg?v=${version}`} onSvgLoad={handleSvgLoad} />
 			</div>
 			<div className="sr-character-crash" aria-hidden="true" style={{'--sr-difficulty-crash': userAdjustedCrash || 1}} />
 			<div className="sr-character-message" />
