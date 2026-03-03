@@ -1,10 +1,16 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import svgr from 'vite-plugin-svgr';
 import usePHP, { EPHPError } from 'vite-plugin-php';
 
 export default defineConfig(({ command }) => {
 	const config = {
-		plugins: [react()],
+		plugins: [
+			react(),
+			svgr({
+				include: '**/*.inline.svg',
+			}),
+		],
 		build: {
 			manifest: 'manifest.json',
 			outDir: 'dist',

@@ -3,13 +3,35 @@
 	position: absolute;
 	inset: 0 0 auto 0;
 	z-index: 10;
+	display: flex;
+	justify-content: space-between;
+	gap: 0.5em;
 	padding: 1em;
 	button {
 		pointer-events: auto;
 	}
-	.sr-background-radius__svg {
+	.sr-background-radius {
 		--c-bg: color-mix(in srgb, var(--sr-c-navy) 80%, transparent);
+		--c-fg: var(--sr-c-white);
 		--c-bd: var(--sr-c-sky);
+		&:has(button:is(:hover, :focus-visible)) {
+			cursor: pointer;
+			--c-fg: var(--sr-c-sky);
+		}
+	}
+}
+.sr-interface-header__battery {
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+	.sr-background-radius__content {
+		padding: 0 1em;
+	}
+}
+.sr-interface-header__score {
+	margin-left: auto;
+	.sr-background-radius__content {
+		padding: 0 1em;
 	}
 }
 .sr-interface-footer {
@@ -19,9 +41,30 @@
 	display: flex;
 }
 .sr-interface-progress {
+	appearance: none;
 	height: 1cqmax;
+	width: 100%;
 	max-width: 88%;
-	margin: 0 auto;
+	margin: 0 auto 1em;
+	border-radius: 1em;
+	padding: 0.15em;
+	border: none;
+	background-color: var(--sr-c-navy);
+	outline: 0.05em solid var(--sr-c-sky);
+	/* Chrome/Safari */
+	&::-webkit-progress-bar {
+		background-color: var(--sr-c-navy);
+		border-radius: 1em;
+	}
+	&::-webkit-progress-value {
+		background-color: var(--sr-c-sky);
+		border-radius: 1em;
+	}	
+	/* Firefox */
+	&::-moz-progress-bar {
+		background-color: var(--sr-c-sky);
+		border-radius: 1em;
+	}
 }
 .sr-version {
 	position: absolute;
@@ -31,20 +74,3 @@
 	color: var(--sr-c-white);
 	text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
 }
-
-
-progress {
-	appearance: none;
-	width: 100%;
-	height: 8px;
-	border-radius: 4px;
-	padding: 2px;
-	border: none;
-	background: #e5e7eb;
-	/* Chrome/Safari */
-	&::-webkit-progress-bar { background: #e5e7eb; border-radius: 4px; }
-	&::-webkit-progress-value { background: red; border-radius: 4px; }	
-	/* Firefox */
-	&::-moz-progress-bar { background: red; border-radius: 4px; }
-}
-  

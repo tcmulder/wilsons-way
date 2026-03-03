@@ -1,30 +1,62 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useScoreContext, useLevelContext } from '../context/useContexts';
 import { Version } from './Version';
 import { BackgroundRadius } from './BackgroundRadius';
+import { doFreeze } from '../util/doMovement';
+import ControlXIcon from '../images/control-x.inline.svg';
+import ControlPauseIcon from '../images/control-pause.inline.svg';
+import ControlPlayIcon from '../images/control-play.inline.svg';
+import ControlSoundIcon from '../images/control-sound.inline.svg';
 import '../css/interface.css';
 
 const RestartControl = () => {
 	return (
-		<BackgroundRadius className="sr-interface-header__circle"><button>🔄</button></BackgroundRadius>
+		<BackgroundRadius className="sr-interface-header__button">
+			<button
+			aria-label="Restart"
+			onClick={() => {
+				alert('Eventually this will restart the game from the beginning. For now, it just reloads the current page.');
+				window.location.reload();
+			}}
+			>
+				<ControlXIcon />
+			</button>
+		</BackgroundRadius>
 	);
 };
 
 const PauseControl = () => {
+	const [isPaused, setIsPaused] = useState(false);
 	return (
-		<BackgroundRadius className="sr-interface-header__circle"><button>⏸️</button></BackgroundRadius>
+		<BackgroundRadius className="sr-interface-header__button">
+			<button
+			aria-label={isPaused ? 'Resume' : 'Pause'}
+			onClick={() => {
+				setIsPaused(!isPaused);
+				doFreeze(!isPaused);
+			}}
+			>
+				{isPaused ? <ControlPlayIcon /> : <ControlPauseIcon />}
+			</button>
+		</BackgroundRadius>
 	);
 };
 
 const SoundControl = () => {
 	return (
-		<BackgroundRadius className="sr-interface-header__circle"><button>🔊</button></BackgroundRadius>
+		<BackgroundRadius className="sr-interface-header__button">
+			<button aria-label="Sound">
+				<ControlSoundIcon />
+			</button>
+		</BackgroundRadius>
 	);
 };
 
 const Battery = () => {
 	return (
-		<BackgroundRadius className="sr-interface-header__battery"><button>🪫</button></BackgroundRadius>
+		<BackgroundRadius className="sr-interface-header__battery">
+			{` ← battery → `}
+		</BackgroundRadius>
 	);
 };
 
@@ -42,7 +74,7 @@ const Score = () => {
 		};
 	}, [score, level]);
 	return (
-		<BackgroundRadius className="sr-interface-header__score">{parsed.total.toString().padStart(3, '0')}</BackgroundRadius>
+		<BackgroundRadius className="sr-interface-header__score">{parsed.total.toLocaleString()}</BackgroundRadius>
 	);
 };
 

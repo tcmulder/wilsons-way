@@ -5,17 +5,21 @@
 }
 .sr-background-radius {
 	--sr-bg-rad-size: 3.8cqmax;
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	text-align: center;
 	position: relative;
+	display: grid;
+	place-items: center;
+	text-align: center;
 	min-width: var(--sr-bg-rad-size);
 	min-height: var(--sr-bg-rad-size);
-	button {
+	:where(button) {
 		display: block;
 		background-color: transparent;
 		border: 0;
+		padding: 0;
+		color: inherit;
+	}
+	:where(svg) {
+		display: block;
 	}
 }
 .sr-background-radius__svg {
@@ -23,5 +27,16 @@
 }
 .sr-background-radius__content {
 	position: relative;
+	display: grid;
+	place-items: center;
+	text-align: inherit;
+	color: var(--c-fg);
+	width: 100%;
+	height: 100%;
 	z-index: 1;
+	& > button:only-child {
+		display: inherit;
+		place-items: inherit;
+		text-align: inherit;
+	}
 }
