@@ -18,13 +18,16 @@ export function useSetupGameplayElevations() {
 			const elBoardRect = elsRef.current.elBoard.getBoundingClientRect();
 			const elFloorRect = elsRef.current.elShelves.filter(el => el.classList.contains('sr-sidewalk'))[0].getBoundingClientRect();
 			if(!elBoardRect.height || !elFloorRect.top) return;
+			const boardTop = elBoardRect.top;
+			const boardHeight = elBoardRect.height;
+			const floorTopWithinBoard = elFloorRect.top - boardTop;
 			elevationRef.current = {
 				...elevationRef.current,
-				ceiling: Math.round(elBoardRect.height),
-				floor: Math.round(elBoardRect.height - elFloorRect.top),
+				ceiling: Math.round(boardHeight),
+				floor: Math.round(boardHeight - floorTopWithinBoard),
 			};
 			jumpRef.current = {
-				height: Math.round(elBoardRect.height * jump.height),
+				height: Math.round(boardHeight * jump.height),
 				hangtime: jump.hangtime,
 			};
 			// Start our character off on the floor

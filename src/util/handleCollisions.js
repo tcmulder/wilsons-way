@@ -120,6 +120,8 @@ export const checkElevation = (els, elevationRef) => {
 	const { elCharacter, elShelvesVisible, elBoard } = els;
 	const elBoardRect = elBoard.getBoundingClientRect();
 	const elCharacterRect = elCharacter.getBoundingClientRect();
+	const boardTop = elBoardRect.top;
+	const boardHeight = elBoardRect.height;
 	const { elAbove, elBelow } = getNearestShelves(elCharacter, elShelvesVisible);
 	const localElevation = {
 		above: 0,
@@ -127,14 +129,18 @@ export const checkElevation = (els, elevationRef) => {
 		charBelow: 0,
 	};
 	if (elAbove) {
-		localElevation.above = Math.round(elBoardRect.height - elAbove.getBoundingClientRect().bottom);
+		const aboveBottom = elAbove.getBoundingClientRect().bottom - boardTop;
+		localElevation.above = Math.round(boardHeight - aboveBottom);
 	} else {
-		localElevation.above = Math.round(elBoardRect.height);
+		localElevation.above = Math.round(boardHeight);
 	}
 	if (elBelow) {
-		localElevation.below = Math.round(elBoardRect.height - elBelow.getBoundingClientRect().top);
+		const belowTop = elBelow.getBoundingClientRect().top - boardTop;
+		localElevation.below = Math.round(boardHeight - belowTop);
 	}
-	localElevation.head = Math.round(elBoardRect.height - elCharacterRect.top);
-	localElevation.foot = Math.round(elBoardRect.height - elCharacterRect.bottom);
+	const charTop = elCharacterRect.top - boardTop;
+	const charBottom = elCharacterRect.bottom - boardTop;
+	localElevation.head = Math.round(boardHeight - charTop);
+	localElevation.foot = Math.round(boardHeight - charBottom);
 	elevationRef.current = { ...elevationRef.current, ...localElevation };
 };
