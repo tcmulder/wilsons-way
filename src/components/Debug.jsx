@@ -81,8 +81,9 @@ const DebugCheckbox = ({ label, param = '', value, setValue, title = '' }) => {
  * @param {number} props.value Current value
  * @param {(v: number) => void} props.setValue Setter (also pushes URL)
  * @param {string} [props.title] Title/tooltip
+ * @param {number} [props.step] Step size
  */
-const DebugNumber = ({ label, param = '', value, setValue, title = '' }) => {
+const DebugNumber = ({ label, param = '', value, setValue, title = '', step = 1 }) => {
 	const k = param || label.toLowerCase();
 	return (
 		<label title={title}>
@@ -98,6 +99,7 @@ const DebugNumber = ({ label, param = '', value, setValue, title = '' }) => {
 					})
 				}
 				onKeyDown={(e) => e.stopPropagation()}
+				step={step}
 			/>
 		</label>
 	);
@@ -226,10 +228,11 @@ export const Debug = () => {
 					/>
 					<DebugNumber
 						label="🏀 Hangtime"
-						param="level (s)"
+						param="jumpHangtime"
 						value={jump.hangtime}
 						setValue={(value) => setJump({ ...jump, hangtime: value })}
 						title="Set the jump hangtime in seconds"
+						step={0.1}
 					/>
 					<DebugNumber
 						label="💬 Milestone (%)"
