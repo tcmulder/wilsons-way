@@ -14,6 +14,8 @@ import { checkCollisions, checkElevation } from './handleCollisions';
  * @param {Function} props.playSound Function to play a sound ('positive' | 'negative')
  * @param {Function} props.setCharacterModifiers Setter for character modifiers
  * @param {number} [props.userAdjustedMilestone] Multiplier for milestone delay
+ * @param {{ cur: number, max: number }} props.lives The current lives state
+ * @param {Function} props.setLives Setter for lives
  */
 export const trackMovement = (props) => {
 	const {
@@ -25,6 +27,8 @@ export const trackMovement = (props) => {
 		playSound,
 		setCharacterModifiers,
 		userAdjustedMilestone,
+		lives,
+		setLives,
 	} = props;
 	const { elsRef, elevationRef, statusRef, jumpRef } = gameplayContext;
 	if (!elsRef?.current || (statusRef?.current?.move === 'none' && statusRef?.current?.jump === 'none')) return;
@@ -37,6 +41,8 @@ export const trackMovement = (props) => {
 		playSound,
 		setCharacterModifiers,
 		userAdjustedMilestone,
+		lives,
+		setLives,
 	});
 	checkElevation(els, elevationRef);
 	doGravity({ setCharacterStatus, statusRef, elevationRef, elsRef, jumpRef });

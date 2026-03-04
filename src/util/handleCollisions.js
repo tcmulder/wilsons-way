@@ -1,4 +1,4 @@
-import { doScoring, doModifiers, doMilestones } from './doCrash';
+import { doScoring, doModifiers, doMilestones, doLives } from './doCrash';
 
 /**
  * Check to see if two elements overlap
@@ -75,6 +75,8 @@ export const getNearestShelves = (el, els) => {
  * @param {Function} [props.playSound] Function to play a sound ('positive' | 'negative')
  * @param {Function} props.setCharacterModifiers Function to set the character modifiers
  * @param {number} [props.userAdjustedMilestone] Multiplier for milestone delay
+ * @param {{ cur: number, max: number }} props.lives The current lives state
+ * @param {Function} props.setLives Function to update lives
  */
 export const checkCollisions = (props) => {
 	const {
@@ -85,6 +87,8 @@ export const checkCollisions = (props) => {
 		playSound,
 		setCharacterModifiers,
 		userAdjustedMilestone,
+		lives,
+		setLives,
 	} = props;
 	const { elCharacterCrashArea, elCharacterMessage, elObstaclesVisible } = els;
 	elObstaclesVisible.forEach((el) => {
@@ -105,6 +109,7 @@ export const checkCollisions = (props) => {
 				characterModifiers,
 				playSound,
 			});
+			doLives({ el, lives, setLives });
 			doMilestones({ el, userAdjustedMilestone });
 		}
 	});

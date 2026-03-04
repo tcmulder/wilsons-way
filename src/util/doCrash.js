@@ -56,6 +56,17 @@ export const doScoring = (props) => {
 };
 
 /**
+ * Increase or decrease lives.
+ */
+export const doLives = (props) => {
+	const { el, setLives } = props || {};
+	const shouldDecrease = el.classList.contains('is-negative');
+	if (shouldDecrease) {
+		setLives((prev) => ({ ...prev, cur: prev.cur - 1 }));
+	}
+};
+
+/**
  * Modify collided obstacles
  *
  * @param {Object} props The properties object

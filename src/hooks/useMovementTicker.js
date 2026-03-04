@@ -17,7 +17,7 @@ export function useMovementTicker() {
 	const gameplayContext = useGameplayContext();
 	const { setCharacterStatus, setCharacterModifiers, characterModifiers } = useCharacterContext();
 	const { level } = useLevelContext();
-	const { setScore } = useScoreContext();
+	const { setScore, lives, setLives } = useScoreContext();
 	const { playSound } = useGameAudio();
 	const { settings } = useSettingsContext();
 	const { userAdjustedMilestone = 1 } = settings || {};
@@ -34,6 +34,8 @@ export function useMovementTicker() {
 				playSound,
 				setCharacterModifiers,
 				userAdjustedMilestone,
+				lives,
+				setLives,
 			});
 		gsap.ticker.add(tick);
 		return () => gsap.ticker.remove(tick);
@@ -46,6 +48,8 @@ export function useMovementTicker() {
 		playSound,
 		setCharacterModifiers,
 		userAdjustedMilestone,
+		lives,
+		setLives,
 	]);
 }
 
