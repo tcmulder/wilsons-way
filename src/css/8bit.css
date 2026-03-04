@@ -10,17 +10,23 @@
 	grid-area: 1 / 1;
 	svg {
 		display: block;
+		width: 100%;
+		height: auto;
 	}
 }
 .sr-8bit__fg {
-	position: relative;
 	grid-area: 1 / 1;
+	position: relative;
+	display: flex;
 	color: var(--sr-c-fg-8bit);
 	& > :where(button:only-child, a:only-child) {
-		background-color: transparent;
-		border: 0;
 		height: 100%;
 		width: 100%;
+		padding: 0;
+		margin: 0;
+		background-color: transparent;
+		border: 0;
+		font-size: 1em;
 		color: inherit;
 	}
 }

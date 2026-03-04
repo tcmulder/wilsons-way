@@ -109,7 +109,7 @@ const Score = () => {
 		};
 	}, [score, level]);
 	return (
-		<EightBit className="sr-interface-header__score">{parsed.total.toLocaleString()}</EightBit>
+		<EightBit className="sr-interface-header__score" bg={<EightBitPill />}>{parsed.total.toLocaleString()}</EightBit>
 	);
 };
 

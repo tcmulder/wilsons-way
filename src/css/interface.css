@@ -3,7 +3,7 @@
 	--sr-c-bg-8bit: color-mix(in srgb, var(--sr-c-navy) 80%, transparent);
 	--sr-c-bd-8bit: var(--sr-c-sky);
 	--sr-c-fg-8bit: var(--sr-c-white);
-	pointer-events: none;
+	/* pointer-events: none; */
 	position: absolute;
 	inset: 0 0 auto 0;
 	z-index: 10;
@@ -13,10 +13,6 @@
 	padding: 1em;
 	button {
 		pointer-events: auto;
-	}
-	:where(svg) {
-		width: 100%;
-		height: auto;
 	}
 }
 .sr-interface-header__circle {
@@ -40,6 +36,7 @@ svg.sr-interface-header__icon {
 }
 .sr-interface-header__score {
 	height: var(--sr-h-interface);
+	min-width: 2em;
 	margin-left: auto;
 }
 .sr-interface-footer {

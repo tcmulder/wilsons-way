@@ -15,9 +15,11 @@ const IntroPage = () => {
 		<div>
 			<h1>Welcome to the Game</h1>
 			<p>This is an introductory page, and content is TBD.</p>
-			<EightBit bg={<EightBitPill />}>
-				<button onClick={() => navigate('/level/1')}>Start Game</button>
-			</EightBit>
+			<div style={{width: '10cqmax'}}>
+				<EightBit bg={<EightBitPill />}>
+					<button onClick={() => navigate('/level/1')}>Start Game</button>
+				</EightBit>
+			</div>
 			<div>
 				<label>
 					<input
