@@ -1,10 +1,11 @@
-import { useRef, useMemo } from 'react';
+import { useState, useRef, useMemo } from 'react';
 import { GameplayContext } from './useContexts';
 
 /**
  * Provides context related to gameplay.
  */
 export function GameplayContextProvider({ children }) {
+  const [gameplayNavigation, setGameplayNavigation] = useState(null);
   const timelinesRef = useRef([]);
   const elevationRef = useRef({
     above: 0,
@@ -46,7 +47,7 @@ export function GameplayContextProvider({ children }) {
   );
 
   return (
-    <GameplayContext.Provider value={value}>
+    <GameplayContext.Provider value={{ gameplayNavigation, setGameplayNavigation, ...value }}>
       {children}
     </GameplayContext.Provider>
   );

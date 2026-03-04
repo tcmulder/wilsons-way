@@ -29,6 +29,7 @@ export const trackMovement = (props) => {
 		userAdjustedMilestone,
 		lives,
 		setLives,
+		setGameplayNavigation,
 	} = props;
 	const { elsRef, elevationRef, statusRef, jumpRef } = gameplayContext;
 	if (!elsRef?.current || (statusRef?.current?.move === 'none' && statusRef?.current?.jump === 'none')) return;
@@ -43,6 +44,7 @@ export const trackMovement = (props) => {
 		userAdjustedMilestone,
 		lives,
 		setLives,
+		setGameplayNavigation,
 	});
 	checkElevation(els, elevationRef);
 	doGravity({ setCharacterStatus, statusRef, elevationRef, elsRef, jumpRef });

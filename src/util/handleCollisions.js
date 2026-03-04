@@ -89,6 +89,7 @@ export const checkCollisions = (props) => {
 		userAdjustedMilestone,
 		lives,
 		setLives,
+		setGameplayNavigation,
 	} = props;
 	const { elCharacterCrashArea, elCharacterMessage, elObstaclesVisible } = els;
 	elObstaclesVisible.forEach((el) => {
@@ -109,7 +110,7 @@ export const checkCollisions = (props) => {
 				characterModifiers,
 				playSound,
 			});
-			doLives({ el, lives, setLives });
+			doLives({ el, lives, setLives, setGameplayNavigation });
 			doMilestones({ el, userAdjustedMilestone });
 		}
 	});

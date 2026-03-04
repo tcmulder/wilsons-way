@@ -15,6 +15,7 @@ import { trackMovement } from '../util/doMovement';
  */
 export function useMovementTicker() {
 	const gameplayContext = useGameplayContext();
+	const { setGameplayNavigation } = gameplayContext;
 	const { setCharacterStatus, setCharacterModifiers, characterModifiers } = useCharacterContext();
 	const { level } = useLevelContext();
 	const { setScore, lives, setLives } = useScoreContext();
@@ -36,6 +37,7 @@ export function useMovementTicker() {
 				userAdjustedMilestone,
 				lives,
 				setLives,
+				setGameplayNavigation,
 			});
 		gsap.ticker.add(tick);
 		return () => gsap.ticker.remove(tick);
@@ -50,6 +52,7 @@ export function useMovementTicker() {
 		userAdjustedMilestone,
 		lives,
 		setLives,
+		setGameplayNavigation,
 	]);
 }
 

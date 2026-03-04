@@ -46,7 +46,7 @@ const Level = () => {
 	const { version, gameplaySpeed, userAdjustedSpeed } = settings;
 	const { level, setCurrentLevelId, customLevelSvg } = useLevelContext();
 	const gameplayContext = useGameplayContext();
-	const navigate = useNavigate();
+	const { setGameplayNavigation } = gameplayContext;
 	const gameplayRef = useRef(null);
 	const [countdown, setCountdown] = useState(0);
 
@@ -57,8 +57,8 @@ const Level = () => {
 
 	// When a level completes, advance to the next level route
 	const handleLevelComplete = useCallback(() => {
-		navigate(`/outro/${level}`);
-	}, [navigate, level]);
+		setGameplayNavigation(`/outro/${level}`);
+	}, [level, setGameplayNavigation]);
 
 	// Load SVG for level and add movement to it
 	const handleSvgLoad = useCallback(async (svgElement) => {
