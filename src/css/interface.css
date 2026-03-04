@@ -24,8 +24,27 @@
 	position: absolute;
 	left: 50%;
 	transform: translateX(-50%);
-	.sr-background-radius__content {
-		padding: 0 1em;
+}
+.sr-interface-header__battery-bars {
+	--sr-battery-bar-size: 0.5em;
+	display: flex;
+	align-items: stretch;
+	/* gap: 0.1em; */
+	height: 100%;
+	padding: 0.4em 0;
+	mask-image:
+		url("../images/rad-tl.svg"),
+		url("../images/rad-tr.svg"),
+		url("../images/rad-br.svg"),
+		url("../images/rad-bl.svg");
+	mask-position: 0.4em 0.2em, 100% 0%, 100% 100%, 0.4em 100%;
+	mask-size: 1em;
+	mask-repeat: no-repeat;
+	span {
+		flex: 1;
+		display: block;
+		width: 0.5em;
+		background-color: var(--sr-c-sky);
 	}
 }
 .sr-interface-header__score {

@@ -15,6 +15,7 @@ export default defineConfig(({ command }) => {
 			manifest: 'manifest.json',
 			outDir: 'dist',
 			assetsDir: 'assets',
+			assetsInlineLimit: 0,
 			rollupOptions: {
 				input: {
 					main: './src/main.jsx',

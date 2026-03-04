@@ -132,6 +132,7 @@ add_action(
 					$difficulty_speed = 100 - (int) get_option( 'shelf_runner_settings_speed' );
 					$duration_milestone = (int) get_option( 'shelf_runner_settings_milestone_duration' );
 					$duration_milestone = $duration_milestone ? ( $duration_milestone / 50 ) : 1;
+					$difficulty_lives = (int) get_option( 'shelf_runner_settings_lives' );
 
 					// Build response data.
 					$data = array(
@@ -141,6 +142,7 @@ add_action(
 						'jumpHangtime'          => SHELF_RUNNER_JUMP_HANGTIME,
 						'userAdjustedCrash'     => $difficulty_crash,
 						'userAdjustedSpeed'     => $difficulty_speed,
+						'lives'                 => $difficulty_lives,
 						'userAdjustedMilestone' => $duration_milestone,
 						'debugAllowed'          => get_option( 'shelf_runner_settings_debug' ) === '1',
 						'version'               => SHELF_RUNNER_VERSION,

@@ -82,9 +82,15 @@ const SoundControl = () => {
  * @returns {React.ReactNode} The Battery component.
  */
 const Battery = () => {
+	const { settings } = useSettingsContext();
+	const { lives } = settings;
 	return (
 		<BackgroundRadius className="sr-interface-header__battery">
-			{` ← battery → `}
+			<div className="sr-interface-header__battery-bars">
+				{Array(lives).fill(0).map((_, index) => (
+					<span key={index} />
+				))}
+			</div>
 		</BackgroundRadius>
 	);
 };

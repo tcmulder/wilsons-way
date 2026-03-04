@@ -424,6 +424,22 @@ function shelf_runner_settings_init() {
 			'sr_section'
 		);
 
+		add_option( 'shelf_runner_settings_lives', 10 );
+		register_setting( 'shelf_runner_settings', 'shelf_runner_settings_lives' );
+		add_settings_field(
+			'shelf_runner_settings_lives',
+			esc_html( __( 'Number of Lives:', 'shelf-runner' ) ),
+			function () {
+				printf(
+					'<input name="shelf_runner_settings_lives" value="%s" type="number" step="1" min="1" max="100" required /><p><em>%s</em></p>',
+					esc_attr( (string) get_option( 'shelf_runner_settings_lives' ) ),
+					esc_html( __( 'Having more lives will make the game easier.', 'shelf-runner' ) )
+				);
+			},
+			'shelf_runner_settings',
+			'sr_section'
+		);
+
 		add_option( 'shelf_runner_settings_milestone_duration', 50 );
 		register_setting( 'shelf_runner_settings', 'shelf_runner_settings_milestone_duration' );
 		add_settings_field(
