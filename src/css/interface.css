@@ -1,57 +1,46 @@
 .sr-interface-header {
+	--sr-h-interface: 4cqmax;
+	--sr-c-bg-8bit: color-mix(in srgb, var(--sr-c-navy) 80%, transparent);
+	--sr-c-bd-8bit: var(--sr-c-sky);
+	--sr-c-fg-8bit: var(--sr-c-white);
 	pointer-events: none;
 	position: absolute;
 	inset: 0 0 auto 0;
 	z-index: 10;
 	display: flex;
 	justify-content: space-between;
-	gap: 0.5em;
+	gap: 0.4em;
 	padding: 1em;
 	button {
 		pointer-events: auto;
 	}
-	.sr-background-radius {
-		--c-bg: color-mix(in srgb, var(--sr-c-navy) 80%, transparent);
-		--c-fg: var(--sr-c-white);
-		--c-bd: var(--sr-c-sky);
-		&:has(button:is(:hover, :focus-visible)) {
-			cursor: pointer;
-			--c-fg: var(--sr-c-sky);
-		}
+	:where(svg) {
+		width: 100%;
+		height: auto;
 	}
+}
+.sr-interface-header__circle {
+	height: var(--sr-h-interface);
+	width: var(--sr-h-interface);
+	&:hover {
+		--sr-c-fg-8bit: var(--sr-c-sky);
+	}
+}
+svg.sr-interface-header__icon {
+	display: block;
+	width: 40%;
+	margin: auto;
 }
 .sr-interface-header__battery {
 	position: absolute;
 	left: 50%;
+	height: var(--sr-h-interface);
 	transform: translateX(-50%);
-}
-.sr-interface-header__battery-bars {
-	--sr-battery-bar-size: 0.5em;
-	display: flex;
-	align-items: stretch;
-	/* gap: 0.1em; */
-	height: 100%;
-	padding: 0.4em 0;
-	mask-image:
-		url("../images/rad-tl.svg"),
-		url("../images/rad-tr.svg"),
-		url("../images/rad-br.svg"),
-		url("../images/rad-bl.svg");
-	mask-position: 0.4em 0.2em, 100% 0%, 100% 100%, 0.4em 100%;
-	mask-size: 1em;
-	mask-repeat: no-repeat;
-	span {
-		flex: 1;
-		display: block;
-		width: 0.5em;
-		background-color: var(--sr-c-sky);
-	}
+	outline: 1px dashed blue;
 }
 .sr-interface-header__score {
+	height: var(--sr-h-interface);
 	margin-left: auto;
-	.sr-background-radius__content {
-		padding: 0 1em;
-	}
 }
 .sr-interface-footer {
 	position: absolute;

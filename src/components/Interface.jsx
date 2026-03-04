@@ -1,13 +1,13 @@
 import { useMemo, useState } from 'react';
 import { useScoreContext, useLevelContext, useSettingsContext } from '../context/useContexts';
 import { Version } from './Version';
-import { BackgroundRadius } from './BackgroundRadius';
+import { EightBit, EightBitCircle, EightBitPill } from './EightBit';
 import { doFreeze } from '../util/doMovement';
-import ControlXIcon from '../images/control-x.inline.svg';
-import ControlPauseIcon from '../images/control-pause.inline.svg';
-import ControlPlayIcon from '../images/control-play.inline.svg';
-import ControlSoundIcon from '../images/control-sound.inline.svg';
-import ControlMuteIcon from '../images/control-mute.inline.svg';
+import ControlXIcon from '../images/control-x.svg?react';
+import ControlPauseIcon from '../images/control-pause.svg?react';
+import ControlPlayIcon from '../images/control-play.svg?react';
+import ControlSoundIcon from '../images/control-sound.svg?react';
+import ControlMuteIcon from '../images/control-mute.svg?react';
 import '../css/interface.css';
 
 /**
@@ -17,7 +17,7 @@ import '../css/interface.css';
  */
 const RestartControl = () => {
 	return (
-		<BackgroundRadius className="sr-interface-header__button">
+		<EightBit className="sr-interface-header__circle" bg={<EightBitCircle />}>
 			<button
 				aria-label="Restart"
 				onClick={() => {
@@ -25,9 +25,9 @@ const RestartControl = () => {
 					if (shouldRestart) window.location.href = '/';
 				}}
 			>
-				<ControlXIcon />
+				<ControlXIcon className="sr-interface-header__icon" />
 			</button>
-		</BackgroundRadius>
+		</EightBit>
 	);
 };
 
@@ -39,7 +39,7 @@ const RestartControl = () => {
 const PauseControl = () => {
 	const [isPaused, setIsPaused] = useState(false);
 	return (
-		<BackgroundRadius className="sr-interface-header__button">
+		<EightBit className="sr-interface-header__circle" bg={<EightBitCircle />}>
 			<button
 				aria-label={isPaused ? 'Resume' : 'Pause'}
 				onClick={() => {
@@ -47,9 +47,9 @@ const PauseControl = () => {
 					doFreeze(!isPaused);
 				}}
 			>
-				{isPaused ? <ControlPlayIcon /> : <ControlPauseIcon />}
+				{isPaused ? <ControlPlayIcon className="sr-interface-header__icon" /> : <ControlPauseIcon className="sr-interface-header__icon" />}
 			</button>
-		</BackgroundRadius>
+		</EightBit>
 	);
 };
 
@@ -62,7 +62,7 @@ const PauseControl = () => {
 const SoundControl = () => {
 	const { makeSFX, setMakeSFX } = useSettingsContext();
 	return (
-		<BackgroundRadius className="sr-interface-header__button">
+		<EightBit className="sr-interface-header__circle" bg={<EightBitCircle />}>
 			<button
 				aria-label={makeSFX ? 'Sound Effects on' : 'Sound Effects off'}
 				onClick={(e) => {
@@ -70,9 +70,9 @@ const SoundControl = () => {
 					setMakeSFX((prev) => !prev);
 				}}
 			>
-				{makeSFX ? <ControlSoundIcon /> : <ControlMuteIcon />}
+				{makeSFX ? <ControlSoundIcon className="sr-interface-header__icon" /> : <ControlMuteIcon className="sr-interface-header__icon" />}
 			</button>
-		</BackgroundRadius>
+		</EightBit>
 	);
 };
 
@@ -85,13 +85,13 @@ const Battery = () => {
 	const { settings } = useSettingsContext();
 	const { lives } = settings;
 	return (
-		<BackgroundRadius className="sr-interface-header__battery">
+		<EightBit className="sr-interface-header__battery" bg={<EightBitPill />}>
 			<div className="sr-interface-header__battery-bars">
 				{Array(lives).fill(0).map((_, index) => (
-					<span key={index} />
+					<span key={index}>🔋</span>
 				))}
 			</div>
-		</BackgroundRadius>
+		</EightBit>
 	);
 };
 
@@ -109,7 +109,7 @@ const Score = () => {
 		};
 	}, [score, level]);
 	return (
-		<BackgroundRadius className="sr-interface-header__score">{parsed.total.toLocaleString()}</BackgroundRadius>
+		<EightBit className="sr-interface-header__score">{parsed.total.toLocaleString()}</EightBit>
 	);
 };
 

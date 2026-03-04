@@ -8,7 +8,7 @@ export default defineConfig(({ command }) => {
 		plugins: [
 			react(),
 			svgr({
-				include: '**/*.inline.svg',
+				include: '**/*.svg?react',
 			}),
 		],
 		build: {

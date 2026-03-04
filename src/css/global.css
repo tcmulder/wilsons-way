@@ -28,8 +28,11 @@
 /**
  * Styling common to all pages
  */
-:where(*, *::before, *::after) {
+ html {
 	box-sizing: border-box;
+}
+*, *:before, *:after {
+	box-sizing: inherit;
 }
 
 html,
