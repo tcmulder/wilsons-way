@@ -142,7 +142,7 @@ add_action(
 						'jumpHangtime'          => SHELF_RUNNER_JUMP_HANGTIME,
 						'userAdjustedCrash'     => $difficulty_crash,
 						'userAdjustedSpeed'     => $difficulty_speed,
-						'lives'                 => $difficulty_lives,
+						'userAdjustedLives'     => $difficulty_lives,
 						'userAdjustedMilestone' => $duration_milestone,
 						'debugAllowed'          => get_option( 'shelf_runner_settings_debug' ) === '1',
 						'version'               => SHELF_RUNNER_VERSION,

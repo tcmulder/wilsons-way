@@ -8,9 +8,9 @@ import '../css/8bit.css';
  * @returns 
  */
 export const EightBit = (props) => {
-	const { bg, className = '', children } = props;
+	const { bg, className = '', children, center = true } = props;
 	return (
-		<div className={`sr-8bit ${className}`}>
+		<div className={`sr-8bit${center ? ' sr-8bit--center' : ''} ${className}`}>
 			<div className="sr-8bit__bg">
 				{bg}
 			</div>

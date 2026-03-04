@@ -170,7 +170,7 @@ export const Debug = () => {
 			loadState(debug?.jumpHeight, () => setJump((prev) => ({ ...prev, height: debug.jumpHeight / 100})));
 			loadState(debug?.jumpHangtime, () => setJump((prev) => ({ ...prev, hangtime: debug.jumpHangtime})));
 			loadState(debug?.userAdjustedCrash, () => setSettings((prev) => ({ ...prev, userAdjustedCrash: debug.userAdjustedCrash / 100})));
-			loadState(debug?.lives, () => setSettings((prev) => ({ ...prev, lives: debug.lives })));
+			loadState(debug?.userAdjustedLives, () => setSettings((prev) => ({ ...prev, userAdjustedLives: debug.userAdjustedLives })));
 			loadState(debug?.userAdjustedMilestone, () => setSettings((prev) => ({ ...prev, userAdjustedMilestone: (debug.userAdjustedMilestone / 100) / 0.5 })));
 			loadState(debug?.makeMusic, () => setMakeMusic(debug.makeMusic));
 			loadState(debug?.makeSFX, () => setMakeSFX(debug.makeSFX));
@@ -245,9 +245,9 @@ export const Debug = () => {
 					/>
 					<DebugNumber
 						label="⚰️ Lives (#)"
-						param="lives"
-						value={settings.lives}
-						setValue={(value) => setSettings({ ...settings, lives: value })}
+						param="userAdjustedLives"
+						value={settings.userAdjustedLives}
+						setValue={(value) => setSettings({ ...settings, userAdjustedLives: value })}
 						title="Set the number of lives"
 					/>
 					<DebugNumber

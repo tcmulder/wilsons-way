@@ -82,14 +82,13 @@ const SoundControl = () => {
  * @returns {React.ReactNode} The Battery component.
  */
 const Battery = () => {
-	const { settings } = useSettingsContext();
-	const { lives } = settings;
+	const { lives } = useScoreContext();
 	return (
-		<EightBit className="sr-interface-header__battery" bg={<EightBitPill />}>
+		<EightBit className="sr-interface-header__battery" bg={<EightBitPill />} center={false}>
 			<div className="sr-interface-header__battery-bars">
-				{Array(lives).fill(0).map((_, index) => (
-					<span key={index}>🔋</span>
-				))}
+				{Array(lives.max).fill(0).map((_, index) => {
+					return <span key={index}>{index <= lives.cur ? '🔋' : '🪫'}</span>;
+				})}
 			</div>
 		</EightBit>
 	);
@@ -109,7 +108,7 @@ const Score = () => {
 		};
 	}, [score, level]);
 	return (
-		<EightBit className="sr-interface-header__score" bg={<EightBitPill />}>{parsed.total.toLocaleString()}</EightBit>
+		<EightBit className="sr-interface-header__score" bg={<EightBitPill />}><span>{parsed.total.toLocaleString()}</span></EightBit>
 	);
 };
 
