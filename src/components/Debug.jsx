@@ -154,7 +154,7 @@ export const Debug = () => {
 	const { settings, setSettings, setJump, jump, makeMusic, setMakeMusic, makeSFX, setMakeSFX } = useSettingsContext();
 	const { debugAllowed } = settings;
 	const { characterId, setCharacterId } = useCharacterContext();
-	const { score, setScore } = useScoreContext();
+	const { score, setScore, lives, setLives } = useScoreContext();
 	const navigate = useNavigate();
 	const pagePath = useLocation().pathname;
 	const debugRef = useRef(null);
@@ -173,11 +173,11 @@ export const Debug = () => {
 			loadState(debug?.jumpHangtime, () => setJump((prev) => ({ ...prev, hangtime: debug.jumpHangtime})));
 			loadState(debug?.userAdjustedCrash, () => setSettings((prev) => ({ ...prev, userAdjustedCrash: debug.userAdjustedCrash / 100})));
 			loadState(debug?.userAdjustedMilestone, () => setSettings((prev) => ({ ...prev, userAdjustedMilestone: (debug.userAdjustedMilestone / 100) / 0.5 })));
-			loadState(debug?.userAdjustedLives, () => setSettings((prev) => ({ ...prev, userAdjustedLives: debug.userAdjustedLives })));
+			loadState(debug?.lives, () => setLives((prev) => ({ ...prev, max: debug.lives })));
 			loadState(debug?.makeMusic, () => setMakeMusic(debug.makeMusic));
 			loadState(debug?.makeSFX, () => setMakeSFX(debug.makeSFX));
 		}
-	}, [debug, setCharacterId, setMakeSFX, setMakeMusic, setSettings, setJump, debugAllowed, isMenuOpen]);
+	}, [debug, setCharacterId, setMakeSFX, setMakeMusic, setSettings, setJump, debugAllowed, isMenuOpen, setLives]);
 	
 	// Allow drag-and-drop of SVG level files over the debug panel
 	useDebugDropLevel(debugRef);
@@ -265,9 +265,9 @@ export const Debug = () => {
 					/>
 					<DebugNumber
 						label="💀 Lives (#)"
-						param="userAdjustedLives"
-						value={settings.userAdjustedLives}
-						setValue={(value) => setSettings({ ...settings, userAdjustedLives: value })}
+						param="lives"
+						value={lives?.max || 10}
+						setValue={(value) => setLives((prev) => ({ ...prev, max: value }))}
 						title="Set the number of lives"
 					/>
 					<DebugCheckbox

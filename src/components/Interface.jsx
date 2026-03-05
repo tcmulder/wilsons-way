@@ -89,11 +89,14 @@ const Battery = () => {
 	const { lives } = useScoreContext();
 	const cur = Number.isFinite(lives?.cur) ? lives.cur : 10;
 	const max = Number.isFinite(lives?.max) ? lives.max : 10;
+	const halfDead = max > 0 && cur <= max * 0.5;
+	const almostDead = max > 0 && cur <= max * 0.33;
+	const per = almostDead ? 'almost' : halfDead ? 'half' : 'full';
 	return (
 		<EightBit className="sr-interface-header__battery" bg={<EightBitPill />} center={false}>
-			<div className="sr-interface-header__battery-bars">
+			<div className={`sr-interface-header__battery-bars sr-interface-header__battery-bars--${per}`}>
 				{Array(max || 0).fill(0).map((_, index) => {
-					return <span key={index}>{index < cur ? '🔋' : '🪫'}</span>;
+					return <span key={index} className={`sr-interface-header__bar ${index < cur ? '' : ' sr-interface-header__bar--disabled'}`} />;
 				})}
 			</div>
 		</EightBit>
