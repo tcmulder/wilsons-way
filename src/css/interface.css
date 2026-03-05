@@ -41,6 +41,10 @@ svg.sr-interface-header__icon {
 	height: var(--sr-h-interface);
 	min-width: 2em;
 	margin-left: auto;
+	.sr-8bit__fg {
+		min-width: 4em;
+		padding-inline: 0.5em;
+	}
 }
 .sr-interface-footer {
 	position: absolute;
