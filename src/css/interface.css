@@ -3,7 +3,7 @@
 	--sr-c-bg-8bit: color-mix(in srgb, var(--sr-c-navy) 80%, transparent);
 	--sr-c-bd-8bit: var(--sr-c-sky);
 	--sr-c-fg-8bit: var(--sr-c-white);
-	/* pointer-events: none; */
+	pointer-events: none;
 	position: absolute;
 	inset: 0 0 auto 0;
 	z-index: 10;
