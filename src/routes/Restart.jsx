@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 const RestartPage = () => {
 	useEffect(() => {
 		setTimeout(() => {
-			window.location.href = '/';
+			window.location.reload();
 		}, 1000);
 	}, []);
 	return (
