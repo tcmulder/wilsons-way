@@ -77,6 +77,7 @@ export const getNearestShelves = (el, els) => {
  * @param {number} [props.userAdjustedMilestone] Multiplier for milestone delay
  * @param {{ cur: number, max: number }} props.lives The current lives state
  * @param {Function} props.setLives Function to update lives
+ * @param {Object|null} [props.debug] Debug state (for immortality, etc.)
  */
 export const checkCollisions = (props) => {
 	const {
@@ -90,6 +91,7 @@ export const checkCollisions = (props) => {
 		lives,
 		setLives,
 		setGameplayNavigation,
+		debug,
 	} = props;
 	const { elCharacterCrashArea, elCharacterMessage, elObstaclesVisible } = els;
 	elObstaclesVisible.forEach((el) => {
@@ -110,7 +112,7 @@ export const checkCollisions = (props) => {
 				characterModifiers,
 				playSound,
 			});
-			doLives({ el, lives, setLives, setGameplayNavigation });
+			doLives({ el, lives, setLives, setGameplayNavigation, debug });
 			doMilestones({ el, userAdjustedMilestone });
 		}
 	});

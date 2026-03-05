@@ -16,6 +16,7 @@ import { checkCollisions, checkElevation } from './handleCollisions';
  * @param {number} [props.userAdjustedMilestone] Multiplier for milestone delay
  * @param {{ cur: number, max: number }} props.lives The current lives state
  * @param {Function} props.setLives Setter for lives
+ * @param {Object|null} [props.debug] Debug state (for immortality, etc.)
  */
 export const trackMovement = (props) => {
 	const {
@@ -30,6 +31,7 @@ export const trackMovement = (props) => {
 		lives,
 		setLives,
 		setGameplayNavigation,
+		debug,
 	} = props;
 	const { elsRef, elevationRef, statusRef, jumpRef } = gameplayContext;
 	if (!elsRef?.current || (statusRef?.current?.move === 'none' && statusRef?.current?.jump === 'none')) return;
@@ -45,6 +47,7 @@ export const trackMovement = (props) => {
 		lives,
 		setLives,
 		setGameplayNavigation,
+		debug,
 	});
 	checkElevation(els, elevationRef);
 	doGravity({ setCharacterStatus, statusRef, elevationRef, elsRef, jumpRef });

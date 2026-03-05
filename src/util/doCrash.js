@@ -59,12 +59,12 @@ export const doScoring = (props) => {
  * Increase or decrease lives.
  */
 export const doLives = (props) => {
-	const { el, setLives, lives, setGameplayNavigation } = props;
+	const { el, setLives, lives, setGameplayNavigation, debug } = props;
 	const shouldDecrease = el.classList.contains('is-negative');
 	if (shouldDecrease) {
 		const next = lives.cur - 1;
-		setLives((prev) => ({ ...prev, cur: next }));
-		if (next <= 0) {
+		setLives((prev) => ({ ...prev, cur: Math.max(0, next) }));
+		if (next <= 0 && !debug?.immortal) {
 			doFreeze();
 			setGameplayNavigation('/lost');
 		}
