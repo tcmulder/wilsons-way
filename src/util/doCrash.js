@@ -32,6 +32,7 @@ const isPosPolarity = (props) => {
  *
  * @param {Object} props The properties object
  * @param {HTMLElement} props.el The element to score (if it has scoring data)
+ * @param {Object} props.elsRef The elements ref object
  * @param {HTMLElement} props.elCharacterMessage The character messaging element
  * @param {Function} props.setScore Function to set the score
  * @param {number} props.level The current level number
@@ -39,7 +40,9 @@ const isPosPolarity = (props) => {
  * @param {Function} props.playSound Function to play a sound ('positive' | 'negative')
  */
 export const doScoring = (props) => {
-	const { el, elCharacterMessage, setScore, level, characterModifiers, playSound } = props;
+	const { el, elsRef, setScore, level, characterModifiers, playSound } = props;
+	const els = elsRef?.current;
+	const { elCharacterMessage } = els;
 	const rawNum = el.dataset.score;
 	if (!rawNum || isSkippableInvisible({ el, characterModifiers })) return;
 	let num = parseInt(rawNum);

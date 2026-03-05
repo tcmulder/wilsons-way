@@ -6,50 +6,53 @@ import { checkCollisions, checkElevation } from './handleCollisions';
  * Track movement
  *
  * @param {Object} props The properties object
- * @param {Object} props.gameplayContext Gameplay refs and state
- * @param {Function} props.setCharacterStatus Setter for character status
- * @param {Function} props.setScore Setter for score
- * @param {number} props.level The current level number
- * @param {string[]} props.characterModifiers The current character modifiers
- * @param {Function} props.playSound Function to play a sound ('positive' | 'negative')
- * @param {Function} props.setCharacterModifiers Setter for character modifiers
- * @param {number} [props.userAdjustedMilestone] Multiplier for milestone delay
- * @param {{ cur: number, max: number }} props.lives The current lives state
- * @param {Function} props.setLives Setter for lives
- * @param {Object|null} [props.debug] Debug state (for immortality, etc.)
+ * @param {Object} props.collisionsArgs Props for checkCollisions and nested collision handlers.
+ * @param {Object} props.elevationArgs Props for checkElevation (elsRef, elevationRef).
+ * @param {Object} props.gravityArgs Props for doGravity (setCharacterStatus, statusRef, elevationRef, elsRef, jumpRef).
  */
 export const trackMovement = (props) => {
 	const {
-		gameplayContext,
-		setCharacterStatus,
-		setScore,
-		level,
-		characterModifiers,
-		playSound,
-		setCharacterModifiers,
-		userAdjustedMilestone,
-		lives,
-		setLives,
-		setGameplayNavigation,
-		debug,
+		trackMovementArgs,
+		collisionsArgs,
+		elevationArgs,
+		gravityArgs,
 	} = props;
-	const { elsRef, elevationRef, statusRef, jumpRef } = gameplayContext;
+	const { elsRef, statusRef } = trackMovementArgs;
 	if (!elsRef?.current || (statusRef?.current?.move === 'none' && statusRef?.current?.jump === 'none')) return;
 	checkCollisions({
-		elsRef,
-		setScore,
-		level,
-		characterModifiers,
-		playSound,
-		setCharacterModifiers,
-		userAdjustedMilestone,
-		lives,
-		setLives,
-		setGameplayNavigation,
-		debug,
+		// Used by the checkCollisions itself
+		collisionArgs: {
+			elsRef: collisionsArgs.elsRef,
+		},
+		// Passed through to doModifiers function
+		modifiersArgs: {
+			characterModifiers: collisionsArgs.characterModifiers,
+			setCharacterModifiers: collisionsArgs.setCharacterModifiers,
+		},
+		// Passed through to doScoring function
+		scoringArgs: {
+			elsRef: collisionsArgs.elsRef,
+			setScore: collisionsArgs.setScore,
+			level: collisionsArgs.level,
+			characterModifiers: collisionsArgs.characterModifiers,
+			playSound: collisionsArgs.playSound,
+		},
+		// Passed through to doLives function
+		livesArgs: {
+			elsRef: collisionsArgs.elsRef,
+			lives: collisionsArgs.lives,
+			setLives: collisionsArgs.setLives,
+			setGameplayNavigation: collisionsArgs.setGameplayNavigation,
+			debug: collisionsArgs.debug,
+		},
+		// Passed through to doMilestones function
+		milestonesArgs: {
+			elsRef: collisionsArgs.elsRef,
+			userAdjustedMilestone: collisionsArgs.userAdjustedMilestone,
+		},
 	});
-	checkElevation({elsRef, elevationRef});
-	doGravity({ setCharacterStatus, statusRef, elevationRef, elsRef, jumpRef });
+	checkElevation(elevationArgs);
+	doGravity(gravityArgs);
 };
 
 /**

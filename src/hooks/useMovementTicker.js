@@ -27,21 +27,43 @@ export function useMovementTicker() {
 
 	useEffect(() => {
 		if (!gameplayContext) return;
-		const tick = () =>
+		const tick = () => {
+			const { elsRef, elevationRef, statusRef, jumpRef } = gameplayContext;
 			trackMovement({
-				gameplayContext,
-				setCharacterStatus,
-				setScore,
-				level,
-				characterModifiers,
-				playSound,
-				setCharacterModifiers,
-				userAdjustedMilestone,
-				lives,
-				setLives,
-				setGameplayNavigation,
-				debug,
+				// Used by trackMovement itself
+				trackMovementArgs: {
+					elsRef,
+					statusRef,
+				},
+				// Passed through to checkCollisions function
+				collisionsArgs: {
+					elsRef,
+					setScore,
+					level,
+					characterModifiers,
+					playSound,
+					setCharacterModifiers,
+					userAdjustedMilestone,
+					lives,
+					setLives,
+					setGameplayNavigation,
+					debug,
+				},
+				// Passed through to checkElevation function
+				elevationArgs: {
+					elsRef,
+					elevationRef,
+				},
+				// Passed through to doGravity function
+				gravityArgs: {
+					setCharacterStatus,
+					statusRef,
+					elevationRef,
+					elsRef,
+					jumpRef,
+				},
 			});
+		};
 		gsap.ticker.add(tick);
 		return () => gsap.ticker.remove(tick);
 	}, [

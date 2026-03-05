@@ -3,11 +3,13 @@ import { doScoring, doModifiers, doMilestones, doLives } from './doCrash';
 /**
  * Check to see if two elements overlap
  *
- * @param {HTMLElement} el1 First element to check
- * @param {HTMLElement} el2 Second element to check
+ * @param {Object} props The properties object
+ * @param {HTMLElement} props.el1 First element to check
+ * @param {HTMLElement} props.el2 Second element to check
  * @return {boolean} Whether or not the elements overlap
  */
-const checkOverlap = (el1, el2) => {
+const checkOverlap = (props) => {
+	const { el1, el2 } = props;
 	const rect1 = el1.getBoundingClientRect();
 	const rect2 = el2.getBoundingClientRect();
 	return (
@@ -68,53 +70,32 @@ export const getNearestShelves = (el, els) => {
  * Check for and respond to collisions.
  *
  * @param {Object} props The properties object
- * @param {Object} props.elsRef The elements ref object
- * @param {Function} props.setScore Function to set the score
- * @param {number} props.level The current level number
- * @param {string[]} props.characterModifiers The current character modifiers
- * @param {Function} [props.playSound] Function to play a sound ('positive' | 'negative')
- * @param {Function} props.setCharacterModifiers Function to set the character modifiers
- * @param {number} [props.userAdjustedMilestone] Multiplier for milestone delay
- * @param {{ cur: number, max: number }} props.lives The current lives state
- * @param {Function} props.setLives Function to update lives
- * @param {Object|null} [props.debug] Debug state (for immortality, etc.)
+ * @param {Object} props.collisionArgs Props for checkCollisions (elsRef)
+ * @param {Object} props.modifiersArgs Props for doModifiers (characterModifiers, setCharacterModifiers)
+ * @param {Object} props.scoringArgs Props for doScoring (setScore, level, characterModifiers, playSound)
+ * @param {Object} props.livesArgs Props for doLives (lives, setLives, setGameplayNavigation, debug)
+ * @param {Object} props.milestonesArgs Props for doMilestones (userAdjustedMilestone)
  */
 export const checkCollisions = (props) => {
 	const {
-		elsRef,
-		setScore,
-		level,
-		characterModifiers,
-		playSound,
-		setCharacterModifiers,
-		userAdjustedMilestone,
-		lives,
-		setLives,
-		setGameplayNavigation,
-		debug,
+		collisionArgs,
+		modifiersArgs,
+		scoringArgs,
+		livesArgs,
+		milestonesArgs,
 	} = props;
+	const { elsRef } = collisionArgs;
 	const els = elsRef?.current;
-	const { elCharacterCrashArea, elCharacterMessage, elObstaclesVisible } = els;
+	const { elCharacterCrashArea, elObstaclesVisible } = els;
 	elObstaclesVisible.forEach((el) => {
 		if (
 			!el.classList.contains('is-collided') &&
-			checkOverlap(elCharacterCrashArea, el)
+			checkOverlap({ el1: elCharacterCrashArea, el2: el })
 		) {
-			doModifiers({
-				el,
-				characterModifiers,
-				setCharacterModifiers,
-			});
-			doScoring({
-				el,
-				elCharacterMessage,
-				setScore,
-				level,
-				characterModifiers,
-				playSound,
-			});
-			doLives({ el, lives, setLives, setGameplayNavigation, debug });
-			doMilestones({ el, userAdjustedMilestone });
+			doModifiers({ el, ...modifiersArgs });
+			doScoring({ el, ...scoringArgs, });
+			doLives({ el, ...livesArgs });
+			doMilestones({ el, ...milestonesArgs });
 		}
 	});
 };
