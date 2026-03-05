@@ -96,19 +96,18 @@ export function useSetupGameplayElements(boardRef) {
 	useEffect(() => {
 		const shelves = elsRef.current?.elShelves ?? [];
 		
+		// Bail if we have no shelves
 		if (!shelves.length) return;
 		
+		// Get obstacles
 		const obstacles = elsRef.current?.elObstacles ?? [];
 		const elShelvesVisible = elsRef.current.elShelvesVisible;
 		const elObstaclesVisible = elsRef.current.elObstaclesVisible;
 		elShelvesVisible.clear();
 		elObstaclesVisible.clear();
 
-		const options = {
-			root: null,
-			rootMargin: '0px 100px 0px 100px', // 100px left/right, 0 top/bottom
-			threshold: 0.01,
-		};
+		// Setup obstacles intersection observer
+		const options = { root: null, rootMargin: '0px 100px 0px 100px', threshold: 0.01 };
 		const obstaclesObserver = new IntersectionObserver(
 			(entries) => {
 				for (const entry of entries) {
@@ -118,7 +117,9 @@ export function useSetupGameplayElements(boardRef) {
 			},
 			options,
 		);
+		obstacles.forEach((el) => obstaclesObserver.observe(el));
 
+		// Setup shelves intersection observer
 		let firstRun = true;
 		const shelvesObserver = new IntersectionObserver(
 			(entries) => {
@@ -141,10 +142,9 @@ export function useSetupGameplayElements(boardRef) {
 			},
 			options,
 		);
-
 		shelves.forEach((el) => shelvesObserver.observe(el));
-		obstacles.forEach((el) => obstaclesObserver.observe(el));
 
+		// Cleanup
 		return () => {
 			shelves.forEach((el) => shelvesObserver.unobserve(el));
 			obstacles.forEach((el) => obstaclesObserver.unobserve(el));
