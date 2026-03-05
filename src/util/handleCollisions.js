@@ -68,7 +68,7 @@ export const getNearestShelves = (el, els) => {
  * Check for and respond to collisions.
  *
  * @param {Object} props The properties object
- * @param {Object} props.els The elements object
+ * @param {Object} props.elsRef The elements ref object
  * @param {Function} props.setScore Function to set the score
  * @param {number} props.level The current level number
  * @param {string[]} props.characterModifiers The current character modifiers
@@ -81,7 +81,7 @@ export const getNearestShelves = (el, els) => {
  */
 export const checkCollisions = (props) => {
 	const {
-		els,
+		elsRef,
 		setScore,
 		level,
 		characterModifiers,
@@ -93,6 +93,7 @@ export const checkCollisions = (props) => {
 		setGameplayNavigation,
 		debug,
 	} = props;
+	const els = elsRef?.current;
 	const { elCharacterCrashArea, elCharacterMessage, elObstaclesVisible } = els;
 	elObstaclesVisible.forEach((el) => {
 		if (
@@ -121,10 +122,13 @@ export const checkCollisions = (props) => {
 /**
  * Update elevation ref with character/shelf positions.
  *
- * @param {Object} els Element refs: elCharacter, elShelvesVisible, elBoard
+ * @param {Object} props The properties object
+ * @param {Object} props.elsRef The elements ref object
  * @param {Object} elevationRef Ref to update with above, below, head, foot, floor, etc.
  */
-export const checkElevation = (els, elevationRef) => {
+export const checkElevation = (props) => {
+	const { elsRef, elevationRef } = props;
+	const els = elsRef?.current;
 	const { elCharacter, elShelvesVisible, elBoard } = els;
 	const { elAbove, elBelow } = getNearestShelves(elCharacter, elShelvesVisible);
 	const elBoardRect = elBoard.getBoundingClientRect();

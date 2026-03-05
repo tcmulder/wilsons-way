@@ -35,9 +35,8 @@ export const trackMovement = (props) => {
 	} = props;
 	const { elsRef, elevationRef, statusRef, jumpRef } = gameplayContext;
 	if (!elsRef?.current || (statusRef?.current?.move === 'none' && statusRef?.current?.jump === 'none')) return;
-	const els = elsRef?.current;
 	checkCollisions({
-		els,
+		elsRef,
 		setScore,
 		level,
 		characterModifiers,
@@ -49,7 +48,7 @@ export const trackMovement = (props) => {
 		setGameplayNavigation,
 		debug,
 	});
-	checkElevation(els, elevationRef);
+	checkElevation({elsRef, elevationRef});
 	doGravity({ setCharacterStatus, statusRef, elevationRef, elsRef, jumpRef });
 };
 
