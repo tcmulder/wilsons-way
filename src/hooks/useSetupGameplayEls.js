@@ -53,8 +53,32 @@ export function useSetupGameplayElements(boardRef) {
 				obstacle.classList.add('is-neutral');
 			}
 		});
+		// Handle random obstacles
+		const elRandomObstacles = elObstacles.filter(obstacle => obstacle.dataset?.rand);
+		if (elRandomObstacles.length) {
+			const groups = {};
+			elRandomObstacles.forEach((el) => {
+				const group = el.dataset.rand;
+				if (!groups[group]) {
+					groups[group] = [];
+				}
+				groups[group].push(el);
+			});
+			Object.values(groups).forEach((group) => {
+				const rand = Math.floor(Math.random() * group.length);
+				group.forEach((el, index) => {
+					if (index !== rand) {
+						el.style.display = 'none';
+					} else {
+						el.style.display = 'block';
+					}
+				});
+			});
+		}
+
 		// Update context with both
 		const elCharacter = elBoard?.nextElementSibling;
+		// Create our new state object
 		const newState = {
 			// fixed els (don't change per level)
 			elBoard,
