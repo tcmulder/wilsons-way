@@ -4,6 +4,7 @@ import {
 	useDebugContext,
 	useSettingsContext,
 	useCharacterContext,
+	useScoreContext,
 } from '../context/useContexts';
 import { routes } from '../routes';
 import { useDebugDropLevel } from '../hooks/useDebugDropLevel';
@@ -153,6 +154,7 @@ export const Debug = () => {
 	const { settings, setSettings, setJump, jump, makeMusic, setMakeMusic, makeSFX, setMakeSFX } = useSettingsContext();
 	const { debugAllowed } = settings;
 	const { characterId, setCharacterId } = useCharacterContext();
+	const { score, setScore } = useScoreContext();
 	const navigate = useNavigate();
 	const pagePath = useLocation().pathname;
 	const debugRef = useRef(null);
@@ -193,6 +195,17 @@ export const Debug = () => {
 			<button className="sr-debug__toggle" onClick={(e) => { e.preventDefault(); setIsMenuOpen(!isMenuOpen); }}>🐞 Debug</button>
 			{isMenuOpen && (
 			<div className="sr-debug__menu">
+					<DebugNumber
+						label="💯 Score +/-"
+						param="score"
+						value={(score ?? []).find(s => s.level === -1 || s.level === 0)?.num ?? 0}
+						setValue={(value) => setScore(prev => {
+							const list = prev ?? [];
+							const rest = list.filter(s => s.level !== -1 && s.level !== 0);
+							return [...rest, { level: -1, num: value }];
+						})}
+						title="Add to or remove from the total score"
+					/>
 					<DebugNumber
 						label="🦸 Character"
 						param="characterId"
