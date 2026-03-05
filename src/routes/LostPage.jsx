@@ -1,15 +1,13 @@
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useTimedNavigation } from '../hooks/useTimedNavigation';
 /**
  * Page if you lost all your lives
  */
 const LostPage = () => {
-	const navigate = useNavigate();
+	const timedNavigate = useTimedNavigation();
 	useEffect(() => {
-		setTimeout(() => {
-			navigate('/');
-		}, 3000);
-	}, [navigate]);
+		timedNavigate({ route: '/restart', delay: 3000 });
+	}, [timedNavigate]);
 	return (
 		<div>
 			<h1>Battery Depleted</h1>

@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useScoreContext, useLevelContext, useSettingsContext } from '../context/useContexts';
 import { Version } from './Version';
 import { EightBit, EightBitCircle, EightBitPill } from './EightBit';
@@ -16,13 +17,16 @@ import '../css/interface.css';
  * @returns {React.ReactNode} The RestartControl component.
  */
 const RestartControl = () => {
+	const navigate = useNavigate();
 	return (
 		<EightBit className="sr-interface-header__circle" bg={<EightBitCircle />}>
 			<button
 				aria-label="Restart"
 				onClick={() => {
 					const shouldRestart = confirm('Are you sure? Your progress will be lost.');
-					if (shouldRestart) window.location.href = '/';
+					if (shouldRestart) {
+						navigate('/restart');
+					}
 				}}
 			>
 				<ControlXIcon className="sr-interface-header__icon" />
@@ -83,11 +87,13 @@ const SoundControl = () => {
  */
 const Battery = () => {
 	const { lives } = useScoreContext();
+	const cur = Number.isFinite(lives?.cur) ? lives.cur : 10;
+	const max = Number.isFinite(lives?.max) ? lives.max : 10;
 	return (
 		<EightBit className="sr-interface-header__battery" bg={<EightBitPill />} center={false}>
 			<div className="sr-interface-header__battery-bars">
-				{Array(lives.max).fill(0).map((_, index) => {
-					return <span key={index}>{index <= lives.cur ? '🔋' : '🪫'}</span>;
+				{Array(max || 0).fill(0).map((_, index) => {
+					return <span key={index}>{index < cur ? '🔋' : '🪫'}</span>;
 				})}
 			</div>
 		</EightBit>

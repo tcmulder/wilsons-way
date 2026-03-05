@@ -11,10 +11,15 @@ export function ScoreContextProvider({ children }) {
   const [score, setScore] = useState([]);
   const [lives, setLives] = useState({ cur: userAdjustedLives, max: userAdjustedLives });
 
-  // Setup lives from user's number of lives setting.
+  // Seed lives from settings.
   useEffect(() => {
       // eslint-disable-next-line react-hooks/set-state-in-effect
-      setLives({ cur: userAdjustedLives, max: userAdjustedLives });
+      setLives((prev) => {
+        // Don't overwrite lives if they've already been set.
+        if (prev?.max != null) return prev;
+        // Initialize lives from settings.
+        return { cur: userAdjustedLives, max: userAdjustedLives };
+      });
   }, [userAdjustedLives]);
 
   return (

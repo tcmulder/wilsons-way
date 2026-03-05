@@ -20,6 +20,11 @@ const IntroPage = () => {
 					<button onClick={() => navigate('/level/1')}>Start Game</button>
 				</EightBit>
 			</div>
+			<div style={{width: '10cqmax'}}>
+				<EightBit bg={<EightBitPill />}>
+					<button onClick={() => window.location.href = 'http://localhost:5173/?debug=true&autoplay=false&router=true&userAdjustedLives=10&userAdjustedMilestone=176#/level/1'}>Debug</button>
+				</EightBit>
+			</div>
 			<div>
 				<label>
 					<input

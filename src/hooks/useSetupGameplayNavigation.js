@@ -9,9 +9,9 @@ export function useSetupGameplayNavigation() {
 	const { gameplayNavigation, setGameplayNavigation } = useGameplayContext();
 	const navigate = useNavigate();
 	useEffect(() => {
-		if (gameplayNavigation) {
-			setGameplayNavigation(null);
+		if (gameplayNavigation !== null) {
 			navigate(gameplayNavigation);
+			setGameplayNavigation(null);
 		}
 	}, [gameplayNavigation, setGameplayNavigation, navigate]);
 }

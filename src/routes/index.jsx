@@ -11,6 +11,7 @@ import Level4OutroPage from './Level4OutroPage';
 import HighScorePage from './HighScorePage';
 import LeaderboardPage from './LeaderboardPage';
 import LostPage from './LostPage';
+import RestartPage from './Restart';
 
 /**
  * Route config: path, title (for debug nav), and element for the pages of the game.
@@ -28,5 +29,6 @@ export const routes = [
   { path: '/outro/4', title: 'Level 4 Outro', element: <Level4OutroPage /> },
   { path: '/form', title: 'High Score', element: <HighScorePage /> },
   { path: '/leaderboard', title: 'Leaderboard', element: <LeaderboardPage /> },
+  { path: '/restart', title: 'Restart', element: <RestartPage /> },
   { path: '/lost', title: 'Lost', element: <LostPage /> },
 ];

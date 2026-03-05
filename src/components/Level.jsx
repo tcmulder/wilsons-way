@@ -1,6 +1,5 @@
 import { useRef, useCallback, useEffect, useState } from 'react';
 import { gsap } from 'gsap';
-import { useNavigate } from 'react-router-dom';
 import { useSettingsContext, useLevelContext, useGameplayContext, useDebugContext, useCharacterContext } from '../context/useContexts';
 import { loadLevel } from '../util/loadLevel';
 import SVG from '../components/SVG';
@@ -46,7 +45,7 @@ const Level = () => {
 	const { version, gameplaySpeed, userAdjustedSpeed } = settings;
 	const { level, setCurrentLevelId, customLevelSvg } = useLevelContext();
 	const gameplayContext = useGameplayContext();
-	const { setGameplayNavigation } = gameplayContext;
+	const { setGameplayNavigation, elsRef, timelinesRef } = gameplayContext;
 	const gameplayRef = useRef(null);
 	const [countdown, setCountdown] = useState(0);
 
@@ -62,8 +61,7 @@ const Level = () => {
 
 	// Load SVG for level and add movement to it
 	const handleSvgLoad = useCallback(async (svgElement) => {
-		const ctx = gameplayContext;
-		const elBoard = ctx.elsRef?.current?.elBoard;
+		const elBoard = elsRef?.current?.elBoard;
 		if (elBoard && svgElement) {
 			// Setup level SVG
 			await loadLevel({
@@ -73,8 +71,8 @@ const Level = () => {
 			// Create animation after level is loaded
 			aniLevel({
 				elBoard,
-				timelinesRef: ctx.timelinesRef,
-				setTimelines: (timelines) => { ctx.timelinesRef.current = timelines; },
+				timelinesRef,
+				setTimelines: (timelines) => { timelinesRef.current = timelines; },
 				gameplaySpeed,
 				onComplete: handleLevelComplete,
 			});
@@ -84,7 +82,7 @@ const Level = () => {
 				setCountdown(3);
 			}
 		}
-	}, [gameplaySpeed, gameplayContext, handleLevelComplete, setCurrentLevelId, debug?.autoplay]);
+	}, [elsRef, timelinesRef, gameplaySpeed, handleLevelComplete, setCurrentLevelId, debug?.autoplay]);
 
 
 	// When using a custom-dropped SVG (level 0), load and animate it
