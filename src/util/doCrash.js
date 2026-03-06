@@ -93,7 +93,7 @@ const modifyInvisible = (props) => {
 	const { elObstacles } = els;
 
 	// Find all negative-scoring obstacles that do not ignore the invisible modifier
-	const targets = elObstacles.filter((obstacle) => {
+	const elTargets = elObstacles.filter((obstacle) => {
 		const score = obstacle.dataset.score;
 		if (!score) return false;
 		const isNegative = score.startsWith('-');
@@ -102,20 +102,20 @@ const modifyInvisible = (props) => {
 	});
 
 	// Apply the invisible modifier: add class and zero out score.
-	targets.forEach((obstacle) => {
+	elTargets.forEach((elObstacle) => {
 		// Ensure we have an original snapshot before mutating
-		getOriginalDataset(obstacle);
-		obstacle.dataset.score = '0';
-		obstacle.classList.add('sr-modifier--invisible');
+		getOriginalDataset(elObstacle);
+		elObstacle.dataset.score = '0';
+		elObstacle.classList.add('sr-modifier--invisible');
 	});
 
 	// Clear the modifier after a delay
 	const delay = parseInt(el.dataset.modifierDelay) || 5000;
 	setTimeout(() => {
-		targets.forEach((obstacle) => {
-			const originalDataset = getOriginalDataset(obstacle);
-			obstacle.dataset.score = originalDataset.score;
-			obstacle.classList.remove('sr-modifier--invisible');
+		elTargets.forEach((elObstacle) => {
+			const originalDataset = getOriginalDataset(elObstacle);
+			elObstacle.dataset.score = originalDataset.score;
+			elObstacle.classList.remove('sr-modifier--invisible');
 		});
 	}, delay);
 };
@@ -138,7 +138,7 @@ const modifyPolarity = (props) => {
 	const { elObstacles } = els;
 
 	// Find all positive-scoring obstacles that do not ignore the polarity modifier
-	const targets = elObstacles.filter((obstacle) => {
+	const elTargets = elObstacles.filter((obstacle) => {
 		const score = obstacle.dataset.score;
 		if (!score) return false;
 		const num = parseInt(score, 10);
@@ -148,23 +148,23 @@ const modifyPolarity = (props) => {
 	});
 
 	// Temporarily flip their score to negative, remembering the original value
-	targets.forEach((obstacle) => {
+	elTargets.forEach((elObstacle) => {
 		// Ensure we have an original snapshot before mutating
-		getOriginalDataset(obstacle);
-		const score = obstacle.dataset.score;
+		getOriginalDataset(elObstacle);
+		const score = elObstacle.dataset.score;
 		const num = parseInt(score, 10);
 		if (!Number.isFinite(num)) return;
-		obstacle.dataset.score = String(-Math.abs(num));
-		obstacle.classList.add('sr-modifier--polarity');
+		elObstacle.dataset.score = String(-Math.abs(num));
+		elObstacle.classList.add('sr-modifier--polarity');
 	});
 
 	// Clear the modifier after a delay
 	const delay = parseInt(el.dataset.modifierDelay) || 5000;
 	setTimeout(() => {
-		targets.forEach((obstacle) => {
-			const originalDataset = getOriginalDataset(obstacle);
-			obstacle.dataset.score = originalDataset.score;
-			obstacle.classList.remove('sr-modifier--polarity');
+		elTargets.forEach((elObstacle) => {
+			const originalDataset = getOriginalDataset(elObstacle);
+			elObstacle.dataset.score = originalDataset.score;
+			elObstacle.classList.remove('sr-modifier--polarity');
 		});
 	}, delay);
 };
