@@ -3,16 +3,10 @@
 		display: none;
 	}
 }
-
-/* Modifiers */
-.sr-stage:has(.is-mod-invisible) {
-	[data-score^="-"]:not([data-ignore-modifier="invisible"]) {
-		filter: grayscale(1) contrast(0.5);
-		animation: pulse-opacity 2s ease-in-out infinite;
-	}
+.sr-modifier--invisible {
+	filter: grayscale(1) contrast(0.5);
+	animation: pulse-opacity 2s ease-in-out infinite;
 }
-.sr-stage:has(.is-mod-polarity) {
-	[data-score]:not([data-score^="-"]):not([data-ignore-modifier="polarity"]) {
-		filter: sepia(1) hue-rotate(315deg) saturate(9);
-	}
+.sr-modifier--polarity {
+	filter: sepia(1) hue-rotate(315deg) saturate(9);
 }

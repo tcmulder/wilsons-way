@@ -18,6 +18,7 @@ export const doScoring = (props) => {
 	const rawNum = el.dataset.score;
 	if (!rawNum) return;
 	const num = parseInt(rawNum);
+	if (!num) return; // e.g. if '0' due to modifier being applied
 	const way = num > 0 ? 'positive' : 'negative';
 	const sound = el.dataset.sound || way;
 	playSound(sound);
@@ -59,6 +60,22 @@ const modifyCollided = (props) => {
 };
 
 /**
+ * Get original non-modified dataset
+ */
+const getOriginalDataset = (el) => {
+	if (!el || !el.dataset) return {};
+	const { dataset } = el;
+
+	// If we already have an original snapshot, just return it
+	if (dataset.org) return JSON.parse(dataset.org);
+
+	// Capture all current data-* attributes as the original snapshot
+	const original = { ...dataset };
+	dataset.org = JSON.stringify(original);
+	return original;
+};
+
+/**
  * Apply invisibility modifier
  * 
  * @param {Object} props The properties object
@@ -66,18 +83,40 @@ const modifyCollided = (props) => {
  * @param {Object} props.elsRef The elements ref object
  */
 const modifyInvisible = (props) => {
+	const modifier = props.el.dataset.modifier;
+	// Bail if we're not to modify invisibility
+	if (modifier !== 'invisible') return;
+	
+	// Get all obstacles
 	const { el, elsRef } = props;
 	const els = elsRef?.current;
 	const { elObstacles } = els;
-	const modifier = el.dataset.modifier;
-	// Bail if we're not to modify invisibility
-	if (modifier !== 'invisible') return;
-	// Set the modifier
-	console.log('🤞', 'settings invisible modifier', elObstacles);
+
+	// Find all negative-scoring obstacles that do not ignore the invisible modifier
+	const targets = elObstacles.filter((obstacle) => {
+		const score = obstacle.dataset.score;
+		if (!score) return false;
+		const isNegative = score.startsWith('-');
+		const ignoresInvisible = obstacle.dataset?.ignoreModifier?.split(',').includes('invisible');
+		return isNegative && !ignoresInvisible;
+	});
+
+	// Apply the invisible modifier: add class and zero out score.
+	targets.forEach((obstacle) => {
+		// Ensure we have an original snapshot before mutating
+		getOriginalDataset(obstacle);
+		obstacle.dataset.score = '0';
+		obstacle.classList.add('sr-modifier--invisible');
+	});
+
 	// Clear the modifier after a delay
 	const delay = parseInt(el.dataset.modifierDelay) || 5000;
 	setTimeout(() => {
-		console.log('🤞', 'clearing invisible modifier');
+		targets.forEach((obstacle) => {
+			const originalDataset = getOriginalDataset(obstacle);
+			obstacle.dataset.score = originalDataset.score;
+			obstacle.classList.remove('sr-modifier--invisible');
+		});
 	}, delay);
 };
 
@@ -89,18 +128,44 @@ const modifyInvisible = (props) => {
  * @param {Object} props.elsRef The elements ref object
  */
 const modifyPolarity = (props) => {
+	const modifier = props.el.dataset.modifier;
+	// Bail if we're not to modify polarity
+	if (modifier !== 'polarity') return;
+
+	// Get all obstacles
 	const { el, elsRef } = props;
 	const els = elsRef?.current;
 	const { elObstacles } = els;
-	const modifier = el.dataset.modifier;
-	// Bail if we're not to modify invisibility
-	if (modifier !== 'polarity') return;
-	// Set the modifier
-	console.log('🤞', 'settings polarity modifier', elObstacles);
+
+	// Find all positive-scoring obstacles that do not ignore the polarity modifier
+	const targets = elObstacles.filter((obstacle) => {
+		const score = obstacle.dataset.score;
+		if (!score) return false;
+		const num = parseInt(score, 10);
+		const isPositive = Number.isFinite(num) && num > 0;
+		const ignoresPolarity = obstacle.dataset?.ignoreModifier?.split(',').includes('polarity');
+		return isPositive && !ignoresPolarity;
+	});
+
+	// Temporarily flip their score to negative, remembering the original value
+	targets.forEach((obstacle) => {
+		// Ensure we have an original snapshot before mutating
+		getOriginalDataset(obstacle);
+		const score = obstacle.dataset.score;
+		const num = parseInt(score, 10);
+		if (!Number.isFinite(num)) return;
+		obstacle.dataset.score = String(-Math.abs(num));
+		obstacle.classList.add('sr-modifier--polarity');
+	});
+
 	// Clear the modifier after a delay
 	const delay = parseInt(el.dataset.modifierDelay) || 5000;
 	setTimeout(() => {
-		console.log('🤞', 'clearing polarity modifier');
+		targets.forEach((obstacle) => {
+			const originalDataset = getOriginalDataset(obstacle);
+			obstacle.dataset.score = originalDataset.score;
+			obstacle.classList.remove('sr-modifier--polarity');
+		});
 	}, delay);
 };
 
@@ -114,9 +179,9 @@ const modifyPolarity = (props) => {
 export const doModifiers = (props) => {
 	const { el, elsRef } = props;
 	// Maybe set our modifications
-	modifyCollided({el});
 	modifyInvisible({el, elsRef});
 	modifyPolarity({el, elsRef});
+	modifyCollided({el});
 };
 
 /**
