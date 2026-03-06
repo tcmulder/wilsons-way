@@ -106,6 +106,7 @@ const modifyInvisible = (props) => {
 		// Ensure we have an original snapshot before mutating
 		getOriginalDataset(elObstacle);
 		elObstacle.dataset.score = '0';
+		elObstacle.setAttribute('data-ignore-hide', '');
 		elObstacle.classList.add('sr-modifier--invisible');
 	});
 
@@ -115,6 +116,10 @@ const modifyInvisible = (props) => {
 		elTargets.forEach((elObstacle) => {
 			const originalDataset = getOriginalDataset(elObstacle);
 			elObstacle.dataset.score = originalDataset.score;
+			if (!originalDataset.ignoreHide) {
+				elObstacle.removeAttribute('data-ignore-hide');
+				elObstacle.classList.remove('is-collided');
+			}
 			elObstacle.classList.remove('sr-modifier--invisible');
 		});
 	}, delay);
