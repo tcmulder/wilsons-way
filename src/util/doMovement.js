@@ -26,15 +26,13 @@ export const trackMovement = (props) => {
 		},
 		// Passed through to doModifiers function
 		modifiersArgs: {
-			characterModifiers: collisionsArgs.characterModifiers,
-			setCharacterModifiers: collisionsArgs.setCharacterModifiers,
+			elsRef: collisionsArgs.elsRef,
 		},
 		// Passed through to doScoring function
 		scoringArgs: {
 			elsRef: collisionsArgs.elsRef,
 			setScore: collisionsArgs.setScore,
 			level: collisionsArgs.level,
-			characterModifiers: collisionsArgs.characterModifiers,
 			playSound: collisionsArgs.playSound,
 		},
 		// Passed through to doLives function

@@ -17,7 +17,7 @@ import { trackMovement } from '../util/doMovement';
 export function useMovementTicker() {
 	const gameplayContext = useGameplayContext();
 	const { setGameplayNavigation } = gameplayContext;
-	const { setCharacterStatus, setCharacterModifiers, characterModifiers } = useCharacterContext();
+	const { setCharacterStatus } = useCharacterContext();
 	const { level } = useLevelContext();
 	const { setScore, lives, setLives } = useScoreContext();
 	const { playSound } = useGameAudio();
@@ -40,9 +40,7 @@ export function useMovementTicker() {
 					elsRef,
 					setScore,
 					level,
-					characterModifiers,
 					playSound,
-					setCharacterModifiers,
 					userAdjustedMilestone,
 					lives,
 					setLives,
@@ -71,9 +69,7 @@ export function useMovementTicker() {
 		setCharacterStatus,
 		setScore,
 		level,
-		characterModifiers,
 		playSound,
-		setCharacterModifiers,
 		userAdjustedMilestone,
 		lives,
 		setLives,

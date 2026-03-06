@@ -1,37 +1,4 @@
-import { gsap } from 'gsap';
 import { doFreeze } from './doMovement';
-
-/**
- * Check if an obstacle is skippable due to invisible modifier
- *
- * @param {Object} props The properties object
- * @param {HTMLElement} props.el The element to check
- * @param {string[]} props.characterModifiers The current character modifiers
- * @return {boolean} Whether or not the obstacle is skippable
- */
-const isSkippableInvisible = (props) => {
-	const { el, characterModifiers } = props;
-	const isMod = characterModifiers.includes('invisible');
-	const isPos = !el.dataset?.score?.startsWith('-');
-	const noIgnore = el.dataset.ignoreModifier !== 'invisible';
-	return isMod && !isPos && noIgnore;
-};
-
-/**
- * Check if an obstacle should switch polarity on positive objects (make them negative)
- *
- * @param {Object} props The properties object
- * @param {HTMLElement} props.el The element to check
- * @param {string[]} props.characterModifiers The current character modifiers
- * @return {boolean} Whether or not the obstacle should switch polarity on positive objects
- */
-const isPosPolarity = (props) => {
-	const { el, characterModifiers } = props;
-	const isMod = characterModifiers.includes('polarity');
-	const isPos = !el.dataset?.score?.startsWith('-');
-	const noIgnore = el.dataset.ignoreModifier !== 'polarity';
-	return isMod && isPos && noIgnore;
-};
 
 /**
  * Apply scoring if an obstacle provides scoring data
@@ -42,17 +9,15 @@ const isPosPolarity = (props) => {
  * @param {HTMLElement} props.elCharacterMessage The character messaging element
  * @param {Function} props.setScore Function to set the score
  * @param {number} props.level The current level number
- * @param {string[]} props.characterModifiers The current character modifiers
  * @param {Function} props.playSound Function to play a sound ('positive' | 'negative')
  */
 export const doScoring = (props) => {
-	const { el, elsRef, setScore, level, characterModifiers, playSound } = props;
+	const { el, elsRef, setScore, level, playSound } = props;
 	const els = elsRef?.current;
 	const { elCharacterMessage } = els;
 	const rawNum = el.dataset.score;
-	if (!rawNum || isSkippableInvisible({ el, characterModifiers })) return;
-	let num = parseInt(rawNum);
-	num = isPosPolarity({ el, characterModifiers }) ? -Math.abs(num) : num;
+	if (!rawNum) return;
+	const num = parseInt(rawNum);
 	const way = num > 0 ? 'positive' : 'negative';
 	const sound = el.dataset.sound || way;
 	playSound(sound);
@@ -69,8 +34,10 @@ export const doScoring = (props) => {
  */
 export const doLives = (props) => {
 	const { el, setLives, lives, setGameplayNavigation, debug } = props;
+	if (el.classList.contains('is-death')) return;
 	const shouldDecrease = el.dataset?.score?.startsWith('-');
 	if (shouldDecrease) {
+		el.classList.add('is-death');
 		const next = lives.cur - 1;
 		setLives((prev) => ({ ...prev, cur: Math.max(0, next) }));
 		if (next <= 0 && !debug?.immortal) {
@@ -81,34 +48,75 @@ export const doLives = (props) => {
 };
 
 /**
+ * Apply collision modifier (to prevent further collisions)
+ *
+ * @param {Object} props The properties object
+ * @param {HTMLElement} props.el The element to apply the collision class to
+ */
+const modifyCollided = (props) => {
+	const { el } = props;
+	el.classList.add('is-collided');
+};
+
+/**
+ * Apply invisibility modifier
+ * 
+ * @param {Object} props The properties object
+ * @param {HTMLElement} props.el The element to apply the collision class to
+ * @param {Object} props.elsRef The elements ref object
+ */
+const modifyInvisible = (props) => {
+	const { el, elsRef } = props;
+	const els = elsRef?.current;
+	const { elObstacles } = els;
+	const modifier = el.dataset.modifier;
+	// Bail if we're not to modify invisibility
+	if (modifier !== 'invisible') return;
+	// Set the modifier
+	console.log('🤞', 'settings invisible modifier', elObstacles);
+	// Clear the modifier after a delay
+	const delay = parseInt(el.dataset.modifierDelay) || 5000;
+	setTimeout(() => {
+		console.log('🤞', 'clearing invisible modifier');
+	}, delay);
+};
+
+/**
+ * Apply polarity modifier
+ * 
+ * @param {Object} props The properties object
+ * @param {HTMLElement} props.el The element to apply the collision class to
+ * @param {Object} props.elsRef The elements ref object
+ */
+const modifyPolarity = (props) => {
+	const { el, elsRef } = props;
+	const els = elsRef?.current;
+	const { elObstacles } = els;
+	const modifier = el.dataset.modifier;
+	// Bail if we're not to modify invisibility
+	if (modifier !== 'polarity') return;
+	// Set the modifier
+	console.log('🤞', 'settings polarity modifier', elObstacles);
+	// Clear the modifier after a delay
+	const delay = parseInt(el.dataset.modifierDelay) || 5000;
+	setTimeout(() => {
+		console.log('🤞', 'clearing polarity modifier');
+	}, delay);
+};
+
+/**
  * Modify collided obstacles
  *
  * @param {Object} props The properties object
  * @param {HTMLElement} props.el The element to check for modifier collisions
- * @param {string[]} props.characterModifiers The current character modifiers
- * @param {Function} props.setCharacterModifiers Function to set the character modifiers
+ * @param {Object} props.elsRef The elements ref object
  */
 export const doModifiers = (props) => {
-	const { el, characterModifiers, setCharacterModifiers } = props;
-	// Set the most basic flag: collided
-	if (!isSkippableInvisible({ el, characterModifiers })) {
-		el.classList.add('is-collided');
-	}
-	// Get the modifier value if any
-	const modifier = el.dataset.modifier;
-	if (!modifier) return;
-	// Set the modifier
-	setCharacterModifiers(prev => [ ...prev, modifier ]);
-	// Clear the modifier after a delay
-	const delay = parseInt(el.dataset.modifierDelay) || 5000;
-	setTimeout(() => {
-		setCharacterModifiers(prev => {
-			//  Remove the 1st matching modifier (so if new duplicate modifiers have been set they aren't cleared)
-			const index = prev.indexOf(modifier);
-			const newArr = index === -1 ? prev : [...prev.slice(0, index), ...prev.slice(index + 1)];
-			return newArr;
-		});
-	}, delay);
+	const { el, elsRef } = props;
+	// Maybe set our modifications
+	modifyCollided({el});
+	modifyInvisible({el, elsRef});
+	modifyPolarity({el, elsRef});
 };
 
 /**

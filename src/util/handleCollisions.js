@@ -71,8 +71,8 @@ export const getNearestShelves = (el, els) => {
  *
  * @param {Object} props The properties object
  * @param {Object} props.collisionArgs Props for checkCollisions (elsRef)
- * @param {Object} props.modifiersArgs Props for doModifiers (characterModifiers, setCharacterModifiers)
- * @param {Object} props.scoringArgs Props for doScoring (setScore, level, characterModifiers, playSound)
+ * @param {Object} props.modifiersArgs Props for doModifiers (elsRef)
+ * @param {Object} props.scoringArgs Props for doScoring (setScore, level, playSound)
  * @param {Object} props.livesArgs Props for doLives (lives, setLives, setGameplayNavigation, debug)
  * @param {Object} props.milestonesArgs Props for doMilestones (userAdjustedMilestone)
  */

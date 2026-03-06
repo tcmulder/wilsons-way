@@ -12,7 +12,7 @@ import '../css/character.css';
  */
 const Character = () => {
 	const { debug } = useDebugContext();
-	const { characterId, characterStatus, setCharacterStatus, characterModifiers } = useCharacterContext();
+	const { characterId, characterStatus, setCharacterStatus } = useCharacterContext();
 	const { timelinesRef, elevationRef, statusRef, elsRef, jumpRef } = useGameplayContext();
 	const { settings } = useSettingsContext();
 	const { version, userAdjustedCrash, characterHeight } = settings;
@@ -49,7 +49,7 @@ const Character = () => {
 	// Render the character component.
 	return (
 		<div
-			className={`sr-character${characterModifiers.map(modifier => ` is-mod-${modifier}`).join('')}`}
+			className="sr-character"
 			tabIndex="0"
 			data-move={characterStatus.move}
 			data-jump={characterStatus.jump}
