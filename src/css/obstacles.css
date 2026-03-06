@@ -1,8 +1,6 @@
-.sr-obstacles {
-	[data-score] {
-		&.is-collided:not([data-ignore-hide]) {
-			display: none;
-		}
+.sr-obstacle[data-score] {
+	&.is-collided:not([data-ignore-hide]) {
+		display: none;
 	}
 }
 

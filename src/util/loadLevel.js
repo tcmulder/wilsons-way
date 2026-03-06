@@ -47,53 +47,36 @@ export const loadLevel = async (props) => {
  * Collect elevated shelf elements (jump-on/jump-off surfaces plus ground) from the board.
  *
  * @param {HTMLElement} elBoard The board DOM element (e.g. .sr-board)
- * @returns {Element[]} Array of direct children of .sr-shelves
+ * @returns {Element[]} Array of shelves
  */
 export function getShelves(elBoard) {
-	const elShelves = elBoard?.querySelectorAll('.sr-shelves > *') ?? [];
+	const elShelves = elBoard?.querySelectorAll('.sr-shelf') ?? [];
 	return Array.from(elShelves);
 }
 
 /**
- * Collect all scoreable obstacle elements from the board (good, bad, or neutral).
+ * Collect all scoreable obstacle elements from the board (positive or negative)
  *
  * @param {HTMLElement} elBoard The board DOM element (e.g. .sr-board)
  * @returns {HTMLElement[]} Array of obstacle elements
  */
 export function getObstacles(elBoard) {
-	const elObstacles = [];
-	elBoard
-		?.querySelectorAll('.sr-obstacles[data-score]')
-		?.forEach((elObstacle) => {
-			elObstacle.querySelectorAll(':scope > *').forEach((elChild) => {
-				// If this obstacle doesn't have a custom score then inherit it from the parent
-				if (!elChild.hasAttribute('data-score')) {
-					elChild.dataset.score = elObstacle.dataset.score;
-				}
-				elObstacles.push(elChild);
-			});
-		});
-	return elObstacles;
+	const elObstacles = elBoard?.querySelectorAll('.sr-obstacle') ?? [];
+	return Array.from(elObstacles);
 }
 
 /**
- * Find milestone targets and set their delay from parent or self (default 5000ms).
+ * Setup milestones.
+ * 
+ * A milestone should be a .sr-milestone-target followed by a .sr-milestone-message. The target
+ * should have a data-delay for duration (the default is 5000ms)
  *
  * @param {HTMLElement} elBoard The board DOM element (e.g. .sr-board)
  * @returns {HTMLElement[]} Array of milestone target elements
  */
 export function setupMilestones(elBoard) {
-	const elMilestones = [];
-	elBoard
-		?.querySelectorAll('.sr-milestones')
-		?.forEach((elMilestoneGroup) => {
-			elMilestoneGroup.querySelectorAll('.sr-milestone-target').forEach((elMilestoneTarget) => {
-				const delay = Number(elMilestoneTarget.dataset.delay || elMilestoneGroup.dataset.delay || '5000');
-				elMilestoneTarget.dataset.delay = String(delay);
-				elMilestones.push(elMilestoneTarget);
-			});
-		});
-	return elMilestones;
+	const elMilestones = elBoard?.querySelectorAll('.sr-milestone-target') ?? [];
+	return Array.from(elMilestones);
 }
 
 /**

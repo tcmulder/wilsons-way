@@ -135,16 +135,16 @@ button.sr-debug__toggle {
 	:where(.sr-shelves > *) {
 		outline: 1px dashed color-mix(in srgb, lightgray var(--sr-debug-op), transparent);
 	}
-	:where(:is(.sr-obstacles, .sr-milestones) [data-score]) {
+	:where([data-score]) {
 		outline: 1px dashed color-mix(in srgb, lime var(--sr-debug-op), transparent);
 		&.is-collided {
-			outline: 1px dashed color-mix(in srgb, green var(--sr-debug-op), transparent);
+			outline: 1px solid color-mix(in srgb, green var(--sr-debug-op), transparent);
 		}
 	}
-	:is(:is(.sr-obstacles, .sr-milestones) [data-score^="-"]) {
+	:is([data-score^="-"]) {
 		outline: 1px dashed color-mix(in srgb, red var(--sr-debug-op), transparent);
 		&.is-collided {
-			outline: 1px dashed color-mix(in srgb, maroon var(--sr-debug-op), transparent);
+			outline: 1px solid color-mix(in srgb, maroon var(--sr-debug-op), transparent);
 		}
 	}
 }

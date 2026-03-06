@@ -16,7 +16,7 @@ export function useSetupGameplayElevations() {
 		if (!elsRef?.current?.elBoard || !elsRef?.current?.elCharacter || !elsRef?.current?.elShelves?.length) return;
 		const updateElevations = () => {
 			const elBoardRect = elsRef.current.elBoard.getBoundingClientRect();
-			const elFloorRect = elsRef.current.elShelves.filter(el => el.classList.contains('sr-sidewalk'))[0].getBoundingClientRect();
+			const elFloorRect = elsRef.current.elShelves.find(el => el.hasAttribute('data-floor'))?.getBoundingClientRect();
 			if(!elBoardRect.height || !elFloorRect.top) return;
 			const boardTop = elBoardRect.top;
 			const boardHeight = elBoardRect.height;
