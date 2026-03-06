@@ -11,7 +11,10 @@ import { doFreeze } from './doMovement';
  */
 const isSkippableInvisible = (props) => {
 	const { el, characterModifiers } = props;
-	return characterModifiers.includes('invisible') && el.classList.contains('is-negative') && el.dataset.ignoreModifier !== 'invisible';
+	const isMod = characterModifiers.includes('invisible');
+	const isPos = !el.dataset?.score?.startsWith('-');
+	const noIgnore = el.dataset.ignoreModifier !== 'invisible';
+	return isMod && !isPos && noIgnore;
 };
 
 /**
@@ -24,7 +27,10 @@ const isSkippableInvisible = (props) => {
  */
 const isPosPolarity = (props) => {
 	const { el, characterModifiers } = props;
-	return characterModifiers.includes('polarity') && el.classList.contains('is-positive') && el.dataset.ignoreModifier !== 'polarity';
+	const isMod = characterModifiers.includes('polarity');
+	const isPos = !el.dataset?.score?.startsWith('-');
+	const noIgnore = el.dataset.ignoreModifier !== 'polarity';
+	return isMod && isPos && noIgnore;
 };
 
 /**
@@ -63,7 +69,7 @@ export const doScoring = (props) => {
  */
 export const doLives = (props) => {
 	const { el, setLives, lives, setGameplayNavigation, debug } = props;
-	const shouldDecrease = el.classList.contains('is-negative');
+	const shouldDecrease = el.dataset?.score?.startsWith('-');
 	if (shouldDecrease) {
 		const next = lives.cur - 1;
 		setLives((prev) => ({ ...prev, cur: Math.max(0, next) }));
@@ -143,22 +149,5 @@ const showCharacterMessage = (props) => {
 	span.classList.add(className);
 	span.innerHTML = message;
 	el.appendChild(span);
-	gsap.timeline({ onComplete: () => span.remove() })
-	.set(span, {
-		opacity: 0,
-		y: '1cqmax',
-		scale: 0.5
-	})
-	.to(span, {
-		opacity: 1,
-		y: '-2cqmax',
-		scale: 1.05,
-		duration: 1,
-		ease: 'power1.out'
-	})
-	.to(span, {
-		opacity: 0,
-		duration: 0.45,
-		ease: 'power1.in'
-	}, 0.55);
+	span.addEventListener('animationend', () => span.remove(), { once: true });
 };

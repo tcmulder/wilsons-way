@@ -51,9 +51,8 @@
 .sr-character-message {
 	-webkit-text-stroke: 0.1cqmax var(--sr-c-navy);
 	position: absolute;
-	inset: auto 0 125%;
-	display: flex;
-	justify-content: center;
+	inset: auto 0 100%;
+	text-align: center;
 
 	span {
 		opacity: 0;
@@ -62,6 +61,8 @@
 		line-height: 0;
 		font-size: 4cqmax;
 		color: var(--sr-c-white);
+		transform-origin: center bottom;
+		animation: message-pop 1s ease-out forwards;
 		&.is-positive {
 			color: var(--sr-c-green);
 		}
@@ -76,4 +77,18 @@
 	z-index: 999;
 	inset: 0;
 	transform: scale(var(--sr-difficulty-crash, 1)) translateY(var(--sr-y-shift));
+}
+
+@keyframes message-pop {
+	0% {
+		opacity: 0;
+		transform: translateY(1cqmax) scale(0.5);
+	}
+	55% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0;
+		transform: translateY(-2cqmax) scale(1.05);
+	}
 }

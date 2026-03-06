@@ -44,6 +44,92 @@ export const loadLevel = async (props) => {
 };
 
 /**
+ * Collect elevated shelf elements (jump-on/jump-off surfaces plus ground) from the board.
+ *
+ * @param {HTMLElement} elBoard The board DOM element (e.g. .sr-board)
+ * @returns {Element[]} Array of direct children of .sr-shelves
+ */
+export function getShelves(elBoard) {
+	const elShelves = elBoard?.querySelectorAll('.sr-shelves > *') ?? [];
+	return Array.from(elShelves);
+}
+
+/**
+ * Collect all scoreable obstacle elements from the board (good, bad, or neutral).
+ *
+ * @param {HTMLElement} elBoard The board DOM element (e.g. .sr-board)
+ * @returns {HTMLElement[]} Array of obstacle elements
+ */
+export function getObstacles(elBoard) {
+	const elObstacles = [];
+	elBoard
+		?.querySelectorAll('.sr-obstacles[data-score]')
+		?.forEach((elObstacle) => {
+			elObstacle.querySelectorAll(':scope > *').forEach((elChild) => {
+				// If this obstacle doesn't have a custom score then inherit it from the parent
+				if (!elChild.hasAttribute('data-score')) {
+					elChild.dataset.score = elObstacle.dataset.score;
+				}
+				elObstacles.push(elChild);
+			});
+		});
+	return elObstacles;
+}
+
+/**
+ * Find milestone targets and set their delay from parent or self (default 5000ms).
+ *
+ * @param {HTMLElement} elBoard The board DOM element (e.g. .sr-board)
+ * @returns {HTMLElement[]} Array of milestone target elements
+ */
+export function setupMilestones(elBoard) {
+	const elMilestones = [];
+	elBoard
+		?.querySelectorAll('.sr-milestones')
+		?.forEach((elMilestoneGroup) => {
+			elMilestoneGroup.querySelectorAll('.sr-milestone-target').forEach((elMilestoneTarget) => {
+				const delay = Number(elMilestoneTarget.dataset.delay || elMilestoneGroup.dataset.delay || '5000');
+				elMilestoneTarget.dataset.delay = String(delay);
+				elMilestones.push(elMilestoneTarget);
+			});
+		});
+	return elMilestones;
+}
+
+/**
+ * For obstacles with data-rand, group by value and show one random element per group; hide the rest.
+ *
+ * @param {HTMLElement[]} elObstacles Array of obstacle elements (may have data-rand)
+ */
+export function handleRandomObstacles(elObstacles) {
+	const elRandomObstacles = elObstacles.filter((obstacle) => obstacle.dataset?.rand);
+	if (elRandomObstacles.length === 0) return;
+
+	const groups = {};
+	elRandomObstacles.forEach((el) => {
+		const group = el.dataset.rand;
+		if (!groups[group]) groups[group] = [];
+		groups[group].push(el);
+	});
+	Object.values(groups).forEach((group) => {
+		const rand = Math.floor(Math.random() * group.length);
+		group.forEach((el, index) => {
+			el.style.display = index !== rand ? 'none' : 'block';
+		});
+	});
+}
+
+/**
+ * Return the board's next sibling element (the character wrapper).
+ *
+ * @param {HTMLElement} elBoard The board DOM element (e.g. .sr-board)
+ * @returns {HTMLElement|undefined} The character container element or undefined
+ */
+export function getCharacter(elBoard) {
+	return elBoard?.nextElementSibling ?? undefined;
+}
+
+/**
  * Enable drag-and-drop functionality for loading SVG level files
  *
  * @param {Object} props The properties object
