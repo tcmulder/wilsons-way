@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useLevelContext, useScoreContext } from '../context/useContexts';
+import { useScoreContext } from '../context/useContexts';
+import Outro from '../components/Outro';
 
 /**
  * Level 4 completion screen.
  */
 const Level4OutroPage = () => {
-	const { level } = useLevelContext();
 	const { score } = useScoreContext();
 	const { api } = window.sr;
 	const [isHighScore, setIsHighScore] = useState(false);
@@ -22,7 +22,7 @@ const Level4OutroPage = () => {
 	}, [score, api]);
 	return (
 		<div>
-			<h1>You've completed Level {level}!</h1>
+			<Outro levelNumber={4} />
 			{!isHighScore ? <Link to="/leaderboard">View Leaderboard</Link> : <Link to="/form">Submit High Score</Link>}
 		</div>
 	);

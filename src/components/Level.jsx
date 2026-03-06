@@ -48,6 +48,12 @@ const Level = () => {
 	const { setGameplayNavigation, elsRef, timelinesRef } = gameplayContext;
 	const gameplayRef = useRef(null);
 	const [countdown, setCountdown] = useState(0);
+	const [levelUrl, setLevelUrl] = useState(`${window.sr.url}public/svg/level-${level}.svg?v=${version}`);
+
+	// Setup level's URL on level number change
+	useEffect(() => {
+		setLevelUrl(`${window.sr.url}public/svg/level-${level}.svg?v=${version}`);
+	}, [level, version]);
 
 	// Set global animations speed
 	useEffect(() => {
@@ -102,7 +108,7 @@ const Level = () => {
 			<Countdown countdown={countdown} setCountdown={setCountdown} />
 			<div className="sr-board">
 				{/* If level is 0, we're using a drag-and-dropped custom level, so don't load a numbered SVG file */}
-				{level !== 0 && <SVG path={`${window.sr.url}public/svg/level-${level}.svg?v=${version}`} onSvgLoad={handleSvgLoad} />}
+				{level !== 0 && levelUrl && <SVG path={levelUrl} onSvgLoad={handleSvgLoad} />}
 			</div>
 			<Character />
 		</div>
