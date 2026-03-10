@@ -311,8 +311,8 @@ export const Debug = () => {
 						value={debug?.outlines}
 						setValue={(val) => setDebug({ ...debug, outlines: val })}
 						title={[
-							// unused: 🟧🟦🟪🟫⬛
-							'⬜ level boundary',
+							// unused: 🟧⬜🟪🟫⬛
+							'🟦 level boundary',
 							'🟨 crash area',
 							'🟩 positive',
 							'🟥 negative',

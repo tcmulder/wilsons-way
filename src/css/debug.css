@@ -124,7 +124,7 @@ button.sr-debug__toggle {
 		outline: 1px dashed color-mix(in srgb, black var(--sr-debug-op), transparent);
 	}
 	:where(.sr-character) {
-		outline: 1px dashed color-mix(in srgb, lightgray var(--sr-debug-op), transparent);
+		outline: 1px dashed color-mix(in srgb, blue var(--sr-debug-op), transparent);
 		&[class*=" is-mod-"] svg {
 			filter: grayscale(1) opacity(0.8);
 		}
@@ -132,8 +132,8 @@ button.sr-debug__toggle {
 	:where(.sr-character-crash) {
 		outline: calc(1px / var(--sr-difficulty-crash, 1)) solid color-mix(in srgb, yellow var(--sr-debug-op), transparent);
 	}
-	:where(.sr-shelves > *) {
-		outline: 1px dashed color-mix(in srgb, lightgray var(--sr-debug-op), transparent);
+	:where(.sr-shelf) {
+		outline: 1px dashed color-mix(in srgb, blue var(--sr-debug-op), transparent);
 	}
 	:where([data-score]) {
 		outline: 1px dashed color-mix(in srgb, lime var(--sr-debug-op), transparent);
