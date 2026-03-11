@@ -8,7 +8,7 @@ import Outro from '../components/Outro';
 const Level2OutroPage = () => {
 	return (
 		<div>
-			<Outro levelNumber={1} />
+			<Outro levelNumber={2} />
 		</div>
 	);
 };

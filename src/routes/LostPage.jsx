@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
 import { useTimedNavigation } from '../hooks/useTimedNavigation';
+import Message from '../components/Message';
+
 /**
  * Page if you lost all your lives
  */
@@ -11,7 +13,7 @@ const LostPage = () => {
 	return (
 		<div>
 			<h1>Battery Depleted</h1>
-			<p>You're not a loser. You tried. You're a failure.</p>
+			<Message messageKey="loser" />
 		</div>
 	);
 };

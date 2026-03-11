@@ -21,11 +21,11 @@ add_action(
 					if ( ! is_array( $params ) || ! isset( $params['user'] ) || ! isset( $params['score'] ) ) {
 						return new WP_REST_Response( array( 'data' => array( 'status' => 400, 'message' => 'Invalid request body' ) ), 400 );
 					}
-					
+
 					// Debugging mode (doesn't save to database)
 					$is_debug = $params['isDebugMode'] ?? false;
 					// /*DEBUG*/$is_debug = false; // allows us to debug debug mode 😏
-					
+
 					$user = strtoupper( sanitize_title( $params['user'] ) );
 					$user = substr( $user, 0, 6 ); // trim to max characters (matches max on the winner form number input)
 					$score = (int) $params['score'];
@@ -48,14 +48,14 @@ add_action(
 					);
 					$leaderboard = array_slice( $leaderboard, 0, SHELF_RUNNER_LEADERBOARD_COUNT );
 					$leaderboard = array_pad( $leaderboard, SHELF_RUNNER_LEADERBOARD_COUNT, array( 'user' => '', 'score' => 0 ) );
-					
+
 					if ( ! $is_debug ) {
 						update_option( 'shelf_runner_settings_leaderboard', $leaderboard );
 					} else {
 						$data['debug'] = $is_debug;
 						$data['leaderboard'] = $leaderboard;
 					}
-					
+
 					$data['status'] = 200;
 
 					return new WP_REST_Response( array( 'data' => $data ) );
@@ -156,6 +156,58 @@ add_action(
 					);
 				},
 				'permission_callback' => '__return_true',
+			)
+		);
+	}
+);
+
+/**
+ * Message content endpoint (single key)
+ *
+ * Example: /wp-json/shelf-runner/v1/message/level_1_outro
+ */
+add_action(
+	'rest_api_init',
+	function () {
+		register_rest_route(
+			'shelf-runner/v1',
+			'/message/(?P<key>[a-z0-9_]+)/',
+			array(
+				'methods'             => 'GET',
+				'callback'            => function ( WP_REST_Request $request ) {
+					$key = $request['key'];
+
+					// Only allow keys that exist in the predefined messages list.
+					if ( ! isset( SHELF_RUNNER_MESSAGES[ $key ] ) ) {
+						return new WP_REST_Response(
+							array(
+								'data'   => null,
+								'status' => 404,
+							),
+							404
+						);
+					}
+
+					$value = get_option( "shelf_runner_settings_{$key}" );
+
+					return new WP_REST_Response(
+						array(
+							'data'   => array(
+								'key'   => $key,
+								'value' => $value,
+							),
+							'status' => 200,
+						)
+					);
+				},
+				'permission_callback' => '__return_true',
+				'args'                => array(
+					'key' => array(
+						'validate_callback' => function ( $param ) {
+							return is_string( $param ) && (bool) preg_match( '/^[a-z0-9_]+$/', $param );
+						},
+					),
+				),
 			)
 		);
 	}

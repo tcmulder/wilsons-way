@@ -224,42 +224,19 @@ function shelf_runner_settings_init() {
 
 	} elseif ( 'host' === $mode ) {
 
-		/* translators: %d: level number. */
-		$level_intro_default = __( 'Level %d Intro', 'shelf-runner' );
-		/* translators: %d: level number. */
-		$level_outro_default = __( 'Level %d Outro', 'shelf-runner' );
-
-		$number_of_levels = 4;
-
-		for ( $i = 1; $i <= $number_of_levels; $i++ ) {
-			add_option( "shelf_runner_settings_level_{$i}_intro", sprintf( $level_intro_default, $i ) );
-			register_setting( 'shelf_runner_settings', "shelf_runner_settings_level_{$i}_intro" );
-			if ( $i < $number_of_levels ) {
-				add_option( "shelf_runner_settings_level_{$i}_outro", sprintf( $level_outro_default, $i ) );
-				register_setting( 'shelf_runner_settings', "shelf_runner_settings_level_{$i}_outro" );
-			}
+		foreach ( SHELF_RUNNER_MESSAGES as $key => $message ) {
+			add_option( "shelf_runner_settings_{$key}", $message );
+			register_setting( 'shelf_runner_settings', "shelf_runner_settings_{$key}" );
 			add_settings_field(
-				"shelf_runner_settings_level_{$i}_intro",
-				/* translators: %d: level number. */
-				sprintf( __( 'Level %d Messages:', 'shelf-runner' ), $i ),
-				function () use ( $i, $wysiwyg_settings, $number_of_levels ) {
+				"shelf_runner_settings_{$key}",
+				esc_html( $message ) . ':',
+				function () use ( $wysiwyg_settings, $key ) {
 					ob_start();
-					/* translators: %d: level number. */
-					printf( '<h2>%s</h2>', esc_html( sprintf( __( 'Level %d Intro Message:', 'shelf-runner' ), $i ) ) );
 					wp_editor(
-						get_option( "shelf_runner_settings_level_{$i}_intro" ),
-						"shelf_runner_level_{$i}_intro",
-						array_merge( $wysiwyg_settings, array( 'textarea_name' => "shelf_runner_settings_level_{$i}_intro" ) )
+						get_option( "shelf_runner_settings_{$key}" ),
+						"shelf_runner_settings_{$key}",
+						array_merge( $wysiwyg_settings, array( "textarea_name" => "shelf_runner_settings_{$key}" ) )
 					);
-					if ( $i < $number_of_levels ) {
-						/* translators: %d: level number. */
-						printf( '<h2>%s</h2>', esc_html( sprintf( __( 'Level %d Outro Message:', 'shelf-runner' ), $i ) ) );
-						wp_editor(
-							get_option( "shelf_runner_settings_level_{$i}_outro" ),
-							"shelf_runner_level_{$i}_outro",
-							array_merge( $wysiwyg_settings, array( 'textarea_name' => "shelf_runner_settings_level_{$i}_outro" ) )
-						);
-					}
 					$field = ob_get_clean();
 					shelf_runner_accordion( $field );
 				},
@@ -267,63 +244,6 @@ function shelf_runner_settings_init() {
 				'sr_section'
 			);
 		}
-
-		add_option( 'shelf_runner_settings_loser', __( "You're not a loser, you tried... you're a failure", 'shelf-runner' ) );
-		register_setting( 'shelf_runner_settings', 'shelf_runner_settings_loser' );
-		add_settings_field(
-			'shelf_runner_settings_loser',
-			esc_html( __( 'Loser message:', 'shelf-runner' ) ),
-			function () use ( $wysiwyg_settings ) {
-				ob_start();
-				wp_editor(
-					get_option( 'shelf_runner_settings_loser' ),
-					'shelf_runner_settings_loser',
-					array_merge( $wysiwyg_settings, array( 'textarea_name' => 'shelf_runner_settings_loser' ) )
-				);
-				$field = ob_get_clean();
-				shelf_runner_accordion( $field );
-			},
-			'shelf_runner_settings',
-			'sr_section'
-		);
-
-		add_option( 'shelf_runner_settings_winner', __( 'New high score!', 'shelf-runner' ) );
-		register_setting( 'shelf_runner_settings', 'shelf_runner_settings_winner' );
-		add_settings_field(
-			'shelf_runner_settings_winner',
-			esc_html( __( 'Winner message:', 'shelf-runner' ) ),
-			function () use ( $wysiwyg_settings ) {
-				ob_start();
-				wp_editor(
-					get_option( 'shelf_runner_settings_winner' ),
-					'shelf_runner_settings_winner',
-					array_merge( $wysiwyg_settings, array( 'textarea_name' => 'shelf_runner_settings_winner' ) )
-				);
-				$field = ob_get_clean();
-				shelf_runner_accordion( $field );
-			},
-			'shelf_runner_settings',
-			'sr_section'
-		);
-
-		add_option( 'shelf_runner_settings_outro', __( 'The end.', 'shelf-runner' ) );
-		register_setting( 'shelf_runner_settings', 'shelf_runner_settings_outro' );
-		add_settings_field(
-			'shelf_runner_settings_outro',
-			esc_html( __( 'Final message:', 'shelf-runner' ) ),
-			function () use ( $wysiwyg_settings ) {
-				ob_start();
-				wp_editor(
-					get_option( 'shelf_runner_settings_outro' ),
-					'shelf_runner_settings_outro',
-					array_merge( $wysiwyg_settings, array( 'textarea_name' => 'shelf_runner_settings_outro' ) )
-				);
-				$field = ob_get_clean();
-				shelf_runner_accordion( $field );
-			},
-			'shelf_runner_settings',
-			'sr_section'
-		);
 
 		add_option( 'shelf_runner_settings_leaderboard', array() );
 		register_setting(

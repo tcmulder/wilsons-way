@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { submitHighScore } from '../util/doHighScore';
 import { useScoreContext, useDebugContext } from '../context/useContexts';
+import Message from '../components/Message';
 
 /**
  * Intro page
@@ -17,6 +18,7 @@ const HighScorePage = () => {
 	return (
 		<div>
 			<h1>You got a high score!</h1>
+			<Message messageKey="winner" />
 			<form
 				onSubmit={(e) => submitHighScore({
 					e,

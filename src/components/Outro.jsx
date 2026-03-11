@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import Message from './Message';
 
 /**
  * 
@@ -11,6 +12,7 @@ const Outro = (props) => {
 	return (
 		<>
 			<h1>You've completed Level {levelNumber}!</h1>
+			<Message messageKey={`level_${levelNumber}_outro`} />
 			<Link to={`/level/${levelNumber + 1}`}>
 				Load Level {levelNumber + 1} &gt;&gt;
 			</Link>
