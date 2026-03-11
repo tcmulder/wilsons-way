@@ -121,3 +121,11 @@ svg.sr-interface-header__icon {
 	color: var(--sr-c-white);
 	text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
 }
+.sr-page-image {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+	object-position: center;
+	pointer-events: none;
+}

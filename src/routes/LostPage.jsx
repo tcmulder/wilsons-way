@@ -6,7 +6,7 @@ import Message from '../components/Message';
  * Page if you lost all your lives
  */
 const LostPage = () => {
-	const timedNavigate = useTimedNavigation();
+	const { timedNavigate } = useTimedNavigation();
 	useEffect(() => {
 		timedNavigate({ route: '/restart', delay: 3000 });
 	}, [timedNavigate]);

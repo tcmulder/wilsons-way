@@ -57,7 +57,7 @@ const Level = () => {
 
 	// When a level completes, advance to the next level route
 	const handleLevelComplete = useCallback(() => {
-		setGameplayNavigation(`/outro/${level}`);
+		setGameplayNavigation(`/level/${level}/flag`);
 	}, [level, setGameplayNavigation]);
 
 	// Update physics based on this level when it loads
