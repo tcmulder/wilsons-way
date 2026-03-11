@@ -167,7 +167,7 @@ export const Debug = () => {
 		if (debugAllowed && debug) {
 			loadState(debug?.characterId, () => setCharacterId(parseInt(debug.characterId)));
 			loadState(debug?.characterHeight, () => setSettings((prev) => ({ ...prev, characterHeight: debug.characterHeight})));
-			loadState(debug?.userAdjustedSpeed, () => setSettings((prev) => ({ ...prev, userAdjustedSpeed: debug.userAdjustedSpeed })));
+			loadState(debug?.userAdjustedSpeed, () => setSettings((prev) => ({ ...prev, userAdjustedSpeed: debug.userAdjustedSpeed / 100})));
 			loadState(debug?.gameplaySpeed, () => setSettings((prev) => ({ ...prev, gameplaySpeed: debug.gameplaySpeed})));
 			loadState(debug?.jumpHeight, () => setJump((prev) => ({ ...prev, height: debug.jumpHeight / 100})));
 			loadState(debug?.jumpHangtime, () => setJump((prev) => ({ ...prev, hangtime: debug.jumpHangtime})));
@@ -223,8 +223,8 @@ export const Debug = () => {
 					<DebugNumber
 						label="🏎️ Speed (%)"
 						param="userAdjustedMilestone"
-						value={(settings.userAdjustedSpeed)}
-						setValue={(value) => setSettings({ ...settings, userAdjustedSpeed: value })}
+						value={(settings.userAdjustedSpeed * 100)}
+						setValue={(value) => setSettings({ ...settings, userAdjustedSpeed: value / 100 })}
 						title="The user-adjusted speed multiplier (usually use base speed instead)."
 					/>
 					<DebugNumber

@@ -41,29 +41,47 @@ const Countdown = ({ countdown, setCountdown }) => {
  */
 const Level = () => {
 	const { debug } = useDebugContext();
-	const { settings } = useSettingsContext();
+	const { settings, levelPhysics, setLevelPhysics } = useSettingsContext();
 	const { version, gameplaySpeed, userAdjustedSpeed } = settings;
-	const { level, setCurrentLevelId, customLevelSvg } = useLevelContext();
+	const { level, currentLevelId, setCurrentLevelId, customLevelSvg } = useLevelContext();
 	const gameplayContext = useGameplayContext();
 	const { setGameplayNavigation, elsRef, timelinesRef } = gameplayContext;
 	const gameplayRef = useRef(null);
 	const [countdown, setCountdown] = useState(0);
-	const [levelUrl, setLevelUrl] = useState(`${window.sr.url}public/svg/level-${level}.svg?v=${version}`);
-
-	// Setup level's URL on level number change
-	useEffect(() => {
-		setLevelUrl(`${window.sr.url}public/svg/level-${level}.svg?v=${version}`);
-	}, [level, version]);
+	const levelUrl = `${window.sr.url}public/svg/level-${level}.svg?v=${version}`;
 
 	// Set global animations speed
 	useEffect(() => {
-		gsap.globalTimeline.timeScale(userAdjustedSpeed / 50);
-	}, [userAdjustedSpeed]);
+		gsap.globalTimeline.timeScale(userAdjustedSpeed * levelPhysics.speed);
+	}, [userAdjustedSpeed, levelPhysics.speed]);
 
 	// When a level completes, advance to the next level route
 	const handleLevelComplete = useCallback(() => {
 		setGameplayNavigation(`/outro/${level}`);
 	}, [level, setGameplayNavigation]);
+
+	// Update physics based on this level when it loads
+	useEffect(() => {
+		const newPhysics = { speed: 1, jump: 1, hangtime: 1 };
+		const dataset = document.querySelector('.sr-level')?.dataset || {};
+		if (dataset.speed) {
+			newPhysics.speed = dataset.speed / 100;
+		}
+		if (dataset.jump) {
+			newPhysics.jump = dataset.jump / 100;
+		}
+		if (dataset.hangtime) {
+			newPhysics.hangtime = dataset.hangtime / 100;
+		}
+		setLevelPhysics(newPhysics);
+	}, [setLevelPhysics, currentLevelId]);
+
+	// Set level ID as null when the level component unmounts
+	useEffect(() => {
+		return () => {
+			setCurrentLevelId(null);
+		};
+	}, [setCurrentLevelId]);
 
 	// Load SVG for level and add movement to it
 	const handleSvgLoad = useCallback(async (svgElement) => {

@@ -8,7 +8,7 @@ import { useGameplayContext, useLevelContext, useSettingsContext } from '../cont
  */
 export function useSetupGameplayElevations() {
 	const { elsRef, elevationRef, jumpRef } = useGameplayContext();
-	const { jump } = useSettingsContext();
+	const { jump, levelPhysics } = useSettingsContext();
 	const { currentLevelId } = useLevelContext();
 
 	// Set the elevations and jump values when the component mounts
@@ -27,8 +27,8 @@ export function useSetupGameplayElevations() {
 				floor: Math.round(boardHeight - floorTopWithinBoard),
 			};
 			jumpRef.current = {
-				height: Math.round(boardHeight * jump.height),
-				hangtime: jump.hangtime,
+				height: Math.round(boardHeight * jump.height * levelPhysics.jump),
+				hangtime: jump.hangtime * levelPhysics.hangtime,
 			};
 			// Start our character off on the floor
 			gsap.set(elsRef.current.elCharacter, { y: elevationRef.current.floor * -1 });
@@ -43,5 +43,5 @@ export function useSetupGameplayElevations() {
 			observer.disconnect();
 			throttledUpdate.cancel();
 		};
-	}, [currentLevelId, elsRef, elevationRef, jumpRef, jump]);
+	}, [currentLevelId, elsRef, elevationRef, jumpRef, jump, levelPhysics]);
 }

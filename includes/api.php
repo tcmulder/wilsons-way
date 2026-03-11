@@ -128,8 +128,8 @@ add_action(
 				'callback'            => function () {
 					// Get crash difficulty percentage from settings.
 					$difficulty_crash = (int) get_option( 'shelf_runner_settings_size' );
-					$difficulty_crash = $difficulty_crash ? ( $difficulty_crash / 100) : 1;
-					$difficulty_speed = 100 - (int) get_option( 'shelf_runner_settings_speed' );
+					$difficulty_crash = $difficulty_crash ? ( $difficulty_crash / 100 ) : 1;
+					$difficulty_speed = ( 100 - (int) get_option( 'shelf_runner_settings_speed' ) ) / 50;
 					$duration_milestone = (int) get_option( 'shelf_runner_settings_milestone_duration' );
 					$duration_milestone = $duration_milestone ? ( $duration_milestone / 50 ) : 1;
 					$difficulty_lives = (int) get_option( 'shelf_runner_settings_lives' );
