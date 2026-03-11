@@ -6,40 +6,51 @@ import { checkCollisions, checkElevation } from './handleCollisions';
  * Track movement
  *
  * @param {Object} props The properties object
- * @param {Object} props.gameplayContext Gameplay refs and state
- * @param {Function} props.setCharacterStatus Setter for character status
- * @param {Function} props.setScore Setter for score
- * @param {number} props.level The current level number
- * @param {string[]} props.characterModifiers The current character modifiers
- * @param {Function} props.playSound Function to play a sound ('positive' | 'negative')
- * @param {Function} props.setCharacterModifiers Setter for character modifiers
- * @param {number} [props.userAdjustedMilestone] Multiplier for milestone delay
+ * @param {Object} props.collisionsArgs Props for checkCollisions and nested collision handlers.
+ * @param {Object} props.elevationArgs Props for checkElevation (elsRef, elevationRef).
+ * @param {Object} props.gravityArgs Props for doGravity (setCharacterStatus, statusRef, elevationRef, elsRef, jumpRef).
  */
 export const trackMovement = (props) => {
 	const {
-		gameplayContext,
-		setCharacterStatus,
-		setScore,
-		level,
-		characterModifiers,
-		playSound,
-		setCharacterModifiers,
-		userAdjustedMilestone,
+		trackMovementArgs,
+		collisionsArgs,
+		elevationArgs,
+		gravityArgs,
 	} = props;
-	const { elsRef, elevationRef, statusRef, jumpRef } = gameplayContext;
+	const { elsRef, statusRef } = trackMovementArgs;
 	if (!elsRef?.current || (statusRef?.current?.move === 'none' && statusRef?.current?.jump === 'none')) return;
-	const els = elsRef?.current;
 	checkCollisions({
-		els,
-		setScore,
-		level,
-		characterModifiers,
-		playSound,
-		setCharacterModifiers,
-		userAdjustedMilestone,
+		// Used by the checkCollisions itself
+		collisionArgs: {
+			elsRef: collisionsArgs.elsRef,
+		},
+		// Passed through to doModifiers function
+		modifiersArgs: {
+			elsRef: collisionsArgs.elsRef,
+		},
+		// Passed through to doScoring function
+		scoringArgs: {
+			elsRef: collisionsArgs.elsRef,
+			setScore: collisionsArgs.setScore,
+			level: collisionsArgs.level,
+			playSound: collisionsArgs.playSound,
+		},
+		// Passed through to doLives function
+		livesArgs: {
+			elsRef: collisionsArgs.elsRef,
+			lives: collisionsArgs.lives,
+			setLives: collisionsArgs.setLives,
+			setGameplayNavigation: collisionsArgs.setGameplayNavigation,
+			debug: collisionsArgs.debug,
+		},
+		// Passed through to doMilestones function
+		milestonesArgs: {
+			elsRef: collisionsArgs.elsRef,
+			userAdjustedMilestone: collisionsArgs.userAdjustedMilestone,
+		},
 	});
-	checkElevation(els, elevationRef);
-	doGravity({ setCharacterStatus, statusRef, elevationRef, elsRef, jumpRef });
+	checkElevation(elevationArgs);
+	doGravity(gravityArgs);
 };
 
 /**
@@ -227,15 +238,7 @@ export function useCharacterMovement(props) {
 		timelinesRef,
 		elevationRef,
 		statusRef,
-		currentLevelId,
 	} = props;
-
-	// Auto-play when debug autoplay is not false, and only once timelines exist (level has loaded)
-	useEffect(() => {
-		if (debug?.autoplay !== false && timelinesRef.current?.length) {
-			doRun({ timelines: timelinesRef.current, setCharacterStatus, direction: 'forward' });
-		}
-	}, [debug, timelinesRef, setCharacterStatus, currentLevelId]);
 
 	useEffect(() => {
 		const handleKeyDown = (e) => {

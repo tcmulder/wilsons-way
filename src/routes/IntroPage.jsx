@@ -1,4 +1,6 @@
 import { useNavigate } from 'react-router-dom';
+import { EightBit } from '../components/EightBit';
+import { EightBitPill } from '../components/EightBit';
 import { useSettingsContext } from '../context/useContexts';
 import { useGameAudio } from '../hooks/useSFX';
 
@@ -13,7 +15,16 @@ const IntroPage = () => {
 		<div>
 			<h1>Welcome to the Game</h1>
 			<p>This is an introductory page, and content is TBD.</p>
-			<button style={{fontSize: '7em'}} onClick={() => navigate('/level/1')}>Start Game</button>
+			<div style={{width: '10cqmax'}}>
+				<EightBit bg={<EightBitPill />}>
+					<button onClick={() => navigate('/level/1')}>Start Game</button>
+				</EightBit>
+			</div>
+			<div style={{width: '10cqmax'}}>
+				<EightBit bg={<EightBitPill />}>
+					<button onClick={() => window.location.href = 'http://localhost:5173/?debug=true&autoplay=false&router=true&userAdjustedLives=10&userAdjustedMilestone=176#/level/1'}>Debug</button>
+				</EightBit>
+			</div>
 			<div>
 				<label>
 					<input

@@ -1,0 +1,22 @@
+.sr-leaderboard {
+	max-width: 400px;
+	margin: 0 auto;
+}
+.sr-leaderboard__list {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+}
+.sr-leaderboard__item {
+	display: grid;
+	grid-column: span 2;
+	grid-template-columns: subgrid;
+}
+.sr-leaderboard__user {
+	font-weight: bold;
+}
+.sr-leaderboard__score {
+	font-weight: normal;
+}

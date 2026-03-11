@@ -1,0 +1,74 @@
+:root {
+	--sr-c-bg-8bit: var(--sr-c-yellow);
+	--sr-c-bd-8bit: var(--sr-c-gold);
+	--sr-c-fg-8bit: var(--sr-c-black);
+}
+.sr-8bit {
+	display: grid;
+}
+.sr-8bit__bg {
+	grid-area: 1 / 1;
+	svg {
+		display: block;
+		width: 100%;
+		height: auto;
+	}
+}
+.sr-8bit__fg {
+	grid-area: 1 / 1;
+	position: relative;
+	display: flex;
+	color: var(--sr-c-fg-8bit);
+	& > :where(a:only-child, button:only-child) {
+		padding: 0;
+		background-color: transparent;
+		border: 0;
+		font-size: 1em;
+		color: inherit;
+	}
+	.sr-8bit--center & {
+		& > :where(*:only-child) {
+			display: grid;
+			place-items: center;
+			height: 100%;
+			width: 100%;
+			padding: 0;
+			margin: 0;
+			background-color: transparent;
+			border: 0;
+			font-size: 1em;
+			color: inherit;
+		}
+	}
+}
+.sr-8bit__pill {
+	container-type: size;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	height: 100%;
+	will-change: transform; /* needed to fix subpixel rending issues */
+	&::before {
+		--sr-bd-8bit: 8cqb;
+		content: '';
+		order: 2;
+		flex: 1;
+		height: 100%;
+		background-color: var(--sr-c-bg-8bit);
+		border: 0 solid var(--sr-c-bd-8bit);
+		border-width: var(--sr-bd-8bit) 0;
+	}
+}
+.sr-8bit__pill-piece {
+	overflow: hidden;
+	height: 100%;
+	&:first-child {
+		order: 1;
+	}
+	&:last-child {
+		order: 3;
+	}
+	svg {
+		height: 100%;
+	}
+}

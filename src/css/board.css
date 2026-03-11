@@ -14,6 +14,7 @@
 	max-width: 100%;
 	aspect-ratio: 16 / 9;
 	margin: 0 auto;
+	background-color: black;
 }
 
 .sr-board {
@@ -32,4 +33,15 @@
 	& > svg {
 		will-change: transform;
 	}
+}
+
+.sr-countdown {
+	position: absolute;
+	inset: 0;
+	display: grid;
+	place-items: center;
+	padding-bottom: 25%;
+	z-index: 100;
+	font-size: 10em;
+	color: var(--sr-c-black);
 }

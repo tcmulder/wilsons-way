@@ -1,13 +1,15 @@
-import { doScoring, doModifiers, doMilestones } from './doCrash';
+import { doScoring, doModifiers, doMilestones, doLives } from './doCrash';
 
 /**
  * Check to see if two elements overlap
  *
- * @param {HTMLElement} el1 First element to check
- * @param {HTMLElement} el2 Second element to check
+ * @param {Object} props The properties object
+ * @param {HTMLElement} props.el1 First element to check
+ * @param {HTMLElement} props.el2 Second element to check
  * @return {boolean} Whether or not the elements overlap
  */
-const checkOverlap = (el1, el2) => {
+const checkOverlap = (props) => {
+	const { el1, el2 } = props;
 	const rect1 = el1.getBoundingClientRect();
 	const rect2 = el2.getBoundingClientRect();
 	return (
@@ -68,44 +70,32 @@ export const getNearestShelves = (el, els) => {
  * Check for and respond to collisions.
  *
  * @param {Object} props The properties object
- * @param {Object} props.els The elements object
- * @param {Function} props.setScore Function to set the score
- * @param {number} props.level The current level number
- * @param {string[]} props.characterModifiers The current character modifiers
- * @param {Function} [props.playSound] Function to play a sound ('positive' | 'negative')
- * @param {Function} props.setCharacterModifiers Function to set the character modifiers
- * @param {number} [props.userAdjustedMilestone] Multiplier for milestone delay
+ * @param {Object} props.collisionArgs Props for checkCollisions (elsRef)
+ * @param {Object} props.modifiersArgs Props for doModifiers (elsRef)
+ * @param {Object} props.scoringArgs Props for doScoring (setScore, level, playSound)
+ * @param {Object} props.livesArgs Props for doLives (lives, setLives, setGameplayNavigation, debug)
+ * @param {Object} props.milestonesArgs Props for doMilestones (userAdjustedMilestone)
  */
 export const checkCollisions = (props) => {
 	const {
-		els,
-		setScore,
-		level,
-		characterModifiers,
-		playSound,
-		setCharacterModifiers,
-		userAdjustedMilestone,
+		collisionArgs,
+		modifiersArgs,
+		scoringArgs,
+		livesArgs,
+		milestonesArgs,
 	} = props;
-	const { elCharacterCrashArea, elCharacterMessage, elObstaclesVisible } = els;
+	const { elsRef } = collisionArgs;
+	const els = elsRef?.current;
+	const { elCharacterCrashArea, elObstaclesVisible } = els;
 	elObstaclesVisible.forEach((el) => {
 		if (
 			!el.classList.contains('is-collided') &&
-			checkOverlap(elCharacterCrashArea, el)
+			checkOverlap({ el1: elCharacterCrashArea, el2: el })
 		) {
-			doModifiers({
-				el,
-				characterModifiers,
-				setCharacterModifiers,
-			});
-			doScoring({
-				el,
-				elCharacterMessage,
-				setScore,
-				level,
-				characterModifiers,
-				playSound,
-			});
-			doMilestones({ el, userAdjustedMilestone });
+			doModifiers({ el, ...modifiersArgs });
+			doScoring({ el, ...scoringArgs, });
+			doLives({ el, ...livesArgs });
+			doMilestones({ el, ...milestonesArgs });
 		}
 	});
 };
@@ -113,28 +103,33 @@ export const checkCollisions = (props) => {
 /**
  * Update elevation ref with character/shelf positions.
  *
- * @param {Object} els Element refs: elCharacter, elShelvesVisible, elBoard
+ * @param {Object} props The properties object
+ * @param {Object} props.elsRef The elements ref object
  * @param {Object} elevationRef Ref to update with above, below, head, foot, floor, etc.
  */
-export const checkElevation = (els, elevationRef) => {
+export const checkElevation = (props) => {
+	const { elsRef, elevationRef } = props;
+	const els = elsRef?.current;
 	const { elCharacter, elShelvesVisible, elBoard } = els;
+	const { elAbove, elBelow } = getNearestShelves(elCharacter, elShelvesVisible);
 	const elBoardRect = elBoard.getBoundingClientRect();
 	const elCharacterRect = elCharacter.getBoundingClientRect();
-	const { elAbove, elBelow } = getNearestShelves(elCharacter, elShelvesVisible);
-	const localElevation = {
-		above: 0,
-		below: 0,
-		charBelow: 0,
-	};
+	const boardTop = elBoardRect.top;
+	const boardHeight = elBoardRect.height;
+	const localElevation = { above: 0, below: 0, charBelow: 0 };
 	if (elAbove) {
-		localElevation.above = Math.round(elBoardRect.height - elAbove.getBoundingClientRect().bottom);
+		const aboveBottom = elAbove.getBoundingClientRect().bottom - boardTop;
+		localElevation.above = Math.round(boardHeight - aboveBottom);
 	} else {
-		localElevation.above = Math.round(elBoardRect.height);
+		localElevation.above = Math.round(boardHeight);
 	}
 	if (elBelow) {
-		localElevation.below = Math.round(elBoardRect.height - elBelow.getBoundingClientRect().top);
+		const belowTop = elBelow.getBoundingClientRect().top - boardTop;
+		localElevation.below = Math.round(boardHeight - belowTop);
 	}
-	localElevation.head = Math.round(elBoardRect.height - elCharacterRect.top);
-	localElevation.foot = Math.round(elBoardRect.height - elCharacterRect.bottom);
+	const charTop = elCharacterRect.top - boardTop;
+	const charBottom = elCharacterRect.bottom - boardTop;
+	localElevation.head = Math.round(boardHeight - charTop);
+	localElevation.foot = Math.round(boardHeight - charBottom);
 	elevationRef.current = { ...elevationRef.current, ...localElevation };
 };

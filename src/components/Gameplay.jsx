@@ -1,5 +1,6 @@
 import { useSetupGameplayElements } from '../hooks/useSetupGameplayEls';
 import { useSetupGameplayElevations } from '../hooks/useSetupGameplayElevations';
+import { useSetupGameplayNavigation } from '../hooks/useSetupGameplayNavigation';
 import { useMovementTicker } from '../hooks/useMovementTicker';
 
 /**
@@ -12,6 +13,7 @@ import { useMovementTicker } from '../hooks/useMovementTicker';
 const Gameplay = ({ boardRef }) => {
 	useSetupGameplayElements(boardRef);
 	useSetupGameplayElevations();
+	useSetupGameplayNavigation();
 	useMovementTicker();
 	return null;
 };

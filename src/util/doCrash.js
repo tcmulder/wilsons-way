@@ -1,49 +1,24 @@
-import gsap from 'gsap';
 import { doFreeze } from './doMovement';
-
-/**
- * Check if an obstacle is skippable due to invisible modifier
- *
- * @param {Object} props The properties object
- * @param {HTMLElement} props.el The element to check
- * @param {string[]} props.characterModifiers The current character modifiers
- * @return {boolean} Whether or not the obstacle is skippable
- */
-const isSkippableInvisible = (props) => {
-	const { el, characterModifiers } = props;
-	return characterModifiers.includes('invisible') && el.classList.contains('is-negative') && el.dataset.ignoreModifier !== 'invisible';
-};
-
-/**
- * Check if an obstacle should switch polarity on positive objects (make them negative)
- *
- * @param {Object} props The properties object
- * @param {HTMLElement} props.el The element to check
- * @param {string[]} props.characterModifiers The current character modifiers
- * @return {boolean} Whether or not the obstacle should switch polarity on positive objects
- */
-const isPosPolarity = (props) => {
-	const { el, characterModifiers } = props;
-	return characterModifiers.includes('polarity') && el.classList.contains('is-positive') && el.dataset.ignoreModifier !== 'polarity';
-};
 
 /**
  * Apply scoring if an obstacle provides scoring data
  *
  * @param {Object} props The properties object
  * @param {HTMLElement} props.el The element to score (if it has scoring data)
+ * @param {Object} props.elsRef The elements ref object
  * @param {HTMLElement} props.elCharacterMessage The character messaging element
  * @param {Function} props.setScore Function to set the score
  * @param {number} props.level The current level number
- * @param {string[]} props.characterModifiers The current character modifiers
  * @param {Function} props.playSound Function to play a sound ('positive' | 'negative')
  */
 export const doScoring = (props) => {
-	const { el, elCharacterMessage, setScore, level, characterModifiers, playSound } = props;
+	const { el, elsRef, setScore, level, playSound } = props;
+	const els = elsRef?.current;
+	const { elCharacterMessage } = els;
 	const rawNum = el.dataset.score;
-	if (!rawNum || isSkippableInvisible({ el, characterModifiers })) return;
-	let num = parseInt(rawNum);
-	num = isPosPolarity({ el, characterModifiers }) ? -Math.abs(num) : num;
+	if (!rawNum) return;
+	const num = parseInt(rawNum);
+	if (!num) return; // e.g. if '0' due to modifier being applied
 	const way = num > 0 ? 'positive' : 'negative';
 	const sound = el.dataset.sound || way;
 	playSound(sound);
@@ -56,38 +31,168 @@ export const doScoring = (props) => {
 };
 
 /**
- * Modify collided obstacles
+ * Increase or decrease lives.
+ */
+export const doLives = (props) => {
+	const { el, setLives, lives, setGameplayNavigation, debug } = props;
+	if (el.classList.contains('is-death')) return;
+	const shouldDecrease = el.dataset?.score?.startsWith('-');
+	if (shouldDecrease) {
+		el.classList.add('is-death');
+		const next = lives.cur - 1;
+		setLives((prev) => ({ ...prev, cur: Math.max(0, next) }));
+		if (next <= 0 && !debug?.immortal) {
+			doFreeze();
+			setGameplayNavigation('/lost');
+		}
+	}
+};
+
+/**
+ * Apply collision modifier (to prevent further collisions)
  *
  * @param {Object} props The properties object
- * @param {HTMLElement} props.el The element to check for modifier collisions
- * @param {string[]} props.characterModifiers The current character modifiers
- * @param {Function} props.setCharacterModifiers Function to set the character modifiers
+ * @param {HTMLElement} props.el The element to apply the collision class to
  */
-export const doModifiers = (props) => {
-	const { el, characterModifiers, setCharacterModifiers } = props;
-	// Set the most basic flag: collided
-	if (!isSkippableInvisible({ el, characterModifiers })) {
-		el.classList.add('is-collided');
-	}
-	// Get the modifier value if any
-	const modifier = el.dataset.modifier;
-	if (!modifier) return;
-	// Set the modifier
-	setCharacterModifiers(prev => [ ...prev, modifier ]);
+const modifyCollided = (props) => {
+	const { el } = props;
+	el.classList.add('is-collided');
+};
+
+/**
+ * Get original non-modified dataset
+ */
+const getOriginalDataset = (el) => {
+	if (!el || !el.dataset) return {};
+	const { dataset } = el;
+
+	// If we already have an original snapshot, just return it
+	if (dataset.org) return JSON.parse(dataset.org);
+
+	// Capture all current data-* attributes as the original snapshot
+	const original = { ...dataset };
+	dataset.org = JSON.stringify(original);
+	return original;
+};
+
+/**
+ * Apply invisibility modifier
+ * 
+ * @param {Object} props The properties object
+ * @param {HTMLElement} props.el The element to apply the collision class to
+ * @param {Object} props.elsRef The elements ref object
+ */
+const modifyInvisible = (props) => {
+	const modifier = props.el.dataset.modifier;
+	// Bail if we're not to modify invisibility
+	if (modifier !== 'invisible') return;
+	
+	// Get all obstacles
+	const { el, elsRef } = props;
+	const els = elsRef?.current;
+	const { elObstacles } = els;
+
+	// Find all negative-scoring obstacles that do not ignore the invisible modifier
+	const elTargets = elObstacles.filter((obstacle) => {
+		const score = obstacle.dataset.score;
+		if (!score) return false;
+		const isNegative = score.startsWith('-');
+		const ignoresInvisible = obstacle.dataset?.ignoreModifier?.split(',').includes('invisible');
+		return isNegative && !ignoresInvisible;
+	});
+
+	// Apply the invisible modifier: add class and zero out score.
+	elTargets.forEach((elObstacle) => {
+		// Ensure we have an original snapshot before mutating
+		getOriginalDataset(elObstacle);
+		elObstacle.dataset.score = '0';
+		elObstacle.setAttribute('data-ignore-hide', '');
+		elObstacle.classList.add('sr-modifier--invisible');
+	});
+
 	// Clear the modifier after a delay
 	const delay = parseInt(el.dataset.modifierDelay) || 5000;
 	setTimeout(() => {
-		setCharacterModifiers(prev => {
-			//  Remove the 1st matching modifier (so if new duplicate modifiers have been set they aren't cleared)
-			const index = prev.indexOf(modifier);
-			const newArr = index === -1 ? prev : [...prev.slice(0, index), ...prev.slice(index + 1)];
-			return newArr;
+		elTargets.forEach((elObstacle) => {
+			const originalDataset = getOriginalDataset(elObstacle);
+			elObstacle.dataset.score = originalDataset.score;
+			if (!originalDataset.ignoreHide) {
+				elObstacle.removeAttribute('data-ignore-hide');
+				elObstacle.classList.remove('is-collided');
+			}
+			elObstacle.classList.remove('sr-modifier--invisible');
 		});
 	}, delay);
 };
 
 /**
+ * Apply polarity modifier
+ * 
+ * @param {Object} props The properties object
+ * @param {HTMLElement} props.el The element to apply the collision class to
+ * @param {Object} props.elsRef The elements ref object
+ */
+const modifyPolarity = (props) => {
+	const modifier = props.el.dataset.modifier;
+	// Bail if we're not to modify polarity
+	if (modifier !== 'polarity') return;
+
+	// Get all obstacles
+	const { el, elsRef } = props;
+	const els = elsRef?.current;
+	const { elObstacles } = els;
+
+	// Find all positive-scoring obstacles that do not ignore the polarity modifier
+	const elTargets = elObstacles.filter((obstacle) => {
+		const score = obstacle.dataset.score;
+		if (!score) return false;
+		const num = parseInt(score, 10);
+		const isPositive = Number.isFinite(num) && num > 0;
+		const ignoresPolarity = obstacle.dataset?.ignoreModifier?.split(',').includes('polarity');
+		return isPositive && !ignoresPolarity;
+	});
+
+	// Temporarily flip their score to negative, remembering the original value
+	elTargets.forEach((elObstacle) => {
+		// Ensure we have an original snapshot before mutating
+		getOriginalDataset(elObstacle);
+		const score = elObstacle.dataset.score;
+		const num = parseInt(score, 10);
+		if (!Number.isFinite(num)) return;
+		elObstacle.dataset.score = String(-Math.abs(num));
+		elObstacle.classList.add('sr-modifier--polarity');
+	});
+
+	// Clear the modifier after a delay
+	const delay = parseInt(el.dataset.modifierDelay) || 5000;
+	setTimeout(() => {
+		elTargets.forEach((elObstacle) => {
+			const originalDataset = getOriginalDataset(elObstacle);
+			elObstacle.dataset.score = originalDataset.score;
+			elObstacle.classList.remove('sr-modifier--polarity');
+		});
+	}, delay);
+};
+
+/**
+ * Modify collided obstacles
+ *
+ * @param {Object} props The properties object
+ * @param {HTMLElement} props.el The element to check for modifier collisions
+ * @param {Object} props.elsRef The elements ref object
+ */
+export const doModifiers = (props) => {
+	const { el, elsRef } = props;
+	// Maybe set our modifications
+	modifyInvisible({el, elsRef});
+	modifyPolarity({el, elsRef});
+	modifyCollided({el});
+};
+
+/**
  * When a milestone obstacle is hit, show its message, freeze gameplay for the delay, then resume.
+ * 
+ * If delay is 0 we don't show the message (allows for disabling messages)
  *
  * @param {Object} props The properties object
  * @param {HTMLElement} props.el The milestone target element (must have .sr-milestone-target and data-delay).
@@ -100,6 +205,7 @@ export const doMilestones = (props) => {
 	const baseDelay = parseInt(el.dataset.delay);
 	const multiplier = Number.isFinite(userAdjustedMilestone) ? userAdjustedMilestone : 1;
 	const delay = Math.max(0, Math.round(baseDelay * multiplier));
+	if (!delay) return;
 	elMessage.style.setProperty('--sr-milestone-delay', `${delay}ms`);
 	elMessage.classList.add('is-visible');
 	elMessage.classList.add('is-frozen');
@@ -124,22 +230,5 @@ const showCharacterMessage = (props) => {
 	span.classList.add(className);
 	span.innerHTML = message;
 	el.appendChild(span);
-	gsap.timeline({ onComplete: () => span.remove() })
-	.set(span, {
-		opacity: 0,
-		y: '1cqmax',
-		scale: 0.5
-	})
-	.to(span, {
-		opacity: 1,
-		y: '-2cqmax',
-		scale: 1.05,
-		duration: 1,
-		ease: 'power1.out'
-	})
-	.to(span, {
-		opacity: 0,
-		duration: 0.45,
-		ease: 'power1.in'
-	}, 0.55);
+	span.addEventListener('animationend', () => span.remove(), { once: true });
 };

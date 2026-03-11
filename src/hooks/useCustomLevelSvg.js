@@ -31,6 +31,9 @@ export function useCustomLevelSvg(props) {
 		const elBoard = ctx.elsRef?.current?.elBoard;
 		if (!elBoard) return;
 
+		// Mark level as "not yet loaded" while we process the custom SVG
+		setCurrentLevelId(null);
+
 		const parser = new DOMParser();
 		const doc = parser.parseFromString(customLevelSvg, 'image/svg+xml');
 		const elSVG = doc.documentElement;

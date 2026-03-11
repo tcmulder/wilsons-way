@@ -1,9 +1,8 @@
-import { Routes, Route } from 'react-router-dom';
 import { MemoryRouter, HashRouter } from 'react-router-dom';
-import { routes } from './routes';
-import { Interface } from './components/Interface';
 import { Debug } from './components/Debug';
 import { useDebugContext } from './context/useContexts';
+import { AnimatedRoutes } from './components/PageTransition';
+import { routes } from "./routes";
 
 /**
  * Root layout: router (Memory or Hash when debug), nav/score Interface, Debug panel, and route outlet.
@@ -20,12 +19,7 @@ export default function App() {
         <div className="sr-typography">
           <Router>
             <Debug />
-            <Interface />
-            <Routes>
-              {routes.map(({ path, element }) => (
-                <Route key={path} path={path} element={element} />
-              ))}
-            </Routes>
+            <AnimatedRoutes routes={routes} />
           </Router>
         </div> 
       </div>

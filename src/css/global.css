@@ -12,33 +12,45 @@
 	--sr-ff: "VT323", monospace;
 
 	/* colors */
-	--sr-c-creme: #feecb3;
-	--sr-c-yellow: #feb100;
-	--sr-c-navy: #202844;
-	--sr-c-blue: #123881;
-	--sr-c-dark-bue: #0e2d67;
-	--sr-c-green: #5bcf68;
-	--sr-c-red: #c44116;
 	--sr-c-white: #fff;
-	--sr-c-black: #2e2e2e;
-	--sr-c-dark-grey: #505050;
-	--sr-c-light-grey: #DBDBDB;
+	--sr-c-black: #000;
+	--sr-c-navy: #001D37;
+	--sr-c-blue: #024B8D;
+	--sr-c-azure: #08C9FF;
+	--sr-c-sky: #A4EBFF;
+	--sr-c-green: #34BE8C;
+	--sr-c-red: #FF5C55;
+	--sr-c-gold: #BA8D00;
+	--sr-c-yellow: #FEC900;
 }
 
 
 /**
  * Styling common to all pages
  */
-:where(*, *::before, *::after) {
+ html {
 	box-sizing: border-box;
+}
+*, *:before, *:after {
+	box-sizing: inherit;
+}
+
+html,
+body {
+	height: 100%;
 }
 
 body {
 	touch-action: manipulation;
 	overflow: clip;
-	height: 100%;
+	display: grid;
+	place-items: center;
 	margin: 0;
 	background: var(--sr-c-black);
+	& > * {
+		width: 100%;
+		min-width: 0;
+	}
 }
 
 .sr {
@@ -68,6 +80,7 @@ body {
 .sr-typography {
 	/* Base font sizes off of .sr-stage's width or height (allows simple usage of em units within) */
 	font-size: 2cqmax;
+	color: var(--sr-c-white);
 	
 	* {
 		font-family: var(--sr-ff);
@@ -90,6 +103,10 @@ body {
 	label,
 	button {
 		-webkit-tap-highlight-color: transparent;
+		cursor: pointer;
+		&:focus {
+			outline: 0;
+		}
 	}
 
 }

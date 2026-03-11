@@ -18,31 +18,42 @@ add_action(
 				'methods'             => 'POST',
 				'callback'            => function ( $request ) {
 					$params = json_decode( $request->get_body(), true );
+					if ( ! is_array( $params ) || ! isset( $params['user'] ) || ! isset( $params['score'] ) ) {
+						return new WP_REST_Response( array( 'data' => array( 'status' => 400, 'message' => 'Invalid request body' ) ), 400 );
+					}
+
+					// Debugging mode (doesn't save to database)
+					$is_debug = $params['isDebugMode'] ?? false;
+					// /*DEBUG*/$is_debug = false; // allows us to debug debug mode 😏
+
 					$user = strtoupper( sanitize_title( $params['user'] ) );
+					$user = substr( $user, 0, 6 ); // trim to max characters (matches max on the winner form number input)
 					$score = (int) $params['score'];
-					$is_debug = isset( $params['enableDebug'] ) && $params['enableDebug'];
 					$data = array(
 						'user'  => $user,
 						'score' => $score,
 					);
 
+					$leaderboard = get_option( 'shelf_runner_settings_leaderboard', array() );
+					$leaderboard = ! empty( $leaderboard ) ? $leaderboard : array();
+					$leaderboard[] = array(
+						'user'  => $user,
+						'score' => $score,
+					);
+					usort(
+						$leaderboard,
+						function ( $a, $b ) {
+							return $b['score'] - $a['score'];
+						}
+					);
+					$leaderboard = array_slice( $leaderboard, 0, SHELF_RUNNER_LEADERBOARD_COUNT );
+					$leaderboard = array_pad( $leaderboard, SHELF_RUNNER_LEADERBOARD_COUNT, array( 'user' => '', 'score' => 0 ) );
+
 					if ( ! $is_debug ) {
-						$leaderboard = get_option( 'shelf_runner_settings_leaderboard', array() );
-						$leaderboard = ! empty( $leaderboard ) ? $leaderboard : array();
-						$leaderboard[] = array(
-							'user'  => $user,
-							'score' => $score,
-						);
-						usort(
-							$leaderboard,
-							function ( $a, $b ) {
-								return $b['score'] - $a['score'];
-							}
-						);
-						$leaderboard = array_slice( $leaderboard, 0, SHELF_RUNNER_LEADERBOARD_COUNT );
 						update_option( 'shelf_runner_settings_leaderboard', $leaderboard );
 					} else {
 						$data['debug'] = $is_debug;
+						$data['leaderboard'] = $leaderboard;
 					}
 
 					$data['status'] = 200;
@@ -89,6 +100,7 @@ add_action(
 						},
 						$leaderboard
 					);
+					$leaderboard = array_pad( $leaderboard, SHELF_RUNNER_LEADERBOARD_COUNT, array( 'user' => '', 'score' => 0 ) );
 					return new WP_REST_Response(
 						array(
 							'data'   => $leaderboard,
@@ -116,10 +128,11 @@ add_action(
 				'callback'            => function () {
 					// Get crash difficulty percentage from settings.
 					$difficulty_crash = (int) get_option( 'shelf_runner_settings_size' );
-					$difficulty_crash = $difficulty_crash ? ( $difficulty_crash / 50 ) : 1;
-					$difficulty_speed = 100 - (int) get_option( 'shelf_runner_settings_speed' );
+					$difficulty_crash = $difficulty_crash ? ( $difficulty_crash / 100 ) : 1;
+					$difficulty_speed = ( 100 - (int) get_option( 'shelf_runner_settings_speed' ) ) / 50;
 					$duration_milestone = (int) get_option( 'shelf_runner_settings_milestone_duration' );
 					$duration_milestone = $duration_milestone ? ( $duration_milestone / 50 ) : 1;
+					$difficulty_lives = (int) get_option( 'shelf_runner_settings_lives' );
 
 					// Build response data.
 					$data = array(
@@ -129,6 +142,7 @@ add_action(
 						'jumpHangtime'          => SHELF_RUNNER_JUMP_HANGTIME,
 						'userAdjustedCrash'     => $difficulty_crash,
 						'userAdjustedSpeed'     => $difficulty_speed,
+						'userAdjustedLives'     => $difficulty_lives,
 						'userAdjustedMilestone' => $duration_milestone,
 						'debugAllowed'          => get_option( 'shelf_runner_settings_debug' ) === '1',
 						'version'               => SHELF_RUNNER_VERSION,
@@ -142,6 +156,58 @@ add_action(
 					);
 				},
 				'permission_callback' => '__return_true',
+			)
+		);
+	}
+);
+
+/**
+ * Message content endpoint (single key)
+ *
+ * Example: /wp-json/shelf-runner/v1/message/level_1_outro
+ */
+add_action(
+	'rest_api_init',
+	function () {
+		register_rest_route(
+			'shelf-runner/v1',
+			'/message/(?P<key>[a-z0-9_]+)/',
+			array(
+				'methods'             => 'GET',
+				'callback'            => function ( WP_REST_Request $request ) {
+					$key = $request['key'];
+
+					// Only allow keys that exist in the predefined messages list.
+					if ( ! isset( SHELF_RUNNER_MESSAGES[ $key ] ) ) {
+						return new WP_REST_Response(
+							array(
+								'data'   => null,
+								'status' => 404,
+							),
+							404
+						);
+					}
+
+					$value = get_option( "shelf_runner_settings_{$key}" );
+
+					return new WP_REST_Response(
+						array(
+							'data'   => array(
+								'key'   => $key,
+								'value' => $value,
+							),
+							'status' => 200,
+						)
+					);
+				},
+				'permission_callback' => '__return_true',
+				'args'                => array(
+					'key' => array(
+						'validate_callback' => function ( $param ) {
+							return is_string( $param ) && (bool) preg_match( '/^[a-z0-9_]+$/', $param );
+						},
+					),
+				),
 			)
 		);
 	}

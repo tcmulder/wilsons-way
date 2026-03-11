@@ -44,6 +44,75 @@ export const loadLevel = async (props) => {
 };
 
 /**
+ * Collect elevated shelf elements (jump-on/jump-off surfaces plus ground) from the board.
+ *
+ * @param {HTMLElement} elBoard The board DOM element (e.g. .sr-board)
+ * @returns {Element[]} Array of shelves
+ */
+export function getShelves(elBoard) {
+	const elShelves = elBoard?.querySelectorAll('.sr-shelf') ?? [];
+	return Array.from(elShelves);
+}
+
+/**
+ * Collect all scoreable obstacle elements from the board (positive or negative)
+ *
+ * @param {HTMLElement} elBoard The board DOM element (e.g. .sr-board)
+ * @returns {HTMLElement[]} Array of obstacle elements
+ */
+export function getObstacles(elBoard) {
+	const elObstacles = elBoard?.querySelectorAll('.sr-obstacle') ?? [];
+	return Array.from(elObstacles);
+}
+
+/**
+ * Setup milestones.
+ * 
+ * A milestone should be a .sr-milestone-target followed by a .sr-milestone-message. The target
+ * should have a data-delay for duration (the default is 5000ms)
+ *
+ * @param {HTMLElement} elBoard The board DOM element (e.g. .sr-board)
+ * @returns {HTMLElement[]} Array of milestone target elements
+ */
+export function setupMilestones(elBoard) {
+	const elMilestones = elBoard?.querySelectorAll('.sr-milestone-target') ?? [];
+	return Array.from(elMilestones);
+}
+
+/**
+ * For obstacles with data-rand, group by value and show one random element per group; hide the rest.
+ *
+ * @param {HTMLElement[]} elObstacles Array of obstacle elements (may have data-rand)
+ */
+export function handleRandomObstacles(elObstacles) {
+	const elRandomObstacles = elObstacles.filter((obstacle) => obstacle.dataset?.rand);
+	if (elRandomObstacles.length === 0) return;
+
+	const groups = {};
+	elRandomObstacles.forEach((el) => {
+		const group = el.dataset.rand;
+		if (!groups[group]) groups[group] = [];
+		groups[group].push(el);
+	});
+	Object.values(groups).forEach((group) => {
+		const rand = Math.floor(Math.random() * group.length);
+		group.forEach((el, index) => {
+			el.style.display = index !== rand ? 'none' : 'block';
+		});
+	});
+}
+
+/**
+ * Return the board's next sibling element (the character wrapper).
+ *
+ * @param {HTMLElement} elBoard The board DOM element (e.g. .sr-board)
+ * @returns {HTMLElement|undefined} The character container element or undefined
+ */
+export function getCharacter(elBoard) {
+	return elBoard?.nextElementSibling ?? undefined;
+}
+
+/**
  * Enable drag-and-drop functionality for loading SVG level files
  *
  * @param {Object} props The properties object

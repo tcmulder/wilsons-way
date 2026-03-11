@@ -4,6 +4,7 @@ import {
 	useDebugContext,
 	useSettingsContext,
 	useCharacterContext,
+	useScoreContext,
 } from '../context/useContexts';
 import { routes } from '../routes';
 import { useDebugDropLevel } from '../hooks/useDebugDropLevel';
@@ -81,8 +82,9 @@ const DebugCheckbox = ({ label, param = '', value, setValue, title = '' }) => {
  * @param {number} props.value Current value
  * @param {(v: number) => void} props.setValue Setter (also pushes URL)
  * @param {string} [props.title] Title/tooltip
+ * @param {number} [props.step] Step size
  */
-const DebugNumber = ({ label, param = '', value, setValue, title = '' }) => {
+const DebugNumber = ({ label, param = '', value, setValue, title = '', step = 1 }) => {
 	const k = param || label.toLowerCase();
 	return (
 		<label title={title}>
@@ -98,6 +100,7 @@ const DebugNumber = ({ label, param = '', value, setValue, title = '' }) => {
 					})
 				}
 				onKeyDown={(e) => e.stopPropagation()}
+				step={step}
 			/>
 		</label>
 	);
@@ -151,6 +154,7 @@ export const Debug = () => {
 	const { settings, setSettings, setJump, jump, makeMusic, setMakeMusic, makeSFX, setMakeSFX } = useSettingsContext();
 	const { debugAllowed } = settings;
 	const { characterId, setCharacterId } = useCharacterContext();
+	const { score, setScore, lives, setLives } = useScoreContext();
 	const navigate = useNavigate();
 	const pagePath = useLocation().pathname;
 	const debugRef = useRef(null);
@@ -162,16 +166,18 @@ export const Debug = () => {
 	useEffect(() => {
 		if (debugAllowed && debug) {
 			loadState(debug?.characterId, () => setCharacterId(parseInt(debug.characterId)));
-			loadState(debug?.makeSFX, () => setMakeSFX(debug.makeSFX));
-			loadState(debug?.makeMusic, () => setMakeMusic(debug.makeMusic));
+			loadState(debug?.characterHeight, () => setSettings((prev) => ({ ...prev, characterHeight: debug.characterHeight})));
+			loadState(debug?.userAdjustedSpeed, () => setSettings((prev) => ({ ...prev, userAdjustedSpeed: debug.userAdjustedSpeed / 100})));
 			loadState(debug?.gameplaySpeed, () => setSettings((prev) => ({ ...prev, gameplaySpeed: debug.gameplaySpeed})));
 			loadState(debug?.jumpHeight, () => setJump((prev) => ({ ...prev, height: debug.jumpHeight / 100})));
 			loadState(debug?.jumpHangtime, () => setJump((prev) => ({ ...prev, hangtime: debug.jumpHangtime})));
-			loadState(debug?.characterHeight, () => setSettings((prev) => ({ ...prev, characterHeight: debug.characterHeight})));
+			loadState(debug?.userAdjustedCrash, () => setSettings((prev) => ({ ...prev, userAdjustedCrash: debug.userAdjustedCrash / 100})));
 			loadState(debug?.userAdjustedMilestone, () => setSettings((prev) => ({ ...prev, userAdjustedMilestone: (debug.userAdjustedMilestone / 100) / 0.5 })));
-			loadState(debug?.userAdjustedSpeed, () => setSettings((prev) => ({ ...prev, userAdjustedSpeed: debug.userAdjustedSpeed })));
+			loadState(debug?.lives, () => setLives((prev) => ({ ...prev, max: debug.lives })));
+			loadState(debug?.makeMusic, () => setMakeMusic(debug.makeMusic));
+			loadState(debug?.makeSFX, () => setMakeSFX(debug.makeSFX));
 		}
-	}, [debug, setCharacterId, setMakeSFX, setMakeMusic, setSettings, setJump, debugAllowed]);
+	}, [debug, setCharacterId, setMakeSFX, setMakeMusic, setSettings, setJump, debugAllowed, isMenuOpen, setLives]);
 	
 	// Allow drag-and-drop of SVG level files over the debug panel
 	useDebugDropLevel(debugRef);
@@ -190,6 +196,17 @@ export const Debug = () => {
 			{isMenuOpen && (
 			<div className="sr-debug__menu">
 					<DebugNumber
+						label="💯 Score +/-"
+						param="score"
+						value={(score ?? []).find(s => s.level === -1 || s.level === 0)?.num ?? 0}
+						setValue={(value) => setScore(prev => {
+							const list = prev ?? [];
+							const rest = list.filter(s => s.level !== -1 && s.level !== 0);
+							return [...rest, { level: -1, num: value }];
+						})}
+						title="Add to or remove from the total score"
+					/>
+					<DebugNumber
 						label="🦸 Character"
 						param="characterId"
 						value={characterId}
@@ -206,8 +223,8 @@ export const Debug = () => {
 					<DebugNumber
 						label="🏎️ Speed (%)"
 						param="userAdjustedMilestone"
-						value={(settings.userAdjustedSpeed)}
-						setValue={(value) => setSettings({ ...settings, userAdjustedSpeed: value })}
+						value={(settings.userAdjustedSpeed * 100)}
+						setValue={(value) => setSettings({ ...settings, userAdjustedSpeed: value / 100 })}
 						title="The user-adjusted speed multiplier (usually use base speed instead)."
 					/>
 					<DebugNumber
@@ -226,10 +243,18 @@ export const Debug = () => {
 					/>
 					<DebugNumber
 						label="🏀 Hangtime"
-						param="level (s)"
+						param="jumpHangtime"
 						value={jump.hangtime}
 						setValue={(value) => setJump({ ...jump, hangtime: value })}
 						title="Set the jump hangtime in seconds"
+						step={0.1}
+					/>
+					<DebugNumber
+						label="💥 Crash (%)"
+						param="userAdjustedCrash"
+						value={settings.userAdjustedCrash * 100}
+						setValue={(value) => setSettings({ ...settings, userAdjustedCrash: value / 100 })}
+						title="Set the crash difficulty in percentage"
 					/>
 					<DebugNumber
 						label="💬 Milestone (%)"
@@ -237,6 +262,20 @@ export const Debug = () => {
 						value={(settings.userAdjustedMilestone * 100) * 0.5}
 						setValue={(value) => setSettings({ ...settings, userAdjustedMilestone: (value / 100) / 0.5 })}
 						title="Set the milestone duration modifier in percentage (0 to skip)"
+					/>
+					<DebugNumber
+						label="💀 Lives (#)"
+						param="lives"
+						value={lives?.max || 10}
+						setValue={(value) => setLives((prev) => ({ ...prev, max: value }))}
+						title="Set the number of lives"
+					/>
+					<DebugCheckbox
+						label="☠️ Immortal"
+						param="immortal"
+						value={debug.immortal}
+						setValue={(value) => setDebug({ ...debug, immortal: value })}
+						title="Don't die on life loss"
 					/>
 					<DebugCheckbox
 						label="🎵 Music"
@@ -272,18 +311,22 @@ export const Debug = () => {
 						value={debug?.outlines}
 						setValue={(val) => setDebug({ ...debug, outlines: val })}
 						title={[
-							// unused: 🟧🟦🟪🟫⬛
-							'⬜ level boundary',
+							// unused: 🟧⬜🟪🟫⬛
+							'🟦 level boundary',
 							'🟨 crash area',
 							'🟩 positive',
 							'🟥 negative',
 						].join('\n')}
 					/>
-					<select value={pagePath} onChange={(e) => { e.preventDefault(); navigate(e.target.value); }} title="Navigate to a different page">
-						{routes.map(({ path, title }) => (
-							<option key={path} value={path}>📄 goto: {title}</option>
-						))}
-					</select>
+					<label>
+						<span>📄 goto</span>
+						<select value={pagePath} onChange={(e) => { e.preventDefault(); navigate(e.target.value); }} title="Navigate to a different page">
+							{routes.map(({ path, title }) => {
+								if (path === '/level/0') return null;
+								return <option key={path} value={path}>{title}</option>;
+							})}
+						</select>
+					</label>
 					<DebugButton
 						label="🫥 Un-collide"
 						onClick={() => {

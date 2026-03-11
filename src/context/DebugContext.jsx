@@ -20,6 +20,7 @@ export function DebugContextProvider({ children }) {
       autoplay: true,
       router: false,
       outlines: false,
+      immortal: false,
     };
 
     // Get the parameters and bail if debut is not true

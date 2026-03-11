@@ -8,7 +8,7 @@ import { useGameplayContext, useLevelContext, useSettingsContext } from '../cont
  */
 export function useSetupGameplayElevations() {
 	const { elsRef, elevationRef, jumpRef } = useGameplayContext();
-	const { jump } = useSettingsContext();
+	const { jump, levelPhysics } = useSettingsContext();
 	const { currentLevelId } = useLevelContext();
 
 	// Set the elevations and jump values when the component mounts
@@ -16,16 +16,21 @@ export function useSetupGameplayElevations() {
 		if (!elsRef?.current?.elBoard || !elsRef?.current?.elCharacter || !elsRef?.current?.elShelves?.length) return;
 		const updateElevations = () => {
 			const elBoardRect = elsRef.current.elBoard.getBoundingClientRect();
-			const elFloorRect = elsRef.current.elShelves.filter(el => el.classList.contains('sr-sidewalk'))[0].getBoundingClientRect();
+			const elFloorRect = elsRef.current.elShelves.find(el => el.hasAttribute('data-floor'))?.getBoundingClientRect();
+			if(!elBoardRect.height || !elFloorRect.top) return;
+			const boardTop = elBoardRect.top;
+			const boardHeight = elBoardRect.height;
+			const floorTopWithinBoard = elFloorRect.top - boardTop;
 			elevationRef.current = {
 				...elevationRef.current,
-				ceiling: Math.round(elBoardRect.height),
-				floor: Math.round(elBoardRect.height - elFloorRect.top),
+				ceiling: Math.round(boardHeight),
+				floor: Math.round(boardHeight - floorTopWithinBoard),
 			};
 			jumpRef.current = {
-				height: Math.round(elBoardRect.height * jump.height),
-				hangtime: jump.hangtime,
+				height: Math.round(boardHeight * jump.height * levelPhysics.jump),
+				hangtime: jump.hangtime * levelPhysics.hangtime,
 			};
+			// Start our character off on the floor
 			gsap.set(elsRef.current.elCharacter, { y: elevationRef.current.floor * -1 });
 		};
 		const throttledUpdate = throttle(updateElevations, 250);
@@ -38,5 +43,5 @@ export function useSetupGameplayElevations() {
 			observer.disconnect();
 			throttledUpdate.cancel();
 		};
-	}, [currentLevelId, elsRef, elevationRef, jumpRef, jump]);
+	}, [currentLevelId, elsRef, elevationRef, jumpRef, jump, levelPhysics]);
 }

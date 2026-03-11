@@ -1,5 +1,12 @@
 import { useEffect } from 'react';
 import { useGameplayContext, useLevelContext } from '../context/useContexts';
+import {
+	getShelves,
+	getObstacles,
+	setupMilestones,
+	handleRandomObstacles,
+	getCharacter,
+} from '../util/loadLevel';
 
 /**
  * Sets up board element refs from the level SVG: shelves, obstacles, character, crash area, etc.
@@ -12,49 +19,23 @@ export function useSetupGameplayElements(boardRef) {
 
 	// Get elements from the new level SVG and configure them for use
 	useEffect(() => {
-		// Get the board where the level SVG shown
+		// Get the board where the level SVG is shown
 		if (!boardRef?.current) return;
 		const elBoard = boardRef.current.querySelector('.sr-board');
-		// Elevated shelves we can jump on/off plus the ground floor
-		const elShelves = elBoard
-			.querySelectorAll('.sr-shelves > *') || [];
-		// All obstacles (good bad or neutral)
-		const elObstacles = [];
-		// Add all obstacles that score on impact (good or bad)
-		elBoard
-			.querySelectorAll('.sr-obstacles[data-score]')
-			?.forEach((elObstacle) => {
-				elObstacle.querySelectorAll(':scope > *').forEach((elChild) => {
-					if (!elChild.hasAttribute('data-score')) {
-						elChild.dataset.score = elObstacle.dataset.score;
-					}
-					elObstacles.push(elChild);
-				});
-			});
-		// Get and setup milestones
-		elBoard
-			.querySelectorAll('.sr-milestones')
-			?.forEach((elMilestones) => {
-				elMilestones.querySelectorAll('.sr-milestone-target').forEach((elMilestoneTarget) => {
-					// Set the delay (set by parent, or milestone itself, with a fallback of 500ms)
-					const delay =
-						Number(elMilestoneTarget.dataset.delay || elMilestones.dataset.delay || '5000');
-					elMilestoneTarget.dataset.delay = String(delay);
-					elObstacles.push(elMilestoneTarget);
-				});
-			});
-		// Identify as negative/positive/neutral
-		elObstacles.forEach((obstacle) => {
-			if (obstacle.dataset?.score?.startsWith('-')) {
-				obstacle.classList.add('is-negative');
-			} else if (obstacle.dataset.score) {
-				obstacle.classList.add('is-positive');
-			} else {
-				obstacle.classList.add('is-neutral');
-			}
-		});
-		// Update context with both
-		const elCharacter = elBoard?.nextElementSibling;
+
+		// Get shelves (layers you can jump on/off)
+		const elShelves = getShelves(elBoard);
+		// Get the obstacles (pos/neg items you can collide with)
+		const elObstacles = getObstacles(elBoard);
+		// Setup milestones (some obstacles show messages when hit)
+		const elMilestones = setupMilestones(elBoard);
+		// Combine milestones int obstacles
+		elObstacles.push(...elMilestones);
+		// Hide all but one item from random obstacles groups
+		handleRandomObstacles(elObstacles);
+		// Get the character's element
+		const elCharacter = getCharacter(elBoard);
+		// Create our new state object
 		const newState = {
 			// fixed els (don't change per level)
 			elBoard,
@@ -62,7 +43,7 @@ export function useSetupGameplayElements(boardRef) {
 			elCharacterCrashArea: elCharacter?.querySelector('.sr-character-crash'),
 			elCharacterMessage: elCharacter?.querySelector('.sr-character-message'),
 			// dynamic els (change per level)
-			elShelves: Array.from(elShelves),
+			elShelves,
 			elObstacles,
 		};
 		elsRef.current = { ...elsRef.current, ...newState };
@@ -72,19 +53,18 @@ export function useSetupGameplayElements(boardRef) {
 	useEffect(() => {
 		const shelves = elsRef.current?.elShelves ?? [];
 		
+		// Bail if we have no shelves
 		if (!shelves.length) return;
 		
+		// Get obstacles
 		const obstacles = elsRef.current?.elObstacles ?? [];
 		const elShelvesVisible = elsRef.current.elShelvesVisible;
 		const elObstaclesVisible = elsRef.current.elObstaclesVisible;
 		elShelvesVisible.clear();
 		elObstaclesVisible.clear();
 
-		const options = {
-			root: null,
-			rootMargin: '0px 100px 0px 100px', // 100px left/right, 0 top/bottom
-			threshold: 0.01,
-		};
+		// Setup obstacles intersection observer
+		const options = { root: null, rootMargin: '0px 100px 0px 100px', threshold: 0.01 };
 		const obstaclesObserver = new IntersectionObserver(
 			(entries) => {
 				for (const entry of entries) {
@@ -94,7 +74,9 @@ export function useSetupGameplayElements(boardRef) {
 			},
 			options,
 		);
+		obstacles.forEach((el) => obstaclesObserver.observe(el));
 
+		// Setup shelves intersection observer
 		let firstRun = true;
 		const shelvesObserver = new IntersectionObserver(
 			(entries) => {
@@ -117,10 +99,9 @@ export function useSetupGameplayElements(boardRef) {
 			},
 			options,
 		);
-
 		shelves.forEach((el) => shelvesObserver.observe(el));
-		obstacles.forEach((el) => obstaclesObserver.observe(el));
 
+		// Cleanup
 		return () => {
 			shelves.forEach((el) => shelvesObserver.unobserve(el));
 			obstacles.forEach((el) => obstaclesObserver.unobserve(el));

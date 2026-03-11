@@ -17,10 +17,3 @@
 		clip-path: inset(0 100% 0 0);
 	}
 }
-
-/* Don't show paused scores while a milestone is visible */
-.sr-gameplay:has(.sr-milestone-message.is-visible) {
-	.sr-character-message {
-		display: none;
-	}
-}

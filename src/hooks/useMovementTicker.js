@@ -6,6 +6,7 @@ import {
 	useLevelContext,
 	useScoreContext,
 	useSettingsContext,
+	useDebugContext,
 } from '../context/useContexts';
 import { useGameAudio } from '../hooks/useSFX';
 import { trackMovement } from '../util/doMovement';
@@ -15,26 +16,52 @@ import { trackMovement } from '../util/doMovement';
  */
 export function useMovementTicker() {
 	const gameplayContext = useGameplayContext();
-	const { setCharacterStatus, setCharacterModifiers, characterModifiers } = useCharacterContext();
+	const { setGameplayNavigation } = gameplayContext;
+	const { setCharacterStatus } = useCharacterContext();
 	const { level } = useLevelContext();
-	const { setScore } = useScoreContext();
+	const { setScore, lives, setLives } = useScoreContext();
 	const { playSound } = useGameAudio();
 	const { settings } = useSettingsContext();
 	const { userAdjustedMilestone = 1 } = settings || {};
+	const { debug } = useDebugContext();
 
 	useEffect(() => {
 		if (!gameplayContext) return;
-		const tick = () =>
+		const tick = () => {
+			const { elsRef, elevationRef, statusRef, jumpRef } = gameplayContext;
 			trackMovement({
-				gameplayContext,
-				setCharacterStatus,
-				setScore,
-				level,
-				characterModifiers,
-				playSound,
-				setCharacterModifiers,
-				userAdjustedMilestone,
+				// Used by trackMovement itself
+				trackMovementArgs: {
+					elsRef,
+					statusRef,
+				},
+				// Passed through to checkCollisions function
+				collisionsArgs: {
+					elsRef,
+					setScore,
+					level,
+					playSound,
+					userAdjustedMilestone,
+					lives,
+					setLives,
+					setGameplayNavigation,
+					debug,
+				},
+				// Passed through to checkElevation function
+				elevationArgs: {
+					elsRef,
+					elevationRef,
+				},
+				// Passed through to doGravity function
+				gravityArgs: {
+					setCharacterStatus,
+					statusRef,
+					elevationRef,
+					elsRef,
+					jumpRef,
+				},
 			});
+		};
 		gsap.ticker.add(tick);
 		return () => gsap.ticker.remove(tick);
 	}, [
@@ -42,10 +69,12 @@ export function useMovementTicker() {
 		setCharacterStatus,
 		setScore,
 		level,
-		characterModifiers,
 		playSound,
-		setCharacterModifiers,
 		userAdjustedMilestone,
+		lives,
+		setLives,
+		setGameplayNavigation,
+		debug,
 	]);
 }
 
