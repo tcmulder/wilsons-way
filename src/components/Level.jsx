@@ -46,6 +46,7 @@ const Level = () => {
 	const { level, currentLevelId, setCurrentLevelId, customLevelSvg } = useLevelContext();
 	const gameplayContext = useGameplayContext();
 	const { setGameplayNavigation, elsRef, timelinesRef } = gameplayContext;
+	const { setCharacterStatus } = useCharacterContext();
 	const gameplayRef = useRef(null);
 	const [countdown, setCountdown] = useState(0);
 	const levelUrl = `${window.sr.url}public/svg/level-${level}.svg?v=${version}`;
@@ -57,8 +58,9 @@ const Level = () => {
 
 	// When a level completes, advance to the next level route
 	const handleLevelComplete = useCallback(() => {
+		setCharacterStatus(prev => ({ ...prev, ani: 'none' }));
 		setGameplayNavigation(`/level/${level}/flag`);
-	}, [level, setGameplayNavigation]);
+	}, [setCharacterStatus, level, setGameplayNavigation]);
 
 	// Update physics based on this level when it loads
 	useEffect(() => {
