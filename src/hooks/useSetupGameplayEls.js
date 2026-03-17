@@ -28,9 +28,7 @@ export function useSetupGameplayElements(boardRef) {
 		// Get the obstacles (pos/neg items you can collide with)
 		const elObstacles = getObstacles(elBoard);
 		// Setup milestones (some obstacles show messages when hit)
-		const elMilestones = setupMilestones(elBoard);
-		// Combine milestones int obstacles
-		elObstacles.push(...elMilestones);
+		setupMilestones(elBoard);
 		// Hide all but one item from random obstacles groups
 		handleRandomObstacles(elObstacles);
 		// Get the character's element

@@ -40,9 +40,8 @@ Here is a full explanation of each option you can add in figma:
 	* [ignore-modifier:polarity] - Comma-separated list of modifier names this obstacle should ignore (for example `ignore-modifier:polarity` prevents polarity from flipping its score).
 	* [rand:group-1] - Groups obstacles by a string key; for each `rand` group, one obstacle is shown at random and the rest are hidden for that playthrough.
 
-* .sr-milestone-target - Milestones that show messages and can also behave like obstacles. Each `.sr-milestone-target` should be immediately followed by a `.sr-milestone-message` group which displays the on-screen text.
-	* [delay:500] - Base delay in milliseconds for how long the milestone message stays visible and freezes gameplay.
-	* Note that most options from `.sr-obstacle` also work for the `.sr-milestone-target`.
+* .sr-milestone - Facilitates a pause with a message popup. Each should contain a .sr-obstacle.[data:1000] which triggers the message (for 1000ms in this case, and it can have no score value), an .sr-milestone-message that will become visible upon collision, and an (optional) .sr-milestone-progress that will show an expanding progress bar.
+	* [delay:500] - Attach to the .sr-obstacle. Base delay in milliseconds for how long the milestone message stays visible and freezes gameplay.
 
 * Character sprite states (inside the character SVG, not the level SVG).
 	* [state:roster] - Pose used for roster/selection screens.

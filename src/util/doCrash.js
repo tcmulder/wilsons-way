@@ -200,8 +200,8 @@ export const doModifiers = (props) => {
  */
 export const doMilestones = (props) => {
 	const { el, userAdjustedMilestone = 1 } = props;
-	if (!el.classList.contains('sr-milestone-target')) return;
-	const elMessage = el.nextElementSibling;
+	if (!el.dataset.milestone) return;
+	const elMessage = document.getElementById(el.dataset.milestone);
 	const baseDelay = parseInt(el.dataset.delay);
 	const multiplier = Number.isFinite(userAdjustedMilestone) ? userAdjustedMilestone : 1;
 	const delay = Math.max(0, Math.round(baseDelay * multiplier));
