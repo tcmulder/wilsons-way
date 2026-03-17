@@ -136,6 +136,40 @@ const DebugRefresh = ({ reset = false, title = '', label = '' }) => {
 	);
 };
 
+const DebugRange = ({ label, param = '', value, setValue, title = '', step = 1 }) => {
+	const k = param || label.toLowerCase();
+	return (
+		<label title={title}>
+			<span>{label}</span>
+			<input
+				type="range"
+				min="-100"
+				max="300"
+				value={value}
+				onChange={(e) => setStateAndQuery({
+					key: k,
+					value: parseFloat(e.target.value),
+					setState: setValue,
+				})}
+				step={step}
+			/>
+			<input
+				type="number"
+				value={Math.round(value)}
+				onChange={(e) =>
+					setStateAndQuery({
+						key: k,
+						value: parseInt(e.target.value),
+						setState: setValue,
+					})
+				}
+				onKeyDown={(e) => e.stopPropagation()}
+				step={step}
+			/>
+		</label>
+	);
+};
+
 /**
  * Load debug settings from query string on page load.
  * 
@@ -167,7 +201,6 @@ export const Debug = () => {
 		if (debugAllowed && debug) {
 			loadState(debug?.characterId, () => setCharacterId(parseInt(debug.characterId)));
 			loadState(debug?.characterHeight, () => setSettings((prev) => ({ ...prev, characterHeight: debug.characterHeight})));
-			loadState(debug?.userAdjustedSpeed, () => setSettings((prev) => ({ ...prev, userAdjustedSpeed: debug.userAdjustedSpeed / 100})));
 			loadState(debug?.gameplaySpeed, () => setSettings((prev) => ({ ...prev, gameplaySpeed: debug.gameplaySpeed})));
 			loadState(debug?.jumpHeight, () => setJump((prev) => ({ ...prev, height: debug.jumpHeight / 100})));
 			loadState(debug?.jumpHangtime, () => setJump((prev) => ({ ...prev, hangtime: debug.jumpHangtime})));
@@ -195,37 +228,12 @@ export const Debug = () => {
 			<button className="sr-debug__toggle" onClick={(e) => { e.preventDefault(); setIsMenuOpen(!isMenuOpen); }}>🐞 Debug</button>
 			{isMenuOpen && (
 			<div className="sr-debug__menu">
-					<DebugNumber
-						label="💯 Score +/-"
-						param="score"
-						value={(score ?? []).find(s => s.level === -1 || s.level === 0)?.num ?? 0}
-						setValue={(value) => setScore(prev => {
-							const list = prev ?? [];
-							const rest = list.filter(s => s.level !== -1 && s.level !== 0);
-							return [...rest, { level: -1, num: value }];
-						})}
-						title="Add to or remove from the total score"
-					/>
-					<DebugNumber
-						label="🦸 Character"
-						param="characterId"
-						value={characterId}
-						setValue={setCharacterId}
-						title="Set the character's jersey number"
-					/>
-					<DebugNumber
-						label="🦒 Height (%)"
-						param="characterHeight"
-						value={settings.characterHeight}
-						setValue={(value) => setSettings({ ...settings, characterHeight: value })}
-						title="Set the height of the character"
-					/>
-					<DebugNumber
-						label="🏎️ Speed (%)"
-						param="userAdjustedMilestone"
-						value={(settings.userAdjustedSpeed * 100)}
+					<DebugRange
+						label="🏎️ Speed"
+						param="userAdjustedSpeed"
+						value={settings.userAdjustedSpeed * 100}
 						setValue={(value) => setSettings({ ...settings, userAdjustedSpeed: value / 100 })}
-						title="The user-adjusted speed multiplier (usually use base speed instead)."
+						title="The user-adjusted speed multiplier (usually use base speed instead, resets on refresh)."
 					/>
 					<DebugNumber
 						label="🏃‍➡️ Base (px/s)"
@@ -255,6 +263,31 @@ export const Debug = () => {
 						value={settings.userAdjustedCrash * 100}
 						setValue={(value) => setSettings({ ...settings, userAdjustedCrash: value / 100 })}
 						title="Set the crash difficulty in percentage"
+					/>
+					<DebugNumber
+						label="💯 Score +/-"
+						param="score"
+						value={(score ?? []).find(s => s.level === -1 || s.level === 0)?.num ?? 0}
+						setValue={(value) => setScore(prev => {
+							const list = prev ?? [];
+							const rest = list.filter(s => s.level !== -1 && s.level !== 0);
+							return [...rest, { level: -1, num: value }];
+						})}
+						title="Add to or remove from the total score"
+					/>
+					<DebugNumber
+						label="🦸 Character"
+						param="characterId"
+						value={characterId}
+						setValue={setCharacterId}
+						title="Set the character's jersey number"
+					/>
+					<DebugNumber
+						label="🦒 Height (%)"
+						param="characterHeight"
+						value={settings.characterHeight}
+						setValue={(value) => setSettings({ ...settings, characterHeight: value })}
+						title="Set the height of the character"
 					/>
 					<DebugNumber
 						label="💬 Milestone (%)"

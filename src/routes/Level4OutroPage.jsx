@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useScoreContext } from '../context/useContexts';
-import Outro from '../components/Outro';
+import Message from '../components/Message';
 
 /**
  * Level 4 completion screen.
@@ -22,7 +22,8 @@ const Level4OutroPage = () => {
 	}, [score, api]);
 	return (
 		<div>
-			<Outro levelNumber={4} />
+			<h1>Level 4 Outro</h1>
+			<Message messageKey="level_4_outro" />
 			{!isHighScore ? <Link to="/leaderboard">View Leaderboard</Link> : <Link to="/form">Submit High Score</Link>}
 		</div>
 	);

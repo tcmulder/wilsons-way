@@ -68,15 +68,29 @@ export function getObstacles(elBoard) {
 /**
  * Setup milestones.
  * 
- * A milestone should be a .sr-milestone-target followed by a .sr-milestone-message. The target
- * should have a data-delay for duration (the default is 5000ms)
+ * A milestone (.sr-milestone) parent should have an .sr-obstacle (the collision trigger),
+ * .sr-milestone-message (displayed when collided) and .sr-milestone-progress (a progress
+ * bar animating the duration of display).
  *
  * @param {HTMLElement} elBoard The board DOM element (e.g. .sr-board)
- * @returns {HTMLElement[]} Array of milestone target elements
+ * @returns {void}
  */
 export function setupMilestones(elBoard) {
-	const elMilestones = elBoard?.querySelectorAll('.sr-milestone-target') ?? [];
-	return Array.from(elMilestones);
+	elBoard?.querySelectorAll('.sr-milestone')?.forEach((elMilestone, index) => {
+		let id = `sr-milestone-id-${index}`;
+		const elObstacle = elMilestone.querySelector('.sr-obstacle');
+		const elMilestoneMessage = elMilestone.querySelector('.sr-milestone-message');
+		if (elMilestoneMessage) {
+			elMilestoneMessage.id = id;
+			elObstacle.dataset.milestone = id;
+			const elMilestoneProgress = elMilestone.querySelector('.sr-milestone-progress');
+			if (elMilestoneProgress) {
+				id = `${id}-progress`;
+				elMilestoneProgress.id = id;
+				elObstacle.dataset.milestoneProgress = id;
+			}
+		}
+	});
 }
 
 /**

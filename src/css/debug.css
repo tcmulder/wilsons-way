@@ -77,6 +77,14 @@
 		height: 1.2em;
 		accent-color: var(--sr-debug-c-2);
 	}
+
+	:is([type="range"]) {
+		width: 7em;
+	}
+}
+.sr-debug__range-value {
+	width: 2.7em;
+	text-align: right;
 }
 button.sr-debug__toggle {
 	&,
