@@ -4,7 +4,7 @@ Contributors: thinkaquamarine
 Tags: game
 Requires at least: 6.5.4
 Tested up to: 6.8.1
-Stable tag: 2.2.1
+Stable tag: 2.2.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -62,6 +62,14 @@ To develop, run `npm install && npm run dev`. To build the static site, run `npm
 
 == Changelog ==
 
+= 2.2.2 =
+
+* Simplify milestones.
+
+= 2.2.1 =
+
+* Enhanced gameplay and added new level.
+
 = 2.2.0 =
 
 * Switched to client-side loading to ensure plugin updates do not crash the game due to template page cache.
@@ -93,10 +101,6 @@ To develop, run `npm install && npm run dev`. To build the static site, run `npm
 = 1.4.1 = 
 
 * Remove old dist files from build.
-
-= 2.2.1 =
-
-* Enhanced gameplay and added new level.
 
 = 1.4.0 =
 
