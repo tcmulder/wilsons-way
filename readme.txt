@@ -4,7 +4,7 @@ Contributors: thinkaquamarine
 Tags: game
 Requires at least: 6.5.4
 Tested up to: 6.8.1
-Stable tag: 2.2.2
+Stable tag: 2.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -64,9 +64,10 @@ To develop, run `npm install && npm run dev`. To build the static site, run `npm
 
 == Changelog ==
 
-= 2.3.9 =
+= 2.3.0 =
 
 * Improve life management.
+* Add "cripple" modifier.
 
 = 2.2.2 =
 
