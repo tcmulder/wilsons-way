@@ -47,7 +47,7 @@ export const doLives = (props) => {
 	const lifeData = parseInt(el.dataset.lives);
 	if (!lifeData) return;
 	el.classList.add('is-collided-life');
-	const newLives = Math.min(lives.cur + lifeData, lives.max);
+	const newLives = Math.max(0, Math.min(lives.cur + lifeData, lives.max));
 	setLives((prev) => ({ ...prev, cur: newLives }));
 	if (newLives <= 0 && !debug?.immortal) {
 		doFreeze();
@@ -195,12 +195,9 @@ const modifyPolarity = (props) => {
  */
 const modifyCripple = (props) => {
 	const { el, lives } = props;
+	const { max, cur } = lives;
 	const modifier = el.dataset.modifier;
 	if (modifier !== 'cripple') return;
-
-	const max = parseInt(lives?.max, 10);
-	const cur = parseInt(lives?.cur, 10);
-	if (!Number.isFinite(max) || !Number.isFinite(cur) || max <= 0) return;
 
 	// "Yellow" is <= 50% max; "red" is <= ~33% max (see Interface battery thresholds).
 	const halfDead = cur <= max * 0.5;
@@ -218,7 +215,7 @@ const modifyCripple = (props) => {
 		targetCur = Math.floor(max * 0.5);
 	}
 
-	// Let `doLives` apply the delta so it can still handle game-over navigation.
+	// Let `doLives` apply the delta so it can still handle gameplay.
 	const delta = targetCur - cur;
 	el.dataset.lives = String(delta);
 };
