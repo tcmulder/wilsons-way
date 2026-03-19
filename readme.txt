@@ -39,6 +39,7 @@ Here is a full explanation of each option you can add in figma:
 	* [modifier-delay:3000] - Duration in milliseconds that a modifier effect (such as `invisible` or `polarity`) stays active before reverting.
 	* [ignore-modifier:polarity] - Comma-separated list of modifier names this obstacle should ignore (for example `ignore-modifier:polarity` prevents polarity from flipping its score).
 	* [rand:group-1] - Groups obstacles by a string key; for each `rand` group, one obstacle is shown at random and the rest are hidden for that playthrough.
+	* [lives:1] - Adds or removes lives by the amount given.
 
 * .sr-milestone - Facilitates a pause with a message popup. Each should contain a .sr-obstacle.[data:1000] which triggers the message (for 1000ms in this case, and it can have no score value), an .sr-milestone-message that will become visible upon collision, and an (optional) .sr-milestone-progress that will show an expanding progress bar.
 	* [delay:500] - Attach to the .sr-obstacle. Base delay in milliseconds for how long the milestone message stays visible and freezes gameplay.
@@ -61,6 +62,10 @@ To develop, run `npm install && npm run dev`. To build the static site, run `npm
 2. Activate the plugin through the "Plugins" menu in WordPress.
 
 == Changelog ==
+
+= 2.3.9 =
+
+* Improve life management.
 
 = 2.2.2 =
 

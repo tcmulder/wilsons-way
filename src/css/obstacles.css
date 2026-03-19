@@ -1,4 +1,4 @@
-.sr-obstacle[data-score] {
+.sr-obstacle {
 	&.is-collided:not([data-ignore-hide]) {
 		display: none;
 	}

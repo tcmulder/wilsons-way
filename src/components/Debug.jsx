@@ -363,7 +363,7 @@ export const Debug = () => {
 					<DebugButton
 						label="🫥 Un-collide"
 						onClick={() => {
-							document.querySelectorAll('.is-collided').forEach(el => el.classList.remove('is-collided'));
+							document.querySelectorAll('.is-collided').forEach(el => el.classList.remove('is-collided', 'is-collided-life'));
 							document.querySelectorAll('.sr-milestone-message.is-visible').forEach(el => el.classList.remove('is-visible'));	
 						}}
 						title="Reveal and reset all collided elements"

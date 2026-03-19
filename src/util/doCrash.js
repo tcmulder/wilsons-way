@@ -32,19 +32,26 @@ export const doScoring = (props) => {
 
 /**
  * Increase or decrease lives.
+ * 
+ * @param {Object} props The properties object
+ * @param {HTMLElement} props.el The element to count the life against
+ * @param {Object} props.setLives Function to set the lives
+ * @param {Object} props.lives The lives object
+ * @param {Function} props.setGameplayNavigation Function to set the gameplay navigation
+ * @param {Object} props.debug The debug object
+ * @param {Boolean} props.debug.immortal Whether the character is immortal
  */
 export const doLives = (props) => {
 	const { el, setLives, lives, setGameplayNavigation, debug } = props;
-	if (el.classList.contains('is-death')) return;
-	const shouldDecrease = el.dataset?.score?.startsWith('-');
-	if (shouldDecrease) {
-		el.classList.add('is-death');
-		const next = lives.cur - 1;
-		setLives((prev) => ({ ...prev, cur: Math.max(0, next) }));
-		if (next <= 0 && !debug?.immortal) {
-			doFreeze();
-			setGameplayNavigation('/lost');
-		}
+	if (el.classList.contains('is-collided-life')) return;
+	const lifeData = parseInt(el.dataset.lives);
+	if (!lifeData) return;
+	el.classList.add('is-collided-life');
+	const newLives = Math.min(lives.cur + lifeData, lives.max);
+	setLives((prev) => ({ ...prev, cur: newLives }));
+	if (newLives <= 0 && !debug?.immortal) {
+		doFreeze();
+		setGameplayNavigation('/lost');
 	}
 };
 
