@@ -27,6 +27,8 @@ export const trackMovement = (props) => {
 		// Passed through to doModifiers function
 		modifiersArgs: {
 			elsRef: collisionsArgs.elsRef,
+			lives: collisionsArgs.lives,
+			setLives: collisionsArgs.setLives,
 		},
 		// Passed through to doScoring function
 		scoringArgs: {

@@ -34,6 +34,7 @@ Here is a full explanation of each option you can add in figma:
 * .sr-obstacle - Scoreable items the character can collide with.
 	* [score:10] - Sets the score value for this obstacle; positive numbers add points, negative numbers subtract points.
 	* [sound:positive] - Overrides the sound played when hit (`positive` or `negative`). Defaults to `positive` for scores > 0 and `negative` for scores < 0.
+	* [modifier:cripple] - Sets life value in the yellow (or, if in the yellow, into the red; or, if in the red, it decrements by 1).
 	* [modifier:invisible] - When collected, temporarily hides negative-scoring obstacles (that do not ignore this modifier) by zeroing their score and marking them as invisible.
 	* [modifier:polarity] - When collected, temporarily flips positive-scoring obstacles (that do not ignore this modifier) to negative values.
 	* [modifier-delay:3000] - Duration in milliseconds that a modifier effect (such as `invisible` or `polarity`) stays active before reverting.
