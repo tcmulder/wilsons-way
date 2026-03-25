@@ -32,19 +32,26 @@ export const doScoring = (props) => {
 
 /**
  * Increase or decrease lives.
+ * 
+ * @param {Object} props The properties object
+ * @param {HTMLElement} props.el The element to count the life against
+ * @param {Object} props.setLives Function to set the lives
+ * @param {Object} props.lives The lives object
+ * @param {Function} props.setGameplayNavigation Function to set the gameplay navigation
+ * @param {Object} props.debug The debug object
+ * @param {Boolean} props.debug.immortal Whether the character is immortal
  */
 export const doLives = (props) => {
 	const { el, setLives, lives, setGameplayNavigation, debug } = props;
-	if (el.classList.contains('is-death')) return;
-	const shouldDecrease = el.dataset?.score?.startsWith('-');
-	if (shouldDecrease) {
-		el.classList.add('is-death');
-		const next = lives.cur - 1;
-		setLives((prev) => ({ ...prev, cur: Math.max(0, next) }));
-		if (next <= 0 && !debug?.immortal) {
-			doFreeze();
-			setGameplayNavigation('/lost');
-		}
+	if (el.classList.contains('is-collided-life')) return;
+	const lifeData = parseInt(el.dataset.lives);
+	if (!lifeData) return;
+	el.classList.add('is-collided-life');
+	const newLives = Math.max(0, Math.min(lives.cur + lifeData, lives.max));
+	setLives((prev) => ({ ...prev, cur: newLives }));
+	if (newLives <= 0 && !debug?.immortal) {
+		doFreeze();
+		setGameplayNavigation('/lost');
 	}
 };
 
@@ -175,6 +182,45 @@ const modifyPolarity = (props) => {
 };
 
 /**
+ * Apply cripple modifier
+ * 
+ * Set life value in the yellow (or, if in the yellow,
+ * into the red; or, if in the red, decrements by 1).
+ * 
+ * @param {Object} props The properties object
+ * @param {HTMLElement} props.el The element to apply the collision class to
+ * @param {Object} props.elsRef The elements ref object
+ * @param {Object} props.lives The lives object
+ * @param {Function} props.setLives Function to set the lives
+ */
+const modifyCripple = (props) => {
+	const { el, lives } = props;
+	const { max, cur } = lives;
+	const modifier = el.dataset.modifier;
+	if (modifier !== 'cripple') return;
+
+	// "Yellow" is <= 50% max; "red" is <= ~33% max (see Interface battery thresholds).
+	const halfDead = cur <= max * 0.5;
+	const almostDead = cur <= max * 0.33;
+
+	let targetCur;
+	if (almostDead) {
+		// If already in red, knock off 1 life.
+		targetCur = Math.max(0, cur - 1);
+	} else if (halfDead) {
+		// If in yellow, set into red.
+		targetCur = Math.floor(max * 0.33);
+	} else {
+		// Otherwise, set into yellow.
+		targetCur = Math.floor(max * 0.5);
+	}
+
+	// Let `doLives` apply the delta so it can still handle gameplay.
+	const delta = targetCur - cur;
+	el.dataset.lives = String(delta);
+};
+
+/**
  * Modify collided obstacles
  *
  * @param {Object} props The properties object
@@ -182,10 +228,11 @@ const modifyPolarity = (props) => {
  * @param {Object} props.elsRef The elements ref object
  */
 export const doModifiers = (props) => {
-	const { el, elsRef } = props;
+	const { el, elsRef, lives, setLives } = props;
 	// Maybe set our modifications
 	modifyInvisible({el, elsRef});
 	modifyPolarity({el, elsRef});
+	modifyCripple({el, elsRef, lives, setLives});
 	modifyCollided({el});
 };
 

@@ -122,8 +122,9 @@ const Score = () => {
 };
 
 const Progress = () => {
+	const { levelProgress } = useLevelContext();
 	return (
-		<progress className="sr-interface-progress" value="50" max="100" aria-label="Progress">50%</progress>
+		<progress className="sr-interface-progress" value={levelProgress} max="100" step="0.1" aria-label="Progress">{levelProgress}%</progress>
 	);
 };
 

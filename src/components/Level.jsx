@@ -43,7 +43,7 @@ const Level = () => {
 	const { debug } = useDebugContext();
 	const { settings, levelPhysics, setLevelPhysics } = useSettingsContext();
 	const { version, gameplaySpeed, userAdjustedSpeed } = settings;
-	const { level, currentLevelId, setCurrentLevelId, customLevelSvg } = useLevelContext();
+	const { level, currentLevelId, setCurrentLevelId, customLevelSvg, setLevelProgress } = useLevelContext();
 	const gameplayContext = useGameplayContext();
 	const { setGameplayNavigation, elsRef, timelinesRef } = gameplayContext;
 	const { setCharacterStatus } = useCharacterContext();
@@ -99,6 +99,7 @@ const Level = () => {
 				elBoard,
 				timelinesRef,
 				setTimelines: (timelines) => { timelinesRef.current = timelines; },
+				setLevelProgress,
 				gameplaySpeed,
 				onComplete: handleLevelComplete,
 			});
@@ -108,7 +109,7 @@ const Level = () => {
 				setCountdown(3);
 			}
 		}
-	}, [elsRef, timelinesRef, gameplaySpeed, handleLevelComplete, setCurrentLevelId, debug?.autoplay]);
+	}, [elsRef, timelinesRef, gameplaySpeed, setLevelProgress, handleLevelComplete, setCurrentLevelId, debug?.autoplay]);
 
 
 	// When using a custom-dropped SVG (level 0), load and animate it
@@ -117,6 +118,7 @@ const Level = () => {
 		customLevelSvg,
 		gameplayContext,
 		gameplaySpeed,
+		setLevelProgress,
 		handleLevelComplete,
 		setCurrentLevelId,
 	});

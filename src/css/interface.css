@@ -89,28 +89,24 @@ svg.sr-interface-header__icon {
 }
 .sr-interface-progress {
 	appearance: none;
-	height: 1cqmax;
+	height: 0.5cqmax;
 	width: 100%;
 	max-width: 88%;
 	margin: 0 auto 0.6em;
-	border-radius: 1em;
-	padding: 0.15em;
+	padding: 0.08em;
 	border: none;
 	background-color: var(--sr-c-navy);
 	outline: 0.05em solid var(--sr-c-sky);
 	/* Chrome/Safari */
 	&::-webkit-progress-bar {
 		background-color: var(--sr-c-navy);
-		border-radius: 1em;
 	}
 	&::-webkit-progress-value {
 		background-color: var(--sr-c-sky);
-		border-radius: 1em;
 	}	
 	/* Firefox */
 	&::-moz-progress-bar {
 		background-color: var(--sr-c-sky);
-		border-radius: 1em;
 	}
 }
 .sr-version {

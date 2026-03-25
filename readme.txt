@@ -4,7 +4,7 @@ Contributors: thinkaquamarine
 Tags: game
 Requires at least: 6.5.4
 Tested up to: 6.8.1
-Stable tag: 2.2.2
+Stable tag: 2.3.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -34,11 +34,13 @@ Here is a full explanation of each option you can add in figma:
 * .sr-obstacle - Scoreable items the character can collide with.
 	* [score:10] - Sets the score value for this obstacle; positive numbers add points, negative numbers subtract points.
 	* [sound:positive] - Overrides the sound played when hit (`positive` or `negative`). Defaults to `positive` for scores > 0 and `negative` for scores < 0.
+	* [modifier:cripple] - Sets life value in the yellow (or, if in the yellow, into the red; or, if in the red, it decrements by 1).
 	* [modifier:invisible] - When collected, temporarily hides negative-scoring obstacles (that do not ignore this modifier) by zeroing their score and marking them as invisible.
 	* [modifier:polarity] - When collected, temporarily flips positive-scoring obstacles (that do not ignore this modifier) to negative values.
 	* [modifier-delay:3000] - Duration in milliseconds that a modifier effect (such as `invisible` or `polarity`) stays active before reverting.
 	* [ignore-modifier:polarity] - Comma-separated list of modifier names this obstacle should ignore (for example `ignore-modifier:polarity` prevents polarity from flipping its score).
 	* [rand:group-1] - Groups obstacles by a string key; for each `rand` group, one obstacle is shown at random and the rest are hidden for that playthrough.
+	* [lives:1] - Adds or removes lives by the amount given.
 
 * .sr-milestone - Facilitates a pause with a message popup. Each should contain a .sr-obstacle.[data:1000] which triggers the message (for 1000ms in this case, and it can have no score value), an .sr-milestone-message that will become visible upon collision, and an (optional) .sr-milestone-progress that will show an expanding progress bar.
 	* [delay:500] - Attach to the .sr-obstacle. Base delay in milliseconds for how long the milestone message stays visible and freezes gameplay.
@@ -61,6 +63,16 @@ To develop, run `npm install && npm run dev`. To build the static site, run `npm
 2. Activate the plugin through the "Plugins" menu in WordPress.
 
 == Changelog ==
+
+= 2.3.1 =
+
+* Add new level and character SVGs.
+* Implement level progress bar.
+
+= 2.3.0 =
+
+* Improve life management.
+* Add "cripple" modifier.
 
 = 2.2.2 =
 
