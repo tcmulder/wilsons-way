@@ -11,6 +11,7 @@ import { convertClassToData } from '../util/convertClassToData';
  * @param {string|null} props.customLevelSvg Raw SVG text for the custom level
  * @param {Object} props.gameplayContext Gameplay context (timelines, elsRef, etc.)
  * @param {number} props.gameplaySpeed Current gameplay speed
+ * @param {Function} props.setLevelProgress Setter for level progress
  * @param {() => void} props.handleLevelComplete Callback when level completes
  * @param {Function} props.setCurrentLevelId Setter for currentLevelId
  */
@@ -20,6 +21,7 @@ export function useCustomLevelSvg(props) {
 		customLevelSvg,
 		gameplayContext,
 		gameplaySpeed,
+		setLevelProgress,
 		handleLevelComplete,
 		setCurrentLevelId,
 	} = props;
@@ -50,6 +52,7 @@ export function useCustomLevelSvg(props) {
 				elBoard,
 				timelinesRef: ctx.timelinesRef,
 				setTimelines: (timelines) => { ctx.timelinesRef.current = timelines; },
+				setLevelProgress,
 				gameplaySpeed,
 				onComplete: handleLevelComplete,
 			});
@@ -60,6 +63,7 @@ export function useCustomLevelSvg(props) {
 		customLevelSvg,
 		gameplayContext,
 		gameplaySpeed,
+		setLevelProgress,
 		handleLevelComplete,
 		setCurrentLevelId,
 	]);
