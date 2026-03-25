@@ -36,25 +36,29 @@ export const aniLevel = (props) => {
 	 * Update level progress based on the animation progress.
 	 * @param {number} progress The animation progress (0-1)
 	 */
-	let lastPercent = -1;
-	const handleUpdate = function () {
-		// progress is 0..1 within the tween; map to 0..100
-		const percent = Math.round(Math.min(1, Math.max(0, this.progress())) * 100);
-		if (percent === lastPercent) return;
-		lastPercent = percent;
-		setLevelProgress?.(percent);
-	};
+	const handleUpdate = (() => {
+		let lastPercent = -1;
+		return function () {
+			// progress is 0..1 within the tween; map to 0..100
+			const percent = Math.min(1, Math.max(0, this.progress())) * 100;
+			if (percent === lastPercent) return;
+			lastPercent = percent;
+			setLevelProgress?.(percent);
+		};
+	})();
 
 	/**
 	 * Complete the level animation and update the level progress to 100%.
 	 */
-	let didComplete = false;
-	const handleComplete = function () {
-		setLevelProgress?.(100);
-		if (didComplete) return;
-		didComplete = true;
-		onComplete?.();
-	};
+	const handleComplete = (() => {
+		let didComplete = false;
+		return function () {
+			setLevelProgress?.(100);
+			if (didComplete) return;
+			didComplete = true;
+			onComplete?.();
+		};
+	})();
 
 	// Create a separate timeline for each SVG
 	const timelines = [];
