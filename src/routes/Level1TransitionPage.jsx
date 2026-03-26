@@ -11,12 +11,22 @@ import SVGLevel1Transition from '../images/pages/level-1-transition.svg?react';
 const Level1TransitionPage = () => {
 	const { timedNavigate } = useTimedNavigation();
 	const svgRef = useRef(null);
-	const levelNumber = 1;
+	// TODO: const levelNumber = 1;
+	const debugOnlyDidAlertOfRedirectToSettings = useRef(false);
 
 	// Auto-navigate to next level
 	useEffect(() => {
-		timedNavigate({ route: `/level/${levelNumber + 1}`, delay: 3000 });
-	}, [levelNumber, timedNavigate]);
+		if (debugOnlyDidAlertOfRedirectToSettings.current) return;
+		setTimeout(() => {
+			alert('Normally you would now advance to level 2, but for now you are being redirected to the initial page.');
+			debugOnlyDidAlertOfRedirectToSettings.current = true;
+		}, 2800);
+		timedNavigate({ route: `/`, delay: 3000 });
+		// TODO: timedNavigate({ route: `/level/${levelNumber + 1}`, delay: 3000 });
+	}, [
+		// TODO: levelNumber,
+		timedNavigate
+	]);
 
 	// Animate the transition
 	useEffect(() => {
