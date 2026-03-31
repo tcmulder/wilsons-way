@@ -1,6 +1,22 @@
 import { doFreeze } from './doMovement';
 
 /**
+ * Check if an obstacle meets the criteria for a modifier
+ * 
+ * @param {Object} props The properties object
+ * @param {HTMLElement} props.el The obstacle element
+ * @param {Object} props.modifiers The criteria to check
+ * @return {boolean} Whether the obstacle meets the criteria
+ */
+const hasModifier = ({el, modifiers}) => {
+	let has = false;
+	if (modifiers.includes('invisible') && el.classList.contains('sr-modifier--invisible')) {
+		has = true;
+	}
+	return has;
+};
+
+/**
  * Apply scoring if an obstacle provides scoring data
  *
  * @param {Object} props The properties object
@@ -198,6 +214,7 @@ const modifyCripple = (props) => {
 	const { max, cur } = lives;
 	const modifier = el.dataset.modifier;
 	if (modifier !== 'cripple') return;
+	if (hasModifier({el, modifiers: ['invisible']})) return;
 
 	// "Yellow" is <= 50% max; "red" is <= ~33% max (see Interface battery thresholds).
 	const halfDead = cur <= max * 0.5;
@@ -248,6 +265,7 @@ export const doModifiers = (props) => {
 export const doMilestones = (props) => {
 	const { el, userAdjustedMilestone = 1 } = props;
 	if (!el.dataset.milestone) return;
+	if (hasModifier({el, modifiers: ['invisible']})) return;
 	const elMessage = document.getElementById(el.dataset.milestone);
 	const baseDelay = parseInt(el.dataset.delay);
 	const multiplier = Number.isFinite(userAdjustedMilestone) ? userAdjustedMilestone : 1;
