@@ -87,8 +87,8 @@ add_action( 'template_redirect', 'shelf_runner_pretty_game_template_redirect' );
 
 /**
  * Shortcode callback for [shelf-runner].
- * 
- * Examples: 
+ *
+ * Examples:
  * - [shelf-runner] // deaults to inline mode
  * - [shelf-runner type="inline"]
  * - [shelf-runner type="lightbox"]
@@ -109,15 +109,15 @@ add_shortcode( 'shelf-runner', 'shortcode_shelf_runner' );
 /**
  * Get URL for the game (e.g. for embedding in an iframe).
  *
- * @param array|null $query_params Optional query params (NOTE: currently only supports 'debug' boolean).
  * @return string The game URL.
  */
-function shelf_runner_url( $query_params = null ) {
-	$game_mode  = get_option( 'shelf_runner_settings_game_mode', 'client' );
-	$url = 'client' === $game_mode ? get_option( 'shelf_runner_settings_iframe_url', '' ) : SHELF_RUNNER_PLUGIN_GAME_URI;
-	if ( 'host' === $game_mode && is_array( $query_params ) && ( $query_params['debug'] ?? false ) ) {
+function shelf_runner_url() {
+	$game_mode = get_option( 'shelf_runner_settings_game_mode', 'client' );
+	$url       = 'client' === $game_mode ? get_option( 'shelf_runner_settings_iframe_url', '' ) : SHELF_RUNNER_PLUGIN_GAME_URI;
+	if ( 'host' === $game_mode ) {
 		$debug_enabled = get_option( 'shelf_runner_settings_debug', false );
-		if ( $debug_enabled ) {
+		$debug_param   = filter_input( INPUT_GET, 'debug', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+		if ( $debug_enabled && 'true' === $debug_param ) {
 			$url = add_query_arg( 'debug', 'true', $url );
 		}
 	}

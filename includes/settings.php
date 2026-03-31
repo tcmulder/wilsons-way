@@ -388,7 +388,7 @@ function shelf_runner_settings_init() {
 					checked( $debug_enabled, true, false )
 				);
 				$html         .= sprintf( '<label for="shelf_runner_settings_debug">%s</label>', esc_html( __( 'Enable debug mode', 'shelf-runner' ) ) );
-	
+
 				if ( $debug_enabled ) {
 					$html     .= sprintf(
 						'<p><a href="%s" class="button button-secondary" target="_blank">%s <span style="transform:rotate(-45deg);display:inline-block;">→</span></a></p>',
