@@ -8,7 +8,7 @@
 wp_enqueue_style( 'shelf-runner-style' );
 wp_enqueue_script( 'shelf-runner-script' );
 
-$iframe_url = shelf_runner_url( array( 'debug' => true ) );
+$iframe_url = shelf_runner_url();
 if ( ! $iframe_url ) {
 	printf( '<p>%s</p>', esc_html( __( 'Error: please enter an iframe URL in the plugin settings.', 'shelf-runner' ) ) );
 	return;
