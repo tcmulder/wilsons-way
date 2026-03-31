@@ -66,7 +66,7 @@ To develop, run `npm install && npm run dev`. To build the static site, run `npm
 
 = 2.3.3 =
 
-* Bump version number.
+* Check modifiers before applying milestone messages or cripple modifier.
 
 = 2.3.2 =
 
