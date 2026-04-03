@@ -106,9 +106,8 @@ const getOriginalDataset = (el) => {
  * @param {Object} props.elsRef The elements ref object
  */
 const modifyInvisible = (props) => {
-	const modifier = props.el.dataset.modifier;
 	// Bail if we're not to modify invisibility
-	if (modifier !== 'invisible') return;
+	if (!(props.el.dataset.modifier || '').split('|').includes('invisible')) return;
 	
 	// Get all obstacles
 	const { el, elsRef } = props;
@@ -156,9 +155,8 @@ const modifyInvisible = (props) => {
  * @param {Object} props.elsRef The elements ref object
  */
 const modifyPolarity = (props) => {
-	const modifier = props.el.dataset.modifier;
 	// Bail if we're not to modify polarity
-	if (modifier !== 'polarity') return;
+	if (!(props.el.dataset.modifier || '').split('|').includes('polarity')) return;
 
 	// Get all obstacles
 	const { el, elsRef } = props;
@@ -212,8 +210,7 @@ const modifyPolarity = (props) => {
 const modifyCripple = (props) => {
 	const { el, lives } = props;
 	const { max, cur } = lives;
-	const modifier = el.dataset.modifier;
-	if (modifier !== 'cripple') return;
+	if (!(el.dataset.modifier || '').split('|').includes('cripple')) return;
 	if (hasModifier({el, modifiers: ['invisible']})) return;
 
 	// "Yellow" is <= 50% max; "red" is <= ~33% max (see Interface battery thresholds).
