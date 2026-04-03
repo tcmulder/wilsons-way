@@ -119,7 +119,7 @@ const modifyInvisible = (props) => {
 		const score = obstacle.dataset.score;
 		if (!score) return false;
 		const isNegative = score.startsWith('-');
-		const ignoresInvisible = obstacle.dataset?.ignoreModifier?.split(',').includes('invisible');
+		const ignoresInvisible = obstacle.dataset?.ignoreModifier?.split('|').includes('invisible');
 		return isNegative && !ignoresInvisible;
 	});
 
@@ -169,7 +169,7 @@ const modifyPolarity = (props) => {
 		if (!score) return false;
 		const num = parseInt(score, 10);
 		const isPositive = Number.isFinite(num) && num > 0;
-		const ignoresPolarity = obstacle.dataset?.ignoreModifier?.split(',').includes('polarity');
+		const ignoresPolarity = obstacle.dataset?.ignoreModifier?.split('|').includes('polarity');
 		return isPositive && !ignoresPolarity;
 	});
 
