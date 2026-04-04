@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useScoreContext } from '../context/useContexts';
 import { useTimedNavigation } from '../hooks/useTimedNavigation';
 
 /**
@@ -8,10 +9,23 @@ import { useTimedNavigation } from '../hooks/useTimedNavigation';
  */
 const Level4ScorePage = () => {
 	const levelNumber = 4;
+	const { score } = useScoreContext();
+	const { api } = window.sr;
 	const { timedNavigate } = useTimedNavigation();
 	useEffect(() => {
-		timedNavigate({ route: `/level/${levelNumber}/transition`, delay: 3000 });
-	}, [levelNumber, timedNavigate]);
+		fetch(`${api}shelf-runner/v1/leaderboard/`)
+			.then((resp) => resp.json())
+			.then((response) => {
+				const userScore = score?.reduce((sum, entry) => sum + (Number(entry?.num) || 0), 0) ?? 0;
+				const highScores = response.data ?? [];
+				const isHighScore = highScores.some((e) => userScore >= e.score);
+				if (isHighScore) {
+					timedNavigate({ route: `/form`, delay: 3000 });
+				} else {
+					timedNavigate({ route: `/leaderboard`, delay: 3000 });
+				}
+			});
+	}, [score, api, timedNavigate]);
 	return (
 		<div>
 			<h1>Level {levelNumber} Score</h1>

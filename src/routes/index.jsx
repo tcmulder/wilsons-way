@@ -22,7 +22,6 @@ import Level4IntroPage from './Level4IntroPage';
 import Level4Page from './Level4Page';
 import Level4OutroPage from './Level4OutroPage';
 import Level4ScorePage from './Level4ScorePage';
-import Level4TransitionPage from './Level4TransitionPage';
 
 import HighScorePage from './HighScorePage';
 import LeaderboardPage from './LeaderboardPage';
@@ -60,7 +59,6 @@ export const routes = [
   { path: '/level/4', title: 'Level 4', element: <Level4Page /> },
   { path: '/level/4/outro', title: 'Level 4 Outro', element: <Level4OutroPage /> },
   { path: '/level/4/score', title: 'Level 4 Score', element: <Level4ScorePage /> },
-  { path: '/level/4/transition', title: 'Level 4 Transition', element: <Level4TransitionPage /> },
 
   { path: '/form', title: 'High Score', element: <HighScorePage /> },
   { path: '/leaderboard', title: 'Leaderboard', element: <LeaderboardPage /> },
