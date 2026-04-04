@@ -21,6 +21,9 @@
 	&:hover {
 		--sr-c-fg-8bit: var(--sr-c-sky);
 	}
+	button {
+		padding: 0;
+	}
 }
 svg.sr-interface-header__icon {
 	display: block;
@@ -79,6 +82,13 @@ svg.sr-interface-header__icon {
 	.sr-8bit__fg {
 		min-width: 4em;
 		padding-inline: 0.5em;
+
+		span {
+			display: flex;
+			justify-content: flex-end;
+			align-items: center;
+			width: 100%;
+		}
 	}
 }
 .sr-interface-footer {

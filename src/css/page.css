@@ -1,4 +1,5 @@
 .sr-page {
+	background-image: var(--sr-bg-image, none);
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
@@ -9,4 +10,16 @@
 	max-width: 33.3333333em;
 	max-height: 100cqh;
 	margin-inline: auto;
+}
+.sr-page--intro {
+	.sr-page__heading {
+		display: flex;
+		justify-content: center;
+		margin-block: 1.8em 0.7em;
+	}
+	.sr-page__button {
+		margin-top: 1.5em;
+		display: flex;
+		justify-content: center;
+	}
 }

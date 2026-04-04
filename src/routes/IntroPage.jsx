@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { EightBit } from '../components/EightBit';
-import { EightBitPill } from '../components/EightBit';
+import { EightBit, EightBitPill } from '../components/EightBit';
 import { useSettingsContext } from '../context/useContexts';
 import { useGameAudio } from '../hooks/useSFX';
 
