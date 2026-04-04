@@ -1,10 +1,10 @@
 .sr-message {
+	/* Prevent list bullets from appearing during animations */
+	li {
+		transition: opacity 0.001s ease-out;
 
-	p {
-	
-	}
-
-	strong:only-child {
-		font-size: 1.5em;
+		&:not(:has([style*="opacity: 1"])) {
+			opacity: 0;
+		}
 	}
 }
