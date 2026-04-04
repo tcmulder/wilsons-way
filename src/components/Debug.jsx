@@ -361,9 +361,9 @@ export const Debug = () => {
 					<label>
 						<span>📄 goto</span>
 						<select value={pagePath} onChange={(e) => { e.preventDefault(); navigate(e.target.value); }} title="Navigate to a different page">
-							{routes.map(({ path, title }) => {
+							{routes.map(({ path, debug }) => {
 								if (path === '/level/0') return null;
-								return <option key={path} value={path}>{title}</option>;
+								return <option key={path} value={path}>{debug}</option>;
 							})}
 						</select>
 					</label>

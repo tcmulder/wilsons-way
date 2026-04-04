@@ -32,39 +32,39 @@ import RestartPage from './RestartPage';
 import Level0Page from './Level0Page';
 
 /**
- * Route config: path, title (for debug nav), and element for the pages of the game.
+ * Route config: debug label (for debug nav), path, and element for the pages of the game.
  */
 export const routes = [
-  { path: '/', title: '🎮 Intro', element: <IntroPage /> },
+  { debug: '🎮 Intro', path: '/', element: <IntroPage /> },
 
-  { path: '/level/1', title: '1️⃣ Level 1', element: <Level1Page /> },
-  { path: '/level/1/Intro', title: '↳ Level 1 Intro', element: <Level1IntroPage /> },
-  { path: '/level/1/outro', title: '↳ Level 1 Outro', element: <Level1OutroPage /> },
-  { path: '/level/1/score', title: '↳ Level 1 Score', element: <Level1ScorePage /> },
-  { path: '/level/1/transition', title: '↳ Level 1 Transition', element: <Level1TransitionPage /> },
-  
-  { path: '/level/2', title: '2️⃣ Level 2', element: <Level2Page /> },
-  { path: '/level/2/Intro', title: '↳ Level 2 Intro', element: <Level2IntroPage /> },
-  { path: '/level/2/outro', title: '↳ Level 2 Outro', element: <Level2OutroPage /> },
-  { path: '/level/2/score', title: '↳ Level 2 Score', element: <Level2ScorePage /> },
-  { path: '/level/2/transition', title: '↳ Level 2 Transition', element: <Level2TransitionPage /> },
+  { debug: '1️⃣ Level 1', path: '/level/1', element: <Level1Page /> },
+  { debug: '↳ Level 1 Intro', path: '/level/1/Intro', element: <Level1IntroPage /> },
+  { debug: '↳ Level 1 Outro', path: '/level/1/outro', element: <Level1OutroPage /> },
+  { debug: '↳ Level 1 Score', path: '/level/1/score', element: <Level1ScorePage /> },
+  { debug: '↳ Level 1 Transition', path: '/level/1/transition', element: <Level1TransitionPage /> },
 
-  { path: '/level/3', title: '3️⃣ Level 3', element: <Level3Page /> },
-  { path: '/level/3/Intro', title: '↳ Level 3 Intro', element: <Level3IntroPage /> },
-  { path: '/level/3/outro', title: '↳ Level 3 Outro', element: <Level3OutroPage /> },
-  { path: '/level/3/score', title: '↳ Level 3 Score', element: <Level3ScorePage /> },
-  { path: '/level/3/transition', title: '↳ Level 3 Transition', element: <Level3TransitionPage /> },
+  { debug: '2️⃣ Level 2', path: '/level/2', element: <Level2Page /> },
+  { debug: '↳ Level 2 Intro', path: '/level/2/Intro', element: <Level2IntroPage /> },
+  { debug: '↳ Level 2 Outro', path: '/level/2/outro', element: <Level2OutroPage /> },
+  { debug: '↳ Level 2 Score', path: '/level/2/score', element: <Level2ScorePage /> },
+  { debug: '↳ Level 2 Transition', path: '/level/2/transition', element: <Level2TransitionPage /> },
 
-  { path: '/level/4', title: '4️⃣ Level 4', element: <Level4Page /> },
-  { path: '/level/4/Intro', title: '↳ Level 4 Intro', element: <Level4IntroPage /> },
-  { path: '/level/4/outro', title: '↳ Level 4 Outro', element: <Level4OutroPage /> },
-  { path: '/level/4/score', title: '↳ Level 4 Score', element: <Level4ScorePage /> },
+  { debug: '3️⃣ Level 3', path: '/level/3', element: <Level3Page /> },
+  { debug: '↳ Level 3 Intro', path: '/level/3/Intro', element: <Level3IntroPage /> },
+  { debug: '↳ Level 3 Outro', path: '/level/3/outro', element: <Level3OutroPage /> },
+  { debug: '↳ Level 3 Score', path: '/level/3/score', element: <Level3ScorePage /> },
+  { debug: '↳ Level 3 Transition', path: '/level/3/transition', element: <Level3TransitionPage /> },
 
-  { path: '/form', title: '💯 High Score', element: <HighScorePage /> },
-  { path: '/leaderboard', title: '🏆 Leaderboard', element: <LeaderboardPage /> },
+  { debug: '4️⃣ Level 4', path: '/level/4', element: <Level4Page /> },
+  { debug: '↳ Level 4 Intro', path: '/level/4/Intro', element: <Level4IntroPage /> },
+  { debug: '↳ Level 4 Outro', path: '/level/4/outro', element: <Level4OutroPage /> },
+  { debug: '↳ Level 4 Score', path: '/level/4/score', element: <Level4ScorePage /> },
 
-  { path: '/lost', title: '💀 Lost', element: <LostPage /> },
-  { path: '/restart', title: '🔄 Restart', element: <RestartPage /> },
+  { debug: '💯 High Score', path: '/form', element: <HighScorePage /> },
+  { debug: '🏆 Leaderboard', path: '/leaderboard', element: <LeaderboardPage /> },
 
-  { path: '/level/0', title: '0️⃣ Level 0', element: <Level0Page /> },
+  { debug: '💀 Lost', path: '/lost', element: <LostPage /> },
+  { debug: '🔄 Restart', path: '/restart', element: <RestartPage /> },
+
+  { debug: '0️⃣ Level 0', path: '/level/0', element: <Level0Page /> },
 ];

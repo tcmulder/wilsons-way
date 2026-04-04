@@ -44,7 +44,7 @@ const HighScorePage = () => {
 				{isDebugMode && (
 					<div style={{fontSize: '0.8em'}}>
 						<label>
-							<h2 style={{fontSize: '1.2em'}}>🐞 Debug mode is enabled.</h2>
+							<h2 style={{fontSize: '1.2em'}}>🐞 Debug enabled:</h2>
 							<p>What score would you like to submit for testing purposes? It will not be saved.</p>
 							<input
 								type="number"

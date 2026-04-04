@@ -11,7 +11,7 @@ const RestartPage = () => {
 	useEffect(() => {
 		if (debug?.router) {
 			navigate('/');
-			console.error('🔄 Debug mode is enabled: refreshing a 2nd time to reset state');
+			console.error('🔄 Debug: refreshing a 2nd time to reset state');
 		}
 		setTimeout(() => {
 			window.location.reload();

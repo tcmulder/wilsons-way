@@ -32,7 +32,7 @@ export function useTimedNavigation() {
 		timeoutRef.current = setTimeout(() => {
 			// Bail if slideshow is disabled in debug mode
 			if (debug?.slideshow === false) {
-				console.error(`🐜 Debug mode is enabled: cancelling ${route} timer`);
+				console.error(`🐜 Debug: cancelling ${route} timer`);
 				return;
 			}
 			navigate(route);
