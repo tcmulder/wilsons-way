@@ -1,5 +1,4 @@
-import { useEffect } from 'react';
-import { useTimedNavigation } from '../hooks/useTimedNavigation';
+import { useNavigate } from 'react-router-dom';
 import Message from '../components/Message';
 import Page from '../components/Page';
 import { EightBit, EightBitPill } from '../components/EightBit';
@@ -13,12 +12,9 @@ import levelHeadingUrl from '../images/text/level-1.svg';
  */
 const Level1IntroPage = () => {
 	const levelNumber = 1;
-	const { timedNavigate } = useTimedNavigation();
-	useEffect(() => {
-		timedNavigate({ route: `/level/${levelNumber}`, delay: 3000 });
-	}, [levelNumber, timedNavigate]);
+	const navigate = useNavigate();
 	return (
-		<Page style={{ '--sr-bg-image': `url(${backgroundUrl})` }} className="sr-page--intro">
+		<Page style={{ '--sr-bg-image': `url(${backgroundUrl})` }} className="sr-page--level-intro">
 			<h1 className="sr-page__heading">
 				<img src={levelHeadingUrl} alt={`Level ${levelNumber} Heading`} />
 			</h1>

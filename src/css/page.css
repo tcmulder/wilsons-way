@@ -11,11 +11,11 @@
 	max-height: 100cqh;
 	margin-inline: auto;
 }
-.sr-page--intro {
+.sr-page--level-intro {
 	.sr-page__heading {
 		display: flex;
 		justify-content: center;
-		margin-block: 1.8em 0.7em;
+		margin-block: 1.7em 0.8em !important;
 	}
 	.sr-page__button {
 		margin-top: 1.5em;
