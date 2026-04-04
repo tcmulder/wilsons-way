@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 import { useTimedNavigation } from '../hooks/useTimedNavigation';
 import Message from '../components/Message';
+import Page from '../components/Page';
+import backgroundUrl from '../images/pages/page-bg-dark.svg';
 
 /**
  * Level 1 introduction screen.
@@ -14,10 +16,10 @@ const Level1IntroPage = () => {
 		timedNavigate({ route: `/level/${levelNumber}`, delay: 3000 });
 	}, [levelNumber, timedNavigate]);
 	return (
-		<div>
+		<Page style={{ backgroundImage: `url(${backgroundUrl})` }}>
 			<h1>Level {levelNumber} Intro</h1>
 			<Message messageKey={`level_${levelNumber}_intro`} />
-		</div>
+		</Page>
 	);
 };
 

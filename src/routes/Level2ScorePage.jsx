@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import Page from '../components/Page';
 import { useTimedNavigation } from '../hooks/useTimedNavigation';
 
 /**
@@ -13,9 +14,9 @@ const Level2ScorePage = () => {
 		timedNavigate({ route: `/level/${levelNumber}/transition`, delay: 3000 });
 	}, [levelNumber, timedNavigate]);
 	return (
-		<div>
+		<Page>
 			<h1>Level {levelNumber} Score</h1>
-		</div>
+		</Page>
 	);
 };
 

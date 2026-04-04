@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useTimedNavigation } from '../hooks/useTimedNavigation';
 import Message from '../components/Message';
+import Page from '../components/Page';
 
 /**
  * Level 3 introduction screen.
@@ -14,10 +15,10 @@ const Level3IntroPage = () => {
 		timedNavigate({ route: `/level/${levelNumber}`, delay: 3000 });
 	}, [levelNumber, timedNavigate]);
 	return (
-		<div>
+		<Page>
 			<h1>Level {levelNumber} Intro</h1>
 			<Message messageKey={`level_${levelNumber}_intro`} />
-		</div>
+		</Page>
 	);
 };
 

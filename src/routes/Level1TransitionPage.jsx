@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
+import Page from '../components/Page';
 import { useTimedNavigation } from '../hooks/useTimedNavigation';
 import SVGLevel1Transition from '../images/pages/level-1-transition.svg?react';
 
@@ -31,9 +32,9 @@ const Level1TransitionPage = () => {
 	}, []);
 
 	return (
-		<div>
+		<Page>
 			<SVGLevel1Transition className="sr-page-image" ref={svgRef} />
-		</div>
+		</Page>
 	);
 };
 

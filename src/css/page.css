@@ -1,0 +1,12 @@
+.sr-page {
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+.sr-page__inner {
+	overflow-y: auto;
+	width: 100%;
+	max-width: 33.3333333em;
+	max-height: 100cqh;
+	margin-inline: auto;
+}

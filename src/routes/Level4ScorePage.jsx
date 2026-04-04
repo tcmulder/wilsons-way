@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useScoreContext } from '../context/useContexts';
+import Page from '../components/Page';
 import { useTimedNavigation } from '../hooks/useTimedNavigation';
 
 /**
@@ -27,9 +28,9 @@ const Level4ScorePage = () => {
 			});
 	}, [score, api, timedNavigate]);
 	return (
-		<div>
+		<Page>
 			<h1>Level {levelNumber} Score</h1>
-		</div>
+		</Page>
 	);
 };
 

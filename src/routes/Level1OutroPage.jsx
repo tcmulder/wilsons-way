@@ -1,4 +1,5 @@
 import Flag from '../components/Flag';
+import Page from '../components/Page';
 import SVGFlag from '../images/pages/level-1-flag.svg?react';
 
 /**
@@ -9,9 +10,9 @@ import SVGFlag from '../images/pages/level-1-flag.svg?react';
 const Level1OutroPage = () => {
 	const levelNumber = 1;
 	return (
-		<div>
+		<Page>
 			<Flag svg={SVGFlag} levelNumber={levelNumber} />
-		</div>
+		</Page>
 	);
 };
 

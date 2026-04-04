@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import Page from '../components/Page';
 import '../css/leaderboard.css';
 
 /**
@@ -19,7 +20,7 @@ const LeaderboardPage = () => {
 			});
 	});
 	return (
-		<div className="sr-leaderboard">
+		<Page className="sr-leaderboard">
 			<h1>Leaderboard</h1>
 			<ul className="sr-leaderboard__list">
 				{leaderboard.map((entry, index) => (
@@ -29,7 +30,7 @@ const LeaderboardPage = () => {
 					</li>
 				))}
 			</ul>
-		</div>
+		</Page>
 	);
 };
 

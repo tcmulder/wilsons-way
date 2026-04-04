@@ -1,8 +1,9 @@
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { submitHighScore } from '../util/doHighScore';
-import { useScoreContext, useDebugContext } from '../context/useContexts';
 import Message from '../components/Message';
+import Page from '../components/Page';
+import { useScoreContext, useDebugContext } from '../context/useContexts';
+import { submitHighScore } from '../util/doHighScore';
 
 /**
  * Intro page
@@ -16,7 +17,7 @@ const HighScorePage = () => {
 	const navigate = useNavigate();
 	const isDebugMode = !!debug;
 	return (
-		<div>
+		<Page>
 			<h1>You got a high score!</h1>
 			<Message messageKey="winner" />
 			<form
@@ -57,7 +58,7 @@ const HighScorePage = () => {
 					</div>
 				)}
 			</form>
-		</div>
+		</Page>
 	);
 };
 
