@@ -6,6 +6,13 @@
  * contains the SVG game board itself.
  */
 
+.sr-stage,
+.sr-typography,
+.sr-page-transition,
+.sr-page {
+	aspect-ratio: 16 / 9;
+}
+
 .sr-stage {
 	container-type: size;
 	overflow: hidden;
