@@ -9,6 +9,7 @@ import Level1TransitionPage from './Level1TransitionPage';
 import Level2IntroPage from './Level2IntroPage';
 import Level2Page from './Level2Page';
 import Level2OutroPage from './Level2OutroPage';
+import Level2ScorePage from './Level2ScorePage';
 import Level2TransitionPage from './Level2TransitionPage';
 
 import Level3IntroPage from './Level3IntroPage';
@@ -40,11 +41,13 @@ export const routes = [
   { path: '/level/1/Intro', title: 'Level 1 Intro', element: <Level1IntroPage /> },
   { path: '/level/1', title: 'Level 1', element: <Level1Page /> },
   { path: '/level/1/outro', title: 'Level 1 Outro', element: <Level1OutroPage /> },
+  { path: '/level/1/score', title: 'Level 1 Score', element: <Level1ScorePage /> },
   { path: '/level/1/transition', title: 'Level 1 Transition', element: <Level1TransitionPage /> },
   
   { path: '/level/2/Intro', title: 'Level 2 Intro', element: <Level2IntroPage /> },
   { path: '/level/2', title: 'Level 2', element: <Level2Page /> },
   { path: '/level/2/outro', title: 'Level 2 Outro', element: <Level2OutroPage /> },
+  { path: '/level/2/score', title: 'Level 2 Score', element: <Level2ScorePage /> },
   { path: '/level/2/transition', title: 'Level 2 Transition', element: <Level2TransitionPage /> },
 
   { path: '/level/3/Intro', title: 'Level 3 Intro', element: <Level3IntroPage /> },
