@@ -1,5 +1,5 @@
 import Flag from '../components/Flag';
-import Page from '../components/Page';
+import { Page } from '../components/Page';
 import SVGFlag from '../images/pages/level-2-flag.svg?react';
 
 /**

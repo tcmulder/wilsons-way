@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
-import Page from '../components/Page';
+import { Page } from '../components/Page';
 import { useTimedNavigation } from '../hooks/useTimedNavigation';
 import SVGLevel1Transition from '../images/pages/level-1-transition.svg?react';
 

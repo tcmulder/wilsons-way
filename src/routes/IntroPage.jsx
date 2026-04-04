@@ -2,6 +2,8 @@ import { useNavigate } from 'react-router-dom';
 import { EightBit, EightBitPill } from '../components/EightBit';
 import { useSettingsContext } from '../context/useContexts';
 import { useGameAudio } from '../hooks/useSFX';
+import { Page } from '../components/Page';
+import headingUrl from '../images/text/baird-quest.svg';
 
 /**
  * Intro page
@@ -11,8 +13,10 @@ const IntroPage = () => {
 	const { makeMusic, makeSFX, setMakeMusic, setMakeSFX } = useSettingsContext();
 	useGameAudio();
 	return (
-		<div>
-			<h1>Welcome to the Game</h1>
+		<Page className="sr-page--intro">
+			<h1>
+				<img src={headingUrl} alt="Baird Quest" />
+			</h1>
 			<p>This is an introductory page, and content is TBD.</p>
 			<div style={{width: '10cqmax'}}>
 				<EightBit bg={<EightBitPill />}>
@@ -43,7 +47,7 @@ const IntroPage = () => {
 					<span>SFX is {makeSFX ? 'on' : 'off'}</span>
 				</label>
 			</div>
-		</div>
+		</Page>
 	);
 };
 

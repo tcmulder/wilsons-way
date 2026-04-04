@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import Message from '../components/Message';
-import Page from '../components/Page';
+import { Page } from '../components/Page';
 import { EightBit, EightBitPill } from '../components/EightBit';
 import backgroundUrl from '../images/pages/page-bg-dark.svg';
 import levelHeadingUrl from '../images/text/level-4.svg';

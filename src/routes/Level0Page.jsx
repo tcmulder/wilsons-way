@@ -1,5 +1,5 @@
 import Level from '../components/Level';
-import Page from '../components/Page';
+import { Page } from '../components/Page';
 import { useSetLevel } from '../hooks/useSetLevel';
 
 /**

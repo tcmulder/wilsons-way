@@ -16,4 +16,5 @@ const Page = ({ children, className = '', style }) => {
 	);
 };
 
+export { Page };
 export default Page;
