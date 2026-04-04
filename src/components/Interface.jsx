@@ -4,11 +4,11 @@ import { useScoreContext, useLevelContext, useSettingsContext } from '../context
 import { Version } from './Version';
 import { EightBit, EightBitCircle, EightBitPill } from './EightBit';
 import { doFreeze } from '../util/doMovement';
-import ControlXIcon from '../images/control-x.svg?react';
-import ControlPauseIcon from '../images/control-pause.svg?react';
-import ControlPlayIcon from '../images/control-play.svg?react';
-import ControlSoundIcon from '../images/control-sound.svg?react';
-import ControlMuteIcon from '../images/control-mute.svg?react';
+import ControlXIcon from '../images/icons/control-x.svg?react';
+import ControlPauseIcon from '../images/icons/control-pause.svg?react';
+import ControlPlayIcon from '../images/icons/control-play.svg?react';
+import ControlSoundIcon from '../images/icons/control-sound.svg?react';
+import ControlMuteIcon from '../images/icons/control-mute.svg?react';
 import '../css/interface.css';
 
 /**
