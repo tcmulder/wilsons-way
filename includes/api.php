@@ -189,6 +189,7 @@ add_action(
 					}
 
 					$value = get_option( "shelf_runner_settings_{$key}" );
+					$value = wp_kses_post( apply_filters( 'the_content', $value ) );
 
 					return new WP_REST_Response(
 						array(

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import '../css/message.css';
 
 /**
  * Message component
@@ -17,7 +18,7 @@ const Message = (props) => {
         setMessage(data.data.value);
       });
   }, [messageKey]);
-  return <div style={{ whiteSpace: 'pre-wrap' }} dangerouslySetInnerHTML={{ __html: message }} />;
+  return <div className="sr-message" dangerouslySetInnerHTML={{ __html: message }} />;
 };
 
 

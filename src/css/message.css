@@ -1,0 +1,10 @@
+.sr-message {
+
+	p {
+	
+	}
+
+	strong:only-child {
+		font-size: 1.5em;
+	}
+}
