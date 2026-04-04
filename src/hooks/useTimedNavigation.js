@@ -27,17 +27,14 @@ export function useTimedNavigation() {
 		if (timeoutRef.current) {
 			clearTimeout(timeoutRef.current);
 		}
-		
-		// Bail if slideshow is disabled in debug mode
-		if (debug?.slideshow === false) {
-			console.error(
-				`🐜 Debug mode is enabled: canceling timed navigation to route ${route}`,
-			);
-			return;
-		}
 
 		// Schedule the navigation
 		timeoutRef.current = setTimeout(() => {
+			// Bail if slideshow is disabled in debug mode
+			if (debug?.slideshow === false) {
+				console.error(`🐜 Debug mode is enabled: cancelling ${route} timer`);
+				return;
+			}
 			navigate(route);
 		}, delay);
 	};
