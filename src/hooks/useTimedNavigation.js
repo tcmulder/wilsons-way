@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDebugContext } from '../context/useContexts';
 
@@ -10,37 +10,30 @@ export function useTimedNavigation() {
 	const { debug } = useDebugContext();
 	const timeoutRef = useRef(null);
 
-	// Cancel any pending navigation
-	const cancelNavigation = useCallback(() => {
-		if (timeoutRef.current) {
-			clearTimeout(timeoutRef.current);
-			timeoutRef.current = null;
-		}
-	}, []);
-
-	// Stop auto-navigation when slideshow is disabled in debug mode
-	useEffect(() => {
-		if (debug?.slideshow === false) {
-			cancelNavigation();
-		}
-	}, [debug?.slideshow, cancelNavigation]);
-
-	// Clear any pending timeout when the component using this hook unmounts
+	// Clear any pending timeout on unmount
 	useEffect(() => {
 		return () => {
-			cancelNavigation();
+			if (timeoutRef.current) {
+				clearTimeout(timeoutRef.current);
+				timeoutRef.current = null;
+			}
 		};
-	}, [cancelNavigation]);
+	}, []);
 
 	// Navigate after a timeout
 	const timedNavigate = ({ route, delay }) => {
-		if (debug?.slideshow === false) {
-			return;
-		}
 
 		// If there is already a scheduled navigation, clear it first
 		if (timeoutRef.current) {
 			clearTimeout(timeoutRef.current);
+		}
+		
+		// Bail if slideshow is disabled in debug mode
+		if (debug?.slideshow === false) {
+			console.error(
+				`🐜 Debug mode is enabled: canceling timed navigation to route ${route}`,
+			);
+			return;
 		}
 
 		// Schedule the navigation
@@ -49,5 +42,5 @@ export function useTimedNavigation() {
 		}, delay);
 	};
 
-	return { timedNavigate, cancelNavigation };
+	return { timedNavigate };
 }
