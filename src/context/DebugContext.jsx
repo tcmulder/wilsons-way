@@ -21,6 +21,7 @@ export function DebugContextProvider({ children }) {
       router: false,
       outlines: false,
       immortal: false,
+      slideshow: true,
     };
 
     // Get the parameters and bail if debut is not true

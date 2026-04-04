@@ -332,6 +332,13 @@ export const Debug = () => {
 						title="Automatically start running when the level loads"
 					/>
 					<DebugCheckbox
+						label="🎬 Slideshow"
+						param="slideshow"
+						value={debug?.slideshow ?? true}
+						setValue={(val) => setDebug({ ...debug, slideshow: val })}
+						title="Use timed page transitions when enabled"
+					/>
+					<DebugCheckbox
 						label="🔀 Router"
 						param="router"
 						value={debug?.router}
