@@ -43,10 +43,10 @@ define( 'SHELF_RUNNER_LEADERBOARD_COUNT', 10 ); // Max number of entries kept on
 define(
 	'SHELF_RUNNER_MESSAGES',
 	array(
-		'level_1_outro' => __( 'Level 1 outro', 'shelf-runner' ),
-		'level_2_outro' => __( 'Level 2 outro', 'shelf-runner' ),
-		'level_3_outro' => __( 'Level 3 outro', 'shelf-runner' ),
-		'level_4_outro' => __( 'Level 4 outro', 'shelf-runner' ),
+		'level_1_intro' => __( 'Level 1 intro', 'shelf-runner' ),
+		'level_2_intro' => __( 'Level 2 intro', 'shelf-runner' ),
+		'level_3_intro' => __( 'Level 3 intro', 'shelf-runner' ),
+		'level_4_intro' => __( 'Level 4 intro', 'shelf-runner' ),
 		'winner'        => __( 'Winner message', 'shelf-runner' ),
 		'loser'         => __( 'Loser message', 'shelf-runner' ),
 	)

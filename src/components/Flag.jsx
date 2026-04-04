@@ -17,7 +17,7 @@ const Flag = (props) => {
 
 	// Auto-navigate to outro page
 	useEffect(() => {
-		timedNavigate({ route: `/level/${levelNumber}/outro`, delay: 3000 });
+		timedNavigate({ route: `/level/${levelNumber}/score`, delay: 3000 });
 	}, [levelNumber, timedNavigate]);
 
 	// Animate up the flag

@@ -1,21 +1,16 @@
-import { useEffect } from 'react';
-import { useTimedNavigation } from '../hooks/useTimedNavigation';
-import Message from '../components/Message';
+import Flag from '../components/Flag';
+import SVGFlag from '../images/pages/level-3-flag.svg?react';
 
 /**
  * Level 3 completion screen.
- * 
- * @returns {React.ReactNode} The Level3OutroPage component.`
+ *
+ * @returns {React.ReactNode} The Level3OutroPage component.
  */
 const Level3OutroPage = () => {
-	const { timedNavigate } = useTimedNavigation();
-	useEffect(() => {
-		timedNavigate({ route: '/level/4', delay: 3000 });
-	}, [timedNavigate]);
+	const levelNumber = 3;
 	return (
 		<div>
-			<h1>Level 3 Outro</h1>
-			<Message messageKey="level_3_outro" />
+			<Flag svg={SVGFlag} levelNumber={levelNumber} />
 		</div>
 	);
 };

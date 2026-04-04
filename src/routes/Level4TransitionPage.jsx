@@ -4,19 +4,19 @@ import { useTimedNavigation } from '../hooks/useTimedNavigation';
 import SVGLevel1Transition from '../images/pages/level-1-transition.svg?react';
 
 /**
- * Level 1 transition page.
- * 
- * @returns {React.ReactNode} The Level1TransitionPage component.
+ * Level 4 transition page (final level — next screen is high score).
+ *
+ * @returns {React.ReactNode} The Level4TransitionPage component.
  */
-const Level1TransitionPage = () => {
+const Level4TransitionPage = () => {
 	const { timedNavigate } = useTimedNavigation();
 	const svgRef = useRef(null);
-	const levelNumber = 1;
+	const levelNumber = 4;
 
-	// Auto-navigate to next level
+	// Auto-navigate to high score form (final level — no /level/5 route)
 	useEffect(() => {
-		timedNavigate({ route: `/level/${levelNumber + 1}/intro`, delay: 3000 });
-	}, [ levelNumber, timedNavigate ]);
+		timedNavigate({ route: '/form', delay: 3000 });
+	}, [levelNumber, timedNavigate]);
 
 	// Animate the transition
 	useEffect(() => {
@@ -37,4 +37,4 @@ const Level1TransitionPage = () => {
 	);
 };
 
-export default Level1TransitionPage;
+export default Level4TransitionPage;

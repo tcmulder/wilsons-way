@@ -164,7 +164,7 @@ add_action(
 /**
  * Message content endpoint (single key)
  *
- * Example: /wp-json/shelf-runner/v1/message/level_1_outro
+ * Example: /wp-json/shelf-runner/v1/message/level_1_intro
  */
 add_action(
 	'rest_api_init',

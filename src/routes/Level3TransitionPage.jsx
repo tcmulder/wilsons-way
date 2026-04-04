@@ -4,14 +4,14 @@ import { useTimedNavigation } from '../hooks/useTimedNavigation';
 import SVGLevel1Transition from '../images/pages/level-1-transition.svg?react';
 
 /**
- * Level 1 transition page.
- * 
- * @returns {React.ReactNode} The Level1TransitionPage component.
+ * Level 3 transition page.
+ *
+ * @returns {React.ReactNode} The Level3TransitionPage component.
  */
-const Level1TransitionPage = () => {
+const Level3TransitionPage = () => {
 	const { timedNavigate } = useTimedNavigation();
 	const svgRef = useRef(null);
-	const levelNumber = 1;
+	const levelNumber = 3;
 
 	// Auto-navigate to next level
 	useEffect(() => {
@@ -37,4 +37,4 @@ const Level1TransitionPage = () => {
 	);
 };
 
-export default Level1TransitionPage;
+export default Level3TransitionPage;
