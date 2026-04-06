@@ -1,18 +1,20 @@
-import { useRef, useCallback, useEffect, useState } from 'react';
 import { gsap } from 'gsap';
-import { useSettingsContext, useLevelContext, useGameplayContext, useDebugContext, useCharacterContext } from '../context/useContexts';
-import { loadLevel } from '../util/loadLevel';
-import SVG from '../components/SVG';
-import { Interface } from '../components/Interface';
+import { useRef, useCallback, useEffect, useState } from 'react';
+
 import Character from '../components/Character';
 import Gameplay from '../components/Gameplay';
-import { aniLevel } from '../util/aniLevel';
+import { Interface } from '../components/Interface';
+import SVG from '../components/SVG';
+import { useSettingsContext, useLevelContext, useGameplayContext, useDebugContext, useCharacterContext } from '../context/useContexts';
 import { useCustomLevelSvg } from '../hooks/useCustomLevelSvg';
+import { aniLevel } from '../util/aniLevel';
 import { doRun, doPause } from '../util/doMovement';
+import { loadLevel } from '../util/loadLevel';
+
 import '../css/board.css';
-import '../css/parallax.css';
-import '../css/obstacles.css';
 import '../css/milestones.css';
+import '../css/obstacles.css';
+import '../css/parallax.css';
 
 const Countdown = ({ countdown, setCountdown }) => {
 	const { debug } = useDebugContext();

@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
-import { useScoreContext } from '../context/useContexts';
+
 import { Page } from '../components/Page';
+import { useScoreContext } from '../context/useContexts';
 import { useTimedNavigation } from '../hooks/useTimedNavigation';
 
 /**

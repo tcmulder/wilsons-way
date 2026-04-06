@@ -1,5 +1,5 @@
-import { useSetLevel } from '../hooks/useSetLevel';
 import Level from '../components/Level';
+import { useSetLevel } from '../hooks/useSetLevel';
 
 /**
  * Level 3 gameplay page.

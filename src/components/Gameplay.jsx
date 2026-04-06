@@ -1,7 +1,7 @@
-import { useSetupGameplayElements } from '../hooks/useSetupGameplayEls';
-import { useSetupGameplayElevations } from '../hooks/useSetupGameplayElevations';
-import { useSetupGameplayNavigation } from '../hooks/useSetupGameplayNavigation';
 import { useMovementTicker } from '../hooks/useMovementTicker';
+import { useSetupGameplayElevations } from '../hooks/useSetupGameplayElevations';
+import { useSetupGameplayElements } from '../hooks/useSetupGameplayEls';
+import { useSetupGameplayNavigation } from '../hooks/useSetupGameplayNavigation';
 
 /**
  * Orchestrates gameplay hooks: element refs, elevations, and movement ticker. Renders nothing.

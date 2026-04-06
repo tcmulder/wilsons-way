@@ -1,35 +1,28 @@
+import HighScorePage from './HighScorePage';
 import IntroPage from './IntroPage';
-
+import LeaderboardPage from './LeaderboardPage';
+import Level0Page from './Level0Page';
 import Level1IntroPage from './Level1IntroPage';
-import Level1Page from './Level1Page';
 import Level1OutroPage from './Level1OutroPage';
+import Level1Page from './Level1Page';
 import Level1ScorePage from './Level1ScorePage';
 import Level1TransitionPage from './Level1TransitionPage';
-
 import Level2IntroPage from './Level2IntroPage';
-import Level2Page from './Level2Page';
 import Level2OutroPage from './Level2OutroPage';
+import Level2Page from './Level2Page';
 import Level2ScorePage from './Level2ScorePage';
 import Level2TransitionPage from './Level2TransitionPage';
-
 import Level3IntroPage from './Level3IntroPage';
-import Level3Page from './Level3Page';
 import Level3OutroPage from './Level3OutroPage';
+import Level3Page from './Level3Page';
 import Level3ScorePage from './Level3ScorePage';
 import Level3TransitionPage from './Level3TransitionPage';
-
 import Level4IntroPage from './Level4IntroPage';
-import Level4Page from './Level4Page';
 import Level4OutroPage from './Level4OutroPage';
+import Level4Page from './Level4Page';
 import Level4ScorePage from './Level4ScorePage';
-
-import HighScorePage from './HighScorePage';
-import LeaderboardPage from './LeaderboardPage';
-
 import LostPage from './LostPage';
 import RestartPage from './RestartPage';
-
-import Level0Page from './Level0Page';
 
 /**
  * Route config: debug label (for debug nav), path, and element for the pages of the game.

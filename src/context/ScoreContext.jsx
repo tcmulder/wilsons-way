@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+
 import { ScoreContext } from './useContexts';
 import { useSettingsContext } from './useContexts';
 

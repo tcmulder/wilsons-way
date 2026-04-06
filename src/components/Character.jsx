@@ -1,8 +1,10 @@
 import { useRef, useCallback, useEffect } from 'react';
+
 import { useDebugContext, useSettingsContext, useCharacterContext, useGameplayContext, useLevelContext } from '../context/useContexts';
-import SVG from './SVG';
 import { createAniSprite } from '../util/aniSprite';
 import { useCharacterMovement } from '../util/doMovement';
+import SVG from './SVG';
+
 import '../css/character.css';
 
 /**

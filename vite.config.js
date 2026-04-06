@@ -1,9 +1,9 @@
 import { readFileSync } from 'node:fs';
-import { defineConfig, normalizePath } from 'vite';
-import imageSize from 'image-size';
 import react from '@vitejs/plugin-react';
-import svgr from 'vite-plugin-svgr';
+import imageSize from 'image-size';
+import { defineConfig, normalizePath } from 'vite';
 import usePHP, { EPHPError } from 'vite-plugin-php';
+import svgr from 'vite-plugin-svgr';
 
 const IMG_METADATA_PREFIX = '\0img-metadata:';
 const IMG_METADATA_QUERY = '?metadata';

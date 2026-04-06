@@ -1,14 +1,14 @@
 import { useNavigate } from 'react-router-dom';
 
 import { EightBit, EightBitPill } from '../components/EightBit';
+import { Image } from '../components/Image';
+import { Page } from '../components/Page';
 import { useSettingsContext } from '../context/useContexts';
 import { useGameAudio } from '../hooks/useSFX';
-import { Page } from '../components/Page';
-import { Image } from '../components/Image';
 
+import logo from '../images/baired-logo.svg?metadata';
 import backgroundUrl from '../images/pages/page-bg-light.svg';
 import heading from '../images/text/baird-quest.svg?metadata';
-import logo from '../images/baired-logo.svg?metadata';
 import wilson from '../images/wilson.svg?metadata';
 
 import '../css/pages/intro-page.css';

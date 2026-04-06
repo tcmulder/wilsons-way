@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+
 import { Page } from '../components/Page';
 import { useTimedNavigation } from '../hooks/useTimedNavigation';
 

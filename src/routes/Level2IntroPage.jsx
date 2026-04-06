@@ -1,10 +1,12 @@
 import { useNavigate } from 'react-router-dom';
+
+import { EightBit, EightBitPill } from '../components/EightBit';
+import { Image } from '../components/Image';
 import Message from '../components/Message';
 import { Page } from '../components/Page';
-import { EightBit, EightBitPill } from '../components/EightBit';
+
 import backgroundUrl from '../images/pages/page-bg-dark.svg';
 import levelHeading from '../images/text/level-2.svg?metadata';
-import { Image } from '../components/Image';
 
 /**
  * Level 2 introduction screen.

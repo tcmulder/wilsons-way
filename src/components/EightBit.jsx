@@ -1,4 +1,5 @@
 import SVGCircle from '../images/8bit-circle.svg?react';
+
 import '../css/8bit.css';
 
 /**

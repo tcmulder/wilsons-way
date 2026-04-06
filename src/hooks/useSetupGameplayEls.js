@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+
 import { useGameplayContext, useLevelContext } from '../context/useContexts';
 import {
 	getShelves,

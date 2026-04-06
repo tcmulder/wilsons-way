@@ -1,13 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+
 import {
 	useDebugContext,
 	useSettingsContext,
 	useCharacterContext,
 	useScoreContext,
 } from '../context/useContexts';
-import { routes } from '../routes';
 import { useDebugDropLevel } from '../hooks/useDebugDropLevel';
+import { routes } from '../routes';
 
 import '../css/debug.css';
 
