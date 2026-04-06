@@ -52,6 +52,10 @@ body {
 	}
 }
 
+svg {
+	pointer-events: none;
+}
+
 .sr {
 	/* Orientation warning */
 	@media (max-width: 480px) and (orientation: portrait) {
