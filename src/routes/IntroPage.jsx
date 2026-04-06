@@ -3,7 +3,10 @@ import { EightBit, EightBitPill } from '../components/EightBit';
 import { useSettingsContext } from '../context/useContexts';
 import { useGameAudio } from '../hooks/useSFX';
 import { Page } from '../components/Page';
+import backgroundUrl from '../images/pages/page-bg-light.svg';
 import headingUrl from '../images/text/baird-quest.svg';
+import logoUrl from '../images/baired-logo.svg';
+import wilsonUrl from '../images/wilson.svg';
 
 /**
  * Intro page
@@ -13,17 +16,16 @@ const IntroPage = () => {
 	const { makeMusic, makeSFX, setMakeMusic, setMakeSFX } = useSettingsContext();
 	useGameAudio();
 	return (
-		<Page className="sr-page--intro">
-			<h1>
+		<Page className="sr-page--intro" style={{ '--sr-bg-image': `url(${backgroundUrl})` }}>
+			
+			<img className="sr-page__logo" src={logoUrl} alt="Baird Company Logo" />
+			
+			<h1 className="sr-page__heading">
 				<img src={headingUrl} alt="Baird Quest" />
 			</h1>
-			<p>This is an introductory page, and content is TBD.</p>
-			<div style={{width: '10cqmax'}}>
-				<EightBit bg={<EightBitPill />}>
-					<button onClick={() => navigate('/level/1')}>Start Game</button>
-				</EightBit>
-			</div>
-			<div>
+			
+			<div className="sr-page__controls">
+
 				<label>
 					<input
 						type="checkbox"
@@ -32,10 +34,13 @@ const IntroPage = () => {
 						onChange={(e) => setMakeMusic(e.target.checked)}
 						aria-label={`Music is ${makeMusic ? 'on' : 'off'}`}
 					/>
-					<span>Music is {makeMusic ? 'on' : 'off'}</span>
+					<span>Music</span>
 				</label>
-			</div>
-			<div>
+
+				<EightBit bg={<EightBitPill />}>
+					<button onClick={() => navigate('/level/1')}>Start Game</button>
+				</EightBit>
+
 				<label>
 					<input
 						type="checkbox"
@@ -44,9 +49,11 @@ const IntroPage = () => {
 						onChange={(e) => setMakeSFX(e.target.checked)}
 						aria-label={`SFX is ${makeSFX ? 'on' : 'off'}`}
 					/>
-					<span>SFX is {makeSFX ? 'on' : 'off'}</span>
+					<span>Sound Effects</span>
 				</label>
+
 			</div>
+			<img className="sr-page__wilson" src={wilsonUrl} alt="Wilson" />
 		</Page>
 	);
 };

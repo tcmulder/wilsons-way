@@ -87,15 +87,15 @@ body {
 		font-family: var(--sr-ff);
 	}
 
-	:is(h1, h2, h3, h4, h5, h6, strong) {
+	:where(h1, h2, h3, h4, h5, h6, strong) {
 		font-weight: 400;
 	}
 
-	:is(h1, h2, h3, h4, h5, h6, p:has(> strong:only-child)) {
+	:where(h1, h2, h3, h4, h5, h6, p:has(> strong:only-child)) {
 		margin-bottom: 0.5em;
 	}
 
-	:is(h1, h2, h3, h4, h5, h6):not(:first-child),
+	:where(h1, h2, h3, h4, h5, h6):not(:first-child),
 	p:not(:first-child):has(> strong:only-child) {
 		margin-top: 1em;
 	}

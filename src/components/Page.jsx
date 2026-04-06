@@ -8,7 +8,7 @@ import '../css/page.css';
  * @param {string} props.className Class name(s) to apply to the wrapper.
  * @param {React.CSSProperties} [props.style] Applied to the outer `.sr-page` element.
  */
-const Page = ({ children, className = '', style }) => {
+export const Page = ({ children, className = '', style }) => {
 	return (
 		<div className={`sr-page${className && ` ${className}`}`} style={style}>
 			<div className="sr-page__inner">{children}</div>
@@ -16,5 +16,3 @@ const Page = ({ children, className = '', style }) => {
 	);
 };
 
-export { Page };
-export default Page;

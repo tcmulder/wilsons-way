@@ -11,11 +11,29 @@
 	max-height: 100cqh;
 	margin-inline: auto;
 }
+.sr-page--intro {
+	color: var(--sr-c-black);
+	.sr-page__logo {
+		display: block;
+		margin: 2.5em auto 1.5em;
+	}
+	.sr-page__heading {
+		margin-bottom: 0.3em;
+	}
+	.sr-page__controls {
+		display: flex;
+		justify-content: space-around;
+	}
+	.sr-page__wilson {
+		display: block;
+		margin: 0.4em auto 0;
+	}
+}
 .sr-page--level-intro {
 	.sr-page__heading {
 		display: flex;
 		justify-content: center;
-		margin-block: 1.7em 0.8em !important;
+		margin-block: 1.7em 0.8em;
 	}
 	.sr-page__button {
 		margin-top: 1.5em;
