@@ -1,11 +1,51 @@
-import { defineConfig } from 'vite';
+import { readFileSync } from 'node:fs';
+import { defineConfig, normalizePath } from 'vite';
+import imageSize from 'image-size';
 import react from '@vitejs/plugin-react';
 import svgr from 'vite-plugin-svgr';
 import usePHP, { EPHPError } from 'vite-plugin-php';
 
+const IMG_METADATA_PREFIX = '\0img-metadata:';
+const IMG_METADATA_QUERY = '?metadata';
+
+/** `*.{png,jpg,jpeg,gif,webp,svg}?metadata` → default export `{ src, width, height }` */
+function imageMetadata() {
+	return {
+		name: 'vite-plugin-image-metadata',
+		enforce: 'pre',
+		async resolveId(source, importer, options) {
+			if (!source.endsWith(IMG_METADATA_QUERY)) return null;
+			const withoutQuery = source.slice(0, -IMG_METADATA_QUERY.length);
+			const resolved = await this.resolve(withoutQuery, importer, {
+				skipSelf: true,
+				...options,
+			});
+			if (!resolved) return null;
+			return IMG_METADATA_PREFIX + resolved.id;
+		},
+		load(id) {
+			if (!id.startsWith(IMG_METADATA_PREFIX)) return null;
+			const filePath = id.slice(IMG_METADATA_PREFIX.length);
+			this.addWatchFile(filePath);
+			const dims = imageSize(readFileSync(filePath));
+			const w = dims.width;
+			const h = dims.height;
+			if (w == null || h == null) {
+				this.warn(`image-metadata: could not read dimensions for ${filePath}`);
+			}
+			const specifier = `${normalizePath(filePath)}?url`;
+			return [
+				`import src from ${JSON.stringify(specifier)};`,
+				`export default { src, width: ${w ?? 'undefined'}, height: ${h ?? 'undefined'} };`,
+			].join('\n');
+		},
+	};
+}
+
 export default defineConfig(({ command }) => {
 	const config = {
 		plugins: [
+			imageMetadata(),
 			react(),
 			svgr({
 				include: '**/*.svg?react',

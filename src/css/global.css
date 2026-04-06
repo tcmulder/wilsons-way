@@ -24,7 +24,6 @@
 	--sr-c-yellow: #FEC900;
 }
 
-
 /**
  * Styling common to all pages
  */
@@ -78,6 +77,8 @@ body {
 }
 
 .sr-typography {
+	/* Establish base width for running calculations */
+	--sr-w: 1440;
 	/* Base font sizes off of .sr-stage's width or height (allows simple usage of em units within) */
 	font-size: 2cqmax;
 	color: var(--sr-c-white);

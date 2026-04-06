@@ -1,12 +1,17 @@
 import { useNavigate } from 'react-router-dom';
+
 import { EightBit, EightBitPill } from '../components/EightBit';
 import { useSettingsContext } from '../context/useContexts';
 import { useGameAudio } from '../hooks/useSFX';
 import { Page } from '../components/Page';
+import { Image } from '../components/Image';
+
 import backgroundUrl from '../images/pages/page-bg-light.svg';
-import headingUrl from '../images/text/baird-quest.svg';
-import logoUrl from '../images/baired-logo.svg';
-import wilsonUrl from '../images/wilson.svg';
+import heading from '../images/text/baird-quest.svg?metadata';
+import logo from '../images/baired-logo.svg?metadata';
+import wilson from '../images/wilson.svg?metadata';
+
+import '../css/pages/intro-page.css';
 
 /**
  * Intro page
@@ -18,10 +23,10 @@ const IntroPage = () => {
 	return (
 		<Page className="sr-page--intro" style={{ '--sr-bg-image': `url(${backgroundUrl})` }}>
 			
-			<img className="sr-page__logo" src={logoUrl} alt="Baird Company Logo" />
+			<Image {...logo} className="sr-page__logo" alt="Baird Company Logo" />
 			
 			<h1 className="sr-page__heading">
-				<img src={headingUrl} alt="Baird Quest" />
+				<Image {...heading} alt="Baird Quest" />
 			</h1>
 			
 			<div className="sr-page__controls">
@@ -53,7 +58,7 @@ const IntroPage = () => {
 				</label>
 
 			</div>
-			<img className="sr-page__wilson" src={wilsonUrl} alt="Wilson" />
+			<Image {...wilson} className="sr-page__wilson" alt="Wilson" />
 		</Page>
 	);
 };
