@@ -40,7 +40,7 @@ const IntroPage = () => {
 
 				<EightBitButton
 					label="Start Game"
-					onClick={() => navigate('/level/1')}
+					onClick={() => navigate('/level/1/intro')}
 				/>
 
 				<EightBitToggle
