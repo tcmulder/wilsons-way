@@ -2,6 +2,8 @@
 	--sr-c-bg-8bit: var(--sr-c-yellow);
 	--sr-c-bd-8bit: var(--sr-c-gold);
 	--sr-c-fg-8bit: var(--sr-c-black);
+	--sr-sw-8bit: 4;
+	--sr-bd-8bit: 8cqb;
 }
 .sr-8bit {
 	display: inline-grid;
@@ -29,7 +31,7 @@
 		height: 100%;
 		font-size: 1em;
 		text-align: center;
-		color: inherit;
+		color: var(--sr-c-fg-8bit);
 		white-space: pre;
 	}
 }
@@ -41,7 +43,6 @@
 	height: 100%;
 	will-change: transform; /* needed to fix subpixel rending issues */
 	&::before {
-		--sr-bd-8bit: 8cqb;
 		content: '';
 		order: 2;
 		flex: 1;
@@ -65,9 +66,18 @@
 		height: 100%;
 	}
 }
+.sr-8bit--button {
+	&:active {
+		--sr-c-bg-8bit: var(--sr-c-gold);
+		--sr-c-bd-8bit: var(--sr-c-yellow);
+		--sr-c-fg-8bit: white;
+	}
+}
 .sr-8bit--toggle {
+	position: relative;
 	display: flex;
 	flex-direction: column;
+	align-items: center;
 	white-space: pre;
 
 	input {
@@ -75,24 +85,68 @@
 		position: absolute;
 	}
 
-	&.sr-8bit {
-		position: relative;
+	.sr-8bit__bg {
+		--sr-c-bg-8bit: var(--sr-c-sky);
+		--sr-c-bd-8bit: var(--sr-c-black);
+		--sr-c-fg-8bit: var(--sr-c-blue);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.5em;
+		order: 2;
+
+		&::before,
+		&::after {
+			font-size: 1.5em;
+		}
+		
+		&::before {
+			content: "ON";
+			color: var(--sr-c-azure);
+		}
+
+		&::after {
+			content: "OFF";
+			color: var(--sr-c-black);
+		}
+
+		svg {
+			width: 3.5em;
+		}
 	}
 
 	.sr-8bit__fg {
-		--sr-c-bg-8bit: red;
-		--sr-c-bd-8bit: red;
-		--sr-c-fg-8bit: red;
-		position: absolute;
-		top: 50%;
-		transform: translateY(-50%);
-
+		pointer-events: none;
+		justify-content: center;
+		font-size: 1.8em;
+		text-transform: uppercase;
 	}
 
-	.sr-8bit__bg {
-		--sr-c-bg-8bit: blue;
-		--sr-c-bd-8bit: blue;
-		--sr-c-fg-8bit: blue;
-		height: 1em;
+	path {
+		transition: all 0.3s ease-out;
 	}
+
+	/* On state */
+	path:first-child {
+		--sr-c-bg-8bit: var(--sr-c-azure);
+	}
+
+	/* Off state */
+	&:has(input:not(:checked)) {
+		.sr-8bit__bg {
+			&::before {
+				color: var(--sr-c-black);
+			}
+			&::after {
+				color: var(--sr-c-azure);
+			}
+		}
+		path:first-child {
+			--sr-c-bg-8bit: var(--sr-c-gray);
+		}
+		path:nth-child(3), path:nth-child(4) {
+			transform: translate(2.3em);
+		}
+	}
+
 }

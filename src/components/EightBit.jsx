@@ -1,4 +1,5 @@
-import SVGCircle from '../images/8bit-circle.svg?react';
+import SVGCircle from '../images/interface/8bit-circle.svg?react';
+import SVGToggleBar from '../images/interface/8bit-toggle-bar.svg?react';
 
 import '../css/8bit.css';
 
@@ -9,16 +10,17 @@ import '../css/8bit.css';
  * @returns 
  */
 export const EightBit = (props) => {
-	const { bg, className = '', children, style } = props;
+	const { bg, className = '', children, style, tag = 'div' } = props;
+	const Tag = tag;
 	return (
-		<div className={`sr-8bit${className && ` ${className}`}`} style={style}>
+		<Tag className={`sr-8bit${className && ` ${className}`}`} style={style}>
 			<div className="sr-8bit__bg">
 				{bg}
 			</div>
 			<div className="sr-8bit__fg">
 				{children}
 			</div>
-		</div>
+		</Tag>
 	);
 };
 
@@ -39,6 +41,17 @@ export const EightBitPill = () => {
 		<div className="sr-8bit__pill">
 			<div className="sr-8bit__pill-piece"><SVGCircle width="27.5" /></div>
 			<div className="sr-8bit__pill-piece"><SVGCircle width="27.5" viewBox="27.5 0 55 55" /></div>
+		</div>
+	);
+};
+
+/**
+ * Rounded 8bit toggle bar
+ */
+export const EightBitToggleBar = () => {
+	return (
+		<div className="sr-8bit__toggle-bar">
+			<SVGToggleBar />
 		</div>
 	);
 };
@@ -68,11 +81,9 @@ export const EightBitButton = (props) => {
 export const EightBitToggle = (props) => {
 	const { label, value, onChange } = props;
 	return (
-		<EightBit bg={<div><EightBitCircle /><EightBitPill /></div>} className="sr-8bit--toggle">
-			<label>
-				<span>{label}</span>
-				<input type="checkbox" checked={value} onChange={onChange} />
-			</label>
+		<EightBit bg={<EightBitToggleBar />} className="sr-8bit--toggle" tag="label">
+			{label}
+			<input type="checkbox" checked={value} onChange={onChange} />
 		</EightBit>
 	);
 };

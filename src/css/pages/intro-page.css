@@ -5,15 +5,20 @@
 		margin: 2.5em auto 1.5em;
 	}
 	.sr-page__heading {
-		margin-bottom: 0.3em;
+		margin-bottom: 0;
 	}
 	.sr-page__controls {
 		display: flex;
 		justify-content: space-around;
+		align-items: center;
+
+		.sr-8bit--toggle {
+			width: 6em;
+		}
 	}
 	.sr-page__wilson {
 		position: absolute;
-		bottom: 1.8em;
+		bottom: 1.6em;
 		left: 50%;
 		transform: translateX(-50%);
 	}

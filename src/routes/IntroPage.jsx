@@ -33,9 +33,9 @@ const IntroPage = () => {
 			<div className="sr-page__controls">
 
 				<EightBitToggle
-					label={`Music is ${makeMusic ? 'on' : 'off'}`}
-					value={makeMusic}
-					onChange={(e) => setMakeMusic(e.target.checked)}
+					label={'Sound Effects'}
+					value={makeSFX}
+					onChange={(e) => setMakeSFX(e.target.checked)}
 				/>
 
 				<EightBitButton
@@ -44,9 +44,9 @@ const IntroPage = () => {
 				/>
 
 				<EightBitToggle
-					label={`Sound Effects is ${makeSFX ? 'on' : 'off'}`}
-					value={makeSFX}
-					onChange={(e) => setMakeSFX(e.target.checked)}
+					label={'Music'}
+					value={makeMusic}
+					onChange={(e) => setMakeMusic(e.target.checked)}
 				/>
 
 			</div>
