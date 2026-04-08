@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 
-import { EightBit, EightBitPill } from '../components/EightBit';
+import { EightBitButton } from '../components/EightBit';
 import { Image } from '../components/Image';
 import Message from '../components/Message';
 import { Page } from '../components/Page';
@@ -23,9 +23,10 @@ const Level2IntroPage = () => {
 			</h1>
 			<Message messageKey={`level_${levelNumber}_intro`} />
 			<div className="sr-page__button">
-				<EightBit bg={<EightBitPill />}>
-					<button onClick={() => navigate(`/level/${levelNumber}`)}>Start Level {levelNumber}</button>
-				</EightBit>
+				<EightBitButton
+					label={`Start Level ${levelNumber}`}
+					onClick={() => navigate(`/level/${levelNumber}`)}
+				/>
 			</div>
 		</Page>
 	);

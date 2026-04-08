@@ -28,7 +28,7 @@ export const EightBit = (props) => {
  * @returns {React.ReactNode} The EightBit component.
  */
 export const EightBitCircle = () => {
-	return <SVGCircle />;
+	return <div className="sr-8bit__circle"><SVGCircle /></div>;
 };
 
 /**
@@ -40,5 +40,39 @@ export const EightBitPill = () => {
 			<div className="sr-8bit__pill-piece"><SVGCircle width="27.5" /></div>
 			<div className="sr-8bit__pill-piece"><SVGCircle width="27.5" viewBox="27.5 0 55 55" /></div>
 		</div>
+	);
+};
+
+/**
+ * @param {Object} props
+ * @param {string} props.label
+ * @param {() => void} props.onClick
+ * @returns {React.ReactNode}
+ */
+export const EightBitButton = (props) => {
+	const { label, onClick } = props;
+	return (
+		<EightBit bg={<EightBitPill />} className="sr-8bit--button">
+			<button type="button" onClick={onClick}>{label}</button>
+		</EightBit>
+	);
+};
+
+/**
+ * @param {Object} props
+ * @param {string} props.label
+ * @param {boolean} props.value
+ * @param {import('react').ChangeEventHandler<HTMLInputElement>} props.onChange
+ * @returns {React.ReactNode}
+ */
+export const EightBitToggle = (props) => {
+	const { label, value, onChange } = props;
+	return (
+		<EightBit bg={<div><EightBitCircle /><EightBitPill /></div>} className="sr-8bit--toggle">
+			<label>
+				<span>{label}</span>
+				<input type="checkbox" checked={value} onChange={onChange} />
+			</label>
+		</EightBit>
 	);
 };

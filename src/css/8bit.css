@@ -65,3 +65,34 @@
 		height: 100%;
 	}
 }
+.sr-8bit--toggle {
+	display: flex;
+	flex-direction: column;
+	white-space: pre;
+
+	input {
+		opacity: 0;
+		position: absolute;
+	}
+
+	&.sr-8bit {
+		position: relative;
+	}
+
+	.sr-8bit__fg {
+		--sr-c-bg-8bit: red;
+		--sr-c-bd-8bit: red;
+		--sr-c-fg-8bit: red;
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+
+	}
+
+	.sr-8bit__bg {
+		--sr-c-bg-8bit: blue;
+		--sr-c-bd-8bit: blue;
+		--sr-c-fg-8bit: blue;
+		height: 1em;
+	}
+}

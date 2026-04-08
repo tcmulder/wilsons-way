@@ -1,10 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 
-import { EightBit, EightBitPill } from '../components/EightBit';
-import { Image } from '../components/Image';
-import { Page } from '../components/Page';
 import { useSettingsContext } from '../context/useContexts';
 import { useGameAudio } from '../hooks/useSFX';
+
+import { Image } from '../components/Image';
+import { Page } from '../components/Page';
+import { EightBitButton, EightBitToggle } from '../components/EightBit';
 
 import logo from '../images/baired-logo.svg?metadata';
 import backgroundUrl from '../images/pages/page-bg-light.svg';
@@ -31,31 +32,22 @@ const IntroPage = () => {
 			
 			<div className="sr-page__controls">
 
-				<label>
-					<input
-						type="checkbox"
-						id="music"
-						checked={makeMusic}
-						onChange={(e) => setMakeMusic(e.target.checked)}
-						aria-label={`Music is ${makeMusic ? 'on' : 'off'}`}
-					/>
-					<span>Music</span>
-				</label>
+				<EightBitToggle
+					label={`Music is ${makeMusic ? 'on' : 'off'}`}
+					value={makeMusic}
+					onChange={(e) => setMakeMusic(e.target.checked)}
+				/>
 
-				<EightBit bg={<EightBitPill />}>
-					<button onClick={() => navigate('/level/1')}>Start Game</button>
-				</EightBit>
+				<EightBitButton
+					label="Start Game"
+					onClick={() => navigate('/level/1')}
+				/>
 
-				<label>
-					<input
-						type="checkbox"
-						id="sounds"
-						checked={makeSFX}
-						onChange={(e) => setMakeSFX(e.target.checked)}
-						aria-label={`SFX is ${makeSFX ? 'on' : 'off'}`}
-					/>
-					<span>Sound Effects</span>
-				</label>
+				<EightBitToggle
+					label={`Sound Effects is ${makeSFX ? 'on' : 'off'}`}
+					value={makeSFX}
+					onChange={(e) => setMakeSFX(e.target.checked)}
+				/>
 
 			</div>
 			<Image {...wilson} className="sr-page__wilson" alt="Wilson" />
