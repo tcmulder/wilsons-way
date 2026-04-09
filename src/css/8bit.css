@@ -145,7 +145,7 @@
 			--sr-c-bg-8bit: var(--sr-c-gray);
 		}
 		path:nth-child(3), path:nth-child(4) {
-			transform: translate(2.3em);
+			transform: translate(70px);
 		}
 	}
 
