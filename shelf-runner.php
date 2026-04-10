@@ -40,17 +40,6 @@ define( 'SHELF_RUNNER_CHARACTER_HEIGHT', 18 );  // Base character height (as per
 define( 'SHELF_RUNNER_JUMP_HEIGHT', 27 );       // Base jump height (as percentage of game board height).
 define( 'SHELF_RUNNER_JUMP_HANGTIME', 0.7 );    // Base time in flight during jump (in seconds).
 define( 'SHELF_RUNNER_LEADERBOARD_COUNT', 10 ); // Max number of entries kept on the leaderboard.
-define(
-	'SHELF_RUNNER_MESSAGES',
-	array(
-		'level_1_intro' => __( 'Level 1 intro', 'shelf-runner' ),
-		'level_2_intro' => __( 'Level 2 intro', 'shelf-runner' ),
-		'level_3_intro' => __( 'Level 3 intro', 'shelf-runner' ),
-		'level_4_intro' => __( 'Level 4 intro', 'shelf-runner' ),
-		'winner'        => __( 'Winner message', 'shelf-runner' ),
-		'loser'         => __( 'Loser message', 'shelf-runner' ),
-	)
-);
 
 /**
  * Include admin functionality
