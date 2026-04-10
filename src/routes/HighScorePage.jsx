@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import Message from '../components/Message';
+import { Message } from '../components/Message';
 import { Page } from '../components/Page';
 import { useScoreContext, useDebugContext } from '../context/useContexts';
 import { submitHighScore } from '../util/doHighScore';

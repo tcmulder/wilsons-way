@@ -20,7 +20,7 @@ export function useMovementTicker() {
 	const { setGameplayNavigation } = gameplayContext;
 	const { setCharacterStatus } = useCharacterContext();
 	const { level } = useLevelContext();
-	const { setScore, lives, setLives } = useScoreContext();
+	const { setScore, setTokens, lives, setLives } = useScoreContext();
 	const { playSound } = useGameAudio();
 	const { settings } = useSettingsContext();
 	const { userAdjustedMilestone = 1 } = settings || {};
@@ -40,6 +40,7 @@ export function useMovementTicker() {
 				collisionsArgs: {
 					elsRef,
 					setScore,
+					setTokens,
 					level,
 					playSound,
 					userAdjustedMilestone,
@@ -69,6 +70,7 @@ export function useMovementTicker() {
 		gameplayContext,
 		setCharacterStatus,
 		setScore,
+		setTokens,
 		level,
 		playSound,
 		userAdjustedMilestone,

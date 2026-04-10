@@ -38,6 +38,11 @@ export const trackMovement = (props) => {
 			level: collisionsArgs.level,
 			playSound: collisionsArgs.playSound,
 		},
+		// Passed through to doTokens function
+		tokensArgs: {
+			setTokens: collisionsArgs.setTokens,
+			level: collisionsArgs.level,
+		},
 		// Passed through to doLives function
 		livesArgs: {
 			elsRef: collisionsArgs.elsRef,

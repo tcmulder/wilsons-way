@@ -47,6 +47,23 @@ export const doScoring = (props) => {
 };
 
 /**
+ * Append collectable tokens from `data-tokens` (pipe-separated) to token log state.
+ *
+ * @param {Object} props The properties object
+ * @param {HTMLElement} props.el The element to collect tokens from
+ * @param {Function} props.setTokens Function to append `{ token, level }` entries
+ * @param {number} props.level The current level number
+ */
+export const doTokens = (props) => {
+	const { el, setTokens, level } = props;
+	const tokens = el.dataset.tokens?.split('|') || [];
+	if (!tokens.length) return;
+	tokens.forEach((token) => {
+		setTokens(prev => [ ...prev, { token, level } ]);
+	});
+};
+
+/**
  * Increase or decrease lives.
  * 
  * @param {Object} props The properties object
@@ -233,6 +250,10 @@ const modifyCripple = (props) => {
 	const delta = targetCur - cur;
 	el.dataset.lives = String(delta);
 };
+
+/**
+ * Track collection of tokens.
+ */
 
 /**
  * Modify collided obstacles

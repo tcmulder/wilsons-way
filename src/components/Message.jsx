@@ -1,6 +1,8 @@
 import { gsap } from 'gsap';
 import { SplitText } from 'gsap/SplitText';
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useLayoutEffect, useRef } from 'react';
+
+import { useGetMessage } from '../hooks/useGetMessage';
 
 import '../css/message.css';
 
@@ -13,18 +15,10 @@ gsap.registerPlugin(SplitText);
  * @param {string} props.messageKey The key of the message to display
  * @returns {React.ReactNode} The Message component
  */
-const Message = (props) => {
+export const Message = (props) => {
   const { messageKey } = props;
-  const [message, setMessage] = useState('');
+  const message = useGetMessage(messageKey);
   const containerRef = useRef(null);
-
-  useEffect(() => {
-    fetch(`${window.sr.api}shelf-runner/v1/message/${messageKey}`)
-      .then((response) => response.json())
-      .then((data) => {
-        setMessage(data.data.value);
-      });
-  }, [messageKey]);
 
   useLayoutEffect(() => {
     const el = containerRef.current;
@@ -56,5 +50,3 @@ const Message = (props) => {
     />
   );
 };
-
-export default Message;

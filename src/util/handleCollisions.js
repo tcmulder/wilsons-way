@@ -1,4 +1,4 @@
-import { doScoring, doModifiers, doMilestones, doLives } from './doCrash';
+import { doScoring, doTokens, doModifiers, doMilestones, doLives } from './doCrash';
 
 /**
  * Check to see if two elements overlap
@@ -73,6 +73,7 @@ export const getNearestShelves = (el, els) => {
  * @param {Object} props.collisionArgs Props for checkCollisions (elsRef)
  * @param {Object} props.modifiersArgs Props for doModifiers (elsRef)
  * @param {Object} props.scoringArgs Props for doScoring (setScore, level, playSound)
+ * @param {Object} props.tokensArgs Props for doTokens (setTokens, level)
  * @param {Object} props.livesArgs Props for doLives (lives, setLives, setGameplayNavigation, debug)
  * @param {Object} props.milestonesArgs Props for doMilestones (userAdjustedMilestone)
  */
@@ -81,6 +82,7 @@ export const checkCollisions = (props) => {
 		collisionArgs,
 		modifiersArgs,
 		scoringArgs,
+		tokensArgs,
 		livesArgs,
 		milestonesArgs,
 	} = props;
@@ -94,6 +96,7 @@ export const checkCollisions = (props) => {
 		) {
 			doModifiers({ el, ...modifiersArgs });
 			doScoring({ el, ...scoringArgs, });
+			doTokens({ el, ...tokensArgs });
 			doLives({ el, ...livesArgs });
 			doMilestones({ el, ...milestonesArgs });
 		}

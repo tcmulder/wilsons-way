@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { EightBitButton } from '../components/EightBit';
 import { Image } from '../components/Image';
-import Message from '../components/Message';
+import { Message } from '../components/Message';
 import { Page } from '../components/Page';
 
 import backgroundUrl from '../images/pages/page-bg-dark.svg';
