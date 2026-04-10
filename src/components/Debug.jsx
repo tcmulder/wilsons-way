@@ -144,8 +144,8 @@ const DebugRange = ({ label, param = '', value, setValue, title = '', step = 1 }
 			<span>{label}</span>
 			<input
 				type="range"
-				min="-100"
-				max="300"
+				min="-400"
+				max="500"
 				value={value}
 				onChange={(e) => setStateAndQuery({
 					key: k,
