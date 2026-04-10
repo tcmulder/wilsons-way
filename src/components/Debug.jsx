@@ -178,7 +178,8 @@ const DebugRange = ({ label, param = '', value, setValue, title = '', step = 1 }
  * @param {Function} set Function to set the state.
  */
 const loadState = (should, set) => {
-	if (should) set();
+	// Allow nullish values (0, false) to pass through
+	if (should !== null && should !== undefined) set();
 };
 
 /**

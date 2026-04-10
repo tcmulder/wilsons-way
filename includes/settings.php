@@ -413,7 +413,7 @@ function shelf_runner_settings_init() {
 				printf(
 					'<input name="shelf_runner_settings_lives" value="%s" type="number" step="1" min="1" max="100" required /><p><em>%s</em></p>',
 					esc_attr( (string) get_option( 'shelf_runner_settings_lives' ) ),
-					esc_html( __( 'Having more lives will make the game easier.', 'shelf-runner' ) )
+					esc_html( __( '10 is standard. Having more lives will make the game easier.', 'shelf-runner' ) )
 				);
 			},
 			'shelf_runner_settings',
@@ -427,7 +427,7 @@ function shelf_runner_settings_init() {
 			esc_html( __( 'Milestone duration:', 'shelf-runner' ) ),
 			function () {
 				printf(
-					'<input name="shelf_runner_settings_milestone_duration" value="%s" type="number" step="1" min="1" max="100" required /><p><em>%s</em></p>',
+					'<input name="shelf_runner_settings_milestone_duration" value="%s" type="number" step="1" min="0" max="100" required /><p><em>%s</em></p>',
 					esc_attr( (string) get_option( 'shelf_runner_settings_milestone_duration' ) ),
 					esc_html( __( '50% is average. Lower values will make the duration milestones appear faster.', 'shelf-runner' ) )
 				);
