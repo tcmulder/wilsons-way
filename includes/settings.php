@@ -77,6 +77,54 @@ function shelf_runner_accordion( $content, $summary = '' ) {
 }
 
 /**
+ * Predefined message keys (admin fields and REST message endpoint).
+ *
+ * @return array Keys are message option suffixes; values include 'label' and optional 'desc', 'type'.
+ */
+function shelf_runner_messages() {
+	return array(
+		'winner'        => array(
+			'label' => __( 'Winner message', 'shelf-runner' ),
+		),
+		'loser'         => array(
+			'label' => __( 'Loser message', 'shelf-runner' ),
+		),
+		'level_1_intro' => array(
+			'label' => __( 'Level 1 intro', 'shelf-runner' ),
+		),
+		'level_1_hints' => array(
+			'label' => __( 'Level 1 hints', 'shelf-runner' ),
+			'desc'  => __( 'One hint per line', 'shelf-runner' ),
+			'type'  => 'textarea',
+		),
+		'level_2_intro' => array(
+			'label' => __( 'Level 2 intro', 'shelf-runner' ),
+		),
+		'level_2_hints' => array(
+			'label' => __( 'Level 2 hints', 'shelf-runner' ),
+			'desc'  => __( 'One hint per line', 'shelf-runner' ),
+			'type'  => 'textarea',
+		),
+		'level_3_intro' => array(
+			'label' => __( 'Level 3 intro', 'shelf-runner' ),
+		),
+		'level_3_hints' => array(
+			'label' => __( 'Level 3 hints', 'shelf-runner' ),
+			'desc'  => __( 'One hint per line', 'shelf-runner' ),
+			'type'  => 'textarea',
+		),
+		'level_4_intro' => array(
+			'label' => __( 'Level 4 intro', 'shelf-runner' ),
+		),
+		'level_4_hints' => array(
+			'label' => __( 'Level 4 hints', 'shelf-runner' ),
+			'desc'  => __( 'One hint per line', 'shelf-runner' ),
+			'type'  => 'textarea',
+		),
+	);
+}
+
+/**
  * Establish option page setting sections/fields.
  *
  * @return void
@@ -224,47 +272,7 @@ function shelf_runner_settings_init() {
 
 	} elseif ( 'host' === $mode ) {
 
-		$messages = array(
-			'winner'        => array(
-				'label' => __( 'Winner message', 'shelf-runner' ),
-			),
-			'loser'         => array(
-				'label' => __( 'Loser message', 'shelf-runner' ),
-			),
-			'level_1_intro' => array(
-				'label' => __( 'Level 1 intro', 'shelf-runner' ),
-			),
-			'level_1_hints' => array(
-				'label' => __( 'Level 1 hints', 'shelf-runner' ),
-				'desc'  => __( 'One hint per line', 'shelf-runner' ),
-				'type'  => 'textarea',
-			),
-			'level_2_intro' => array(
-				'label' => __( 'Level 2 intro', 'shelf-runner' ),
-			),
-			'level_2_hints' => array(
-				'label' => __( 'Level 2 hints', 'shelf-runner' ),
-				'desc'  => __( 'One hint per line', 'shelf-runner' ),
-				'type'  => 'textarea',
-			),
-			'level_3_intro' => array(
-				'label' => __( 'Level 3 intro', 'shelf-runner' ),
-			),
-			'level_3_hints' => array(
-				'label' => __( 'Level 3 hints', 'shelf-runner' ),
-				'desc'  => __( 'One hint per line', 'shelf-runner' ),
-				'type'  => 'textarea',
-			),
-			'level_4_intro' => array(
-				'label' => __( 'Level 4 intro', 'shelf-runner' ),
-			),
-			'level_4_hints' => array(
-				'label' => __( 'Level 4 hints', 'shelf-runner' ),
-				'desc'  => __( 'One hint per line', 'shelf-runner' ),
-				'type'  => 'textarea',
-			),
-		);
-
+		$messages = shelf_runner_messages();
 		foreach ( $messages as $key => $message ) {
 			add_option( "shelf_runner_settings_{$key}", '' );
 			register_setting( 'shelf_runner_settings', "shelf_runner_settings_{$key}" );

@@ -178,7 +178,8 @@ add_action(
 					$key = $request['key'];
 
 					// Only allow keys that exist in the predefined messages list.
-					if ( ! isset( SHELF_RUNNER_MESSAGES[ $key ] ) ) {
+					$messages = shelf_runner_messages();
+					if ( ! isset( $messages[ $key ] ) ) {
 						return new WP_REST_Response(
 							array(
 								'data'   => null,
@@ -188,8 +189,16 @@ add_action(
 						);
 					}
 
-					$value = get_option( "shelf_runner_settings_{$key}" );
-					$value = wp_kses_post( apply_filters( 'the_content', $value ) );
+					$value = get_option( "shelf_runner_settings_{$key}", '' );
+					$value = is_string( $value ) ? $value : '';
+
+					// Return text for textarea or HTML for the default wysiwyg editor.
+					$type = $messages[ $key ];
+					if ( 'textarea' === ( $type['type'] ?? '' ) ) {
+						$value = sanitize_textarea_field( $value );
+					} else {
+						$value = wp_kses_post( apply_filters( 'the_content', $value ) );
+					}
 
 					return new WP_REST_Response(
 						array(
