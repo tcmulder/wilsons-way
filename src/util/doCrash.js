@@ -17,6 +17,23 @@ const hasModifier = ({el, modifiers}) => {
 };
 
 /**
+ * Play a sound for an element if it has sound or score data.
+ *
+ * @param {Object} props The properties object
+ * @param {HTMLElement} props.el The element to check for sound/score data
+ * @param {Function} props.playSound Function to play a sound ('positive' | 'negative')
+ */
+export const doSound = (props) => {
+	const { el, playSound } = props;
+	if (!el.dataset.sound && !el.dataset.score) return;
+	const explicit = el.dataset.sound;
+	if (explicit) { playSound(explicit); return; }
+	const rawNum = parseInt(el.dataset.score);
+	if (!rawNum) return;
+	playSound(rawNum > 0 ? 'positive' : 'negative');
+};
+
+/**
  * Apply scoring if an obstacle provides scoring data
  *
  * @param {Object} props The properties object
@@ -25,10 +42,9 @@ const hasModifier = ({el, modifiers}) => {
  * @param {HTMLElement} props.elCharacterMessage The character messaging element
  * @param {Function} props.setScore Function to set the score
  * @param {number} props.level The current level number
- * @param {Function} props.playSound Function to play a sound ('positive' | 'negative')
  */
 export const doScoring = (props) => {
-	const { el, elsRef, setScore, level, playSound } = props;
+	const { el, elsRef, setScore, level } = props;
 	const els = elsRef?.current;
 	const { elCharacterMessage } = els;
 	const rawNum = el.dataset.score;
@@ -36,8 +52,6 @@ export const doScoring = (props) => {
 	const num = parseInt(rawNum);
 	if (!num) return; // e.g. if '0' due to modifier being applied
 	const way = num > 0 ? 'positive' : 'negative';
-	const sound = el.dataset.sound || way;
-	playSound(sound);
 	setScore(prev => [ ...prev, { num, level } ]);
 	showCharacterMessage({
 		el: elCharacterMessage,

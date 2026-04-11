@@ -1,4 +1,4 @@
-import { doScoring, doTokens, doModifiers, doMilestones, doLives } from './doCrash';
+import { doSound, doScoring, doTokens, doModifiers, doMilestones, doLives } from './doCrash';
 
 /**
  * Check to see if two elements overlap
@@ -72,7 +72,8 @@ export const getNearestShelves = (el, els) => {
  * @param {Object} props The properties object
  * @param {Object} props.collisionArgs Props for checkCollisions (elsRef)
  * @param {Object} props.modifiersArgs Props for doModifiers (elsRef)
- * @param {Object} props.scoringArgs Props for doScoring (setScore, level, playSound)
+ * @param {Object} props.soundArgs Props for doSound (playSound)
+ * @param {Object} props.scoringArgs Props for doScoring (setScore, level)
  * @param {Object} props.tokensArgs Props for doTokens (setTokens, level)
  * @param {Object} props.livesArgs Props for doLives (lives, setLives, setGameplayNavigation, debug)
  * @param {Object} props.milestonesArgs Props for doMilestones (userAdjustedMilestone)
@@ -81,6 +82,7 @@ export const checkCollisions = (props) => {
 	const {
 		collisionArgs,
 		modifiersArgs,
+		soundArgs,
 		scoringArgs,
 		tokensArgs,
 		livesArgs,
@@ -95,7 +97,8 @@ export const checkCollisions = (props) => {
 			checkOverlap({ el1: elCharacterCrashArea, el2: el })
 		) {
 			doModifiers({ el, ...modifiersArgs });
-			doScoring({ el, ...scoringArgs, });
+			doSound({ el, ...soundArgs });
+			doScoring({ el, ...scoringArgs });
 			doTokens({ el, ...tokensArgs });
 			doLives({ el, ...livesArgs });
 			doMilestones({ el, ...milestonesArgs });

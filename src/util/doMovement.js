@@ -31,12 +31,15 @@ export const trackMovement = (props) => {
 			lives: collisionsArgs.lives,
 			setLives: collisionsArgs.setLives,
 		},
+		// Passed through to doSound function
+		soundArgs: {
+			playSound: collisionsArgs.playSound,
+		},
 		// Passed through to doScoring function
 		scoringArgs: {
 			elsRef: collisionsArgs.elsRef,
 			setScore: collisionsArgs.setScore,
 			level: collisionsArgs.level,
-			playSound: collisionsArgs.playSound,
 		},
 		// Passed through to doTokens function
 		tokensArgs: {
