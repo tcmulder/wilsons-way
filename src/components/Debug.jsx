@@ -236,6 +236,7 @@ export const Debug = () => {
 						value={settings.userAdjustedSpeed * 100}
 						setValue={(value) => setSettings({ ...settings, userAdjustedSpeed: value / 100 })}
 						title="The user-adjusted speed multiplier (usually use base speed instead, resets on refresh)."
+						step={10}
 					/>
 					<DebugNumber
 						label="🏃‍➡️ Base (px/s)"

@@ -156,3 +156,8 @@ button.sr-debug__toggle {
 		}
 	}
 }
+
+/* Allow selection of SVGs (prevented normally for mobile tap) */
+.sr-stage:has(.sr-debug) svg {
+	pointer-events: auto;
+}
