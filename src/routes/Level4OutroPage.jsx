@@ -11,7 +11,7 @@ import SVGFlag from '../images/pages/level-4-flag.svg?react';
 const Level4OutroPage = () => {
 	const levelNumber = 4;
 	return (
-		<Page>
+		<Page fullWidth={true}>
 			<Flag svg={SVGFlag} levelNumber={levelNumber} />
 		</Page>
 	);

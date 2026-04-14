@@ -34,7 +34,7 @@ const Level1TransitionPage = () => {
 	}, []);
 
 	return (
-		<Page>
+		<Page fullWidth={true}>
 			<SVGLevel1Transition className="sr-page-image" ref={svgRef} />
 		</Page>
 	);

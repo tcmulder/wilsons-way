@@ -4,6 +4,12 @@
 	background-position: center;
 	background-repeat: no-repeat;
 }
+
+.sr-page--full-width {
+	.sr-page__inner {
+		max-width: none;
+	}
+}
 .sr-page__inner {
 	overflow-y: auto;
 	width: 100%;
