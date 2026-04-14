@@ -13,11 +13,11 @@ import SVGFlag from '../images/pages/level-3-flag.svg?react';
  */
 const Level3OutroPage = () => {
 	const levelNumber = 3;
-	const svgRef = useRef(null);
+	const pageRef = useRef(null);
 
 	// Animate the jetpack.
 	useEffect(() => {
-		const elJetpack = svgRef.current?.querySelector('.sr-jetpack');
+		const elJetpack = pageRef.current?.querySelector('.sr-jetpack');
 		if (!elJetpack) return;
 		gsap.to(elJetpack, {
 			y: '-15%',
@@ -29,7 +29,7 @@ const Level3OutroPage = () => {
 	}, []);
 
 	return (
-		<Page fullWidth={true} ref={svgRef}>
+		<Page fullWidth={true} ref={pageRef}>
 			<Flag svg={SVGFlag} levelNumber={levelNumber} />
 		</Page>
 	);
