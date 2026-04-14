@@ -16,8 +16,6 @@ export function DebugContextProvider({ children }) {
     if (typeof window === 'undefined') return null;
     // Setup debug object
     const debugReturn = {
-      level: 1,
-      characterId: 1,
       autoplay: true,
       router: false,
       outlines: false,

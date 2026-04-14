@@ -48,7 +48,7 @@ const Level = () => {
 	const { level, currentLevelId, setCurrentLevelId, customLevelSvg, setLevelProgress } = useLevelContext();
 	const gameplayContext = useGameplayContext();
 	const { setGameplayNavigation, elsRef, timelinesRef } = gameplayContext;
-	const { setCharacterStatus } = useCharacterContext();
+	const { setCharacterStatus, setCharacterId } = useCharacterContext();
 	const gameplayRef = useRef(null);
 	const [countdown, setCountdown] = useState(0);
 	const levelUrl = `${window.sr.url}public/svg/level-${level}.svg?v=${version}`;
@@ -64,10 +64,12 @@ const Level = () => {
 		setGameplayNavigation(`/level/${level}/outro`);
 	}, [setCharacterStatus, level, setGameplayNavigation]);
 
-	// Update physics based on this level when it loads
+	// Get level attributes
 	useEffect(() => {
-		const newPhysics = { speed: 1, jump: 1, hangtime: 1 };
 		const dataset = document.querySelector('.sr-level')?.dataset || {};
+
+		// Update physics
+		const newPhysics = { speed: 1, jump: 1, hangtime: 1 };
 		if (dataset.speed) {
 			newPhysics.speed = dataset.speed / 100;
 		}
@@ -78,6 +80,12 @@ const Level = () => {
 			newPhysics.hangtime = dataset.hangtime / 100;
 		}
 		setLevelPhysics(newPhysics);
+
+		// Update character
+		if (dataset.character) {
+			setCharacterId(parseInt(dataset.character, 10));
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps -- setCharacterId is a stable useState setter
 	}, [setLevelPhysics, currentLevelId]);
 
 	// Set level ID as null when the level component unmounts

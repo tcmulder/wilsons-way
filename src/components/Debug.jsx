@@ -212,7 +212,7 @@ export const Debug = () => {
 			loadState(debug?.makeMusic, () => setMakeMusic(debug.makeMusic));
 			loadState(debug?.makeSFX, () => setMakeSFX(debug.makeSFX));
 		}
-	}, [debug, setCharacterId, setMakeSFX, setMakeMusic, setSettings, setJump, debugAllowed, isMenuOpen, setLives]);
+	}, [debug, setCharacterId, setMakeSFX, setMakeMusic, setSettings, setJump, debugAllowed, setLives]);
 	
 	// Allow drag-and-drop of SVG level files over the debug panel
 	useDebugDropLevel(debugRef);
