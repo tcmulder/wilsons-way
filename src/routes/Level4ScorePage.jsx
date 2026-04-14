@@ -1,8 +1,11 @@
 import { useEffect } from 'react';
 
 import { Page } from '../components/Page';
+import { Score } from '../components/Score';
 import { useScoreContext } from '../context/useContexts';
 import { useTimedNavigation } from '../hooks/useTimedNavigation';
+
+import backgroundUrl from '../images/pages/page-bg-dark.svg';
 
 /**
  * Level 4 score screen.
@@ -14,6 +17,8 @@ const Level4ScorePage = () => {
 	const { score } = useScoreContext();
 	const { api } = window.sr;
 	const { timedNavigate } = useTimedNavigation();
+
+	// Navigate to either the high score form (if earned) or the leaderboard.
 	useEffect(() => {
 		fetch(`${api}shelf-runner/v1/leaderboard/`)
 			.then((resp) => resp.json())
@@ -29,8 +34,8 @@ const Level4ScorePage = () => {
 			});
 	}, [score, api, timedNavigate]);
 	return (
-		<Page>
-			<h1>Level {levelNumber} Score</h1>
+		<Page style={{ '--sr-bg-image': `url(${backgroundUrl})` }} className="sr-page--score">
+			<Score levelNumber={levelNumber} />
 		</Page>
 	);
 };
