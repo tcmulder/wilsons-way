@@ -1,0 +1,19 @@
+.sr-page--game-over {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	justify-content: center;
+
+	.sr-page__heading {
+		display: flex;
+		justify-content: center;
+		margin-block: 1.7em 0.8em;
+		font-size: 1em;
+	}
+	.sr-page__button {
+		margin-top: 1.5em;
+		display: flex;
+		justify-content: center;
+	}
+}

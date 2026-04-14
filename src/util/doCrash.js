@@ -98,7 +98,7 @@ export const doLives = (props) => {
 	setLives((prev) => ({ ...prev, cur: newLives }));
 	if (newLives <= 0 && !debug?.immortal) {
 		doFreeze();
-		setGameplayNavigation('/lost');
+		setGameplayNavigation('/game-over');
 	}
 };
 

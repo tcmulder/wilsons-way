@@ -32,6 +32,7 @@ export const Message = (props) => {
           duration: 0.001,
           stagger: 0.005,
           ease: 'none',
+          delay: 0.3,
         });
       },
     });

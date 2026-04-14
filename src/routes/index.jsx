@@ -21,7 +21,7 @@ import Level4IntroPage from './Level4IntroPage';
 import Level4OutroPage from './Level4OutroPage';
 import Level4Page from './Level4Page';
 import Level4ScorePage from './Level4ScorePage';
-import LostPage from './LostPage';
+import GameOverPage from './GameOverPage';
 import RestartPage from './RestartPage';
 
 /**
@@ -56,7 +56,7 @@ export const routes = [
   { debug: '💯 High Score', path: '/form', element: <HighScorePage /> },
   { debug: '🏆 Leaderboard', path: '/leaderboard', element: <LeaderboardPage /> },
 
-  { debug: '💀 Lost', path: '/lost', element: <LostPage /> },
+  { debug: '💀 Game Over', path: '/game-over', element: <GameOverPage /> },
   { debug: '🔄 Restart', path: '/restart', element: <RestartPage /> },
 
   { debug: '0️⃣ Level 0', path: '/level/0', element: <Level0Page /> },
