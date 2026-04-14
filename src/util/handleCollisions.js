@@ -127,7 +127,7 @@ export const checkElevation = (props) => {
 		const aboveBottom = elAbove.getBoundingClientRect().bottom - boardTop;
 		localElevation.above = Math.round(boardHeight - aboveBottom);
 	} else {
-		localElevation.above = Math.round(boardHeight);
+		localElevation.above = Infinity; // to have ceiling set to Math.round(boardHeight);
 	}
 	if (elBelow) {
 		const belowTop = elBelow.getBoundingClientRect().top - boardTop;
