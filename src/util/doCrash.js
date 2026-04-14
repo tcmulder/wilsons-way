@@ -298,8 +298,9 @@ export const doMilestones = (props) => {
 	const { el, userAdjustedMilestone = 1 } = props;
 	if (!el.dataset.milestone) return;
 	if (hasModifier({el, modifiers: ['invisible']})) return;
+	const defaultDelay = 1500;
 	const elMessage = document.getElementById(el.dataset.milestone);
-	const baseDelay = parseInt(el.dataset.delay);
+	const baseDelay = el.dataset.delay ? parseInt(el.dataset.delay) : defaultDelay;
 	const multiplier = Number.isFinite(userAdjustedMilestone) ? userAdjustedMilestone : 1;
 	const delay = Math.max(0, Math.round(baseDelay * multiplier));
 	if (!delay) return;
