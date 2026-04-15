@@ -5,6 +5,7 @@ import { useScoreContext } from '../context/useContexts';
 import { useGetMessage } from '../hooks/useGetMessage';
 
 import Heading from '../images/text/great-outcomes-well-done.svg?metadata';
+import Envelope from '../images/envelope.svg?metadata';
 
 import '../css/pages/score-page.css';
 
@@ -38,17 +39,22 @@ export const Score = ({ levelNumber }) => {
 				<Image {...Heading} alt={`Great outcomes. Well done. Level ${levelNumber} scores below.`} />
 			</h1>
 			<div className="sr-score__split">
-				<div className="sr-score__column sr-score__column--numbers">
-					<h2 className="sr-score__heading--level">Level {levelNumber} Score</h2>
-					<div className="sr-score__number--level">{levelScore}</div>
+				<div className="sr-score__column">
+					<div className="sr-score__level">
+						<h2>Level {levelNumber} Score:</h2>
+						<div>{levelScore}</div>
+					</div>
 					<div className="sr-score__total">
-						<h2 className="sr-score__heading--total">Current Total</h2>
-						<div className="sr-score__number--total">{totalScore}</div>
+						<h2>Current Total:</h2>
+						<div>{totalScore}</div>
 					</div>
 				</div>
-				<div className="sr-score__column sr-score__column--message">
-					<h2>Level {levelNumber} Token:</h2>
-					<p>"{scoreHintLine}"</p>
+				<div className="sr-score__column">
+					<div className="sr-score__message">
+						<Image {...Envelope} alt="Envelope" />
+						<h2>Secret Message:</h2>
+						<p>"{scoreHintLine}"</p>
+					</div>
 				</div>
 			</div>
 		</div>

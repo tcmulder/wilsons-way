@@ -5,6 +5,9 @@
 	h1 {
 		margin-bottom: 0.2em;
 	}
+	h2 {
+		margin: 0;
+	}
 }
 
 .sr-score__split {
@@ -20,33 +23,30 @@
 	padding: 0.5em 1em;
 }
 
-h2.sr-score__heading--level {
-	margin: 0;
-}
-
-.sr-score__number--level {
-	color: var(--sr-c-azure);
-	font-size: 3.8em;
-	border-bottom: 2px solid var(--sr-c-white);
-}
-
-h2.sr-score__heading--total {
-	margin: 0;
-	font-size: 1em;
+.sr-score__level {
+	div {
+		color: var(--sr-c-azure);
+		font-size: 3.8em;
+		border-bottom: 2px solid var(--sr-c-white);
+	}
 }
 
 .sr-score__total {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+	padding-top: 0.5em;
+	h2 {
+		font-size: 1em;
+	}
+	div {
+		color: var(--sr-c-azure);
+		font-size: 2em;
+	}
 }
 
-.sr-score__number--total {
-	color: var(--sr-c-azure);
-	font-size: 2em;
-}
 
-.sr-score__column--message {
+.sr-score__message {
 	h2 {
 		font-size: 1.2em;
 	}
