@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
-import { loadLevel } from '../util/loadLevel';
+
 import { aniLevel } from '../util/aniLevel';
 import { convertClassToData } from '../util/convertClassToData';
+import { loadLevel } from '../util/loadLevel';
 
 /**
  * When using a custom dropped SVG (level 0), load and animate it.

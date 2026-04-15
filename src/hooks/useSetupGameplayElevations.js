@@ -1,6 +1,7 @@
 import { gsap } from 'gsap';
 import { useEffect } from 'react';
 import { throttle } from 'underscore';
+
 import { useGameplayContext, useLevelContext, useSettingsContext } from '../context/useContexts';
 
 /**

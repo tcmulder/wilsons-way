@@ -1,7 +1,8 @@
 import { MemoryRouter, HashRouter } from 'react-router-dom';
+
 import { Debug } from './components/Debug';
-import { useDebugContext } from './context/useContexts';
 import { AnimatedRoutes } from './components/PageTransition';
+import { useDebugContext } from './context/useContexts';
 import { routes } from "./routes";
 
 /**

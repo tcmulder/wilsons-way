@@ -1,31 +1,49 @@
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { useScoreContext } from '../context/useContexts';
-import Message from '../components/Message';
+import { gsap } from 'gsap';
+import { useEffect, useRef } from 'react';
+
+import Flag from '../components/Flag';
+import { Page } from '../components/Page';
+
+import SVGFlag from '../images/pages/level-4-flag.svg?react';
+
+const FIREWORK_STAGGER_S = 0.25;
 
 /**
  * Level 4 completion screen.
+ *
+ * @returns {React.ReactNode} The Level4OutroPage component.
  */
 const Level4OutroPage = () => {
-	const { score } = useScoreContext();
-	const { api } = window.sr;
-	const [isHighScore, setIsHighScore] = useState(false);
+	const levelNumber = 4;
+	const pageRef = useRef(null);
+
 	useEffect(() => {
-		fetch(`${api}shelf-runner/v1/leaderboard/`)
-			.then((resp) => resp.json())
-			.then((response) => {
-				const userScore = score?.reduce((sum, entry) => sum + (Number(entry?.num) || 0), 0) ?? 0;
-				const highScores = response.data ?? [];
-				const isHighScore = highScores.some((e) => userScore >= e.score);
-				setIsHighScore(isHighScore);
-			});
-	}, [score, api]);
+		const elFireworks = [
+			{ selector: '.sr-firework-1', xDir: -1, delay: 1 },
+			{ selector: '.sr-firework-2', xDir: 1, delay: 1.5 },
+			{ selector: '.sr-firework-3', xDir: -1, delay: 2.5 },
+		].map(({ selector, xDir, delay }) => ({
+			el: pageRef.current?.querySelector(selector),
+			x: `${xDir * 12}%`,
+			y: `-${12}%`,
+			delay,
+		}));
+
+		for (const { el, x, y, delay } of elFireworks) {
+			if (!el) continue;
+			gsap.set(el, { x: 0, y: 0, scale: 0.8, opacity: 0, transformOrigin: 'center bottom' });
+			gsap
+				.timeline({ delay })
+				.to(el, { x, y, scale: 1, duration: 1.25, ease: 'power1.out' }, 0)
+				.to(el, { opacity: 1, duration: 0.75, ease: 'power1.out' }, '<')
+				.to(el, { opacity: 0, duration: 0.25, ease: 'power1.in' }, '<=1');
+		}
+	}, []);
+
 	return (
-		<div>
-			<h1>Level 4 Outro</h1>
-			<Message messageKey="level_4_outro" />
-			{!isHighScore ? <Link to="/leaderboard">View Leaderboard</Link> : <Link to="/form">Submit High Score</Link>}
-		</div>
+		<Page fullWidth={true} ref={pageRef}>
+			<Flag svg={SVGFlag} levelNumber={levelNumber} />
+		</Page>
 	);
 };
 

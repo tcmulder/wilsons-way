@@ -1,5 +1,6 @@
-import { useSetLevel } from '../hooks/useSetLevel';
 import Level from '../components/Level';
+import { Page } from '../components/Page';
+import { useSetLevel } from '../hooks/useSetLevel';
 
 /**
  * Level 4 gameplay page.
@@ -8,7 +9,11 @@ import Level from '../components/Level';
  */
 const Level0Page = () => {
 	useSetLevel();
-	return <Level />;
+	return (
+		<Page>
+			<Level />
+		</Page>
+	);
 };
 
 export default Level0Page;

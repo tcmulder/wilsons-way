@@ -1,6 +1,9 @@
-import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
+import { useEffect, useRef } from 'react';
+
+import { Page } from '../components/Page';
 import { useTimedNavigation } from '../hooks/useTimedNavigation';
+
 import SVGLevel1Transition from '../images/pages/level-1-transition.svg?react';
 
 /**
@@ -11,22 +14,12 @@ import SVGLevel1Transition from '../images/pages/level-1-transition.svg?react';
 const Level1TransitionPage = () => {
 	const { timedNavigate } = useTimedNavigation();
 	const svgRef = useRef(null);
-	// TODO: const levelNumber = 1;
-	const debugOnlyDidAlertOfRedirectToSettings = useRef(false);
+	const levelNumber = 1;
 
 	// Auto-navigate to next level
 	useEffect(() => {
-		if (debugOnlyDidAlertOfRedirectToSettings.current) return;
-		setTimeout(() => {
-			alert('Normally you would now advance to level 2, but for now you are being redirected to the initial page.');
-			debugOnlyDidAlertOfRedirectToSettings.current = true;
-		}, 2800);
-		timedNavigate({ route: `/`, delay: 3000 });
-		// TODO: timedNavigate({ route: `/level/${levelNumber + 1}`, delay: 3000 });
-	}, [
-		// TODO: levelNumber,
-		timedNavigate
-	]);
+		timedNavigate({ route: `/level/${levelNumber + 1}/intro`, delay: 3000 });
+	}, [ levelNumber, timedNavigate ]);
 
 	// Animate the transition
 	useEffect(() => {
@@ -41,9 +34,9 @@ const Level1TransitionPage = () => {
 	}, []);
 
 	return (
-		<div>
+		<Page fullWidth={true}>
 			<SVGLevel1Transition className="sr-page-image" ref={svgRef} />
-		</div>
+		</Page>
 	);
 };
 

@@ -14,6 +14,7 @@
 	/* colors */
 	--sr-c-white: #fff;
 	--sr-c-black: #000;
+	--sr-c-gray: #525252;
 	--sr-c-navy: #001D37;
 	--sr-c-blue: #024B8D;
 	--sr-c-azure: #08C9FF;
@@ -23,7 +24,6 @@
 	--sr-c-gold: #BA8D00;
 	--sr-c-yellow: #FEC900;
 }
-
 
 /**
  * Styling common to all pages
@@ -53,6 +53,10 @@ body {
 	}
 }
 
+svg {
+	pointer-events: none;
+}
+
 .sr {
 	/* Orientation warning */
 	@media (max-width: 480px) and (orientation: portrait) {
@@ -78,20 +82,33 @@ body {
 }
 
 .sr-typography {
+	/* Establish base width for running calculations */
+	--sr-w: 1440;
 	/* Base font sizes off of .sr-stage's width or height (allows simple usage of em units within) */
 	font-size: 2cqmax;
 	color: var(--sr-c-white);
+	line-height: 1;
 	
 	* {
 		font-family: var(--sr-ff);
 	}
 
-	:is(h1, h2, h3, h4, h5, h6, strong) {
+	:where(h1, h2, h3, h4, h5, h6, strong) {
 		font-weight: 400;
+	}
+
+	:where(h1, h2, h3, h4, h5, h6, p:has(> strong:only-child)) {
+		margin-bottom: 0.5em;
+	}
+
+	:where(h1, h2, h3, h4, h5, h6):where(:not(:first-child)),
+	p:not(:first-child):has(> strong:only-child) {
+		margin-top: 1em;
 	}
 
 	p {
 		margin-top: 0;
+		margin-bottom: 0.6em;
 	}
 
 	a {
@@ -107,6 +124,10 @@ body {
 		&:focus {
 			outline: 0;
 		}
+	}
+
+	li:not(:last-child) {
+		margin-bottom: 0.2em;
 	}
 
 }

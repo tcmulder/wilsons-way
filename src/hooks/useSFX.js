@@ -1,10 +1,12 @@
 import { useRef, useEffect } from 'react';
-import positiveSound from '../mp3/positive.mp3';
-import negativeSound from '../mp3/negative.mp3';
+
+import { useSettingsContext } from '../context/useContexts';
+
 import buffSound from '../mp3/buff.mp3';
 import debuffSound from '../mp3/debuff.mp3';
 import musicSound from '../mp3/music.mp3';
-import { useSettingsContext } from '../context/useContexts';
+import negativeSound from '../mp3/negative.mp3';
+import positiveSound from '../mp3/positive.mp3';
 
 /**
  * Hook: background music and sound effects

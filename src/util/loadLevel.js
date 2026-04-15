@@ -77,7 +77,7 @@ export function setupMilestones(elBoard) {
 		let id = `sr-milestone-id-${index}`;
 		const elObstacle = elMilestone.querySelector('.sr-obstacle');
 		const elMilestoneMessage = elMilestone.querySelector('.sr-milestone-message');
-		if (elMilestoneMessage) {
+		if (elMilestoneMessage && elObstacle) {
 			elMilestoneMessage.id = id;
 			elObstacle.dataset.milestone = id;
 			const elMilestoneProgress = elMilestone.querySelector('.sr-milestone-progress');

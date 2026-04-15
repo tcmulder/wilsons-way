@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+
+import { Page } from '../components/Page';
 import { useDebugContext } from '../context/useContexts';
 
 /**
@@ -11,16 +13,16 @@ const RestartPage = () => {
 	useEffect(() => {
 		if (debug?.router) {
 			navigate('/');
-			console.error('🔄 Debug mode is enabled: refreshing a 2nd time to reset state');
+			console.error('🔄 Debug: refreshing a 2nd time to reset state');
 		}
 		setTimeout(() => {
 			window.location.reload();
 		}, 1000);
 	}, [debug?.router, navigate]);
 	return (
-		<div>
+		<Page>
 			<h1>Restarting...</h1>
-		</div>
+		</Page>
 	);
 };
 

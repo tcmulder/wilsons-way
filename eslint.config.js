@@ -4,14 +4,23 @@
  * prettier/prettier, import/no-extraneous-dependencies, import/no-unresolved,
  * react/prop-types. Add those plugins and rules here if needed.
  */
+
 import js from '@eslint/js';
-import globals from 'globals';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
+import globals from 'globals';
 
 export default [
 	{ ignores: ['dist'] },
 	js.configs.recommended,
+	{
+		files: ['scripts/**/*.mjs'],
+		languageOptions: {
+			ecmaVersion: 'latest',
+			sourceType: 'module',
+			globals: globals.node,
+		},
+	},
 	{
 		files: ['**/*.{js,jsx}'],
 		languageOptions: {

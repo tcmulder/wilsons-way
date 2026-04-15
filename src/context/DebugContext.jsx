@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+
 import { DebugContext } from './useContexts';
 
 /**
@@ -15,12 +16,11 @@ export function DebugContextProvider({ children }) {
     if (typeof window === 'undefined') return null;
     // Setup debug object
     const debugReturn = {
-      level: 1,
-      characterId: 1,
       autoplay: true,
       router: false,
       outlines: false,
       immortal: false,
+      slideshow: true,
     };
 
     // Get the parameters and bail if debut is not true
@@ -60,7 +60,7 @@ export function DebugContextProvider({ children }) {
   const oneRunRef = useRef(false);
   useEffect(() => {
     if (debug && !oneRunRef.current) {
-      console.error('🐜 Debug mode is enabled: your scores will not be saved');
+      console.error('🐜 Debug: your scores will not be saved');
       oneRunRef.current = true;
     }
   }, [debug]);

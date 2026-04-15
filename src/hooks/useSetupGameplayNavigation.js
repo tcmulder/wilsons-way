@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
-import { useGameplayContext } from '../context/useContexts';
 import { useNavigate } from 'react-router-dom';
+
+import { useGameplayContext } from '../context/useContexts';
 
 /**
  * Performs navigation during gameplay (e.g. you died or you completed a level)

@@ -1,4 +1,6 @@
-import SVGCircle from '../images/8bit-circle.svg?react';
+import SVGCircle from '../images/interface/8bit-circle.svg?react';
+import SVGToggleBar from '../images/interface/8bit-toggle-bar.svg?react';
+
 import '../css/8bit.css';
 
 /**
@@ -8,16 +10,17 @@ import '../css/8bit.css';
  * @returns 
  */
 export const EightBit = (props) => {
-	const { bg, className = '', children, center = true } = props;
+	const { bg, className = '', children, style, tag = 'div' } = props;
+	const Tag = tag;
 	return (
-		<div className={`sr-8bit${center ? ' sr-8bit--center' : ''} ${className}`}>
+		<Tag className={`sr-8bit${className && ` ${className}`}`} style={style}>
 			<div className="sr-8bit__bg">
 				{bg}
 			</div>
 			<div className="sr-8bit__fg">
 				{children}
 			</div>
-		</div>
+		</Tag>
 	);
 };
 
@@ -27,7 +30,7 @@ export const EightBit = (props) => {
  * @returns {React.ReactNode} The EightBit component.
  */
 export const EightBitCircle = () => {
-	return <SVGCircle />;
+	return <div className="sr-8bit__circle"><SVGCircle /></div>;
 };
 
 /**
@@ -39,5 +42,48 @@ export const EightBitPill = () => {
 			<div className="sr-8bit__pill-piece"><SVGCircle width="27.5" /></div>
 			<div className="sr-8bit__pill-piece"><SVGCircle width="27.5" viewBox="27.5 0 55 55" /></div>
 		</div>
+	);
+};
+
+/**
+ * Rounded 8bit toggle bar
+ */
+export const EightBitToggleBar = () => {
+	return (
+		<div className="sr-8bit__toggle-bar">
+			<SVGToggleBar />
+		</div>
+	);
+};
+
+/**
+ * @param {Object} props
+ * @param {string} props.label
+ * @param {() => void} props.onClick
+ * @returns {React.ReactNode}
+ */
+export const EightBitButton = (props) => {
+	const { label, onClick } = props;
+	return (
+		<EightBit bg={<EightBitPill />} className="sr-8bit--button">
+			<button type="button" onClick={onClick}>{label}</button>
+		</EightBit>
+	);
+};
+
+/**
+ * @param {Object} props
+ * @param {string} props.label
+ * @param {boolean} props.value
+ * @param {import('react').ChangeEventHandler<HTMLInputElement>} props.onChange
+ * @returns {React.ReactNode}
+ */
+export const EightBitToggle = (props) => {
+	const { label, value, onChange } = props;
+	return (
+		<EightBit bg={<EightBitToggleBar />} className="sr-8bit--toggle" tag="label">
+			{label}
+			<input type="checkbox" checked={value} onChange={onChange} />
+		</EightBit>
 	);
 };

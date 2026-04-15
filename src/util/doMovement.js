@@ -1,5 +1,6 @@
-import { useEffect } from 'react';
 import { gsap } from 'gsap';
+import { useEffect } from 'react';
+
 import { checkCollisions, checkElevation } from './handleCollisions';
 
 /**
@@ -30,12 +31,20 @@ export const trackMovement = (props) => {
 			lives: collisionsArgs.lives,
 			setLives: collisionsArgs.setLives,
 		},
+		// Passed through to doSound function
+		soundArgs: {
+			playSound: collisionsArgs.playSound,
+		},
 		// Passed through to doScoring function
 		scoringArgs: {
 			elsRef: collisionsArgs.elsRef,
 			setScore: collisionsArgs.setScore,
 			level: collisionsArgs.level,
-			playSound: collisionsArgs.playSound,
+		},
+		// Passed through to doTokens function
+		tokensArgs: {
+			setTokens: collisionsArgs.setTokens,
+			level: collisionsArgs.level,
 		},
 		// Passed through to doLives function
 		livesArgs: {
@@ -217,7 +226,7 @@ const isFrozen = () => {
 };
 
 /**
- * Hook: keyboard-driven movement (jump, play/pause, direction) and autoplay when level is ready.
+ * Hook: keyboard- and touch-driven jump; keyboard play/pause/direction when autoplay is off; autoplay when level is ready.
  *
  * @param {Object} props The properties object
  * @param {Object|null} [props.debug] Debug state; when autoplay is false, Arrow keys control play/pause/direction.
@@ -295,12 +304,19 @@ export function useCharacterMovement(props) {
 			}
 		};
 
+		const handleTouchStart = (e) => {
+			if (isFrozen() || !e.target.classList.contains('sr-board')) return;
+			doJump({ elsRef, setCharacterStatus, jumpRef, elevationRef, statusRef });
+		};
+
 		window.addEventListener('keydown', handleKeyDown);
 		window.addEventListener('keyup', handleKeyUp);
+		window.addEventListener('touchstart', handleTouchStart, { passive: true });
 
 		return () => {
 			window.removeEventListener('keydown', handleKeyDown);
 			window.removeEventListener('keyup', handleKeyUp);
+			window.removeEventListener('touchstart', handleTouchStart);
 		};
 	}, [debug, characterStatus, setCharacterStatus, jumpRef, timelinesRef, elevationRef, statusRef, elsRef]);
 }

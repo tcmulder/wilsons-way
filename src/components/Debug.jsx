@@ -1,13 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+
 import {
 	useDebugContext,
 	useSettingsContext,
 	useCharacterContext,
 	useScoreContext,
 } from '../context/useContexts';
-import { routes } from '../routes';
 import { useDebugDropLevel } from '../hooks/useDebugDropLevel';
+import { routes } from '../routes';
 
 import '../css/debug.css';
 
@@ -143,8 +144,8 @@ const DebugRange = ({ label, param = '', value, setValue, title = '', step = 1 }
 			<span>{label}</span>
 			<input
 				type="range"
-				min="-100"
-				max="300"
+				min="-400"
+				max="500"
 				value={value}
 				onChange={(e) => setStateAndQuery({
 					key: k,
@@ -177,7 +178,8 @@ const DebugRange = ({ label, param = '', value, setValue, title = '', step = 1 }
  * @param {Function} set Function to set the state.
  */
 const loadState = (should, set) => {
-	if (should) set();
+	// Allow nullish values (0, false) to pass through
+	if (should !== null && should !== undefined) set();
 };
 
 /**
@@ -210,7 +212,7 @@ export const Debug = () => {
 			loadState(debug?.makeMusic, () => setMakeMusic(debug.makeMusic));
 			loadState(debug?.makeSFX, () => setMakeSFX(debug.makeSFX));
 		}
-	}, [debug, setCharacterId, setMakeSFX, setMakeMusic, setSettings, setJump, debugAllowed, isMenuOpen, setLives]);
+	}, [debug, setCharacterId, setMakeSFX, setMakeMusic, setSettings, setJump, debugAllowed, setLives]);
 	
 	// Allow drag-and-drop of SVG level files over the debug panel
 	useDebugDropLevel(debugRef);
@@ -234,6 +236,7 @@ export const Debug = () => {
 						value={settings.userAdjustedSpeed * 100}
 						setValue={(value) => setSettings({ ...settings, userAdjustedSpeed: value / 100 })}
 						title="The user-adjusted speed multiplier (usually use base speed instead, resets on refresh)."
+						step={25}
 					/>
 					<DebugNumber
 						label="🏃‍➡️ Base (px/s)"
@@ -332,6 +335,13 @@ export const Debug = () => {
 						title="Automatically start running when the level loads"
 					/>
 					<DebugCheckbox
+						label="🎬 Slideshow"
+						param="slideshow"
+						value={debug?.slideshow ?? true}
+						setValue={(val) => setDebug({ ...debug, slideshow: val })}
+						title="Use timed page transitions when enabled"
+					/>
+					<DebugCheckbox
 						label="🔀 Router"
 						param="router"
 						value={debug?.router}
@@ -354,9 +364,9 @@ export const Debug = () => {
 					<label>
 						<span>📄 goto</span>
 						<select value={pagePath} onChange={(e) => { e.preventDefault(); navigate(e.target.value); }} title="Navigate to a different page">
-							{routes.map(({ path, title }) => {
+							{routes.map(({ path, debug }) => {
 								if (path === '/level/0') return null;
-								return <option key={path} value={path}>{title}</option>;
+								return <option key={path} value={path}>{debug}</option>;
 							})}
 						</select>
 					</label>

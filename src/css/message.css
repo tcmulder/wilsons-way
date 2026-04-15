@@ -1,0 +1,20 @@
+.sr-message {
+	:is(h1, h2, h3, h4, h5, h6, p:has(> strong:only-child)) {
+		margin-bottom: 0.5em;
+		color: var(--sr-c-blue);
+		-webkit-text-stroke: 4px var(--sr-c-azure);
+		paint-order: stroke fill; /* stroke renders behind fill */
+	}
+	p, li {
+		font-size: 1.4em;
+	}
+	
+	/* Prevent list bullets from appearing during animations */
+	li {
+		transition: opacity 0.001s ease-out;
+
+		&:has([style*="opacity: 0"]):not(:has([style*="opacity: 1"])) {
+			opacity: 0;
+		}
+	}
+}

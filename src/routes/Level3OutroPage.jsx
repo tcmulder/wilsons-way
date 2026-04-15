@@ -1,22 +1,37 @@
-import { useEffect } from 'react';
-import { useTimedNavigation } from '../hooks/useTimedNavigation';
-import Message from '../components/Message';
+import { gsap } from 'gsap';
+import { useEffect, useRef } from 'react';
+
+import Flag from '../components/Flag';
+import { Page } from '../components/Page';
+
+import SVGFlag from '../images/pages/level-3-flag.svg?react';
 
 /**
  * Level 3 completion screen.
- * 
- * @returns {React.ReactNode} The Level3OutroPage component.`
+ *
+ * @returns {React.ReactNode} The Level3OutroPage component.
  */
 const Level3OutroPage = () => {
-	const { timedNavigate } = useTimedNavigation();
+	const levelNumber = 3;
+	const pageRef = useRef(null);
+
+	// Animate the jetpack.
 	useEffect(() => {
-		timedNavigate({ route: '/level/4', delay: 3000 });
-	}, [timedNavigate]);
+		const elJetpack = pageRef.current?.querySelector('.sr-jetpack');
+		if (!elJetpack) return;
+		gsap.to(elJetpack, {
+			y: '-15%',
+			duration: 1,
+			ease: 'power1.inOut',
+			yoyo: true,
+			repeat: -1,
+		});
+	}, []);
+
 	return (
-		<div>
-			<h1>Level 3 Outro</h1>
-			<Message messageKey="level_3_outro" />
-		</div>
+		<Page fullWidth={true} ref={pageRef}>
+			<Flag svg={SVGFlag} levelNumber={levelNumber} />
+		</Page>
 	);
 };
 

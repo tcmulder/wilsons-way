@@ -17,6 +17,23 @@ const hasModifier = ({el, modifiers}) => {
 };
 
 /**
+ * Play a sound for an element if it has sound or score data.
+ *
+ * @param {Object} props The properties object
+ * @param {HTMLElement} props.el The element to check for sound/score data
+ * @param {Function} props.playSound Function to play a sound ('positive' | 'negative')
+ */
+export const doSound = (props) => {
+	const { el, playSound } = props;
+	if (!el.dataset.sound && !el.dataset.score) return;
+	const explicit = el.dataset.sound;
+	if (explicit) { playSound(explicit); return; }
+	const rawNum = parseInt(el.dataset.score);
+	if (!rawNum) return;
+	playSound(rawNum > 0 ? 'positive' : 'negative');
+};
+
+/**
  * Apply scoring if an obstacle provides scoring data
  *
  * @param {Object} props The properties object
@@ -25,10 +42,9 @@ const hasModifier = ({el, modifiers}) => {
  * @param {HTMLElement} props.elCharacterMessage The character messaging element
  * @param {Function} props.setScore Function to set the score
  * @param {number} props.level The current level number
- * @param {Function} props.playSound Function to play a sound ('positive' | 'negative')
  */
 export const doScoring = (props) => {
-	const { el, elsRef, setScore, level, playSound } = props;
+	const { el, elsRef, setScore, level } = props;
 	const els = elsRef?.current;
 	const { elCharacterMessage } = els;
 	const rawNum = el.dataset.score;
@@ -36,13 +52,28 @@ export const doScoring = (props) => {
 	const num = parseInt(rawNum);
 	if (!num) return; // e.g. if '0' due to modifier being applied
 	const way = num > 0 ? 'positive' : 'negative';
-	const sound = el.dataset.sound || way;
-	playSound(sound);
 	setScore(prev => [ ...prev, { num, level } ]);
 	showCharacterMessage({
 		el: elCharacterMessage,
 		message: `${'positive' === way ? '+' : ''}${num}`,
 		className: `is-${way}`,
+	});
+};
+
+/**
+ * Append collectable tokens from `data-tokens` (pipe-separated) to token log state.
+ *
+ * @param {Object} props The properties object
+ * @param {HTMLElement} props.el The element to collect tokens from
+ * @param {Function} props.setTokens Function to append `{ token, level }` entries
+ * @param {number} props.level The current level number
+ */
+export const doTokens = (props) => {
+	const { el, setTokens, level } = props;
+	const tokens = el.dataset.tokens?.split('|') || [];
+	if (!tokens.length) return;
+	tokens.forEach((token) => {
+		setTokens(prev => [ ...prev, { token, level } ]);
 	});
 };
 
@@ -67,7 +98,7 @@ export const doLives = (props) => {
 	setLives((prev) => ({ ...prev, cur: newLives }));
 	if (newLives <= 0 && !debug?.immortal) {
 		doFreeze();
-		setGameplayNavigation('/lost');
+		setGameplayNavigation('/game-over');
 	}
 };
 
@@ -106,9 +137,8 @@ const getOriginalDataset = (el) => {
  * @param {Object} props.elsRef The elements ref object
  */
 const modifyInvisible = (props) => {
-	const modifier = props.el.dataset.modifier;
 	// Bail if we're not to modify invisibility
-	if (modifier !== 'invisible') return;
+	if (!(props.el.dataset.modifier || '').split('|').includes('invisible')) return;
 	
 	// Get all obstacles
 	const { el, elsRef } = props;
@@ -120,7 +150,7 @@ const modifyInvisible = (props) => {
 		const score = obstacle.dataset.score;
 		if (!score) return false;
 		const isNegative = score.startsWith('-');
-		const ignoresInvisible = obstacle.dataset?.ignoreModifier?.split(',').includes('invisible');
+		const ignoresInvisible = obstacle.dataset?.ignoreModifier?.split('|').includes('invisible');
 		return isNegative && !ignoresInvisible;
 	});
 
@@ -156,9 +186,8 @@ const modifyInvisible = (props) => {
  * @param {Object} props.elsRef The elements ref object
  */
 const modifyPolarity = (props) => {
-	const modifier = props.el.dataset.modifier;
 	// Bail if we're not to modify polarity
-	if (modifier !== 'polarity') return;
+	if (!(props.el.dataset.modifier || '').split('|').includes('polarity')) return;
 
 	// Get all obstacles
 	const { el, elsRef } = props;
@@ -171,7 +200,7 @@ const modifyPolarity = (props) => {
 		if (!score) return false;
 		const num = parseInt(score, 10);
 		const isPositive = Number.isFinite(num) && num > 0;
-		const ignoresPolarity = obstacle.dataset?.ignoreModifier?.split(',').includes('polarity');
+		const ignoresPolarity = obstacle.dataset?.ignoreModifier?.split('|').includes('polarity');
 		return isPositive && !ignoresPolarity;
 	});
 
@@ -212,8 +241,7 @@ const modifyPolarity = (props) => {
 const modifyCripple = (props) => {
 	const { el, lives } = props;
 	const { max, cur } = lives;
-	const modifier = el.dataset.modifier;
-	if (modifier !== 'cripple') return;
+	if (!(el.dataset.modifier || '').split('|').includes('cripple')) return;
 	if (hasModifier({el, modifiers: ['invisible']})) return;
 
 	// "Yellow" is <= 50% max; "red" is <= ~33% max (see Interface battery thresholds).
@@ -236,6 +264,10 @@ const modifyCripple = (props) => {
 	const delta = targetCur - cur;
 	el.dataset.lives = String(delta);
 };
+
+/**
+ * Track collection of tokens.
+ */
 
 /**
  * Modify collided obstacles
@@ -266,8 +298,9 @@ export const doMilestones = (props) => {
 	const { el, userAdjustedMilestone = 1 } = props;
 	if (!el.dataset.milestone) return;
 	if (hasModifier({el, modifiers: ['invisible']})) return;
+	const defaultDelay = 1500;
 	const elMessage = document.getElementById(el.dataset.milestone);
-	const baseDelay = parseInt(el.dataset.delay);
+	const baseDelay = el.dataset.delay ? parseInt(el.dataset.delay) : defaultDelay;
 	const multiplier = Number.isFinite(userAdjustedMilestone) ? userAdjustedMilestone : 1;
 	const delay = Math.max(0, Math.round(baseDelay * multiplier));
 	if (!delay) return;

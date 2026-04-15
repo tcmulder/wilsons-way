@@ -1,18 +1,20 @@
-import { useRef, useCallback, useEffect, useState } from 'react';
 import { gsap } from 'gsap';
-import { useSettingsContext, useLevelContext, useGameplayContext, useDebugContext, useCharacterContext } from '../context/useContexts';
-import { loadLevel } from '../util/loadLevel';
-import SVG from '../components/SVG';
-import { Interface } from '../components/Interface';
+import { useRef, useCallback, useEffect, useState } from 'react';
+
 import Character from '../components/Character';
 import Gameplay from '../components/Gameplay';
-import { aniLevel } from '../util/aniLevel';
+import { Interface } from '../components/Interface';
+import SVG from '../components/SVG';
+import { useSettingsContext, useLevelContext, useGameplayContext, useDebugContext, useCharacterContext } from '../context/useContexts';
 import { useCustomLevelSvg } from '../hooks/useCustomLevelSvg';
+import { aniLevel } from '../util/aniLevel';
 import { doRun, doPause } from '../util/doMovement';
+import { loadLevel } from '../util/loadLevel';
+
 import '../css/board.css';
-import '../css/parallax.css';
-import '../css/obstacles.css';
 import '../css/milestones.css';
+import '../css/obstacles.css';
+import '../css/parallax.css';
 
 const Countdown = ({ countdown, setCountdown }) => {
 	const { debug } = useDebugContext();
@@ -46,7 +48,7 @@ const Level = () => {
 	const { level, currentLevelId, setCurrentLevelId, customLevelSvg, setLevelProgress } = useLevelContext();
 	const gameplayContext = useGameplayContext();
 	const { setGameplayNavigation, elsRef, timelinesRef } = gameplayContext;
-	const { setCharacterStatus } = useCharacterContext();
+	const { setCharacterStatus, setCharacterId } = useCharacterContext();
 	const gameplayRef = useRef(null);
 	const [countdown, setCountdown] = useState(0);
 	const levelUrl = `${window.sr.url}public/svg/level-${level}.svg?v=${version}`;
@@ -59,13 +61,15 @@ const Level = () => {
 	// When a level completes, advance to the next level route
 	const handleLevelComplete = useCallback(() => {
 		setCharacterStatus(prev => ({ ...prev, ani: 'none' }));
-		setGameplayNavigation(`/level/${level}/flag`);
+		setGameplayNavigation(`/level/${level}/outro`);
 	}, [setCharacterStatus, level, setGameplayNavigation]);
 
-	// Update physics based on this level when it loads
+	// Get level attributes
 	useEffect(() => {
-		const newPhysics = { speed: 1, jump: 1, hangtime: 1 };
 		const dataset = document.querySelector('.sr-level')?.dataset || {};
+
+		// Update physics
+		const newPhysics = { speed: 1, jump: 1, hangtime: 1 };
 		if (dataset.speed) {
 			newPhysics.speed = dataset.speed / 100;
 		}
@@ -76,6 +80,12 @@ const Level = () => {
 			newPhysics.hangtime = dataset.hangtime / 100;
 		}
 		setLevelPhysics(newPhysics);
+
+		// Update character
+		if (dataset.character) {
+			setCharacterId(parseInt(dataset.character, 10));
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps -- setCharacterId is a stable useState setter
 	}, [setLevelPhysics, currentLevelId]);
 
 	// Set level ID as null when the level component unmounts

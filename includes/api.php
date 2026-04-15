@@ -131,7 +131,7 @@ add_action(
 					$difficulty_crash = $difficulty_crash ? ( $difficulty_crash / 100 ) : 1;
 					$difficulty_speed = ( 100 - (int) get_option( 'shelf_runner_settings_speed' ) ) / 50;
 					$duration_milestone = (int) get_option( 'shelf_runner_settings_milestone_duration' );
-					$duration_milestone = $duration_milestone ? ( $duration_milestone / 50 ) : 1;
+					$duration_milestone = isset( $duration_milestone ) ? ( $duration_milestone / 50 ) : 1;
 					$difficulty_lives = (int) get_option( 'shelf_runner_settings_lives' );
 
 					// Build response data.
@@ -164,7 +164,7 @@ add_action(
 /**
  * Message content endpoint (single key)
  *
- * Example: /wp-json/shelf-runner/v1/message/level_1_outro
+ * Example: /wp-json/shelf-runner/v1/message/level_1_intro
  */
 add_action(
 	'rest_api_init',
@@ -178,7 +178,8 @@ add_action(
 					$key = $request['key'];
 
 					// Only allow keys that exist in the predefined messages list.
-					if ( ! isset( SHELF_RUNNER_MESSAGES[ $key ] ) ) {
+					$messages = shelf_runner_messages();
+					if ( ! isset( $messages[ $key ] ) ) {
 						return new WP_REST_Response(
 							array(
 								'data'   => null,
@@ -188,7 +189,16 @@ add_action(
 						);
 					}
 
-					$value = get_option( "shelf_runner_settings_{$key}" );
+					$value = get_option( "shelf_runner_settings_{$key}", '' );
+					$value = is_string( $value ) ? $value : '';
+
+					// Return text for textarea or HTML for the default wysiwyg editor.
+					$type = $messages[ $key ];
+					if ( 'textarea' === ( $type['type'] ?? '' ) ) {
+						$value = sanitize_textarea_field( $value );
+					} else {
+						$value = wp_kses_post( apply_filters( 'the_content', $value ) );
+					}
 
 					return new WP_REST_Response(
 						array(
