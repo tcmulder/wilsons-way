@@ -94,7 +94,7 @@ function shelf_runner_messages() {
 		),
 		'level_1_hints' => array(
 			'label' => __( 'Level 1 hints', 'shelf-runner' ),
-			'desc'  => __( 'One hint per line', 'shelf-runner' ),
+			'desc'  => __( 'One hint per line.', 'shelf-runner' ),
 			'type'  => 'textarea',
 		),
 		'level_2_intro' => array(
@@ -102,7 +102,7 @@ function shelf_runner_messages() {
 		),
 		'level_2_hints' => array(
 			'label' => __( 'Level 2 hints', 'shelf-runner' ),
-			'desc'  => __( 'One hint per line', 'shelf-runner' ),
+			'desc'  => __( 'One hint per line.', 'shelf-runner' ),
 			'type'  => 'textarea',
 		),
 		'level_3_intro' => array(
@@ -110,7 +110,7 @@ function shelf_runner_messages() {
 		),
 		'level_3_hints' => array(
 			'label' => __( 'Level 3 hints', 'shelf-runner' ),
-			'desc'  => __( 'One hint per line', 'shelf-runner' ),
+			'desc'  => __( 'One hint per line.', 'shelf-runner' ),
 			'type'  => 'textarea',
 		),
 		'level_4_intro' => array(
@@ -118,7 +118,12 @@ function shelf_runner_messages() {
 		),
 		'level_4_hints' => array(
 			'label' => __( 'Level 4 hints', 'shelf-runner' ),
-			'desc'  => __( 'One hint per line', 'shelf-runner' ),
+			'desc'  => __( 'One hint per line.', 'shelf-runner' ),
+			'type'  => 'textarea',
+		),
+		'missed_hints'  => array(
+			'label' => __( 'Missed hint', 'shelf-runner' ),
+			'desc'  => __( 'One hint per line.', 'shelf-runner' ),
 			'type'  => 'textarea',
 		),
 	);

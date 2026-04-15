@@ -7,7 +7,7 @@ import { useGetMessage } from '../hooks/useGetMessage';
 import Heading from '../images/text/great-outcomes-well-done.svg?metadata';
 import Envelope from '../images/envelope.svg?metadata';
 
-import '../css/pages/score-page.css';
+import '../css/score.css';
 
 /**
  * Reusable score display for a given level.
@@ -19,16 +19,20 @@ import '../css/pages/score-page.css';
 export const Score = ({ levelNumber }) => {
 	const { score, tokens } = useScoreContext();
 	const hintsMessage = useGetMessage(`level_${levelNumber}_hints`);
+	const missedMemoMessage = useGetMessage('missed_hints');
 	const [scoreHintLine, setScoreHintLine] = useState('Missed the Memo');
 
 	// See if we have a secret for this level.
 	const hasLevelSecret = tokens?.some((t) => t?.token === 'secret' && Number(t?.level) === levelNumber);
 	useEffect(() => {
-		if (!hasLevelSecret || !hintsMessage) return;
-		const lines = hintsMessage.split(/\r?\n/).map((l) => l.trim()).filter(Boolean);
-		// eslint-disable-next-line react-hooks/set-state-in-effect -- random pick from fetched data
-		if (lines.length) setScoreHintLine(lines[Math.floor(Math.random() * lines.length)]);
-	}, [hasLevelSecret, hintsMessage]);
+		if (hasLevelSecret && hintsMessage) {
+			const lines = hintsMessage.split(/\r?\n/).map((l) => l.trim()).filter(Boolean);
+			// eslint-disable-next-line react-hooks/set-state-in-effect -- random pick from fetched data
+			if (lines.length) setScoreHintLine(lines[Math.floor(Math.random() * lines.length)]);
+		} else {
+			setScoreHintLine(missedMemoMessage);
+		}
+	}, [hasLevelSecret, hintsMessage, missedMemoMessage]);
 
 	const totalScore = score?.reduce((acc, curr) => acc + (Number(curr?.num) || 0), 0) || 0;
 	const levelScore = score?.reduce((acc, curr) => acc + (curr?.level === levelNumber ? (Number(curr?.num) || 0) : 0), 0) || 0;
