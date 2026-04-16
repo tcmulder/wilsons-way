@@ -67,7 +67,10 @@
 	}
 }
 .sr-8bit--button {
-	&:active {
+	button {
+		text-transform: uppercase;
+	}
+	&:has(:active) {
 		--sr-c-bg-8bit: var(--sr-c-gold);
 		--sr-c-bd-8bit: var(--sr-c-yellow);
 		--sr-c-fg-8bit: white;
