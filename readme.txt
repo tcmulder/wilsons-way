@@ -4,7 +4,7 @@ Contributors: thinkaquamarine
 Tags: game
 Requires at least: 6.5.4
 Tested up to: 6.8.1
-Stable tag: 2.5.0
+Stable tag: 2.5.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -63,6 +63,12 @@ To develop, run `npm install && npm run dev`. To build the static site, run `npm
 2. Activate the plugin through the "Plugins" menu in WordPress.
 
 == Changelog ==
+
+= 2.5.1 =
+
+* Fix mute/audio functionality.
+* Update page assets.
+* Uppercase buttons.
 
 = 2.5.0 =
 

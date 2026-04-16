@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { useScoreContext, useLevelContext, useSettingsContext } from '../context/useContexts';
+import { useAudioContext, useScoreContext, useLevelContext } from '../context/useContexts';
 import { doFreeze } from '../util/doMovement';
 import { EightBit, EightBitCircle, EightBitPill } from './EightBit';
 import { Version } from './Version';
@@ -67,17 +67,19 @@ const PauseControl = () => {
  * @returns {React.ReactNode} The SoundControl component.
  */
 const SoundControl = () => {
-	const { makeSFX, setMakeSFX } = useSettingsContext();
+	const { makeSFX, makeMusic, volume, setVolume } = useAudioContext();
+	if (!makeSFX && !makeMusic) return null;
+
 	return (
 		<EightBit className="sr-interface-header__circle" bg={<EightBitCircle />}>
 			<button
-				aria-label={makeSFX ? 'Sound Effects on' : 'Sound Effects off'}
+				aria-label={volume === 0 ? 'Sound muted' : 'Sound on'}
 				onClick={(e) => {
 					e.preventDefault();
-					setMakeSFX((prev) => !prev);
+					setVolume((prev) => (prev === 0 ? 1 : 0));
 				}}
 			>
-				{makeSFX ? <ControlSoundIcon className="sr-interface-header__icon" /> : <ControlMuteIcon className="sr-interface-header__icon" />}
+				{volume === 0 ? <ControlMuteIcon className="sr-interface-header__icon" /> : <ControlSoundIcon className="sr-interface-header__icon" />}
 			</button>
 		</EightBit>
 	);

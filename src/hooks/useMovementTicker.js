@@ -2,6 +2,7 @@ import { gsap } from 'gsap';
 import { useEffect } from 'react';
 
 import {
+	useAudioContext,
 	useGameplayContext,
 	useCharacterContext,
 	useLevelContext,
@@ -9,7 +10,6 @@ import {
 	useSettingsContext,
 	useDebugContext,
 } from '../context/useContexts';
-import { useGameAudio } from '../hooks/useSFX';
 import { trackMovement } from '../util/doMovement';
 
 /**
@@ -21,7 +21,7 @@ export function useMovementTicker() {
 	const { setCharacterStatus } = useCharacterContext();
 	const { level } = useLevelContext();
 	const { setScore, setTokens, lives, setLives } = useScoreContext();
-	const { playSound } = useGameAudio();
+	const { playSound } = useAudioContext();
 	const { settings } = useSettingsContext();
 	const { userAdjustedMilestone = 1 } = settings || {};
 	const { debug } = useDebugContext();

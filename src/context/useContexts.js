@@ -5,6 +5,7 @@ import { createContext, useContext } from 'react';
  * used to share state across the component tree.
  */
 export const DebugContext = createContext();
+export const AudioContext = createContext();
 export const SettingsContext = createContext();
 export const LevelContext = createContext();
 export const CharacterContext = createContext();
@@ -17,6 +18,9 @@ export const ScoreContext = createContext();
  */
 export function useDebugContext() {
   return useContext(DebugContext);
+}
+export function useAudioContext() {
+  return useContext(AudioContext);
 }
 export function useSettingsContext() {
   return useContext(SettingsContext);
