@@ -16,7 +16,7 @@ import positiveSound from '../mp3/positive.mp3';
 export const useGameAudio = () => {
 	const musicRef = useRef(null);
 	const soundsRef = useRef({});
-	const { makeSFX, makeMusic } = useSettingsContext();
+	const { makeSFX, makeMusic, volume } = useSettingsContext();
 
 	// Initialize background music and sound effects when the component mounts
 	useEffect(() => {
@@ -35,7 +35,7 @@ export const useGameAudio = () => {
 		if (!music) return;
 		if (makeMusic) {
 			music.loop = true;
-			music.volume = 0.2;
+			music.volume = 0.2 * volume;
 			music.currentTime = 0;
 			const p = music.play();
 			// Prevent console error on initial load (NotAllowedError due to no user interaction)
@@ -47,18 +47,19 @@ export const useGameAudio = () => {
 		} else {
 			music.pause();
 		}
-	}, [makeMusic]);
+	}, [makeMusic, volume]);
 
 	// Play sound effect when SFX is turned on
 	useEffect(() => {
 		if (makeSFX && soundsRef.current.positive) {
+			soundsRef.current.positive.volume = volume;
 			const p = soundsRef.current.positive.play();
 			// Prevent console error on initial load (NotAllowedError due to no user interaction)
 			if (p && typeof p.catch === 'function') {
 				p.catch(() => {});
 			}
 		}
-	}, [makeSFX]);
+	}, [makeSFX, volume]);
 
 	/**
 	 * Play a sound effect.
@@ -72,6 +73,7 @@ export const useGameAudio = () => {
 		if (audio) {
 			// By cloning we allow the same audio element to overlap itself
 			const clone = audio.cloneNode();
+			clone.volume = 0.9 * volume;
 			const onEnded = () => {
 				clone.removeEventListener('ended', onEnded);
 				clone.src = '';
