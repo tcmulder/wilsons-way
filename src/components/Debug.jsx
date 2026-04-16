@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 import {
+	useAudioContext,
 	useDebugContext,
 	useSettingsContext,
 	useCharacterContext,
@@ -187,7 +188,8 @@ const loadState = (should, set) => {
  */
 export const Debug = () => {
 	const { debug, setDebug } = useDebugContext();
-	const { settings, setSettings, setJump, jump, makeMusic, setMakeMusic, makeSFX, setMakeSFX } = useSettingsContext();
+	const { settings, setSettings, setJump, jump } = useSettingsContext();
+	const { makeMusic, setMakeMusic, makeSFX, setMakeSFX } = useAudioContext();
 	const { debugAllowed } = settings;
 	const { characterId, setCharacterId } = useCharacterContext();
 	const { score, setScore, lives, setLives } = useScoreContext();

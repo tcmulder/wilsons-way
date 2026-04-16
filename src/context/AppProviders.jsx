@@ -1,3 +1,4 @@
+import { AudioContextProvider } from './AudioContext';
 import { CharacterContextProvider } from './CharacterContext';
 import { DebugContextProvider } from './DebugContext';
 import { GameplayContextProvider } from './GameplayContext';
@@ -13,13 +14,15 @@ export function AppProviders({ children }) {
     <DebugContextProvider>
       <GameplayContextProvider>
         <SettingsContextProvider>
-          <LevelContextProvider>
-            <CharacterContextProvider>
-              <ScoreContextProvider>
-                {children}
-              </ScoreContextProvider>
-            </CharacterContextProvider>
-          </LevelContextProvider>
+          <AudioContextProvider>
+            <LevelContextProvider>
+              <CharacterContextProvider>
+                <ScoreContextProvider>
+                  {children}
+                </ScoreContextProvider>
+              </CharacterContextProvider>
+            </LevelContextProvider>
+          </AudioContextProvider>
         </SettingsContextProvider>
       </GameplayContextProvider>
     </DebugContextProvider>

@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { useScoreContext, useLevelContext, useSettingsContext } from '../context/useContexts';
+import { useAudioContext, useScoreContext, useLevelContext } from '../context/useContexts';
 import { doFreeze } from '../util/doMovement';
 import { EightBit, EightBitCircle, EightBitPill } from './EightBit';
 import { Version } from './Version';
@@ -67,7 +67,7 @@ const PauseControl = () => {
  * @returns {React.ReactNode} The SoundControl component.
  */
 const SoundControl = () => {
-	const { makeSFX, makeMusic, volume, setVolume } = useSettingsContext();
+	const { makeSFX, makeMusic, volume, setVolume } = useAudioContext();
 	if (!makeSFX && !makeMusic) return null;
 
 	return (
