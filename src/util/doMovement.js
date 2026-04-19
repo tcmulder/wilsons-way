@@ -154,11 +154,12 @@ const doJumpDown = (props) => {
 	const { setCharacterStatus, jumpRef, elevationRef, elsRef } = props;
 	setCharacterStatus(prev => ({ ...prev, jump: 'down' }));
 	const elCharacter = elsRef.current.elCharacter;
-	const fudge = 7;
 	const tlDown = gsap.timeline();
 	tlDown.to(elCharacter, {
 		onComplete: () => setCharacterStatus(prev => ({ ...prev, jump: 'none' })),
 		onUpdate: () => {
+			// Fudge in case animation is too fast for onUpdate to catch shelf alignment
+			const fudge = elevationRef.current.height * tlDown.progress();
 			if(elevationRef.current.foot - fudge <= elevationRef.current.below) {
 				tlDown.kill();
 				gsap.set(elCharacter, { y: -elevationRef.current.below });
@@ -167,7 +168,7 @@ const doJumpDown = (props) => {
 		},
 		y: elevationRef.current.floor * -1,
 		duration: jumpRef.current.hangtime / 2,
-		ease: "power1.in",
+		ease: "power1.inOut",
 	});
 };
 
@@ -181,13 +182,14 @@ const doJumpUp = (props) => {
 	setCharacterStatus(prev => ({ ...prev, jump: 'up' }));
 	const elCharacter = elsRef.current.elCharacter;
 	const targetHeight = jumpRef.current.height + elevationRef.current.below;
-	const fudge = 7;
 	const tlUp = gsap.timeline();
 	tlUp.to(elCharacter, {
 		y: targetHeight * -1,
 		duration: jumpRef.current.hangtime / 2,
 		ease: "power1.out",
 		onUpdate: () => {
+			// Fudge in case animation is too fast for onUpdate to catch shelf alignment
+			const fudge = elevationRef.current.height * 0.05 * (1 - tlUp.progress());
 			if(elevationRef.current.head + fudge >= elevationRef.current.above) {
 				tlUp.kill();
 				doJumpDown(props);

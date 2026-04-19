@@ -122,12 +122,14 @@ export const checkElevation = (props) => {
 	const elCharacterRect = elCharacter.getBoundingClientRect();
 	const boardTop = elBoardRect.top;
 	const boardHeight = elBoardRect.height;
-	const localElevation = { above: 0, below: 0, charBelow: 0 };
+	const localElevation = { above: 0, below: 0 };
 	if (elAbove) {
 		const aboveBottom = elAbove.getBoundingClientRect().bottom - boardTop;
 		localElevation.above = Math.round(boardHeight - aboveBottom);
 	} else {
-		localElevation.above = Infinity; // to have a ceiling set to Math.round(boardHeight);
+		// To have a ceiling set to Math.round(boardHeight);
+		// or just add a shelf at the top of the board.
+		localElevation.above = Infinity;
 	}
 	if (elBelow) {
 		const belowTop = elBelow.getBoundingClientRect().top - boardTop;
@@ -137,5 +139,6 @@ export const checkElevation = (props) => {
 	const charBottom = elCharacterRect.bottom - boardTop;
 	localElevation.head = Math.round(boardHeight - charTop);
 	localElevation.foot = Math.round(boardHeight - charBottom);
+	localElevation.height = Math.round(charBottom - charTop);
 	elevationRef.current = { ...elevationRef.current, ...localElevation };
 };
