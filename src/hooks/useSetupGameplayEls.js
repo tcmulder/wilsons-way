@@ -88,9 +88,7 @@ export function useSetupGameplayElements(boardRef) {
 				// Run fallback so ALL shelves and obstacles are used to track collisions (albeit inefficiently).
 				if (firstRun) {
 					firstRun = false;
-					console.log('👁️', shelves.length, elShelvesVisible.size);
 					if (shelves.length > 0 && (elShelvesVisible.size === 0 || elShelvesVisible.size === shelves.length)) {
-						console.log('👀', shelves.length, elShelvesVisible.size);
 						shelvesObserver.disconnect();
 						obstaclesObserver.disconnect();
 						shelves.forEach((x) => elShelvesVisible.add(x));
