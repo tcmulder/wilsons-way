@@ -24,7 +24,7 @@ add_action(
 
 					// Debugging mode (doesn't save to database)
 					$is_debug = $params['isDebugMode'] ?? false;
-					/*DEBUG*/$is_debug = false; // allows us to debug debug mode 😏
+					// /*DEBUG*/$is_debug = false; // allows us to debug debug mode 😏
 
 					$user = str_replace( '-', '_', strtoupper( sanitize_title( $params['user'] ) ) );
 					$user = substr( $user, 0, 10 ); // trim to max characters (matches max on the winner form name input)
