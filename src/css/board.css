@@ -28,6 +28,7 @@
 	position: absolute;
 	inset: 0;
 	overflow: hidden;
+	transition: opacity 0.3s 0.3s;
 
 	svg {
 		display: block;
@@ -39,6 +40,10 @@
 	/* These move via parallax (so smooth out the animation) */
 	& > svg {
 		will-change: transform;
+	}
+
+	&:has(.sr-gameplay.is-loading) {
+		opacity: 0;
 	}
 }
 

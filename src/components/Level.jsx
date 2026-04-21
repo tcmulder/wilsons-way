@@ -50,10 +50,17 @@ const Level = () => {
 	const { setGameplayNavigation, elsRef, timelinesRef } = gameplayContext;
 	const { setCharacterStatus, setCharacterId } = useCharacterContext();
 	const gameplayRef = useRef(null);
+	const activeLevelRef = useRef(level);
 	const [countdown, setCountdown] = useState(0);
+	const [isLoading, setIsLoading] = useState(true);
 	const levelUrl = `${window.sr.url}public/svg/level-${level}.svg?v=${version}`;
 
 	// Set global animations speed
+	useEffect(() => {
+		activeLevelRef.current = level;
+		setIsLoading(true);
+	}, [level]);
+
 	useEffect(() => {
 		gsap.globalTimeline.timeScale(userAdjustedSpeed * levelPhysics.speed);
 	}, [userAdjustedSpeed, levelPhysics.speed]);
@@ -98,12 +105,14 @@ const Level = () => {
 	// Load SVG for level and add movement to it
 	const handleSvgLoad = useCallback(async (svgElement) => {
 		const elBoard = elsRef?.current?.elBoard;
+		const loadedLevel = level;
 		if (elBoard && svgElement) {
 			// Setup level SVG
 			await loadLevel({
 				elBoard,
 				elSVG: svgElement,
 			});
+			if (activeLevelRef.current !== loadedLevel) return;
 			// Create animation after level is loaded
 			aniLevel({
 				elBoard,
@@ -118,6 +127,7 @@ const Level = () => {
 			if (debug?.autoplay !== false) {
 				setCountdown(3);
 			}
+			setIsLoading(false);
 		}
 	}, [elsRef, timelinesRef, gameplaySpeed, setLevelProgress, handleLevelComplete, setCurrentLevelId, debug?.autoplay]);
 
@@ -134,7 +144,7 @@ const Level = () => {
 	});
 
 	return (
-		<div className="sr-gameplay" ref={gameplayRef}>
+		<div className={`sr-gameplay${isLoading ? ' is-loading' : ''}`} ref={gameplayRef}>
 			<Interface />
 			<Gameplay boardRef={gameplayRef} />
 			<Countdown countdown={countdown} setCountdown={setCountdown} />
