@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react';
 import { Page } from '../components/Page';
 import { useTimedNavigation } from '../hooks/useTimedNavigation';
 
-import SVGLevel1Transition from '../images/pages/level-1-transition.svg?react';
+import SVGLevel3Transition from '../images/pages/level-3-transition.svg?react';
 
 /**
  * Level 3 transition page.
@@ -18,24 +18,33 @@ const Level3TransitionPage = () => {
 
 	// Auto-navigate to next level
 	useEffect(() => {
-		timedNavigate({ route: `/level/${levelNumber + 1}/intro`, delay: 3000 });
+		timedNavigate({ route: `/level/${levelNumber + 1}/intro`, delay: 5000 });
 	}, [ levelNumber, timedNavigate ]);
 
-	// Animate the transition
+	// Animate the transition (viewBox height 810 → sun moves down by half)
 	useEffect(() => {
-		const elDoor1 = svgRef.current?.querySelector('.sr-elevator-door-1');
-		const elDoor2 = svgRef.current?.querySelector('.sr-elevator-door-2');
-		const elDown = svgRef.current?.querySelector('.sr-elevator-down');
-		if (!elDoor1 || !elDoor2) return;
-		const tl = gsap.timeline();
-		tl.fromTo(elDoor1, { x: '-90%' }, { x: '0%', duration: 2, ease: 'power2.inOut', delay: 1 })
-			.fromTo(elDoor2, { x: '90%' },  { x: '0%', duration: 2, ease: 'power2.inOut' }, '<=')
-			.fromTo(elDown,  { fill: '#99999B' }, { fill: '#00FE17', duration: 1, ease: 'power2.inOut' });
+		const elWilson = svgRef.current?.querySelector('.sr-wilson');
+		const elSun = svgRef.current?.querySelector('.sr-sun');
+		if (!elWilson) return;
+		const tl = gsap.timeline({ delay: 1 });
+		tl.to(
+			elWilson,
+			{ y: -900, x: 200, duration: 4, delay: 1, ease: 'power2.inOut' },
+			0
+		);
+		if (elSun) {
+			tl.to(
+				elSun,
+				{ y: '5%', duration: 5, ease: 'linear' },
+				0
+			);
+		}
+		return () => tl.kill();
 	}, []);
 
 	return (
 		<Page fullWidth={true}>
-			<SVGLevel1Transition className="sr-page-image" ref={svgRef} />
+			<SVGLevel3Transition className="sr-page-image" ref={svgRef} />
 		</Page>
 	);
 };
