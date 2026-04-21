@@ -14,6 +14,7 @@ const HighScorePage = () => {
 	const { score } = useScoreContext();
 	const { nonce, api } = window.sr;
 	const [user, setUser] = useState('');
+	const [team, setTeam] = useState('');
 	const [total, setTotal] = useState(score?.reduce((sum, entry) => sum + (Number(entry?.num) || 0), 0) || 0);
 	const navigate = useNavigate();
 	const isDebugMode = !!debug;
@@ -26,6 +27,7 @@ const HighScorePage = () => {
 					e,
 					score: total,
 					user,
+					team,
 					navigate,
 					debug,
 					api,
@@ -39,6 +41,15 @@ const HighScorePage = () => {
 						onChange={(e) => setUser(e.target.value)}
 						required
 						minLength={2}
+						maxLength={6}
+					/>
+				</label>
+				<label>	Team:
+					<input
+						type="text"
+						name="team"
+						value={team}
+						onChange={(e) => setTeam(e.target.value)}
 						maxLength={6}
 					/>
 				</label>

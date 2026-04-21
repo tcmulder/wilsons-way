@@ -28,9 +28,11 @@ add_action(
 
 					$user = strtoupper( sanitize_title( $params['user'] ) );
 					$user = substr( $user, 0, 6 ); // trim to max characters (matches max on the winner form number input)
+					$team = isset( $params['team'] ) ? strtoupper( substr( sanitize_title( (string) $params['team'] ), 0, 6 ) ) : '';
 					$score = (int) $params['score'];
 					$data = array(
 						'user'  => $user,
+						'team'  => $team,
 						'score' => $score,
 					);
 
@@ -38,6 +40,7 @@ add_action(
 					$leaderboard = ! empty( $leaderboard ) ? $leaderboard : array();
 					$leaderboard[] = array(
 						'user'  => $user,
+						'team'  => $team,
 						'score' => $score,
 					);
 					usort(
@@ -47,7 +50,7 @@ add_action(
 						}
 					);
 					$leaderboard = array_slice( $leaderboard, 0, SHELF_RUNNER_LEADERBOARD_COUNT );
-					$leaderboard = array_pad( $leaderboard, SHELF_RUNNER_LEADERBOARD_COUNT, array( 'user' => '', 'score' => 0 ) );
+					$leaderboard = array_pad( $leaderboard, SHELF_RUNNER_LEADERBOARD_COUNT, array( 'user' => '', 'team' => '', 'score' => 0 ) );
 
 					if ( ! $is_debug ) {
 						update_option( 'shelf_runner_settings_leaderboard', $leaderboard );
@@ -94,13 +97,14 @@ add_action(
 					$leaderboard = array_map(
 						function ( $item ) {
 							return array(
-								'user'  => esc_html( $item['user'] ),
-								'score' => (int) $item['score'],
+								'user'  => esc_html( $item['user'] ?? '' ),
+								'team'  => esc_html( $item['team'] ?? '' ),
+								'score' => (int) ( $item['score'] ?? 0 ),
 							);
 						},
 						$leaderboard
 					);
-					$leaderboard = array_pad( $leaderboard, SHELF_RUNNER_LEADERBOARD_COUNT, array( 'user' => '', 'score' => 0 ) );
+					$leaderboard = array_pad( $leaderboard, SHELF_RUNNER_LEADERBOARD_COUNT, array( 'user' => '', 'team' => '', 'score' => 0 ) );
 					return new WP_REST_Response(
 						array(
 							'data'   => $leaderboard,

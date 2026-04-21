@@ -1,0 +1,39 @@
+.sr-page--leaderboard {
+	.sr-page__heading {
+		margin: 2.5em auto 0;
+		text-align: center;
+	}
+	.sr-page__button {
+		margin-top: 1.5em;
+		display: flex;
+		justify-content: center;
+	}
+}
+
+.sr-leaderboard {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	width: 36.5em;
+	margin: 0 auto;
+	padding: 0;
+	border: 0.15em solid var(--sr-c-azure);
+	list-style: none;
+}
+.sr-leaderboard__item {
+	display: grid;
+	grid-column: span 3;
+	grid-template-columns: subgrid;
+	margin: 0;
+	
+	/* For specificity */
+	&.sr-leaderboard__item:not(:last-child) {
+		margin-bottom: 0;
+		border-bottom: 0.15em solid var(--sr-c-azure);
+	}
+}
+.sr-leaderboard__cell {
+	padding: 0.15em;
+	&:not(:first-child) {
+		border-left: 0.15em solid var(--sr-c-azure);
+	}
+}
