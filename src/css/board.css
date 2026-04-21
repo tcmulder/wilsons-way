@@ -21,7 +21,7 @@
 	max-width: 100%;
 	aspect-ratio: 16 / 9;
 	margin: 0 auto;
-	background-color: black;
+	background-color: var(--sr-c-black);
 }
 
 .sr-board {

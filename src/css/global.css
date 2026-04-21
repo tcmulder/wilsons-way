@@ -23,6 +23,7 @@
 	--sr-c-red: #FF5C55;
 	--sr-c-gold: #BA8D00;
 	--sr-c-yellow: #FEC900;
+	--sr-c-debug: aquamarine;
 }
 
 /**
@@ -115,10 +116,10 @@ svg {
 		color: inherit;
 	}
 
-	a,
-	input,
-	label,
-	button {
+	:where(a),
+	:where(input),
+	:where(label),
+	:where(butto)n {
 		-webkit-tap-highlight-color: transparent;
 		cursor: pointer;
 		&:focus {
@@ -126,8 +127,8 @@ svg {
 		}
 	}
 
-	select,
-	input[type="text"] {
+	:where(select),
+	:where(input[type="text"]) {
 		display: block;
 		width: 100%;
 		padding-bottom: 0.2em;
