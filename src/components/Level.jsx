@@ -5,7 +5,7 @@ import Character from '../components/Character';
 import Gameplay from '../components/Gameplay';
 import { Interface } from '../components/Interface';
 import SVG from '../components/SVG';
-import { useSettingsContext, useLevelContext, useGameplayContext, useDebugContext, useCharacterContext } from '../context/useContexts';
+import { useSettingsContext, useLevelContext, useGameplayContext, useDebugContext, useCharacterContext, useScoreContext } from '../context/useContexts';
 import { useCustomLevelSvg } from '../hooks/useCustomLevelSvg';
 import { aniLevel } from '../util/aniLevel';
 import { doRun, doPause } from '../util/doMovement';
@@ -49,18 +49,26 @@ const Level = () => {
 	const gameplayContext = useGameplayContext();
 	const { setGameplayNavigation, elsRef, timelinesRef } = gameplayContext;
 	const { setCharacterStatus, setCharacterId } = useCharacterContext();
+	const { setLives } = useScoreContext();
 	const gameplayRef = useRef(null);
 	const activeLevelRef = useRef(level);
 	const [countdown, setCountdown] = useState(0);
 	const [isLoading, setIsLoading] = useState(true);
 	const levelUrl = `${window.sr.url}public/svg/level-${level}.svg?v=${version}`;
 
-	// Set global animations speed
+	// When the level number changes...
 	useEffect(() => {
+		// Track the active level
 		activeLevelRef.current = level;
+		// Show loading
 		setIsLoading(true);
-	}, [level]);
+		// Refill lives to max
+		setLives((prev) => {
+			return { ...prev, cur: prev.max };
+		});
+	}, [level, setLives]);
 
+	// Set global animations speed
 	useEffect(() => {
 		gsap.globalTimeline.timeScale(userAdjustedSpeed * levelPhysics.speed);
 	}, [userAdjustedSpeed, levelPhysics.speed]);
