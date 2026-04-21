@@ -1,4 +1,8 @@
 .sr-page--high-score {
+	.sr-page__request {
+		position: relative;
+		z-index: 1;
+	}
 	.sr-page__heading {
 		margin: 2.5em auto 0;
 		text-align: center;
@@ -6,47 +10,9 @@
 	.sr-message {
 		text-align: center;
 	}
-	.sr-page__form {
-		display: flex;
-		flex-direction: column;
-		gap: 1em;
-		justify-content: center;
-		align-items: center;
-		text-align: center;
-		span {
-			font-size: 1.5em;
-			display: block;
-			margin-bottom: 0.2em;
-			text-transform: uppercase;
-		}
-		input[type="text"],
-		select {
-			font-size: 1.5em;
-			text-align: center;
-			width: 10em;
-			text-transform: uppercase;
-		}
-	}
-	.sr-page__button {
-		margin-top: 1.5em;
-		display: flex;
-		justify-content: center;
-	}
-	.sr-page__debug {
+	.sr-page-image {
 		position: absolute;
-		inset: auto 0 0 auto;
-		width: 12em;
-		background-color: lime;
-		color: black;
-		padding: 1em;
-		font-size: 0.8em;
-		
-		h2 {
-			font-size: 1.2em;
-			margin: 0;
-		}
-		p {
-			font-size: 0.8em;
-		}
+		inset: 0;
+		z-index: 0;
 	}
 }

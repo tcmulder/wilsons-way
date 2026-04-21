@@ -130,6 +130,7 @@ svg {
 	input[type="text"] {
 		display: block;
 		width: 100%;
+		padding-bottom: 0.2em;
 		background-color: transparent;
 		color: var(--sr-c-azure);
 		border: 0.1em solid var(--sr-c-azure);
