@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react';
 import { Page } from '../components/Page';
 import { useTimedNavigation } from '../hooks/useTimedNavigation';
 
-import SVGLevel1Transition from '../images/pages/level-1-transition.svg?react';
+import SVGLevel1Transition from '../images/pages/level-2-transition.svg?react';
 
 /**
  * Level 2 transition page.
@@ -23,14 +23,15 @@ const Level2TransitionPage = () => {
 
 	// Animate the transition
 	useEffect(() => {
-		const elDoor1 = svgRef.current?.querySelector('.sr-elevator-door-1');
-		const elDoor2 = svgRef.current?.querySelector('.sr-elevator-door-2');
-		const elDown = svgRef.current?.querySelector('.sr-elevator-down');
-		if (!elDoor1 || !elDoor2) return;
-		const tl = gsap.timeline();
-		tl.fromTo(elDoor1, { x: '-90%' }, { x: '0%', duration: 2, ease: 'power2.inOut', delay: 1 })
-			.fromTo(elDoor2, { x: '90%' },  { x: '0%', duration: 2, ease: 'power2.inOut' }, '<=')
-			.fromTo(elDown,  { fill: '#99999B' }, { fill: '#00FE17', duration: 1, ease: 'power2.inOut' });
+		const elBike = svgRef.current?.querySelector('.sr-bike');
+		if (!elBike) return;
+		const tween = gsap.to(elBike, {
+			x: 2000,
+			duration: 3.5,
+			ease: 'power2.in',
+			delay: 1,
+		});
+		return () => tween.kill();
 	}, []);
 
 	return (
