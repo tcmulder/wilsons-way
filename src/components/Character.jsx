@@ -1,4 +1,4 @@
-import { useRef, useCallback, useEffect } from 'react';
+import { useRef, useCallback, useEffect, useState } from 'react';
 
 import { useDebugContext, useSettingsContext, useCharacterContext, useGameplayContext, useLevelContext } from '../context/useContexts';
 import { createAniSprite } from '../util/aniSprite';
@@ -20,14 +20,32 @@ const Character = () => {
 	const { version, userAdjustedCrash, characterHeight } = settings;
 	const { currentLevelId } = useLevelContext();
 	const characterSvgRef = useRef(null);
+	const loadFrameRef = useRef(null);
+	const [loadedCharacterPath, setLoadedCharacterPath] = useState('');
+
+	const characterPath = `${window.sr.url}public/svg/character-${characterId}.svg?v=${version}`;
+	const isLoading = loadedCharacterPath !== characterPath;
+
+	useEffect(() => {
+		return () => {
+			if (loadFrameRef.current) {
+				cancelAnimationFrame(loadFrameRef.current);
+				loadFrameRef.current = null;
+			}
+		};
+	}, []);
 
 	// When the SVG loads, create the animation sprite and replace the character SVG with it.
 	const handleSvgLoad = useCallback((svgElement) => {
 		if (characterSvgRef.current && svgElement) {
 			characterSvgRef.current.replaceChildren(svgElement);
 			createAniSprite({elParent: characterSvgRef.current});
+			loadFrameRef.current = requestAnimationFrame(() => {
+				setLoadedCharacterPath(characterPath);
+				loadFrameRef.current = null;
+			});
 		}
-	}, []);
+	}, [characterPath]);
 
 	// Update the character status ref when the character status changes
 	useEffect(() => {
@@ -51,7 +69,7 @@ const Character = () => {
 	// Render the character component.
 	return (
 		<div
-			className="sr-character"
+			className={`sr-character${isLoading ? ' is-loading' : ''}`}
 			tabIndex="0"
 			data-move={characterStatus.move}
 			data-jump={characterStatus.jump}
@@ -59,7 +77,7 @@ const Character = () => {
 			style={{'--sr-h-character': `${characterHeight}cqmin`}}
 		>
 			<div className="sr-character-svg" ref={characterSvgRef}>
-				<SVG path={`${window.sr.url}public/svg/character-${characterId}.svg?v=${version}`} onSvgLoad={handleSvgLoad} />
+				<SVG path={characterPath} onSvgLoad={handleSvgLoad} />
 			</div>
 			<div className="sr-character-crash" aria-hidden="true" style={{'--sr-difficulty-crash': userAdjustedCrash || 1}} />
 			<div className="sr-character-message" />

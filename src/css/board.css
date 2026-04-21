@@ -28,7 +28,7 @@
 	position: absolute;
 	inset: 0;
 	overflow: hidden;
-	transition: opacity 0.3s 0.3s;
+	transition: opacity 0.3s 0.6s;
 
 	svg {
 		display: block;
@@ -42,8 +42,10 @@
 		will-change: transform;
 	}
 
-	&:has(.sr-gameplay.is-loading) {
+	&:has(.sr-gameplay.is-loading),
+	&:has(.sr-character.is-loading) {
 		opacity: 0;
+		transition: 0s;
 	}
 }
 
