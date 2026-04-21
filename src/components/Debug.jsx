@@ -344,13 +344,6 @@ export const Debug = () => {
 						title="Use timed page transitions when enabled"
 					/>
 					<DebugCheckbox
-						label="🔀 Router"
-						param="router"
-						value={debug?.router}
-						setValue={(val) => setDebug({ ...debug, router: val })}
-						title="Exposes the URL path so you can refresh without going back to the intro page"
-					/>
-					<DebugCheckbox
 						label="👁️ Outlines"
 						param="outlines"
 						value={debug?.outlines}
@@ -362,6 +355,13 @@ export const Debug = () => {
 							'🟩 positive',
 							'🟥 negative',
 						].join('\n')}
+					/>
+					<DebugCheckbox
+						label="🔀 Router"
+						param="router"
+						value={debug?.router}
+						setValue={(val) => setDebug({ ...debug, router: val })}
+						title="Exposes the URL path so you can refresh without going back to the intro page"
 					/>
 					<label>
 						<span>📄 goto</span>

@@ -126,7 +126,7 @@ button.sr-debug__toggle {
 	color: var(--sr-debug-c-bg);
 }
 
-.sr-debug--outlines ~ .sr-page-transition > .sr-gameplay {
+.sr-debug--outlines ~ .sr-page-transition .sr-gameplay {
 	--sr-debug-op: 75%;
 	:where(.is-collided) {
 		outline: 1px dashed color-mix(in srgb, black var(--sr-debug-op), transparent);
