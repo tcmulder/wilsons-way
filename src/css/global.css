@@ -126,6 +126,15 @@ svg {
 		}
 	}
 
+	select,
+	input[type="text"] {
+		display: block;
+		width: 100%;
+		background-color: transparent;
+		color: var(--sr-c-azure);
+		border: 0.1em solid var(--sr-c-azure);
+	}
+
 	li:not(:last-child) {
 		margin-bottom: 0.2em;
 	}

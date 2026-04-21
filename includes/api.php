@@ -24,11 +24,11 @@ add_action(
 
 					// Debugging mode (doesn't save to database)
 					$is_debug = $params['isDebugMode'] ?? false;
-					// /*DEBUG*/$is_debug = false; // allows us to debug debug mode 😏
+					/*DEBUG*/$is_debug = false; // allows us to debug debug mode 😏
 
-					$user = strtoupper( sanitize_title( $params['user'] ) );
-					$user = substr( $user, 0, 6 ); // trim to max characters (matches max on the winner form number input)
-					$team = isset( $params['team'] ) ? strtoupper( substr( sanitize_title( (string) $params['team'] ), 0, 6 ) ) : '';
+					$user = str_replace( '-', '_', strtoupper( sanitize_title( $params['user'] ) ) );
+					$user = substr( $user, 0, 10 ); // trim to max characters (matches max on the winner form name input)
+					$team = str_replace( '-', '_', strtoupper( sanitize_title( $params['team'] ) ) );
 					$score = (int) $params['score'];
 					$data = array(
 						'user'  => $user,
@@ -70,6 +70,11 @@ add_action(
 							return is_string( $param );
 						},
 					),
+					'team' => array(
+						'validate_callback' => function ( $param ) {
+							return is_string( $param );
+						},
+					),
 					'score' => array(
 						'validate_callback' => function ( $param ) {
 							return is_numeric( $param );
@@ -105,12 +110,17 @@ add_action(
 						$leaderboard
 					);
 					$leaderboard = array_pad( $leaderboard, SHELF_RUNNER_LEADERBOARD_COUNT, array( 'user' => '', 'team' => '', 'score' => 0 ) );
-					return new WP_REST_Response(
+					$response = new WP_REST_Response(
 						array(
 							'data'   => $leaderboard,
 							'status' => 200,
 						)
 					);
+					// Never cache: must reflect latest scores after POST /winner/.
+					$response->header( 'Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0' );
+					$response->header( 'Pragma', 'no-cache' );
+					$response->header( 'Expires', 'Fri, 17 Feb 2017 12:00:00 GMT' );
+					return $response;
 				},
 				'permission_callback' => '__return_true',
 			)

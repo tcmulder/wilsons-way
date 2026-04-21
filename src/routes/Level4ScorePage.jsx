@@ -20,7 +20,7 @@ const Level4ScorePage = () => {
 
 	// Navigate to either the high score form (if earned) or the leaderboard.
 	useEffect(() => {
-		fetch(`${api}shelf-runner/v1/leaderboard/`)
+		fetch(`${api}shelf-runner/v1/leaderboard/`, { cache: 'no-store' })
 			.then((resp) => resp.json())
 			.then((response) => {
 				const userScore = score?.reduce((sum, entry) => sum + (Number(entry?.num) || 0), 0) ?? 0;

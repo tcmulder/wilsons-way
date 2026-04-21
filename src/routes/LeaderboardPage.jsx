@@ -19,7 +19,7 @@ const LeaderboardPage = () => {
 	const [leaderboard, setLeaderboard] = useState(Array(max).fill({ user: '', team: '', score: 0 }));
 	const { api } = window.sr;
 	useEffect(() => {
-		fetch(`${api}shelf-runner/v1/leaderboard/`)
+		fetch(`${api}shelf-runner/v1/leaderboard/`, { cache: 'no-store' })
 			.then((resp) => resp.json())
 			.then((response) => {
 				setLeaderboard(response.data);
