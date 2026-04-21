@@ -25,7 +25,8 @@ const RestartControl = () => {
 		<EightBit className="sr-interface-header__circle" bg={<EightBitCircle />}>
 			<button
 				aria-label="Restart"
-				onClick={() => {
+				onClick={(e) => {
+					e.currentTarget.blur();
 					const shouldRestart = confirm('Are you sure? Your progress will be lost.');
 					if (shouldRestart) {
 						navigate('/restart');
@@ -49,7 +50,8 @@ const PauseControl = () => {
 		<EightBit className="sr-interface-header__circle" bg={<EightBitCircle />}>
 			<button
 				aria-label={isPaused ? 'Resume' : 'Pause'}
-				onClick={() => {
+				onClick={(e) => {
+					e.currentTarget.blur();
 					setIsPaused(!isPaused);
 					doFreeze(!isPaused);
 				}}
@@ -76,6 +78,7 @@ const SoundControl = () => {
 				aria-label={volume === 0 ? 'Sound muted' : 'Sound on'}
 				onClick={(e) => {
 					e.preventDefault();
+					e.currentTarget.blur();
 					setVolume((prev) => (prev === 0 ? 1 : 0));
 				}}
 			>
