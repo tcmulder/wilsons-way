@@ -16,7 +16,7 @@ const Level2ScorePage = () => {
 	const { timedNavigate } = useTimedNavigation();
 
 	useEffect(() => {
-		timedNavigate({ route: `/level/${levelNumber}/transition`, delay: 3000 });
+		timedNavigate({ route: `/level/${levelNumber}/transition`, delay: 6000 });
 	}, [levelNumber, timedNavigate]);
 	
 	return (

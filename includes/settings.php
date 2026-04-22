@@ -126,6 +126,11 @@ function shelf_runner_messages() {
 			'desc'  => __( 'One hint per line.', 'shelf-runner' ),
 			'type'  => 'textarea',
 		),
+		'team_names'    => array(
+			'label' => __( 'Team names', 'shelf-runner' ),
+			'desc'  => __( 'One name per line.', 'shelf-runner' ),
+			'type'  => 'textarea',
+		),
 	);
 }
 
@@ -166,6 +171,7 @@ function shelf_runner_settings_init() {
 			'min'         => true,
 			'step'        => true,
 			'style'       => true,
+			'title'       => true,
 		),
 		'a'      => array(
 			'href'   => true,
@@ -319,16 +325,18 @@ function shelf_runner_settings_init() {
 					if ( ! is_array( $leaderboard ) ) {
 						return array();
 					}
+					array_walk(
+						$leaderboard,
+						function ( &$entry ) {
+							$entry['user']  = strtoupper( substr( sanitize_title( $entry['user'] ?? '' ), 0, 10 ) );
+							$entry['team']  = strtoupper( substr( sanitize_title( $entry['team'] ?? '' ), 0, 10 ) );
+							$entry['score'] = (int) ( $entry['score'] ?? 0 );
+						}
+					);
 					$leaderboard = array_filter(
 						$leaderboard,
 						function ( $entry ) {
 							return ! empty( $entry['user'] );
-						}
-					);
-					array_walk(
-						$leaderboard,
-						function ( &$entry ) {
-							$entry['score'] = (int) $entry['score'];
 						}
 					);
 					usort(
@@ -349,17 +357,19 @@ function shelf_runner_settings_init() {
 					'<p><em>%s<br>%s<br>%s</em></p>',
 					esc_html( __( 'Leave username blank to remove an entry.', 'shelf-runner' ) ),
 					esc_html( __( 'Scores will be automatically sorted highest to lowest on save.', 'shelf-runner' ) ),
-					esc_html( __( 'Maximum of 6 characters, use underscores instead of spaces.', 'shelf-runner' ) )
+					esc_html( __( 'Maximum of 10 characters for name and team, use underscores instead of spaces.', 'shelf-runner' ) )
 				);
 				$leaderboard = get_option( 'shelf_runner_settings_leaderboard', array() );
 				for ( $i = 0; $i < 10; $i++ ) {
 					$user  = isset( $leaderboard[ $i ]['user'] ) ? $leaderboard[ $i ]['user'] : '';
+					$team  = isset( $leaderboard[ $i ]['team'] ) ? $leaderboard[ $i ]['team'] : '';
 					$score = isset( $leaderboard[ $i ]['score'] ) ? $leaderboard[ $i ]['score'] : 0;
 					$html .= sprintf(
 						'<div style="margin-block:5px;">
 							<label for="shelf_runner_settings_leaderboard[%d]_user" style="display:inline-block;width:80px;">#%d %s:</label><br />
-							<input type="text" id="shelf_runner_settings_leaderboard[%d]_user" name="shelf_runner_settings_leaderboard[%d][user]" value="%s" placeholder="username" pattern="[^\s]{1,6}" maxlength="6" style="width: 7em; margin-right: 0.5em;" />
-							<input type="number" name="shelf_runner_settings_leaderboard[%d][score]" value="%d" min="0" step="1" style="width: 6em;" />
+							<input type="text" id="shelf_runner_settings_leaderboard[%d]_user" name="shelf_runner_settings_leaderboard[%d][user]" value="%s" placeholder="username" pattern="[^\s]{1,10}" maxlength="10" style="width: 7em; margin-right: 0.5em;" title="%s" />
+							<input type="text" id="shelf_runner_settings_leaderboard[%d]_team" name="shelf_runner_settings_leaderboard[%d][team]" value="%s" placeholder="team" pattern="[^\s]{0,10}" maxlength="10" style="width: 7em; margin-right: 0.5em;" title="%s" />
+							<input type="number" name="shelf_runner_settings_leaderboard[%d][score]" value="%d" min="0" step="1" style="width: 6em;" title="%s" />
 						</div>',
 						$i,
 						$i + 1,
@@ -367,8 +377,14 @@ function shelf_runner_settings_init() {
 						$i,
 						$i,
 						esc_attr( strtoupper( $user ) ),
+						esc_attr( __( 'Player name (1–10 characters, no spaces)', 'shelf-runner' ) ),
 						$i,
-						(int) $score
+						$i,
+						esc_attr( strtoupper( $team ) ),
+						esc_attr( __( 'Team (up to 10 characters, no spaces)', 'shelf-runner' ) ),
+						$i,
+						(int) $score,
+						esc_attr( __( 'Score', 'shelf-runner' ) )
 					);
 				}
 				echo wp_kses( $html, $kses_allowed );

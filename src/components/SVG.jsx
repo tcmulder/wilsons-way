@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 import { convertClassToData } from '../util/convertClassToData';
 
@@ -14,8 +14,11 @@ import { convertClassToData } from '../util/convertClassToData';
 const SvgImage = ({ path, onSvgLoad }) => {
 	const [svgAttributes, setSvgAttributes] = useState({});
 	const [svgInnerHTML, setSvgInnerHTML] = useState('');
+	const requestIdRef = useRef(0);
 
 	useEffect(() => {
+		let isActive = true;
+		const requestId = ++requestIdRef.current;
 		const loadSvg = async () => {
 			try {
 				let svgUrl;
@@ -38,6 +41,9 @@ const SvgImage = ({ path, onSvgLoad }) => {
 				const svgElement = svgDoc.querySelector('svg');
 				
 				if (svgElement) {
+					if (!isActive || requestId !== requestIdRef.current) {
+						return;
+					}
 					// If callback provided, call it with the parsed SVG element
 					if (onSvgLoad) {
 						// Import the SVG element into the current document
@@ -71,6 +77,9 @@ const SvgImage = ({ path, onSvgLoad }) => {
 		};
 
 		loadSvg();
+		return () => {
+			isActive = false;
+		};
 	}, [path, onSvgLoad]);
 
 	// If onSvgLoad is provided, don't render (the callback handles it)

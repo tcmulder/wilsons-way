@@ -1,13 +1,12 @@
 
 .sr-milestone-message {
-	display: none;
-	&.is-visible {
-		display: block;
+	&:not(.is-visible) {
+		visibility: hidden;
 	}
 }
 .sr-milestone-progress {
 	.sr-milestone-message:not(.is-visible) & {
-		display: none;
+		visibility: hidden;
 	}
 }
 .sr-milestone-progress-bar {

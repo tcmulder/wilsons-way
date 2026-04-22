@@ -9,6 +9,7 @@
 	left: 25%;
 	bottom: 0;
 	will-change: transform;
+	transition: opacity 0.15s;
 
 	&:focus {
 		outline: 0;
@@ -45,6 +46,11 @@
 		[data-move="backward"] & {
 			transform: scaleX(-1);
 		}
+	}
+
+	&.is-loading {
+		opacity: 0;
+		transition: 0s;
 	}
 }
 

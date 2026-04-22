@@ -75,6 +75,11 @@
 		--sr-c-bd-8bit: var(--sr-c-yellow);
 		--sr-c-fg-8bit: white;
 	}
+	&:has([disabled]) {
+		--sr-c-bg-8bit: var(--sr-c-gray);
+		--sr-c-bd-8bit: var(--sr-c-gray);
+		--sr-c-fg-8bit: var(--sr-c-black);
+	}
 }
 .sr-8bit--toggle {
 	position: relative;

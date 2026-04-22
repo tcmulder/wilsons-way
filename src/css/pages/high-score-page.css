@@ -1,0 +1,18 @@
+.sr-page--high-score {
+	.sr-page__request {
+		position: relative;
+		z-index: 1;
+	}
+	.sr-page__heading {
+		margin: 2.5em auto 0;
+		text-align: center;
+	}
+	.sr-message {
+		text-align: center;
+	}
+	.sr-page-image {
+		position: absolute;
+		inset: 0;
+		z-index: 0;
+	}
+}

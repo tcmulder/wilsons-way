@@ -57,16 +57,18 @@ export const EightBitToggleBar = () => {
 };
 
 /**
- * @param {Object} props
- * @param {string} props.label
- * @param {() => void} props.onClick
- * @returns {React.ReactNode}
+ * @param {Object} props - The properties object
+ * @param {string} props.label - The button label
+ * @param {() => void} props.onClick - The button click handler
+ * @param {string} [props.type] Button type (defaults to 'button')
+ * @param {boolean} [props.disabled] Whether the button is disabled (defaults to false)
+ * @returns {React.ReactNode} The EightBitButton component.
  */
 export const EightBitButton = (props) => {
-	const { label, onClick } = props;
+	const { label, onClick, type = 'button', disabled = false } = props;
 	return (
 		<EightBit bg={<EightBitPill />} className="sr-8bit--button">
-			<button type="button" onClick={onClick}>{label}</button>
+			<button type={type} onClick={onClick} disabled={disabled}>{label}</button>
 		</EightBit>
 	);
 };

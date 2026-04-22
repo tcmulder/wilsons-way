@@ -26,11 +26,13 @@ add_action(
 					$is_debug = $params['isDebugMode'] ?? false;
 					// /*DEBUG*/$is_debug = false; // allows us to debug debug mode 😏
 
-					$user = strtoupper( sanitize_title( $params['user'] ) );
-					$user = substr( $user, 0, 6 ); // trim to max characters (matches max on the winner form number input)
+					$user = str_replace( '-', '_', strtoupper( sanitize_title( $params['user'] ) ) );
+					$user = substr( $user, 0, 10 ); // trim to max characters (matches max on the winner form name input)
+					$team = str_replace( '-', '_', strtoupper( sanitize_title( $params['team'] ) ) );
 					$score = (int) $params['score'];
 					$data = array(
 						'user'  => $user,
+						'team'  => $team,
 						'score' => $score,
 					);
 
@@ -38,6 +40,7 @@ add_action(
 					$leaderboard = ! empty( $leaderboard ) ? $leaderboard : array();
 					$leaderboard[] = array(
 						'user'  => $user,
+						'team'  => $team,
 						'score' => $score,
 					);
 					usort(
@@ -47,7 +50,7 @@ add_action(
 						}
 					);
 					$leaderboard = array_slice( $leaderboard, 0, SHELF_RUNNER_LEADERBOARD_COUNT );
-					$leaderboard = array_pad( $leaderboard, SHELF_RUNNER_LEADERBOARD_COUNT, array( 'user' => '', 'score' => 0 ) );
+					$leaderboard = array_pad( $leaderboard, SHELF_RUNNER_LEADERBOARD_COUNT, array( 'user' => '', 'team' => '', 'score' => 0 ) );
 
 					if ( ! $is_debug ) {
 						update_option( 'shelf_runner_settings_leaderboard', $leaderboard );
@@ -63,6 +66,11 @@ add_action(
 				'permission_callback' => '__return_true',
 				'args'                => array(
 					'user'  => array(
+						'validate_callback' => function ( $param ) {
+							return is_string( $param );
+						},
+					),
+					'team' => array(
 						'validate_callback' => function ( $param ) {
 							return is_string( $param );
 						},
@@ -94,19 +102,25 @@ add_action(
 					$leaderboard = array_map(
 						function ( $item ) {
 							return array(
-								'user'  => esc_html( $item['user'] ),
-								'score' => (int) $item['score'],
+								'user'  => esc_html( $item['user'] ?? '' ),
+								'team'  => esc_html( $item['team'] ?? '' ),
+								'score' => (int) ( $item['score'] ?? 0 ),
 							);
 						},
 						$leaderboard
 					);
-					$leaderboard = array_pad( $leaderboard, SHELF_RUNNER_LEADERBOARD_COUNT, array( 'user' => '', 'score' => 0 ) );
-					return new WP_REST_Response(
+					$leaderboard = array_pad( $leaderboard, SHELF_RUNNER_LEADERBOARD_COUNT, array( 'user' => '', 'team' => '', 'score' => 0 ) );
+					$response = new WP_REST_Response(
 						array(
 							'data'   => $leaderboard,
 							'status' => 200,
 						)
 					);
+					// Never cache: must reflect latest scores after POST /winner/.
+					$response->header( 'Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0' );
+					$response->header( 'Pragma', 'no-cache' );
+					$response->header( 'Expires', 'Fri, 17 Feb 2017 12:00:00 GMT' );
+					return $response;
 				},
 				'permission_callback' => '__return_true',
 			)

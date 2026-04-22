@@ -5,7 +5,7 @@ import Character from '../components/Character';
 import Gameplay from '../components/Gameplay';
 import { Interface } from '../components/Interface';
 import SVG from '../components/SVG';
-import { useSettingsContext, useLevelContext, useGameplayContext, useDebugContext, useCharacterContext } from '../context/useContexts';
+import { useSettingsContext, useLevelContext, useGameplayContext, useDebugContext, useCharacterContext, useScoreContext } from '../context/useContexts';
 import { useCustomLevelSvg } from '../hooks/useCustomLevelSvg';
 import { aniLevel } from '../util/aniLevel';
 import { doRun, doPause } from '../util/doMovement';
@@ -49,9 +49,24 @@ const Level = () => {
 	const gameplayContext = useGameplayContext();
 	const { setGameplayNavigation, elsRef, timelinesRef } = gameplayContext;
 	const { setCharacterStatus, setCharacterId } = useCharacterContext();
+	const { setLives } = useScoreContext();
 	const gameplayRef = useRef(null);
+	const activeLevelRef = useRef(level);
 	const [countdown, setCountdown] = useState(0);
+	const [isLoading, setIsLoading] = useState(true);
 	const levelUrl = `${window.sr.url}public/svg/level-${level}.svg?v=${version}`;
+
+	// When the level number changes...
+	useEffect(() => {
+		// Track the active level
+		activeLevelRef.current = level;
+		// Show loading
+		setIsLoading(true);
+		// Refill lives to max
+		setLives((prev) => {
+			return { ...prev, cur: prev.max };
+		});
+	}, [level, setLives]);
 
 	// Set global animations speed
 	useEffect(() => {
@@ -98,12 +113,14 @@ const Level = () => {
 	// Load SVG for level and add movement to it
 	const handleSvgLoad = useCallback(async (svgElement) => {
 		const elBoard = elsRef?.current?.elBoard;
+		const loadedLevel = level;
 		if (elBoard && svgElement) {
 			// Setup level SVG
 			await loadLevel({
 				elBoard,
 				elSVG: svgElement,
 			});
+			if (activeLevelRef.current !== loadedLevel) return;
 			// Create animation after level is loaded
 			aniLevel({
 				elBoard,
@@ -118,6 +135,7 @@ const Level = () => {
 			if (debug?.autoplay !== false) {
 				setCountdown(3);
 			}
+			setIsLoading(false);
 		}
 	}, [elsRef, timelinesRef, gameplaySpeed, setLevelProgress, handleLevelComplete, setCurrentLevelId, debug?.autoplay]);
 
@@ -134,7 +152,7 @@ const Level = () => {
 	});
 
 	return (
-		<div className="sr-gameplay" ref={gameplayRef}>
+		<div className={`sr-gameplay${isLoading ? ' is-loading' : ''}`} ref={gameplayRef}>
 			<Interface />
 			<Gameplay boardRef={gameplayRef} />
 			<Countdown countdown={countdown} setCountdown={setCountdown} />
