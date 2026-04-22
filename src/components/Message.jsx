@@ -46,7 +46,7 @@ export const Message = (props) => {
   return (
     <div
       ref={containerRef}
-      className="sr-message"
+      className={`sr-message ${!message ? 'is-loading' : ''}`}
       dangerouslySetInnerHTML={{ __html: message }}
     />
   );
