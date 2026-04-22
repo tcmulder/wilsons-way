@@ -26,7 +26,7 @@ add_filter( 'theme_page_templates', 'shelf_runner_add_page_template' );
  * @return string Template path.
  */
 function shelf_runner_load_page_template( $template ) {
-	if ( is_page_template( 'templates/game-template.php' ) ) {
+	if ( is_page_template( 'templates/game-template.php' ) && ! post_password_required() ) {
 		$template = SHELF_RUNNER_PLUGIN_DIR . 'templates/game-template.php';
 	}
 	return $template;
