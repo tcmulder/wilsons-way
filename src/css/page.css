@@ -3,6 +3,11 @@
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
+	transition: opacity 0.3s;
+
+	&:has(.sr-message.is-loading) {
+		opacity: 0;
+	}
 }
 
 .sr-page--full-width {

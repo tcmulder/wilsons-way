@@ -18,8 +18,16 @@ add_action(
 				'methods'             => 'POST',
 				'callback'            => function ( $request ) {
 					$params = json_decode( $request->get_body(), true );
-					if ( ! is_array( $params ) || ! isset( $params['user'] ) || ! isset( $params['score'] ) ) {
+
+					// Confirm we have what we need
+					if ( ! is_array( $params ) || ! isset( $params['user'] ) || ! isset( $params['score'] ) || ! isset( $params['team'] ) ) {
 						return new WP_REST_Response( array( 'data' => array( 'status' => 400, 'message' => 'Invalid request body' ) ), 400 );
+					}
+
+					// Confirm the team name is a valid option from the settings
+					$team_names = array_filter( array_map( 'trim', preg_split( '/\r?\n/', (string) get_option( 'shelf_runner_settings_team_names', '' ) ) ) );
+					if ( ! is_string( $params['team'] ) || ! in_array( $params['team'], $team_names, true ) ) {
+						return new WP_REST_Response( array( 'data' => array( 'status' => 400, 'message' => 'Invalid team' ) ), 400 );
 					}
 
 					// Debugging mode (doesn't save to database)
