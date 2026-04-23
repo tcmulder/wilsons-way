@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 
+import { AssetPreload } from '../components/AssetPreload';
 import { EightBitButton } from '../components/EightBit';
 import { Image } from '../components/Image';
 import { Message } from '../components/Message';
@@ -18,6 +19,12 @@ const Level4IntroPage = () => {
 	const navigate = useNavigate();
 	return (
 		<Page style={{ '--sr-bg-image': `url(${backgroundUrl})` }} className="sr-page--level-intro">
+			<AssetPreload
+				assetPaths={[
+					`public/svg/level-${levelNumber}.svg?v={version}`,
+					'public/svg/character-3.svg?v={version}',
+				]}
+			/>
 			<h1 className="sr-page__heading">
 				<Image {...levelHeading} alt={`Level ${levelNumber} Heading`} />
 			</h1>
