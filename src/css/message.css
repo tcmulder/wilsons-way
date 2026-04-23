@@ -1,12 +1,14 @@
 .sr-message {
 	:is(h1, h2, h3, h4, h5, h6, p:has(> strong:only-child)) {
-		margin-bottom: 0.5em;
-		color: var(--sr-c-blue);
-		-webkit-text-stroke: 4px var(--sr-c-azure);
-		paint-order: stroke fill; /* stroke renders behind fill */
+		margin-bottom: 0.1em;
+		color: var(--sr-c-azure);
 	}
 	p, li {
 		font-size: 1.4em;
+	}
+
+	ul {
+		margin: 0.5em;
 	}
 	
 	/* Prevent list bullets from appearing during animations */
