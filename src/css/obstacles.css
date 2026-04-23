@@ -6,6 +6,9 @@
 .sr-modifier--invisible {
 	filter: grayscale(1) contrast(0.5);
 	animation: pulse-opacity 2s ease-in-out infinite;
+	&.sr-obstacle-no-hide {
+		animation: none;
+	}
 }
 .sr-modifier--polarity {
 	filter: sepia(1) hue-rotate(315deg) saturate(9);
