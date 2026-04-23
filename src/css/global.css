@@ -119,7 +119,7 @@ svg {
 	:where(a),
 	:where(input),
 	:where(label),
-	:where(butto)n {
+	:where(button) {
 		-webkit-tap-highlight-color: transparent;
 		cursor: pointer;
 		&:focus {
