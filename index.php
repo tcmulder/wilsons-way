@@ -39,10 +39,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 	</head>
 	<body>
 	
-	<!-- Prevent SVG loading flash with fade-in animation -->
-	<style>#root{opacity:1;transition:opacity 0.3s 0.15s;@starting-style{opacity:0;}}</style>
-	
-	<div id="root">[game loading...]</div>
+	<div id="root">
+		<style>
+			#root {
+				background-color: black;
+				position: absolute;
+				inset: 0;
+				display: grid;
+				place-items: center;
+				color: darkgray;
+				font-family: monospace;
+			}
+		</style>
+		loading...
+	</div>
 	
 	<?php if ( 'development' === SHELF_RUNNER_ENV ) : ?>
 		<?php // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript -- Standalone HTML shell, not WP enqueue context. ?>

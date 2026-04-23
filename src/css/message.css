@@ -1,12 +1,24 @@
 .sr-message {
+	/*
+	 * Neutralize text features so wrapping is identical whether GSAP SplitText
+	 * has wrapped each character in its own inline-block or not. Without this,
+	 * ligatures/kerning/contextual features change per-char advance widths,
+	 * causing line breaks to shift when spans are added or reverted.
+	 */
+	font-variant-ligatures: none;
+	font-kerning: none;
+	font-feature-settings: "liga" 0, "clig" 0, "dlig" 0, "calt" 0, "kern" 0;
+
 	:is(h1, h2, h3, h4, h5, h6, p:has(> strong:only-child)) {
-		margin-bottom: 0.5em;
-		color: var(--sr-c-blue);
-		-webkit-text-stroke: 4px var(--sr-c-azure);
-		paint-order: stroke fill; /* stroke renders behind fill */
+		margin-bottom: 0.1em;
+		color: var(--sr-c-azure);
 	}
 	p, li {
 		font-size: 1.4em;
+	}
+
+	ul {
+		margin: 0.5em;
 	}
 	
 	/* Prevent list bullets from appearing during animations */

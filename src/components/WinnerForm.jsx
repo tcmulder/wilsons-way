@@ -81,20 +81,23 @@ export function WinnerForm() {
 				/>
 			</label>
 			<label>	<span>Choose Team:</span>
-				<select
-					name="team"
-					value={team}
-					onChange={(e) => setTeam(e.target.value)}
-					required={teamNamesReady && teamOptions.length > 0}
-					disabled={teamSelectDisabled}
-				>
-					<option value="">{teamPlaceholder}</option>
-					{teamOptions.map((name, i) => (
-						<option key={`${name}-${i}`} value={name}>
-							{name}
-						</option>
-					))}
-				</select>
+				<div className="faux-select">
+					<select
+						name="team"
+						value={team}
+						onChange={(e) => setTeam(e.target.value)}
+						required={teamNamesReady && teamOptions.length > 0}
+						disabled={teamSelectDisabled}
+					>
+						<option value="">{teamPlaceholder}</option>
+						{teamOptions.map((name, i) => (
+							<option key={`${name}-${i}`} value={name}>
+								{name}
+							</option>
+						))}
+					</select>
+					<div aria-hidden="true">{team || '\u00A0'}</div>
+				</div>
 			</label>
 			<div className="sr-winner-form__button">
 				<EightBitButton

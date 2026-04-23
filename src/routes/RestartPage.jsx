@@ -11,6 +11,10 @@ const RestartPage = () => {
 	const { debug } = useDebugContext();
 	const navigate = useNavigate();
 	useEffect(() => {
+		if (debug?.slideshow === false) {
+			console.error('🐜 Debug: cancelling restart timer');
+			return;
+		}
 		if (debug?.router) {
 			navigate('/');
 			console.error('🔄 Debug: refreshing a 2nd time to reset state');
@@ -18,10 +22,10 @@ const RestartPage = () => {
 		setTimeout(() => {
 			window.location.reload();
 		}, 1000);
-	}, [debug?.router, navigate]);
+	}, [debug?.router, debug?.slideshow, navigate]);
 	return (
 		<Page>
-			<h1>Restarting...</h1>
+			<h1 style={{color: 'black'}}>Restarting...</h1>
 		</Page>
 	);
 };
