@@ -4,7 +4,7 @@ Contributors: thinkaquamarine
 Tags: game
 Requires at least: 6.5.4
 Tested up to: 6.8.1
-Stable tag: 2.5.7
+Stable tag: 2.5.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -63,6 +63,10 @@ To develop, run `npm install && npm run dev`. To build the static site, run `npm
 2. Activate the plugin through the "Plugins" menu in WordPress.
 
 == Changelog ==
+
+= 2.5.8 =
+
+* Add icons.
 
 = 2.5.7 =
 
