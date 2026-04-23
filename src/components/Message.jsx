@@ -1,6 +1,6 @@
 import { gsap } from 'gsap';
 import { SplitText } from 'gsap/SplitText';
-import { useLayoutEffect, useRef } from 'react';
+import { useLayoutEffect, useMemo, useRef } from 'react';
 
 import { useGetMessage } from '../hooks/useGetMessage';
 
@@ -43,11 +43,14 @@ export const Message = (props) => {
     };
   }, [message]);
 
+  // Stabilize the dangerouslySetInnerHTML object reference across renders.
+  const innerHtml = useMemo(() => ({ __html: message }), [message]);
+
   return (
     <div
       ref={containerRef}
       className={`sr-message ${!message ? 'is-loading' : ''}`}
-      dangerouslySetInnerHTML={{ __html: message }}
+      dangerouslySetInnerHTML={innerHtml}
     />
   );
 };
