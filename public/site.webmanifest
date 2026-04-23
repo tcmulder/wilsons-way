@@ -1,0 +1,22 @@
+{
+  "name": "Baird Quest",
+  "short_name": "Baird Quest",
+  "description": "Baird Quest game.",
+  "start_url": "/shelf-runner/",
+  "scope": "/shelf-runner/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "icons": [
+    {
+      "src": "/wp-content/plugins/shelf-runner/public/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/wp-content/plugins/shelf-runner/public/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
