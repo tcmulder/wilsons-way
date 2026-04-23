@@ -12,7 +12,7 @@
 
 .sr-leaderboard {
 	display: grid;
-	grid-template-columns: 1fr 1fr 1fr;
+	grid-template-columns: auto 1fr 1fr 1fr;
 	width: 36.5em;
 	margin: 0 auto;
 	padding: 0;
@@ -21,7 +21,7 @@
 }
 .sr-leaderboard__item {
 	display: grid;
-	grid-column: span 3;
+	grid-column: span 4;
 	grid-template-columns: subgrid;
 	margin: 0;
 	
@@ -32,7 +32,7 @@
 	}
 }
 .sr-leaderboard__cell {
-	padding: 0.15em;
+	padding: 0.15em 0.5em;
 	&:not(:first-child) {
 		border-left: 0.15em solid var(--sr-c-azure);
 	}
