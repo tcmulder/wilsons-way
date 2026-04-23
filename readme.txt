@@ -70,11 +70,9 @@ To develop, run `npm install && npm run dev`. To build the static site, run `npm
 * Updated the level 1 exit screen and transition visuals.
 * Added separate leaderboard cells for 1st through 10th place.
 * Adjusted the sizing of the selection dropdown.
-* Fix score box sizing.
-* Fix issue where intro text jumped.
-* Car obstacles that should stay visible no longer pulse in and out during the coffee invisibility effect.
-* Reduced layout shift when message text changes.
-* Simplify message styling.
+* Fixed score box sizing.
+* Fixed issue where message text jumped.
+* Revealed cards on invisible.
 * Styled the game reload state.
 
 = 2.5.5 =
