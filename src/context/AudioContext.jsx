@@ -14,8 +14,9 @@ import positiveSound from '../mp3/positive.mp3';
 export function AudioContextProvider({ children }) {
   // Single music element that outlives route changes so playback never restarts on navigation.
   const musicRef = useRef(null);
-  // Preloaded SFX elements; cloned per-play so overlapping sounds don't cut each other off.
-  const soundsRef = useRef({});
+  // Web Audio context + decoded buffers for low-latency one-shot SFX playback.
+  const sfxContextRef = useRef(null);
+  const sfxBuffersRef = useRef({});
   // User-controlled audio preferences.
   const [makeMusic, setMakeMusic] = useState(false);
   const [makeSFX, setMakeSFX] = useState(false);
@@ -25,12 +26,33 @@ export function AudioContextProvider({ children }) {
   useEffect(() => {
     musicRef.current = new Audio(musicSound);
     musicRef.current.loop = true;
-    soundsRef.current.positive = new Audio(positiveSound);
-    soundsRef.current.negative = new Audio(negativeSound);
-    soundsRef.current.buff = new Audio(buffSound);
-    soundsRef.current.debuff = new Audio(debuffSound);
+    const Ctx = window.AudioContext || window.webkitAudioContext;
+    if (!Ctx) {
+      return () => musicRef.current?.pause();
+    }
 
-    return () => musicRef.current?.pause();
+    const context = new Ctx();
+    sfxContextRef.current = context;
+
+    const loadSound = async (name, url) => {
+      const res = await fetch(url);
+      const arrayBuffer = await res.arrayBuffer();
+      sfxBuffersRef.current[name] = await context.decodeAudioData(arrayBuffer);
+    };
+
+    Promise.all([
+      loadSound('positive', positiveSound),
+      loadSound('negative', negativeSound),
+      loadSound('buff', buffSound),
+      loadSound('debuff', debuffSound),
+    ]).catch(() => {});
+
+    return () => {
+      musicRef.current?.pause();
+      sfxContextRef.current?.close().catch(() => {});
+      sfxContextRef.current = null;
+      sfxBuffersRef.current = {};
+    };
   }, []);
 
   // Start/stop background music when the music preference or volume changes.
@@ -57,17 +79,26 @@ export function AudioContextProvider({ children }) {
   // Stable callback consumers call to play a one-shot SFX (positive, negative, buff, debuff).
   const playSound = useCallback((name, shouldSound = makeSFX) => {
     if (!shouldSound) return;
-    const audio = soundsRef.current[name];
-    if (audio) {
-      const clone = audio.cloneNode();
-      clone.volume = 0.9 * volume;
-      const onEnded = () => {
-        clone.removeEventListener('ended', onEnded);
-        clone.src = '';
-      };
-      clone.addEventListener('ended', onEnded);
-      clone.play();
+    const context = sfxContextRef.current;
+    const buffer = sfxBuffersRef.current[name];
+    if (!context || !buffer) return;
+
+    const playNow = () => {
+      const source = context.createBufferSource();
+      const gain = context.createGain();
+      source.buffer = buffer;
+      gain.gain.value = 0.9 * volume;
+      source.connect(gain);
+      gain.connect(context.destination);
+      source.start(0);
+    };
+
+    if (context.state === 'suspended') {
+      context.resume().then(playNow).catch(() => {});
+      return;
     }
+
+    playNow();
   }, [makeSFX, volume]);
 
   // Confirmation chirp when the user enables SFX or changes volume with SFX on.
