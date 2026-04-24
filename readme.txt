@@ -66,7 +66,7 @@ To develop, run `npm install && npm run dev`. To build the static site, run `npm
 
 = 2.5.8 =
 
-* Add icons.
+* Add icons, manifest, etc. for mobile play.
 
 = 2.5.7 =
 
