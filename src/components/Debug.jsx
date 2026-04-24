@@ -30,6 +30,65 @@ const setStateAndQuery = (props) => {
 };
 
 /**
+ * Ignore arrow keys.
+ * 
+ * @param {KeyboardEvent} e The keyboard event
+ */
+const ignoreKeyboardInput = (e) => {
+	const arrows = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
+	if (arrows.includes(e.key)) {
+		e.preventDefault();
+	}
+};
+
+/**
+ * Shared debug-field label wrapper.
+ *
+ * @param {Object} props
+ * @param {string} [props.icon] Icon shown on reset button
+ * @param {string} props.label Label text
+ * @param {string} [props.title] Title/tooltip
+ * @param {string} [props.resetKey] Query key to update on reset
+ * @param {any} [props.resetValue] Initial value to reset to (captured once)
+ * @param {(v: any) => void} [props.onReset] State setter for reset
+ * @param {React.ReactNode} [props.children] Field controls rendered beside label
+ */
+const DebugLabel = ({
+	icon = '',
+	label,
+	title = '',
+	resetKey = '',
+	resetValue = undefined,
+	onReset = null,
+	children,
+}) => {
+	const [defaultValue] = useState(resetValue);
+	return (
+		<div className="sr-debug__label">
+			<button
+				type="reset"
+				title="Double-click to reset to default value"
+				onDoubleClick={(e) => {
+					if (!resetKey || !onReset || defaultValue === undefined) return;
+					e.preventDefault();
+					setStateAndQuery({
+						key: resetKey,
+						value: defaultValue,
+						setState: onReset,
+					});
+				}}
+			>
+				{icon}
+			</button>
+			<label title={title}>
+				<span>{label}</span>
+				{children}
+			</label>
+		</div>
+	);
+};
+
+/**
  * Debug button.
  * 
  * @param {Object} props
@@ -49,17 +108,24 @@ const DebugButton = ({ label, onClick, title = '' }) => {
  * Checkbox selector.
  * 
  * @param {Object} props
+ * @param {string} [props.icon] Label icon
  * @param {string} props.label Label text
  * @param {string} [props.param] URL param key (defaults to label lowercased)
  * @param {boolean} props.value Checked state
  * @param {(v: boolean) => void} props.setValue Setter (also pushes URL)
  * @param {string} [props.title] Title/tooltip
  */
-const DebugCheckbox = ({ label, param = '', value, setValue, title = '' }) => {
+const DebugCheckbox = ({ icon = '', label, param = '', value, setValue, title = '' }) => {
 	const k = param || label.toLowerCase();
 	return (
-		<label title={title}>
-			<span>{label}</span>
+		<DebugLabel
+			icon={icon}
+			label={label}
+			title={title}
+			resetKey={k}
+			resetValue={value}
+			onReset={setValue}
+		>
 			<input
 				type="checkbox"
 				checked={value}
@@ -71,7 +137,7 @@ const DebugCheckbox = ({ label, param = '', value, setValue, title = '' }) => {
 					})
 				}
 			/>
-		</label>
+		</DebugLabel>
 	);
 };
 
@@ -79,6 +145,7 @@ const DebugCheckbox = ({ label, param = '', value, setValue, title = '' }) => {
  * Number input.
  * 
  * @param {Object} props
+ * @param {string} [props.icon] Label icon
  * @param {string} props.label Label text
  * @param {string} [props.param] URL param key (defaults to label lowercased)
  * @param {number} props.value Current value
@@ -86,11 +153,17 @@ const DebugCheckbox = ({ label, param = '', value, setValue, title = '' }) => {
  * @param {string} [props.title] Title/tooltip
  * @param {number} [props.step] Step size
  */
-const DebugNumber = ({ label, param = '', value, setValue, title = '', step = 1 }) => {
+const DebugNumber = ({ icon = '', label, param = '', value, setValue, title = '', step = 1 }) => {
 	const k = param || label.toLowerCase();
 	return (
-		<label title={title}>
-			<span>{label}</span>
+		<DebugLabel
+			icon={icon}
+			label={label}
+			title={title}
+			resetKey={k}
+			resetValue={value}
+			onReset={setValue}
+		>
 			<input
 				type="number"
 				value={value}
@@ -101,10 +174,10 @@ const DebugNumber = ({ label, param = '', value, setValue, title = '', step = 1 
 						setState: setValue,
 					})
 				}
-				onKeyDown={(e) => e.stopPropagation()}
+				onKeyDown={ignoreKeyboardInput}
 				step={step}
 			/>
-		</label>
+		</DebugLabel>
 	);
 };
 
@@ -138,11 +211,17 @@ const DebugRefresh = ({ reset = false, title = '', label = '' }) => {
 	);
 };
 
-const DebugRange = ({ label, param = '', value, setValue, title = '', step = 1 }) => {
+const DebugRange = ({ icon = '', label, param = '', value, setValue, title = '', step = 1 }) => {
 	const k = param || label.toLowerCase();
 	return (
-		<label title={title}>
-			<span>{label}</span>
+		<DebugLabel
+			icon={icon}
+			label={label}
+			title={title}
+			resetKey={k}
+			resetValue={value}
+			onReset={setValue}
+		>
 			<input
 				type="range"
 				min="-400"
@@ -154,14 +233,7 @@ const DebugRange = ({ label, param = '', value, setValue, title = '', step = 1 }
 					setState: setValue,
 				})}
 				step={step}
-				onDoubleClick={(e) => {
-					e.preventDefault();
-					setStateAndQuery({
-						key: k,
-						value: 100,
-						setState: setValue,
-					});
-				}}
+				onKeyDown={ignoreKeyboardInput}
 			/>
 			<input
 				type="number"
@@ -173,10 +245,10 @@ const DebugRange = ({ label, param = '', value, setValue, title = '', step = 1 }
 						setState: setValue,
 					})
 				}
-				onKeyDown={(e) => e.stopPropagation()}
+				onKeyDown={ignoreKeyboardInput}
 				step={step}
 			/>
-		</label>
+		</DebugLabel>
 	);
 };
 
@@ -241,30 +313,33 @@ export const Debug = () => {
 			{isMenuOpen && (
 			<div className="sr-debug__menu">
 					<DebugRange
-						label="🏎️ Speed"
+						icon="🏎️"
+						label="Speed"
 						param="userAdjustedSpeed"
 						value={settings.userAdjustedSpeed * 100}
 						setValue={(value) => setSettings({ ...settings, userAdjustedSpeed: value / 100 })}
-						title="The user-adjusted speed multiplier (usually use base speed instead, resets on refresh, double-click to reset to 100%)."
+						title="The user-adjusted speed multiplier (usually use base speed instead, resets on refresh)."
 						step={25}
-						data-default="100"
 					/>
 					<DebugNumber
-						label="🏃‍➡️ Base (px/s)"
+						icon="🏃‍➡️"
+						label="Base (px/s)"
 						param="gameplaySpeed"
 						value={settings.gameplaySpeed}
 						setValue={(value) => setSettings({ ...settings, gameplaySpeed: value })}
 						title="Set the base gameplay speed in pixels per second"
 					/>
 					<DebugNumber
-						label="🦘 Height (%)"
+						icon="🦘"
+						label="Height (%)"
 						param="jumpHeight"
 						value={jump.height * 100}
 						setValue={(value) => setJump({ ...jump, height: value / 100})}
 						title="Set the jump height in percentage of the screen height"
 					/>
 					<DebugNumber
-						label="🏀 Hangtime"
+						icon="🏀"
+						label="Hangtime"
 						param="jumpHangtime"
 						value={jump.hangtime}
 						setValue={(value) => setJump({ ...jump, hangtime: value })}
@@ -272,14 +347,16 @@ export const Debug = () => {
 						step={0.1}
 					/>
 					<DebugNumber
-						label="💥 Crash (%)"
+						icon="💥"
+						label="Crash (%)"
 						param="userAdjustedCrash"
 						value={settings.userAdjustedCrash * 100}
 						setValue={(value) => setSettings({ ...settings, userAdjustedCrash: value / 100 })}
 						title="Set the crash difficulty in percentage"
 					/>
 					<DebugNumber
-						label="💯 Score +/-"
+						icon="💯"
+						label="Score +/-"
 						param="score"
 						value={(score ?? []).find(s => s.level === -1 || s.level === 0)?.num ?? 0}
 						setValue={(value) => setScore(prev => {
@@ -290,70 +367,80 @@ export const Debug = () => {
 						title="Add to or remove from the total score"
 					/>
 					<DebugNumber
-						label="🦸 Character"
+						icon="🦸"
+						label="Character"
 						param="characterId"
 						value={characterId}
 						setValue={setCharacterId}
 						title="Set the character's jersey number"
 					/>
 					<DebugNumber
-						label="🦒 Height (%)"
+						icon="🦒"
+						label="Height (%)"
 						param="characterHeight"
 						value={settings.characterHeight}
 						setValue={(value) => setSettings({ ...settings, characterHeight: value })}
 						title="Set the height of the character"
 					/>
 					<DebugNumber
-						label="💬 Milestone (%)"
+						icon="💬"
+						label="Milestone (%)"
 						param="userAdjustedMilestone"
 						value={(settings.userAdjustedMilestone * 100) * 0.5}
 						setValue={(value) => setSettings({ ...settings, userAdjustedMilestone: (value / 100) / 0.5 })}
 						title="Set the milestone duration modifier in percentage (0 to skip)"
 					/>
 					<DebugNumber
-						label="💀 Lives (#)"
+						icon="💀"
+						label="Lives (#)"
 						param="lives"
 						value={lives?.max || 10}
 						setValue={(value) => setLives((prev) => ({ ...prev, max: value }))}
 						title="Set the number of lives"
 					/>
 					<DebugCheckbox
-						label="☠️ Immortal"
+						icon="☠️"
+						label="Immortal"
 						param="immortal"
 						value={debug.immortal}
 						setValue={(value) => setDebug({ ...debug, immortal: value })}
 						title="Don't die on life loss"
 					/>
 					<DebugCheckbox
-						label="🎵 Music"
+						icon="🎵"
+						label="Music"
 						param="makeMusic"
 						value={makeMusic}
 						setValue={(val) => setMakeMusic(val)}
 						title="Enable or disable background music"
 					/>
 					<DebugCheckbox
-						label="🔊 SFX"
+						icon="🔊"
+						label="SFX"
 						param="makeSFX"
 						value={makeSFX}
 						setValue={(val) => setMakeSFX(val)}
 						title="Enable or disable sound effects"
 					/>
 					<DebugCheckbox
-						label="🚷 Autoplay"
+						icon="🚷"
+						label="Autoplay"
 						param="autoplay"
 						value={debug?.autoplay}
 						setValue={(val) => setDebug({ ...debug, autoplay: val })}
 						title="Automatically start running when the level loads"
 					/>
 					<DebugCheckbox
-						label="🎬 Slideshow"
+						icon="🎬"
+						label="Slideshow"
 						param="slideshow"
 						value={debug?.slideshow ?? true}
 						setValue={(val) => setDebug({ ...debug, slideshow: val })}
 						title="Use timed page transitions when enabled"
 					/>
 					<DebugCheckbox
-						label="👁️ Outlines"
+						icon="👁️"
+						label="Outlines"
 						param="outlines"
 						value={debug?.outlines}
 						setValue={(val) => setDebug({ ...debug, outlines: val })}
@@ -366,21 +453,26 @@ export const Debug = () => {
 						].join('\n')}
 					/>
 					<DebugCheckbox
-						label="🔀 Router"
+						icon="🔀"
+						label="Router"
 						param="router"
 						value={debug?.router}
 						setValue={(val) => setDebug({ ...debug, router: val })}
 						title="Exposes the URL path so you can refresh without going back to the intro page"
 					/>
-					<label>
-						<span>📄 goto</span>
-						<select value={pagePath} onChange={(e) => { e.preventDefault(); navigate(e.target.value); }} title="Navigate to a different page">
+					<DebugLabel icon="📄" label="goto">
+						<select
+							value={pagePath}
+							onChange={(e) => { e.preventDefault(); navigate(e.target.value); }}
+							onKeyDown={ignoreKeyboardInput}
+							title="Navigate to a different page"
+						>
 							{routes.map(({ path, debug }) => {
 								if (path === '/level/0') return null;
 								return <option key={path} value={path}>{debug}</option>;
 							})}
 						</select>
-					</label>
+					</DebugLabel>
 					<DebugButton
 						label="🫥 Un-collide"
 						onClick={() => {
