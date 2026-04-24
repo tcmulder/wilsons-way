@@ -154,6 +154,14 @@ const DebugRange = ({ label, param = '', value, setValue, title = '', step = 1 }
 					setState: setValue,
 				})}
 				step={step}
+				onDoubleClick={(e) => {
+					e.preventDefault();
+					setStateAndQuery({
+						key: k,
+						value: 100,
+						setState: setValue,
+					});
+				}}
 			/>
 			<input
 				type="number"
@@ -237,8 +245,9 @@ export const Debug = () => {
 						param="userAdjustedSpeed"
 						value={settings.userAdjustedSpeed * 100}
 						setValue={(value) => setSettings({ ...settings, userAdjustedSpeed: value / 100 })}
-						title="The user-adjusted speed multiplier (usually use base speed instead, resets on refresh)."
+						title="The user-adjusted speed multiplier (usually use base speed instead, resets on refresh, double-click to reset to 100%)."
 						step={25}
+						data-default="100"
 					/>
 					<DebugNumber
 						label="🏃‍➡️ Base (px/s)"
