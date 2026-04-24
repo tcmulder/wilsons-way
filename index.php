@@ -30,14 +30,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<meta charset="UTF-8">
 		<link rel="icon" type="image/svg+xml" href="<?php echo esc_url( SHELF_RUNNER_PLUGIN_URI . 'public/game-icon-fav.svg' ); ?>">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="manifest" href="<?php echo esc_url( SHELF_RUNNER_PLUGIN_URI . 'public/site.webmanifest' ); ?>">
+		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+		<link rel="manifest" href="<?php echo esc_url( SHELF_RUNNER_PLUGIN_URI . 'public/site.webmanifest.json' ); ?>">
 		<meta name="theme-color" content="#000000">
 		<meta name="mobile-web-app-capable" content="yes">
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<meta name="apple-mobile-web-app-status-bar-style" content="black">
 		<meta name="apple-mobile-web-app-title" content="<?php echo esc_attr( SHELF_RUNNER_NAME ); ?>">
-		<link rel="apple-touch-icon" href="<?php echo esc_url( SHELF_RUNNER_PLUGIN_URI . 'public/game-icon-apple.png' ); ?>">
+		<link rel="apple-touch-icon" sizes="192x192" href="<?php echo esc_url( SHELF_RUNNER_PLUGIN_URI . 'public/game-icon-apple.png' ); ?>">
 		<title><?php echo esc_html( SHELF_RUNNER_NAME ); ?></title>
 	</head>
 	<body>
