@@ -66,6 +66,8 @@ To develop, run `npm install && npm run dev`. To build the static site, run `npm
 
 = 2.5.9 =
 
+* Improve sound effect performance.
+* Fix level 4 background cut-off.
 * Enhance debug controls with resets.
 
 = 2.5.8 =
