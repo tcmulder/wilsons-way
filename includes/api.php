@@ -20,14 +20,8 @@ add_action(
 					$params = json_decode( $request->get_body(), true );
 
 					// Confirm we have what we need
-					if ( ! is_array( $params ) || ! isset( $params['user'] ) || ! isset( $params['score'] ) || ! isset( $params['team'] ) ) {
+					if ( ! is_array( $params ) || ! isset( $params['user'] ) || ! isset( $params['score'] ) ) {
 						return new WP_REST_Response( array( 'data' => array( 'status' => 400, 'message' => 'Invalid request body' ) ), 400 );
-					}
-
-					// Confirm the team name is a valid option from the settings
-					$team_names = array_filter( array_map( 'trim', preg_split( '/\r?\n/', (string) get_option( 'shelf_runner_settings_team_names', '' ) ) ) );
-					if ( ! is_string( $params['team'] ) || ! in_array( $params['team'], $team_names, true ) ) {
-						return new WP_REST_Response( array( 'data' => array( 'status' => 400, 'message' => 'Invalid team' ) ), 400 );
 					}
 
 					// Debugging mode (doesn't save to database)
@@ -36,11 +30,9 @@ add_action(
 
 					$user = str_replace( '-', '_', strtoupper( sanitize_title( $params['user'] ) ) );
 					$user = substr( $user, 0, 10 ); // trim to max characters (matches max on the winner form name input)
-					$team = str_replace( '-', '_', strtoupper( sanitize_title( $params['team'] ) ) );
 					$score = (int) $params['score'];
 					$data = array(
 						'user'  => $user,
-						'team'  => $team,
 						'score' => $score,
 					);
 
@@ -48,7 +40,6 @@ add_action(
 					$leaderboard = ! empty( $leaderboard ) ? $leaderboard : array();
 					$leaderboard[] = array(
 						'user'  => $user,
-						'team'  => $team,
 						'score' => $score,
 					);
 					usort(
@@ -58,7 +49,7 @@ add_action(
 						}
 					);
 					$leaderboard = array_slice( $leaderboard, 0, SHELF_RUNNER_LEADERBOARD_COUNT );
-					$leaderboard = array_pad( $leaderboard, SHELF_RUNNER_LEADERBOARD_COUNT, array( 'user' => '', 'team' => '', 'score' => 0 ) );
+					$leaderboard = array_pad( $leaderboard, SHELF_RUNNER_LEADERBOARD_COUNT, array( 'user' => '', 'score' => 0 ) );
 
 					if ( ! $is_debug ) {
 						update_option( 'shelf_runner_settings_leaderboard', $leaderboard );
@@ -74,11 +65,6 @@ add_action(
 				'permission_callback' => '__return_true',
 				'args'                => array(
 					'user'  => array(
-						'validate_callback' => function ( $param ) {
-							return is_string( $param );
-						},
-					),
-					'team' => array(
 						'validate_callback' => function ( $param ) {
 							return is_string( $param );
 						},
@@ -111,13 +97,12 @@ add_action(
 						function ( $item ) {
 							return array(
 								'user'  => esc_html( $item['user'] ?? '' ),
-								'team'  => esc_html( $item['team'] ?? '' ),
 								'score' => (int) ( $item['score'] ?? 0 ),
 							);
 						},
 						$leaderboard
 					);
-					$leaderboard = array_pad( $leaderboard, SHELF_RUNNER_LEADERBOARD_COUNT, array( 'user' => '', 'team' => '', 'score' => 0 ) );
+					$leaderboard = array_pad( $leaderboard, SHELF_RUNNER_LEADERBOARD_COUNT, array( 'user' => '', 'score' => 0 ) );
 					$response = new WP_REST_Response(
 						array(
 							'data'   => $leaderboard,

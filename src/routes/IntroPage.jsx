@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 
 import { useAudioContext } from '../context/useContexts';
+import { useMusicTrack } from '../hooks/useMusicTrack';
 
 import { Image } from '../components/Image';
 import { Page } from '../components/Page';
@@ -18,6 +19,7 @@ import '../css/pages/intro-page.css';
  */
 const IntroPage = () => {
 	const navigate = useNavigate();
+	useMusicTrack('level-1');
 	const { makeMusic, makeSFX, setMakeMusic, setMakeSFX } = useAudioContext();
 	return (
 		<Page className="sr-page--intro" style={{ '--sr-bg-image': `url(${backgroundUrl})` }}>

@@ -36,7 +36,7 @@ const getOrdinal = (n) => {
 const LeaderboardPage = () => {
 	const navigate = useNavigate();
 	const max = 10;
-	const [leaderboard, setLeaderboard] = useState(Array(max).fill({ user: '', team: '', score: 0 }));
+	const [leaderboard, setLeaderboard] = useState(Array(max).fill({ user: '', score: 0 }));
 	const { api } = window.sr;
 	useEffect(() => {
 		fetch(`${api}shelf-runner/v1/leaderboard/`, { cache: 'no-store' })
@@ -58,7 +58,6 @@ const LeaderboardPage = () => {
 					<li key={index} className="sr-leaderboard__item">
 						<span className="sr-leaderboard__cell sr-leaderboard__cell--rank">{getOrdinal(index + 1)}</span>
 						<span className="sr-leaderboard__cell sr-leaderboard__clell--user">{entry.user || '_____'}</span>
-						<span className="sr-leaderboard__cell sr-leaderboard__clell--team">{entry.team || '_____'}</span>
 						<span className="sr-leaderboard__cell sr-leaderboard__sclell--score">{entry.score}</span>
 					</li>
 				))}

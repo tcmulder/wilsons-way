@@ -1,6 +1,10 @@
 import { gsap } from 'gsap';
 import { useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 
+import { useMusicTrack } from '../hooks/useMusicTrack';
+
+import { EightBitButton } from '../components/EightBit';
 import { Page } from '../components/Page';
 import { useTimedNavigation } from '../hooks/useTimedNavigation';
 
@@ -12,6 +16,8 @@ import SVGLevel3Transition from '../images/pages/level-3-transition.svg?react';
  * @returns {React.ReactNode} The Level3TransitionPage component.
  */
 const Level3TransitionPage = () => {
+	useMusicTrack('level-3');
+	const navigate = useNavigate();
 	const { timedNavigate } = useTimedNavigation();
 	const svgRef = useRef(null);
 	const levelNumber = 3;
@@ -45,6 +51,11 @@ const Level3TransitionPage = () => {
 	return (
 		<Page fullWidth={true}>
 			<SVGLevel3Transition className="sr-page-image" ref={svgRef} />
+			<EightBitButton
+				className="sr-8bit--br"
+				label="Skip"
+				onClick={() => navigate(`/level/${levelNumber + 1}/intro`)}
+			/>
 		</Page>
 	);
 };

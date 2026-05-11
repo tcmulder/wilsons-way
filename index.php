@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		$plugin_dir . '/../../wp-load.php',
 		$plugin_dir . '/../../../wp-load.php',
 	);
-	$wp_load = '';
+	$wp_load    = '';
 	foreach ( $candidates as $candidate ) {
 		if ( file_exists( $candidate ) ) {
 			$wp_load = $candidate;
@@ -42,20 +42,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	</head>
 	<body>
 	
-	<div id="root">
-		<style>
-			#root {
-				background-color: black;
-				position: absolute;
-				inset: 0;
-				display: grid;
-				place-items: center;
-				color: darkgray;
-				font-family: monospace;
-			}
-		</style>
-		loading...
-	</div>
+	<div id="root" style="--sr-bg-image: url(<?php echo esc_url( SHELF_RUNNER_PLUGIN_URI . 'public/svg/loading.svg' ); ?>);background: var(--sr-bg-image) no-repeat center center / contain black;position:absolute;inset:0;"></div>
 	
 	<?php if ( 'development' === SHELF_RUNNER_ENV ) : ?>
 		<?php // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript -- Standalone HTML shell, not WP enqueue context. ?>

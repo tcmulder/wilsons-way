@@ -39,9 +39,10 @@
 html,
 body {
 	height: 100%;
+	margin: 0;
 }
 
-body {
+#root {
 	touch-action: manipulation;
 	overflow: clip;
 	display: grid;
@@ -128,7 +129,6 @@ svg {
 	}
 
 	:where(select),
-	:where(.faux-select),
 	:where(input[type="text"]) {
 		display: block;
 		width: 100%;
@@ -136,13 +136,6 @@ svg {
 		background-color: transparent;
 		color: var(--sr-c-azure);
 		border: 0.1em solid var(--sr-c-azure);
-	}
-
-	:where(.faux-select) {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		gap: 0.5em;
 	}
 
 	li:not(:last-child) {

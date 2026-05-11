@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { EightBitButton } from './EightBit';
@@ -12,49 +12,9 @@ export function WinnerForm() {
 	const { score } = useScoreContext();
 	const { nonce, api } = window.sr;
 	const [user, setUser] = useState('');
-	const [team, setTeam] = useState('');
 	const [total, setTotal] = useState(score?.reduce((sum, entry) => sum + (Number(entry?.num) || 0), 0) || 0);
 	const navigate = useNavigate();
 	const isDebugMode = !!debug;
-	const [teamNamesRaw, setTeamNamesRaw] = useState('');
-	const [teamNamesReady, setTeamNamesReady] = useState(false);
-
-	useEffect(() => {
-		let cancelled = false;
-		fetch(`${api}shelf-runner/v1/message/team_names`)
-			.then((response) => response.json())
-			.then((data) => {
-				if (!cancelled) {
-					setTeamNamesRaw(data?.data?.value ?? '');
-				}
-			})
-			.catch((error) => {
-				console.error('Failed to fetch team names:', error);
-			})
-			.finally(() => {
-				if (!cancelled) {
-					setTeamNamesReady(true);
-				}
-			});
-		return () => {
-			cancelled = true;
-		};
-	}, [api]);
-
-	const teamOptions = useMemo(
-		() =>
-			teamNamesRaw
-				.split(/\r?\n/)
-				.map((line) => line.trim())
-				.filter(Boolean),
-		[teamNamesRaw]
-	);
-	const teamSelectDisabled = !teamNamesReady || teamOptions.length === 0;
-	const teamPlaceholder = !teamNamesReady
-		? 'Loading…'
-		: teamOptions.length > 0
-			? 'Select team'
-			: 'No teams configured';
 
 	return (
 		<form
@@ -63,7 +23,6 @@ export function WinnerForm() {
 				e,
 				score: total,
 				user,
-				team,
 				navigate,
 				debug,
 				api,
@@ -80,30 +39,11 @@ export function WinnerForm() {
 					maxLength={10}
 				/>
 			</label>
-			<label>	<span>Choose Team:</span>
-				<div className="faux-select">
-					<select
-						name="team"
-						value={team}
-						onChange={(e) => setTeam(e.target.value)}
-						required={teamNamesReady && teamOptions.length > 0}
-						disabled={teamSelectDisabled}
-					>
-						<option value="">{teamPlaceholder}</option>
-						{teamOptions.map((name, i) => (
-							<option key={`${name}-${i}`} value={name}>
-								{name}
-							</option>
-						))}
-					</select>
-					<div aria-hidden="true">{team || '\u00A0'}</div>
-				</div>
-			</label>
 			<div className="sr-winner-form__button">
 				<EightBitButton
 					label={'Next'}
 					type="submit"
-					disabled={!user || !team}
+					disabled={!user}
 				/>
 			</div>
 			{isDebugMode && (

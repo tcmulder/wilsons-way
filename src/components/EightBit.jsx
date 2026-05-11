@@ -62,12 +62,13 @@ export const EightBitToggleBar = () => {
  * @param {() => void} props.onClick - The button click handler
  * @param {string} [props.type] Button type (defaults to 'button')
  * @param {boolean} [props.disabled] Whether the button is disabled (defaults to false)
+ * @param {string} [props.className] Additional class names to add to the button
  * @returns {React.ReactNode} The EightBitButton component.
  */
 export const EightBitButton = (props) => {
-	const { label, onClick, type = 'button', disabled = false } = props;
+	const { label, onClick, type = 'button', disabled = false, className = '' } = props;
 	return (
-		<EightBit bg={<EightBitPill />} className="sr-8bit--button">
+		<EightBit bg={<EightBitPill />} className={`sr-8bit--button ${className}`}>
 			<button type={type} onClick={onClick} disabled={disabled}>{label}</button>
 		</EightBit>
 	);
@@ -78,12 +79,13 @@ export const EightBitButton = (props) => {
  * @param {string} props.label
  * @param {boolean} props.value
  * @param {import('react').ChangeEventHandler<HTMLInputElement>} props.onChange
+ * @param {string} [props.className] Additional class names to add to the toggle
  * @returns {React.ReactNode}
  */
 export const EightBitToggle = (props) => {
-	const { label, value, onChange } = props;
+	const { label, value, onChange, className = '' } = props;
 	return (
-		<EightBit bg={<EightBitToggleBar />} className="sr-8bit--toggle" tag="label">
+		<EightBit bg={<EightBitToggleBar />} className={`sr-8bit--toggle ${className}`} tag="label">
 			{label}
 			<input type="checkbox" checked={value} onChange={onChange} />
 		</EightBit>

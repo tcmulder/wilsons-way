@@ -1,5 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 
+import { useMusicTrack } from '../hooks/useMusicTrack';
+
 import { AssetPreload } from '../components/AssetPreload';
 import { EightBitButton } from '../components/EightBit';
 import { Image } from '../components/Image';
@@ -15,6 +17,7 @@ import levelHeading from '../images/text/level-2.svg?metadata';
  * @returns {React.ReactNode} The Level2IntroPage component.`
  */
 const Level2IntroPage = () => {
+	useMusicTrack('level-2');
 	const levelNumber = 2;
 	const navigate = useNavigate();
 	return (

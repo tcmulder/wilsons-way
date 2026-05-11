@@ -1,5 +1,6 @@
 .sr-page--intro {
 	color: var(--sr-c-black);
+	animation: fade-in 0.3s;
 	.sr-page__logo {
 		display: block;
 		margin: 2.5em auto 1.5em;
@@ -21,5 +22,14 @@
 		bottom: 1.6em;
 		left: 50%;
 		transform: translateX(-50%);
+	}
+}
+
+@keyframes fade-in {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
 	}
 }

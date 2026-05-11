@@ -25,7 +25,7 @@ const RestartPage = () => {
 	}, [debug?.router, debug?.slideshow, navigate]);
 	return (
 		<Page>
-			<h1 style={{color: 'black'}}>Restarting...</h1>
+			<h1 style={{color: 'transparent'}}>Restarting...</h1>
 		</Page>
 	);
 };
