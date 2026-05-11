@@ -69,6 +69,7 @@ To develop, run `npm install && npm run dev`. To build the static site, run `npm
 * Remove team option.
 * Add next buttons for timed pages.
 * Adjust loading screen.
+* Make music selectable.
 
 = 2.5.9 =
 
