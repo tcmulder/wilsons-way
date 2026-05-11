@@ -6,7 +6,6 @@ export const submitHighScore = async (props) => {
 		e,
 		score,
 		user,
-		team = '',
 		navigate,
 		debug,
 		api,
@@ -21,7 +20,7 @@ export const submitHighScore = async (props) => {
 			'Content-Type': 'application/json',
 			Accept: 'application/json',
 		},
-		body: JSON.stringify({ user, team, score, isDebugMode }),
+		body: JSON.stringify({ user, score, isDebugMode }),
 		credentials: 'same-origin',
 	})
 		.then((resp) => resp.json())

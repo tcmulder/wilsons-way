@@ -64,6 +64,12 @@ To develop, run `npm install && npm run dev`. To build the static site, run `npm
 
 == Changelog ==
 
+= 2.6.0 =
+
+* Remove team option.
+* Add next buttons for timed pages.
+* Adjust loading screen.
+
 = 2.5.9 =
 
 * Improve sound effect performance.
