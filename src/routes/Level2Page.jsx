@@ -1,4 +1,5 @@
 import Level from '../components/Level';
+import { useMusicTrack } from '../hooks/useMusicTrack';
 import { useSetLevel } from '../hooks/useSetLevel';
 
 /**
@@ -7,6 +8,7 @@ import { useSetLevel } from '../hooks/useSetLevel';
  * @returns {React.ReactNode} The Level2Page component.`
  */
 const Level2Page = () => {
+	useMusicTrack('level-2');
 	useSetLevel();
 	return <Level />;
 };

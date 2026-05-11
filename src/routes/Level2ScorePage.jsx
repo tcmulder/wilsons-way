@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { useMusicTrack } from '../hooks/useMusicTrack';
+
 import { EightBitButton } from '../components/EightBit';
 import { Page } from '../components/Page';
 import { Score } from '../components/Score';
@@ -14,6 +16,7 @@ import backgroundUrl from '../images/pages/page-bg-dark.svg';
  * @returns {React.ReactNode} The Level2ScorePage component.
  */
 const Level2ScorePage = () => {
+	useMusicTrack('level-2');
 	const levelNumber = 2;
 	const navigate = useNavigate();
 	const { timedNavigate } = useTimedNavigation();

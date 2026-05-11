@@ -1,5 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 
+import { useMusicTrack } from '../hooks/useMusicTrack';
+
 import Flag from '../components/Flag';
 import { EightBitButton } from '../components/EightBit';
 import { Page } from '../components/Page';
@@ -12,6 +14,7 @@ import SVGFlag from '../images/pages/level-4-flag.svg?react';
  * @returns {React.ReactNode} The Level4OutroPage component.
  */
 const Level4OutroPage = () => {
+	useMusicTrack('level-4');
 	const levelNumber = 4;
 	const navigate = useNavigate();
 

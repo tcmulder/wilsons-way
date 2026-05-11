@@ -2,6 +2,8 @@ import { gsap } from 'gsap';
 import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { useMusicTrack } from '../hooks/useMusicTrack';
+
 import { EightBitButton } from '../components/EightBit';
 import { Page } from '../components/Page';
 import { useTimedNavigation } from '../hooks/useTimedNavigation';
@@ -14,6 +16,7 @@ import SVGLevel1Transition from '../images/pages/level-1-transition.svg?react';
  * @returns {React.ReactNode} The Level1TransitionPage component.
  */
 const Level1TransitionPage = () => {
+	useMusicTrack('level-1');
 	const navigate = useNavigate();
 	const { timedNavigate } = useTimedNavigation();
 	const svgRef = useRef(null);

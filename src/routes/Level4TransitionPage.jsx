@@ -3,6 +3,7 @@ import { useEffect, useRef } from 'react';
 
 import { Page } from '../components/Page';
 import { useScoreContext } from '../context/useContexts';
+import { useMusicTrack } from '../hooks/useMusicTrack';
 import { useTimedNavigation } from '../hooks/useTimedNavigation';
 
 import SVGLevel4Transition from '../images/pages/level-4-transition.svg?react';
@@ -15,6 +16,7 @@ const TRANSITION_NAV_DELAY_MS = 5000;
  * @returns {React.ReactNode} The Level4TransitionPage component.
  */
 const Level4TransitionPage = () => {
+	useMusicTrack('level-4');
 	const svgRef = useRef(null);
 	const { timedNavigate } = useTimedNavigation();
 	const { score } = useScoreContext();
