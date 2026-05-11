@@ -24,7 +24,7 @@ const Level1TransitionPage = () => {
 
 	// Auto-navigate to next level
 	useEffect(() => {
-		timedNavigate({ route: `/level/${levelNumber + 1}/intro`, delay: 3000 });
+		timedNavigate({ route: `/level/${levelNumber + 1}/intro`, delay: 3750 });
 	}, [ levelNumber, timedNavigate ]);
 
 	// Animate the transition
