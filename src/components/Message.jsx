@@ -16,7 +16,7 @@ gsap.registerPlugin(SplitText);
  * @returns {React.ReactNode} The Message component
  */
 export const Message = (props) => {
-  const { messageKey } = props;
+  const { messageKey, alignCenter = false } = props;
   const message = useGetMessage(messageKey);
   const containerRef = useRef(null);
 
@@ -49,7 +49,7 @@ export const Message = (props) => {
   return (
     <div
       ref={containerRef}
-      className={`sr-message ${!message ? 'is-loading' : ''}`}
+      className={`sr-message ${!message ? 'is-loading' : ''} ${alignCenter ? 'sr-message--center' : ''}`}
       dangerouslySetInnerHTML={innerHtml}
     />
   );

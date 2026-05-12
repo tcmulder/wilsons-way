@@ -64,6 +64,11 @@ To develop, run `npm install && npm run dev`. To build the static site, run `npm
 
 == Changelog ==
 
+= 2.6.1 =
+
+* Add new outro page.
+* Increase audio level for negative items.
+
 = 2.6.0 =
 
 * Remove team option.

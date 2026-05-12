@@ -86,6 +86,10 @@ function shelf_runner_messages() {
 		'winner'        => array(
 			'label' => __( 'Winner message', 'shelf-runner' ),
 		),
+		'outro'         => array(
+			'label' => __( 'Passed message', 'shelf-runner' ),
+			'desc'  => __( 'Shown if you passed the game but did not achieve a high score.', 'shelf-runner' ),
+		),
 		'loser'         => array(
 			'label' => __( 'Loser message', 'shelf-runner' ),
 		),

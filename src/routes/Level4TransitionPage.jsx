@@ -62,12 +62,12 @@ const Level4TransitionPage = () => {
 					const userScore = score?.reduce((sum, entry) => sum + (Number(entry?.num) || 0), 0) ?? 0;
 					const highScores = response.data ?? [];
 					const isHighScore = highScores.some((e) => userScore >= e.score);
-					timedNavigate({ route: isHighScore ? '/form' : '/leaderboard', delay: 0 });
+					timedNavigate({ route: isHighScore ? '/form' : '/outro', delay: 0 });
 				})
 				.catch((error) => {
 					console.error('Error fetching leaderboard:', error);
 					if (!cancelled) {
-						timedNavigate({ route: '/leaderboard', delay: 0 });
+						timedNavigate({ route: '/outro', delay: 0 });
 					}
 				});
 		}, TRANSITION_NAV_DELAY_MS);

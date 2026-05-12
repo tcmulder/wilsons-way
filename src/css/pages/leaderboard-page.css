@@ -1,8 +1,4 @@
 .sr-page--leaderboard {
-	.sr-page__heading {
-		margin: 2.5em auto 0;
-		text-align: center;
-	}
 	.sr-page__button {
 		margin-top: 1.5em;
 		display: flex;

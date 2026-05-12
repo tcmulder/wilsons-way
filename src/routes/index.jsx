@@ -1,6 +1,4 @@
-import HighScorePage from './HighScorePage';
 import IntroPage from './IntroPage';
-import LeaderboardPage from './LeaderboardPage';
 import Level0Page from './Level0Page';
 import Level1IntroPage from './Level1IntroPage';
 import Level1OutroPage from './Level1OutroPage';
@@ -24,6 +22,9 @@ import Level4ScorePage from './Level4ScorePage';
 import Level4TransitionPage from './Level4TransitionPage';
 import GameOverPage from './GameOverPage';
 import RestartPage from './RestartPage';
+import HighScorePage from './HighScorePage';
+import OutroPage from './OutroPage';
+import LeaderboardPage from './LeaderboardPage';
 
 /**
  * Route config: debug label (for debug nav), path, and element for the pages of the game.
@@ -55,11 +56,12 @@ export const routes = [
   { debug: '↳ Level 4 Score', path: '/level/4/score', element: <Level4ScorePage /> },
   { debug: '↳ Level 4 Transition', path: '/level/4/transition', element: <Level4TransitionPage /> },
 
-  { debug: '💯 High Score', path: '/form', element: <HighScorePage /> },
-  { debug: '🏆 Leaderboard', path: '/leaderboard', element: <LeaderboardPage /> },
-
   { debug: '💀 Game Over', path: '/game-over', element: <GameOverPage /> },
   { debug: '🔄 Restart', path: '/restart', element: <RestartPage /> },
+  
+  { debug: '💯 High Score', path: '/form', element: <HighScorePage /> },
+  { debug: '🏁 Outro', path: '/outro', element: <OutroPage /> },
+  { debug: '🏆 Leaderboard', path: '/leaderboard', element: <LeaderboardPage /> },
 
   { debug: '0️⃣ Level 0', path: '/level/0', element: <Level0Page /> },
 ];
