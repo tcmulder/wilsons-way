@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: Wilson's Way
+ * Plugin Name: Baird Quest
  * Description: Adds the Shelf Runner game as an embed or template.
  * Version:     2.6.3
  * Author:      Tomas Mulder
