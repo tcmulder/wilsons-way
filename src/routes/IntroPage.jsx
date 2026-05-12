@@ -52,6 +52,9 @@ const IntroPage = () => {
 
 			</div>
 			<Image {...wilson} className="sr-page__wilson" alt="Wilson" />
+			<div className="sr-page__footer">
+				For Baird Associate Use Only (plus their family😊)
+			</div>
 			<Version />
 		</Page>
 	);

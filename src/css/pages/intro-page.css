@@ -26,6 +26,14 @@
 		left: 50%;
 		transform: translateX(-50%);
 	}
+	.sr-page__footer {
+		pointer-events: none;
+		position: absolute;
+		inset: auto 0 0.15em 0;
+		text-align: center;
+		color: var(--sr-c-white);
+		font-size: 0.8em;
+	}
 }
 
 @keyframes fade-in {

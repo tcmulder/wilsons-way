@@ -66,7 +66,7 @@ To develop, run `npm install && npm run dev`. To build the static site, run `npm
 
 = 2.6.3 =
 
-* Show version on intro screen.
+* Show version and disclaimer on intro screen.
 
 = 2.6.2 =
 
