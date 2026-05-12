@@ -1,6 +1,9 @@
 .sr-page--intro {
 	color: var(--sr-c-black);
 	animation: fade-in 0.3s;
+	.sr-page__inner {
+		align-self: flex-start;
+	}
 	.sr-page__logo {
 		display: block;
 		margin: 2.5em auto 1.5em;
