@@ -4,7 +4,7 @@ Contributors: thinkaquamarine
 Tags: game
 Requires at least: 6.5.4
 Tested up to: 6.8.1
-Stable tag: 2.6.3
+Stable tag: 2.6.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -64,7 +64,7 @@ To develop, run `npm install && npm run dev`. To build the static site, run `npm
 
 == Changelog ==
 
-= 2.6.3 =
+= 2.6.2 =
 
 * Fix intro page alignment.
 
