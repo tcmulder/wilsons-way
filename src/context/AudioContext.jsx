@@ -11,6 +11,9 @@ import level4Sound from '../mp3/level-4-music.mp3';
 import negativeSound from '../mp3/negative.mp3';
 import positiveSound from '../mp3/positive.mp3';
 
+/**
+ * Map of music tracks by key.
+ */
 const musicTracks = {
   'level-1': level1Sound,
   'level-2': level2Sound,

@@ -1,4 +1,6 @@
 .sr-page {
+	display: grid;
+	place-items: center;
 	background-image: var(--sr-bg-image, none);
 	background-size: cover;
 	background-position: center;
@@ -21,4 +23,10 @@
 	max-width: 33.3333333em;
 	max-height: 100cqh;
 	margin-inline: auto;
+}
+.sr-page__heading {
+	position: relative;
+	z-index: 1;
+	margin: 2.5em auto 0;
+	text-align: center;
 }
