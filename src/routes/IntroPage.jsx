@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAudioContext } from '../context/useContexts';
 import { useMusicTrack } from '../hooks/useMusicTrack';
 
+import { Version } from '../components/Version';
 import { Image } from '../components/Image';
 import { Page } from '../components/Page';
 import { EightBitButton, EightBitToggle } from '../components/EightBit';
@@ -51,6 +52,7 @@ const IntroPage = () => {
 
 			</div>
 			<Image {...wilson} className="sr-page__wilson" alt="Wilson" />
+			<Version />
 		</Page>
 	);
 };
