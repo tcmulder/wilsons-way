@@ -8,7 +8,7 @@ import { useTimedNavigation } from '../hooks/useTimedNavigation';
 
 import SVGLevel4Transition from '../images/pages/level-4-transition.svg?react';
 
-const TRANSITION_NAV_DELAY_MS = 5000;
+const TRANSITION_NAV_DELAY_MS = 2600;
 
 /**
  * Level 4 transition: fireworks, then high-score form or leaderboard.
@@ -25,9 +25,9 @@ const Level4TransitionPage = () => {
 	// Fireworks (elements live on level-4-transition.svg)
 	useEffect(() => {
 		const elFireworks = [
-			{ selector: '.sr-firework-1', xDir: -1, delay: 1 },
-			{ selector: '.sr-firework-2', xDir: 1, delay: 1.5 },
-			{ selector: '.sr-firework-3', xDir: -1, delay: 2.5 },
+			{ selector: '.sr-firework-1', xDir: -1, delay: 0.5 },
+			{ selector: '.sr-firework-2', xDir: 1, delay: 1.25 },
+			{ selector: '.sr-firework-3', xDir: -1, delay: 1.75 },
 		].map(({ selector, xDir, delay }) => ({
 			el: svgRef.current?.querySelector(selector),
 			x: `${xDir * 12}%`,
@@ -41,9 +41,9 @@ const Level4TransitionPage = () => {
 			gsap.set(el, { x: 0, y: 0, scale: 0.8, opacity: 0, transformOrigin: 'center bottom' });
 			const tl = gsap
 				.timeline({ delay })
-				.to(el, { x, y, scale: 1, duration: 1.25, ease: 'power1.out' }, 0)
-				.to(el, { opacity: 1, duration: 0.75, ease: 'power1.out' }, '<')
-				.to(el, { opacity: 0, duration: 0.25, ease: 'power1.in' }, '<=1');
+				.to(el, { x, y, scale: 1, duration: 0.5, ease: 'power1.out' }, 0)
+				.to(el, { opacity: 1, duration: 0.5, ease: 'power1.out' }, '<')
+				.to(el, { opacity: 0, duration: 0.5, ease: 'power1.in' }, '<+=0.25');
 			timelines.push(tl);
 		}
 		return () => {
