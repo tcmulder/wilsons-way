@@ -61,7 +61,7 @@ svg {
 
 .sr {
 	/* Orientation warning */
-	@media (max-width: 480px) and (orientation: portrait) {
+	@media (max-width: 1024px) and (orientation: portrait) {
 		&::before {
 			content: "Please rotate your\A device for the best experience";
 			white-space: pre;
@@ -73,7 +73,7 @@ svg {
 			justify-content: center;
 			padding: 2cqmax;
 			background-color: var(--sr-c-navy);
-			color: var(--sr-c-creme);
+			color: var(--sr-c-white);
 			font-family: var(--sr-ff);
 			font-size: 5vmax;
 			text-align: center;
