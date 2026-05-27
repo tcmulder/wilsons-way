@@ -15,18 +15,16 @@
 		margin: 0;
 		background-color: #000;
 	}
-	.sr-iframe-frame {
+	.sr-iframe-frame, {
 		position: fixed;
 		inset: 0;
-		display: grid;
-		place-items: center;
 	}
 	.sr-iframe-frame iframe {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
 		border: 0;
-		width: calc(100dvh * (16 / 9));
-		max-width: 100%;
-		aspect-ratio: 16 / 9;
-		margin: 0 auto;
 	}
 </style>
 <div class="sr-iframe-frame">
